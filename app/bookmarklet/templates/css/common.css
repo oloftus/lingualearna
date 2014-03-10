@@ -1,0 +1,13 @@
+/*Icons: https://www.iconfinder.com/search/?q=iconset:typicons-2*/
+
+@import url(http://fonts.googleapis.com/css?family=Esteban);
+
+.lingua-component{font-family:'Esteban', serif;font-size:14px;}
+.lingua-component h1{font-size:1.2em;margin:0;}
+.lingua-align-left, .lingua-align-right{padding:0 15px;}
+.lingua-action-button{font:inherit !important;outline:none;border:2px outset #cccccc;}
+.lingua-action-button-icon, .lingua-icon-link{background:no-repeat left center;padding-left:25px;}
+.lingua-icon-link{color:inherit;text-decoration:inherit;}
+
+#lingua-add-note{background-image:url(../images/pencil.svg);}
+#lingua-notebook-link{background-image:url(../images/book.svg);}
