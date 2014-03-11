@@ -1,0 +1,8 @@
+html, body{height:100%;}
+body{display:flex;margin:0;}
+#lingua-add-edit-note-dialog{width:700px;margin:auto;}
+#lingua-add-edit-note-dialog .lingua-dialog-content{display:flex;flex-flow:row wrap;}
+.lingua-local-language, .lingua-foreign-language, .lingua-note{height:70px;}
+.lingua-local-language, .lingua-foreign-language{flex-basis:49%;box-sizing:border-box;}
+.lingua-foreign-language{margin-left:auto;margin-left:2% !important;}
+.lingua-note{flex-basis:100%;margin-top:2% !important;}
