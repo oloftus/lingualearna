@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF8">
+    <title>Selection translation dialog</title>
+    <link href="../css/common.css" rel="stylesheet" type="text/css">
+    <link href="../css/selection-translation-dialog.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<div class="lingua-component lingua-dialog lingua-draggable-dialog" id="lingua-select-translate-dialog">
+    <button class="lingua-icon-button lingua-dialog-close">Close</button>
+    <div class="lingua-dialog-header">
+        <div class="lingua-controls-left">
+            <button class="lingua-action-button-icon" id="lingua-add-selection-button">Selection + translation</button>
+            <button class="lingua-action-button-icon" id="lingua-add-selection-button">Just selection</button>
+        </div>
+        <div class="lingua-controls">
+            <label for="include-text-checkbox" class="lingua-control-item">Include in test?</label>
+            <input type="checkbox" checked="checked" id="include-text-checkbox" />
+        </div>
+    </div>
+    <div class="lingua-dialog-titles">
+	    <h3><label for="lingua-local-language-1">English</label></h3>
+	    <h3><label for="lingua-foreign-language-1">Spanish</label></h3>
+    </div>
+    <div class="lingua-dialog-content">
+        <textarea class="lingua-local-language" id="lingua-local-language-1">English</textarea>
+        <textarea class="lingua-foreign-language" id="lingua-foreign-language-1">Spanish</textarea>
+    </div>
+</div>
+
+</body>
+</html>
