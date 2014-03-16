@@ -1,6 +1,6 @@
 package com.lingualearna.web.translation;
 
-public class TranslationResult {
+public class SingleTranslationResult {
 
 	private String targetString;
 
@@ -14,7 +14,7 @@ public class TranslationResult {
 		this.targetString = targetString;
 	}
 
-	public TranslationResult(String targetString) {
+	public SingleTranslationResult(String targetString) {
 
 		this.targetString = targetString;
 	}

@@ -4,5 +4,5 @@ import java.util.Locale;
 
 public interface TranslationProvider {
 
-	public TranslationResult translate(Locale sourceLang, Locale targetLang, String query) throws TranslationException;
+	public SingleTranslationResult translate(Locale sourceLang, Locale targetLang, String query) throws TranslationException;
 }

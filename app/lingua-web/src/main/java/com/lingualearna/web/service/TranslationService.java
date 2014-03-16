@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProvider;
 import com.lingualearna.web.translation.TranslationProviderName;
-import com.lingualearna.web.translation.TranslationResult;
+import com.lingualearna.web.translation.SingleTranslationResult;
 
 @Service
 public class TranslationService {
@@ -18,10 +18,10 @@ public class TranslationService {
 	@Qualifier("GoogleTranslate")
 	private TranslationProvider googleTranslationProvider;
 
-	public TranslationResult translate(TranslationProviderName provider, Locale sourceLang, Locale targetLang,
+	public SingleTranslationResult translate(TranslationProviderName provider, Locale sourceLang, Locale targetLang,
 			String query) throws TranslationException {
 
-		TranslationResult result = null;
+		SingleTranslationResult result = null;
 		switch (provider) {
 			case Google:
 				result = googleTranslationProvider.translate(sourceLang, targetLang, query);

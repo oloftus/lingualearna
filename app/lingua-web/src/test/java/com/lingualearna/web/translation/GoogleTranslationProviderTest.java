@@ -37,7 +37,7 @@ import com.lingualearna.web.translation.GoogleTranslateBuilderWrapper;
 import com.lingualearna.web.translation.GoogleTranslateLibraryWrapper;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProvider;
-import com.lingualearna.web.translation.TranslationResult;
+import com.lingualearna.web.translation.SingleTranslationResult;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext.test.xml")
@@ -70,7 +70,7 @@ public class GoogleTranslationProviderTest extends UnitTestBase {
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private List translateList;
 
-	private TranslationResult result;
+	private SingleTranslationResult result;
 
 	@Autowired
 	@Qualifier("GoogleTranslate")
@@ -112,7 +112,7 @@ public class GoogleTranslationProviderTest extends UnitTestBase {
 		when(googleTranslateLibraryWrapper.executeAndGetTranslation(translateList)).thenThrow(new IOException());
 	}
 
-	private TranslationResult whenICallTranslateThenExceptionIsThrown() throws TranslationException {
+	private SingleTranslationResult whenICallTranslateThenExceptionIsThrown() throws TranslationException {
 
 		return whenICallTranslate();
 	}
@@ -132,7 +132,7 @@ public class GoogleTranslationProviderTest extends UnitTestBase {
 		verify(translateList).setSource(SOURCE_LANGUAGE);
 	}
 
-	private TranslationResult whenICallTranslate() throws TranslationException {
+	private SingleTranslationResult whenICallTranslate() throws TranslationException {
 
 		result = translationProvider.translate(Locale.forLanguageTag(SOURCE_LANGUAGE), Locale
 				.forLanguageTag(TARGET_LANGUAGE), QUERY);

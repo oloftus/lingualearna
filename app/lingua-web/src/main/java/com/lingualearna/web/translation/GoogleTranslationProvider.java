@@ -53,7 +53,7 @@ public class GoogleTranslationProvider implements TranslationProvider {
 	}
 
 	@Override
-	public TranslationResult translate(Locale sourceLang, Locale targetLang, String query) throws TranslationException {
+	public SingleTranslationResult translate(Locale sourceLang, Locale targetLang, String query) throws TranslationException {
 
 		String result;
 		JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
@@ -70,7 +70,7 @@ public class GoogleTranslationProvider implements TranslationProvider {
 			throw new TranslationException("A problem occurred getting the translation, please try again later", e);
 		}
 
-		return new TranslationResult(result);
+		return new SingleTranslationResult(result);
 	}
 
 	private void splitApiUrlComponents() {
