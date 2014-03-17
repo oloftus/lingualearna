@@ -1,4 +1,4 @@
-package com.lingualearna.web.translation;
+package com.lingualearna.web.translation.provider;
 
 /**
  * Wraps the final Translate.Builder class to permit mocking.

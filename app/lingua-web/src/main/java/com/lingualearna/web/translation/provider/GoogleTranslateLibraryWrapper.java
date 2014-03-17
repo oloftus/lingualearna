@@ -1,4 +1,4 @@
-package com.lingualearna.web.translation;
+package com.lingualearna.web.translation.provider;
 
 import java.io.IOException;
 

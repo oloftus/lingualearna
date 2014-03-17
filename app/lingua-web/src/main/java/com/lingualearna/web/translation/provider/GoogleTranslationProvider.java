@@ -1,4 +1,4 @@
-package com.lingualearna.web.translation;
+package com.lingualearna.web.translation.provider;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -23,6 +23,9 @@ import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.Translate.Translations.List;
 import com.google.api.services.translate.TranslateRequestInitializer;
 import com.google.common.collect.Lists;
+import com.lingualearna.web.translation.SingleTranslationResult;
+import com.lingualearna.web.translation.TranslationException;
+import com.lingualearna.web.translation.TranslationProvider;
 
 @Service
 @Qualifier("GoogleTranslate")

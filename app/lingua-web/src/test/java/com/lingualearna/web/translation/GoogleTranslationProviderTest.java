@@ -33,11 +33,11 @@ import com.google.api.services.translate.TranslateRequestInitializer;
 import com.google.common.collect.Lists;
 import com.lingualearna.web.testutil.AnswerWithSelf;
 import com.lingualearna.web.testutil.UnitTestBase;
-import com.lingualearna.web.translation.GoogleTranslateBuilderWrapper;
-import com.lingualearna.web.translation.GoogleTranslateLibraryWrapper;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProvider;
 import com.lingualearna.web.translation.SingleTranslationResult;
+import com.lingualearna.web.translation.provider.GoogleTranslateBuilderWrapper;
+import com.lingualearna.web.translation.provider.GoogleTranslateLibraryWrapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "/applicationContext.test.xml")
