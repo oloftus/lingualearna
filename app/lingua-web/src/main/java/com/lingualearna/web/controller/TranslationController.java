@@ -17,6 +17,7 @@ import com.lingualearna.web.service.LanguageNamesService;
 import com.lingualearna.web.service.TranslationService;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProviderName;
+import com.lingualearna.web.util.ApplicationException;
 
 @Controller
 @RequestMapping("/translation")
@@ -33,7 +34,8 @@ public class TranslationController {
 	 */
 	@RequestMapping(value = "/translate", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
 	@ResponseBody
-	public TranslationResult translate(@RequestBody TranslationRequest request) throws TranslationException {
+	public TranslationResult translate(@RequestBody TranslationRequest request) throws TranslationException,
+			ApplicationException {
 
 		TranslationResult result = new TranslationResult();
 		Locale targetLangLocale = Locale.forLanguageTag(request.getTargetLang());

@@ -101,5 +101,10 @@
 			<artifactId>myfaces-api</artifactId>
 			<version>${myFacesVersion}</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.3</version>
+		</dependency>
 	</dependencies>
 </project>

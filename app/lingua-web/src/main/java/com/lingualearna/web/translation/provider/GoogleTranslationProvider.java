@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.http.HttpStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -26,6 +28,8 @@ import com.google.common.collect.Lists;
 import com.lingualearna.web.translation.SingleTranslationResult;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProvider;
+import com.lingualearna.web.util.ApplicationException;
+import com.lingualearna.web.util.LocalizationService;
 
 @Service
 @Qualifier("GoogleTranslate")
@@ -44,6 +48,9 @@ public class GoogleTranslationProvider implements TranslationProvider {
 	private String apiUrl;
 
 	@Autowired
+	private LocalizationService localizationService;
+
+	@Autowired
 	private GoogleTranslateLibraryWrapper googleTranslateLibraryWrapper;
 
 	private String apiUrlRootUrl;
@@ -56,21 +63,31 @@ public class GoogleTranslationProvider implements TranslationProvider {
 	}
 
 	@Override
-	public SingleTranslationResult translate(Locale sourceLang, Locale targetLang, String query) throws TranslationException {
+	public SingleTranslationResult translate(Locale sourceLang, Locale targetLang, String query)
+			throws TranslationException, ApplicationException {
 
 		String result;
 		JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
 		try {
-			HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-			Translate client = googleTranslateLibraryWrapper.getTranslateBuilder(httpTransport, jsonFactory, null)
-					.setGoogleClientRequestInitializer(new TranslateRequestInitializer(apiKey)).setApplicationName(
-							applicationName).setRootUrl(apiUrlRootUrl).setServicePath(apiUrlServicePath).build();
-			List translateList = client.translations().list(Lists.newArrayList(query), targetLang.getLanguage());
-			translateList.setSource(sourceLang.getLanguage());
-			result = googleTranslateLibraryWrapper.executeAndGetTranslation(translateList);
+			try {
+				HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+				Translate client = googleTranslateLibraryWrapper.getTranslateBuilder(httpTransport, jsonFactory, null)
+						.setGoogleClientRequestInitializer(new TranslateRequestInitializer(apiKey)).setApplicationName(
+								applicationName).setRootUrl(apiUrlRootUrl).setServicePath(apiUrlServicePath).build();
+				List translateList = client.translations().list(Lists.newArrayList(query), targetLang.getLanguage());
+				translateList.setSource(sourceLang.getLanguage());
+				result = googleTranslateLibraryWrapper.executeAndGetTranslation(translateList);
+			} catch (GoogleJsonResponseException e) {
+				if (e.getStatusCode() == HttpStatus.SC_BAD_REQUEST) {
+					throw new TranslationException(localizationService
+							.lookupLocalizedString("translation.languageUnsupported"), e);
+				} else {
+					throw e;
+				}
+			}
 		} catch (IOException | GeneralSecurityException e) {
 			LOG.error("Exception getting HTTPTransport object in GoogleTranslationProvider", e);
-			throw new TranslationException("A problem occurred getting the translation, please try again later", e);
+			throw new ApplicationException(localizationService.lookupLocalizedString("translation.genericProblem"), e);
 		}
 
 		return new SingleTranslationResult(result);
