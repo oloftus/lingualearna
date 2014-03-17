@@ -7,4 +7,9 @@ define([], function() {
 		this.targetLang = targetLang;
 		this.query = query;
 	};
+	
+	LanguageNameRequest = function(langCode) {
+		
+		this.langCode = langCode;
+	};
 });
