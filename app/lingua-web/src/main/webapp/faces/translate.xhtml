@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html xmlns:ng="http://angularjs.org" ng-app="linguaApp">
+<head>
+	<meta charset="UTF8" />
+	<title>Selection translation dialog</title>
+	<link href="../resources/css/common.css" rel="stylesheet"
+		type="text/css" />
+	<link href="../resources/css/selection-translation-dialog.css"
+		rel="stylesheet" type="text/css" />
+	<script data-main="../resources/javascript/modules/translate"
+		src="../resources/javascript/lib/require.js"></script>
+	<script src="../resources/javascript/modules/requireCfg.js"></script>
+	<script type="text/javascript">
+		var initParams = {
+				sourceLang: "#{param['sourceLang']}",
+				targetLang: "#{param['targetLang']}",
+				query: "#{param['query']}"
+		}
+	</script>
+</head>
+
+<body ng-controller="translateController">
+
+	<div class="lingua-component lingua-draggable-dialog"
+		id="lingua-select-translate-dialog">
+		<button class="lingua-icon-button lingua-dialog-close">Close</button>
+		<div class="lingua-dialog-header">
+			<div class="lingua-controls-left">
+				<button class="lingua-action-button-icon"
+					id="lingua-add-selection-button">Selection + translation</button>
+				<button class="lingua-action-button-icon"
+					id="lingua-add-translation-button">Just selection</button>
+			</div>
+			<div class="lingua-controls">
+				<label for="include-text-checkbox" class="lingua-control-item">Include
+					in test?</label> <input type="checkbox" checked="checked"
+					id="include-text-checkbox" />
+			</div>
+		</div>
+		<div class="lingua-dialog-content">
+			<div>
+				<h3>
+					<label for="lingua-local-language-1">English</label>
+				</h3>
+				<textarea class="lingua-local-language" id="lingua-local-language-1"
+					ng-model="query">English</textarea>
+			</div>
+			<div>
+				<h3>
+					<label for="lingua-foreign-language-1">Spanish</label>
+				</h3>
+				<textarea class="lingua-foreign-language"
+					id="lingua-foreign-language-1" ng-model="translations.google">Spanish</textarea>
+			</div>
+		</div>
+		<div class="lingua-controls-footer">
+			<button class="lingua-action-button-icon" id="lingua-search-button"
+				ng-click="doTranslate()">Translate</button>
+		</div>
+	</div>
+
+</body>
+</html>
