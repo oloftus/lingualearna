@@ -19,7 +19,7 @@ public class TranslationService {
 	@Qualifier("GoogleTranslate")
 	private TranslationProvider googleTranslationProvider;
 
-	public SingleTranslationResult translate(TranslationProviderName provider, Locale sourceLang, Locale targetLang,
+	public SingleTranslationResult translateString(TranslationProviderName provider, Locale sourceLang, Locale targetLang,
 			String query) throws TranslationException, ApplicationException {
 
 		SingleTranslationResult result = null;

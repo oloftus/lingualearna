@@ -65,7 +65,7 @@ public class TranslationControllerTest extends UnitTestBase {
 		super.setup();
 
 		doReturn(TRANSLATION).when(singleTranslationResult).getTargetString();
-		when(translationService.translate(TranslationProviderName.Google, Locale.forLanguageTag(SOURCE_LANG), Locale
+		when(translationService.translateString(TranslationProviderName.Google, Locale.forLanguageTag(SOURCE_LANG), Locale
 				.forLanguageTag(TARGET_LANG), QUERY)).thenReturn(singleTranslationResult);
 
 		when(languageNamesService.lookup(SOURCE_LANG)).thenReturn(SOURCE_LANG_NAME);
@@ -76,7 +76,7 @@ public class TranslationControllerTest extends UnitTestBase {
 
 		givenIHaveATranslationRequest();
 		whenICallTranslateString();
-		thenIExpectTheCorrectTranslation();
+		thenIGetTheCorrectTranslation();
 	}
 
 	@Test
@@ -84,10 +84,10 @@ public class TranslationControllerTest extends UnitTestBase {
 
 		givenIHaveALanguageNamesRequest();
 		whenICallLookupLangName();
-		thenIExpectTheCorrectLanguageName();
+		thenIGetTheCorrectLanguageName();
 	}
 
-	private void thenIExpectTheCorrectLanguageName() {
+	private void thenIGetTheCorrectLanguageName() {
 
 		assertTrue(languageNameResponse.getLangCode().equals(SOURCE_LANG));
 		assertTrue(languageNameResponse.getLangName().equals(SOURCE_LANG_NAME));
@@ -103,7 +103,7 @@ public class TranslationControllerTest extends UnitTestBase {
 		when(languageNameRequest.getLangCode()).thenReturn(SOURCE_LANG);
 	}
 
-	private void thenIExpectTheCorrectTranslation() {
+	private void thenIGetTheCorrectTranslation() {
 
 		assertTrue(translationResult.getQuery().equals(QUERY));
 		assertTrue(translationResult.getTargetLang().equals(TARGET_LANG));
