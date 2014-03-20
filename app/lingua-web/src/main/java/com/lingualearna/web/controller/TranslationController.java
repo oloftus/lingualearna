@@ -29,12 +29,9 @@ public class TranslationController {
 	@Autowired
 	private LanguageNamesService languageNamesService;
 
-	/*
-	 * TODO: Handle exception
-	 */
 	@RequestMapping(value = "/translate", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
 	@ResponseBody
-	public TranslationResult translate(@RequestBody TranslationRequest request) throws TranslationException,
+	public TranslationResult translateString(@RequestBody TranslationRequest request) throws TranslationException,
 			ApplicationException {
 
 		TranslationResult result = new TranslationResult();
@@ -54,11 +51,13 @@ public class TranslationController {
 
 	@RequestMapping(value = "/languageName", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
 	@ResponseBody
-	public LanguageNameResponse translate(@RequestBody LanguageNameRequest request) {
+	public LanguageNameResponse lookupLangName(@RequestBody LanguageNameRequest request) {
+
+		String langName = languageNamesService.lookup(request.getLangCode());
 
 		LanguageNameResponse response = new LanguageNameResponse();
 		response.setLangCode(request.getLangCode());
-		response.setLangName(languageNamesService.lookup(request.getLangCode()));
+		response.setLangName(langName);
 
 		return response;
 	}

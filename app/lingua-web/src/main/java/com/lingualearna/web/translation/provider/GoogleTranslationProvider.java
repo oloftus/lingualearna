@@ -27,7 +27,7 @@ import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProvider;
 import com.lingualearna.web.translation.provider.GoogleTranslateLibraryWrapper.WrappedGoogleJsonResponseException;
 import com.lingualearna.web.util.ApplicationException;
-import com.lingualearna.web.util.LocalizationService;
+import com.lingualearna.web.util.locale.LocalizationService;
 
 @Service
 @Qualifier("GoogleTranslate")
