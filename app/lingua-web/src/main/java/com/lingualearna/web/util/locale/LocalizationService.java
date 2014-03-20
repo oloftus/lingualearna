@@ -1,4 +1,4 @@
-package com.lingualearna.web.util;
+package com.lingualearna.web.util.locale;
 
 import java.util.ResourceBundle;
 
