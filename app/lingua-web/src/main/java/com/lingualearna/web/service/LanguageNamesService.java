@@ -11,6 +11,8 @@ import com.lingualearna.web.util.locale.LocalizationService;
 @Service
 public class LanguageNamesService {
 
+	private static final String TITLE_FORMAT = "%s (%s)";
+
 	@Autowired
 	private LocalizationService localizationService;
 
@@ -21,13 +23,7 @@ public class LanguageNamesService {
 		String languageNameForeign = WordUtils.capitalizeFully(lookupLocalizedLangName(langCode));
 		String languageNameLocal = WordUtils.capitalizeFully(foreignLocale.getDisplayLanguage(localLocale));
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(languageNameForeign);
-		sb.append(" (");
-		sb.append(languageNameLocal);
-		sb.append(")");
-
-		return sb.toString();
+		return String.format(TITLE_FORMAT, languageNameForeign, languageNameLocal);
 	}
 
 	public String lookupLocalizedLangName(String langCode) {
