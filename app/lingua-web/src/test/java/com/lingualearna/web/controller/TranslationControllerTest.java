@@ -68,7 +68,7 @@ public class TranslationControllerTest extends UnitTestBase {
 		when(translationService.translateString(TranslationProviderName.Google, Locale.forLanguageTag(SOURCE_LANG), Locale
 				.forLanguageTag(TARGET_LANG), QUERY)).thenReturn(singleTranslationResult);
 
-		when(languageNamesService.lookup(SOURCE_LANG)).thenReturn(SOURCE_LANG_NAME);
+		when(languageNamesService.lookupLocalizedLangNameAsTitle(SOURCE_LANG)).thenReturn(SOURCE_LANG_NAME);
 	}
 
 	@Test

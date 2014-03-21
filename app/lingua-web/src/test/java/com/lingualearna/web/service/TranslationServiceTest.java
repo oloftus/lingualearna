@@ -8,9 +8,12 @@ import java.util.Locale;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.lingualearna.web.testutil.UnitTestBase;
 import com.lingualearna.web.translation.SingleTranslationResult;
@@ -19,6 +22,8 @@ import com.lingualearna.web.translation.TranslationProvider;
 import com.lingualearna.web.translation.TranslationProviderName;
 import com.lingualearna.web.util.ApplicationException;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "/applicationContext.test.xml")
 public class TranslationServiceTest extends UnitTestBase {
 
 	private static final String SOURCE_LANG = "source";

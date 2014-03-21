@@ -1,5 +1,6 @@
 package com.lingualearna.web.util.locale;
 
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,5 +18,10 @@ public class LocalizationService {
 
 		ResourceBundle labels = ResourceBundle.getBundle(BUNDLE_NAME, localeResolver.getUserLocale());
 		return labels.getString(key);
+	}
+
+	public Locale getUserLocale() {
+
+		return localeResolver.getUserLocale();
 	}
 }

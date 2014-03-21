@@ -53,7 +53,7 @@ public class TranslationController {
 	@ResponseBody
 	public LanguageNameResponse lookupLangName(@RequestBody LanguageNameRequest request) {
 
-		String langName = languageNamesService.lookup(request.getLangCode());
+		String langName = languageNamesService.lookupLocalizedLangNameAsTitle(request.getLangCode());
 
 		LanguageNameResponse response = new LanguageNameResponse();
 		response.setLangCode(request.getLangCode());
