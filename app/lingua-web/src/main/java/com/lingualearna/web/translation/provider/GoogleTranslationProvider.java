@@ -25,7 +25,6 @@ import com.google.common.collect.Lists;
 import com.lingualearna.web.translation.SingleTranslationResult;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProvider;
-import com.lingualearna.web.translation.provider.GoogleTranslateLibraryWrapper.WrappedGoogleJsonResponseException;
 import com.lingualearna.web.util.ApplicationException;
 import com.lingualearna.web.util.locale.LocalizationService;
 

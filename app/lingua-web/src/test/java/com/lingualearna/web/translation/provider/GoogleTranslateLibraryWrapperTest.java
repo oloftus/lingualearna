@@ -41,7 +41,7 @@ import com.lingualearna.web.testutil.UnitTestBase;
 public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
 
 	private static final String TRANSLATION = "translation";
-	private static final java.util.List<String> QUERY = Lists.newArrayList("query");
+	private static final String QUERY = "query";
 	private static final String LANGUAGE = "targetLang";
 
 	@Rule
@@ -58,8 +58,8 @@ public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
 	private List expectedList;
 	private List actualList;
 	private GoogleJsonResponseException expectedGoogleJsonResponseException;
-	private NetHttpTransport actualHttpTransport;
-	private NetHttpTransport expectedHttpTransport;
+	private NetHttpTransport actualNetHttpTransport;
+	private NetHttpTransport expectedNetHttpTransport;
 	private JacksonFactory actualJacksonFactory;
 	private JacksonFactory expectedJacksonFactory;
 	private String actualTranslation;
@@ -71,6 +71,7 @@ public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
 	private List translateList;
 	private TranslationsListResponse translationsListResponse;
 	private TranslationsResource translationsResource;
+	private java.util.List<String> query = Lists.newArrayList(QUERY);
 
 	private GoogleTranslateLibraryWrapper googleTranslateLibraryWrapper;
 
@@ -186,12 +187,12 @@ public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
 
 	private void whenICallSetupClient() throws Exception {
 
-		actualList = googleTranslateLibraryWrapper.setupClient(client, LANGUAGE, QUERY);
+		actualList = googleTranslateLibraryWrapper.setupClient(client, LANGUAGE, query);
 	}
 
 	private void givenTheWrapperIsSetupForSetupClient() throws IOException {
 
-		when(client.translations().list(QUERY, LANGUAGE)).thenReturn(expectedList);
+		when(client.translations().list(query, LANGUAGE)).thenReturn(expectedList);
 	}
 
 	@Test
@@ -239,12 +240,12 @@ public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
 
 	private void thenNewTrustedTransportHasCalledThrough() {
 
-		assertEquals(expectedHttpTransport, actualHttpTransport);
+		assertEquals(expectedNetHttpTransport, actualNetHttpTransport);
 	}
 
 	public void whenICallNewTrustedTransport() throws Exception {
 
-		actualHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		actualNetHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
 	}
 
 	private void givenJacksonFactoryIsSetup() {
@@ -256,8 +257,8 @@ public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
 
 	private void givenGoogleNetHttpTransportIsSetup() throws Exception {
 
-		expectedHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		expectedNetHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
 		PowerMockito.mockStatic(GoogleNetHttpTransport.class);
-		PowerMockito.when(GoogleNetHttpTransport.newTrustedTransport()).thenReturn(expectedHttpTransport);
+		PowerMockito.when(GoogleNetHttpTransport.newTrustedTransport()).thenReturn(expectedNetHttpTransport);
 	}
 }

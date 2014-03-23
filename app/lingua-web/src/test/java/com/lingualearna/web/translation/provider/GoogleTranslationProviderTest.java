@@ -1,7 +1,6 @@
 package com.lingualearna.web.translation.provider;
 
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
@@ -25,9 +24,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.Translate.Translations.List;
 import com.google.api.services.translate.TranslateRequestInitializer;
@@ -37,9 +37,6 @@ import com.lingualearna.web.testutil.UnitTestBase;
 import com.lingualearna.web.translation.SingleTranslationResult;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProvider;
-import com.lingualearna.web.translation.provider.GoogleTranslateLibraryWrapper;
-import com.lingualearna.web.translation.provider.GoogleTranslateLibraryWrapper.GoogleTranslateBuilderWrapper;
-import com.lingualearna.web.translation.provider.GoogleTranslateLibraryWrapper.WrappedGoogleJsonResponseException;
 import com.lingualearna.web.util.ApplicationException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -67,6 +64,9 @@ public class GoogleTranslationProviderTest extends UnitTestBase {
 	@Mock
 	private GoogleTranslateBuilderWrapper translatorBuilder;
 
+	private JacksonFactory jacksonFactory;
+	private NetHttpTransport netHttpTransport;
+
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private Translate client;
 
@@ -86,8 +86,12 @@ public class GoogleTranslationProviderTest extends UnitTestBase {
 		translatorBuilder = mock(GoogleTranslateBuilderWrapper.class, new AnswerWithSelf(
 				GoogleTranslateBuilderWrapper.class));
 
+		jacksonFactory = JacksonFactory.getDefaultInstance();
+		netHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		when(googleTranslateLibraryWrapper.getJsonFactory()).thenReturn(jacksonFactory);
+		when(googleTranslateLibraryWrapper.getHttpTransport()).thenReturn(netHttpTransport);
 		when(
-				googleTranslateLibraryWrapper.getTranslateBuilder(any(HttpTransport.class), any(JsonFactory.class),
+				googleTranslateLibraryWrapper.getTranslateBuilder(eq(netHttpTransport), eq(jacksonFactory),
 						isNull(HttpRequestInitializer.class))).thenReturn(translatorBuilder);
 		when(translatorBuilder.build()).thenReturn(client);
 		when(googleTranslateLibraryWrapper.setupClient(eq(client), eq(TARGET_LANGUAGE), eq(Lists.newArrayList(query))))

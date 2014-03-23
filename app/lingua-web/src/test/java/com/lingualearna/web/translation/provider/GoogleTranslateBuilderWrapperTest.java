@@ -1,6 +1,10 @@
 package com.lingualearna.web.translation.provider;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,14 +18,16 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.JsonFactory;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestInitializer;
+import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.translate.Translate;
+import com.google.api.services.translate.Translate.Builder;
 import com.lingualearna.web.testutil.UnitTestBase;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ Translate.Builder.class })
+@PrepareForTest({ Builder.class, GoogleTranslateBuilderWrapper.class })
 @PowerMockIgnore("com.google.api.client.http.*")
 public class GoogleTranslateBuilderWrapperTest extends UnitTestBase {
 
@@ -30,7 +36,14 @@ public class GoogleTranslateBuilderWrapperTest extends UnitTestBase {
 	private static final String SERVICE_PATH = "servicePath";
 	private static final String BUILDER_FIELD_NAME = "builder";
 
-	private Translate.Builder builder;
+	private Builder builder;
+	private JacksonFactory jacksonFactory;
+	private NetHttpTransport netHttpTransport;
+	private HttpRequestInitializer httpRequestInitializer;
+
+	@Mock
+	private Translate expectedTranslateResult;
+	private Translate actualTranslateResult;
 
 	@Mock
 	private GoogleClientRequestInitializer googleClientRequestInitializer;
@@ -40,18 +53,66 @@ public class GoogleTranslateBuilderWrapperTest extends UnitTestBase {
 	@Before
 	public void setup() throws Exception {
 
-		JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
-		HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-		googleTranslateBuilderWrapper = new GoogleTranslateBuilderWrapper(httpTransport, jsonFactory, null);
-		builder = PowerMockito.mock(Translate.Builder.class);
-		ReflectionTestUtils.setField(googleTranslateBuilderWrapper, BUILDER_FIELD_NAME, builder);
+		jacksonFactory = JacksonFactory.getDefaultInstance();
+		netHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		httpRequestInitializer = getMockHttpRequestInitializer();
+		googleTranslateBuilderWrapper = new GoogleTranslateBuilderWrapper(netHttpTransport, jacksonFactory, null);
+	}
+
+	@Test
+	public void testConstructorSetsUpBuilderCorrectly() throws Exception {
+
+		givenTheBuilderWrapperIsSetup();
+		whenIInstantiateANewBuilderWrapper();
+		thenTheTranslateBuilderWasSetupCorrectly();
+	}
+
+	private void thenTheTranslateBuilderWasSetupCorrectly() {
+
+		// Testing build as would get an NPE if the Translate.Builder was not/incorrectly setup
+		googleTranslateBuilderWrapper.build();
+		verify(builder).build();
+	}
+
+	private void whenIInstantiateANewBuilderWrapper() {
+
+		googleTranslateBuilderWrapper = new GoogleTranslateBuilderWrapper(netHttpTransport, jacksonFactory,
+				httpRequestInitializer);
+	}
+
+	private void givenTheBuilderWrapperIsSetup() throws Exception {
+
+		builder = PowerMockito.mock(Builder.class);
+		when(builder.build()).thenReturn(expectedTranslateResult);
+		PowerMockito.whenNew(Builder.class).withArguments(netHttpTransport, jacksonFactory,
+				httpRequestInitializer).thenReturn(
+				builder);
 	}
 
 	@Test
 	public void testBuilderDelegatesMethods() {
 
+		givenTheBuilderIsSetup();
 		whenICallTheBuilderMethods();
 		thenTheCallsPassThroughToTheBuilder();
+		andTheBuildResultIsCorrect();
+	}
+
+	private HttpRequestInitializer getMockHttpRequestInitializer() {
+
+		return new HttpRequestInitializer() {
+			@Override
+			public void initialize(HttpRequest request) throws IOException {
+
+			}
+		};
+	}
+
+	private void givenTheBuilderIsSetup() {
+
+		builder = PowerMockito.mock(Builder.class);
+		when(builder.build()).thenReturn(expectedTranslateResult);
+		ReflectionTestUtils.setField(googleTranslateBuilderWrapper, BUILDER_FIELD_NAME, builder);
 	}
 
 	private void thenTheCallsPassThroughToTheBuilder() {
@@ -68,5 +129,11 @@ public class GoogleTranslateBuilderWrapperTest extends UnitTestBase {
 		googleTranslateBuilderWrapper.setGoogleClientRequestInitializer(googleClientRequestInitializer);
 		googleTranslateBuilderWrapper.setRootUrl(API_URL_ROOT_URL);
 		googleTranslateBuilderWrapper.setServicePath(SERVICE_PATH);
+		actualTranslateResult = googleTranslateBuilderWrapper.build();
+	}
+
+	private void andTheBuildResultIsCorrect() {
+
+		assertEquals(expectedTranslateResult, actualTranslateResult);
 	}
 }
