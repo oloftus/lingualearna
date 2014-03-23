@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -23,89 +22,6 @@ import com.google.api.services.translate.Translate.Translations.List;
  */
 @Component
 public class GoogleTranslateLibraryWrapper {
-
-	public static class GoogleTranslateBuilderWrapper {
-
-		private Translate.Builder builder;
-
-		public GoogleTranslateBuilderWrapper(HttpTransport httpTransport, JsonFactory jsonFactory,
-				HttpRequestInitializer httpRequestInitializer) {
-
-			builder = new Translate.Builder(httpTransport, jsonFactory, httpRequestInitializer);
-		}
-
-		public GoogleTranslateBuilderWrapper setGoogleClientRequestInitializer(
-				GoogleClientRequestInitializer googleClientRequestInitializer) {
-
-			builder.setGoogleClientRequestInitializer(googleClientRequestInitializer);
-			return this;
-		}
-
-		public GoogleTranslateBuilderWrapper setApplicationName(String applicationName) {
-
-			builder.setApplicationName(applicationName);
-			return this;
-		}
-
-		public GoogleTranslateBuilderWrapper setRootUrl(String apiUrlRootUrl) {
-
-			builder.setRootUrl(apiUrlRootUrl);
-			return this;
-		}
-
-		public GoogleTranslateBuilderWrapper setServicePath(String servicePath) {
-
-			builder.setServicePath(servicePath);
-			return this;
-		}
-
-		public Translate build() {
-
-			return builder.build();
-		}
-	}
-
-	public static class WrappedGoogleJsonResponseException extends Exception {
-
-		private static final long serialVersionUID = -8059285450774778371L;
-
-		public WrappedGoogleJsonResponseException() {
-
-			super();
-		}
-
-		public WrappedGoogleJsonResponseException(String message, Throwable cause, boolean enableSuppression,
-				boolean writableStackTrace) {
-
-			super(message, cause, enableSuppression, writableStackTrace);
-		}
-
-		public WrappedGoogleJsonResponseException(String message, Throwable cause) {
-
-			super(message, cause);
-		}
-
-		public WrappedGoogleJsonResponseException(String message) {
-
-			super(message);
-		}
-
-		public WrappedGoogleJsonResponseException(Throwable cause) {
-
-			super(cause);
-		}
-
-		public int getStatusCode() {
-
-			return getRootGoogleJsonResponseException().getStatusCode();
-		}
-
-		public GoogleJsonResponseException getRootGoogleJsonResponseException() {
-
-			GoogleJsonResponseException rootException = (GoogleJsonResponseException) this.getCause();
-			return rootException;
-		}
-	}
 
 	public GoogleTranslateBuilderWrapper getTranslateBuilder(HttpTransport httpTransport, JsonFactory jsonFactory,
 			HttpRequestInitializer httpRequestInitializer) {
