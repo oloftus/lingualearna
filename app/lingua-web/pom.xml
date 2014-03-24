@@ -24,10 +24,20 @@
 	<properties>
 		<slf4jVersion>1.7.6</slf4jVersion>
 		<springSecurityVersion>3.2.2.RELEASE</springSecurityVersion>
-		<springCoreVersion>4.0.2.RELEASE</springCoreVersion>
 		<myFacesVersion>2.1.15</myFacesVersion>
 		<powerMockVersion>1.5.4</powerMockVersion>
 	</properties>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-framework-bom</artifactId>
+				<version>4.0.2.RELEASE</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -38,23 +48,21 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>${springCoreVersion}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${springCoreVersion}</version>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>${springSecurityVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 			<version>${springSecurityVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-			<version>${springCoreVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.apis</groupId>
