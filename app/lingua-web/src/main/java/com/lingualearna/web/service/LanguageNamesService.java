@@ -23,7 +23,15 @@ public class LanguageNamesService {
 		String languageNameForeign = WordUtils.capitalizeFully(lookupLocalizedLangName(langCode));
 		String languageNameLocal = WordUtils.capitalizeFully(foreignLocale.getDisplayLanguage(localLocale));
 
-		return String.format(TITLE_FORMAT, languageNameForeign, languageNameLocal);
+		String title;
+		if (!languageNameLocal.equals(languageNameForeign)) {
+			title = String.format(TITLE_FORMAT, languageNameForeign, languageNameLocal);
+		}
+		else {
+			title = languageNameForeign;
+		}
+
+		return title;
 	}
 
 	public String lookupLocalizedLangName(String langCode) {

@@ -21,8 +21,7 @@ import com.lingualearna.web.util.locale.LocalizationService;
 public class LanguageNamesServiceTest extends UnitTestBase {
 
 	private static final String EN_LANG_CODE = "en";
-	private static final String EN_LANG_NAME_LOCAL = "English";
-	private static final String EN_LANG_NAME_FOREIGN = "English";
+	private static final String EN_LANG_NAME = "English";
 	private static final String DE_LANG_CODE = "de";
 	private static final String DE_LANG_NAME_LOCAL = "German";
 	private static final String DE_LANG_NAME_FOREIGN = "Deutsch";
@@ -60,7 +59,7 @@ public class LanguageNamesServiceTest extends UnitTestBase {
 
 	private void whenICallLookupLocalizedLangNameThenIExpectTheCorrectLanguageName() {
 
-		assertTrue(languageNamesService.lookupLocalizedLangName(EN_LANG_CODE).equals(EN_LANG_NAME_FOREIGN));
+		assertTrue(languageNamesService.lookupLocalizedLangName(EN_LANG_CODE).equals(EN_LANG_NAME));
 		assertTrue(languageNamesService.lookupLocalizedLangName(DE_LANG_CODE).equals(DE_LANG_NAME_FOREIGN));
 		assertTrue(languageNamesService.lookupLocalizedLangName(FR_LANG_CODE).equals(FR_LANG_NAME_FOREIGN));
 	}
@@ -68,7 +67,7 @@ public class LanguageNamesServiceTest extends UnitTestBase {
 	private void whenICallLookupLocalizedLangNameAsTitleThenIExpectTheCorrectLanguageNameAndFormat() {
 
 		assertTrue(languageNamesService.lookupLocalizedLangNameAsTitle(EN_LANG_CODE).equals(
-				EN_LANG_NAME_FOREIGN + " (" + EN_LANG_NAME_LOCAL + ")"));
+				EN_LANG_NAME));
 		assertTrue(languageNamesService.lookupLocalizedLangNameAsTitle(DE_LANG_CODE).equals(
 				DE_LANG_NAME_FOREIGN + " (" + DE_LANG_NAME_LOCAL + ")"));
 		assertTrue(languageNamesService.lookupLocalizedLangNameAsTitle(FR_LANG_CODE).equals(
