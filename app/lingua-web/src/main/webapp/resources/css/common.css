@@ -9,6 +9,7 @@ body{display:flex;margin:0;}
 
 .lingua-align-left, .lingua-align-right{padding:0 15px;}
 
+.lingua-ng-include{width:100%;}
 .lingua-component{font-family:'Esteban', serif;font-size:14px;}
 .lingua-component h1{font-size:1.2em;margin:0;}
 .lingua-component h2{font-size:1.2em;margin:0;}

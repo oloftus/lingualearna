@@ -1,6 +1,6 @@
-define([ "util/commonTypes" ], function() {
-    
-    TranslateService = function(jsonWebService, translateServiceUrl) {
+define([ "util/commonTypes", "appRoot", "util/util" ], function() {
+
+    var TranslateService = function(jsonWebService, translateServiceUrl) {
 
         var translate = function(translationRequest, successCallback, failureCallback) {
             jsonWebService.execute(translateServiceUrl, HttpMethod.POST, translationRequest, successCallback,
@@ -12,4 +12,6 @@ define([ "util/commonTypes" ], function() {
             translate : translate
         };
     };
+
+    linguaApp.service("translateService", [ "jsonWebService", "translateServiceUrl", TranslateService ]);
 });
