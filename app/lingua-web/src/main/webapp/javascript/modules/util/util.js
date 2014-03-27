@@ -1,6 +1,6 @@
 define([ "angular", "appRoot" ], function() {
 
-    function JsonWebService($http){
+    var JsonWebService = function($http){
         
         var execute = function(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback) {
             $http({
@@ -22,7 +22,5 @@ define([ "angular", "appRoot" ], function() {
         };
     };
 
-    linguaApp
-    
-    .service("jsonWebService", [ "$http", JsonWebService ]);
+    linguaApp.service("jsonWebService", [ "$http", JsonWebService ]);
 });
