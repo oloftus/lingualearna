@@ -20,7 +20,7 @@ import com.lingualearna.web.translation.TranslationProviderName;
 import com.lingualearna.web.util.ApplicationException;
 
 @Controller
-@RequestMapping("/translation")
+@RequestMapping("/api/translation")
 public class TranslationController {
 
 	@Autowired
@@ -40,7 +40,8 @@ public class TranslationController {
 		String query = request.getQuery();
 		result.getTranslations().put(
 				TranslationProviderName.Google,
-				translationService.translateString(TranslationProviderName.Google, sourceLangLocale, targetLangLocale, query)
+				translationService.translateString(TranslationProviderName.Google, sourceLangLocale, targetLangLocale,
+						query)
 						.getTargetString());
 		result.setQuery(query);
 		result.setSourceLang(sourceLangLocale.getLanguage());
