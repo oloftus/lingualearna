@@ -17,4 +17,10 @@ public class PagesController {
 
 		return "translate";
 	}
+
+	@RequestMapping("/note")
+	public String notePage() throws Exception {
+
+		return "note";
+	}
 }

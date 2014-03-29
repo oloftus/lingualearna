@@ -1,8 +1,11 @@
 define([], function() {
 
+    var serverPart = "http://localhost:8080/LinguaWeb/app/api";
+    
     properties = {
 
-        translateServiceUrl : "http://localhost:8080/LinguaWeb/app/api/translation/translate",
-        languageNamesServiceUrl : "http://localhost:8080/LinguaWeb/app/api/translation/languageName"
+        translateServiceUrl : serverPart + "/translation/translate",
+        languageNamesServiceUrl : serverPart + "/translation/languageName",
+        noteServiceUrl: serverPart + "/note/add"
     };
 });
