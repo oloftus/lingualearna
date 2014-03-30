@@ -25,6 +25,7 @@
 		<slf4jVersion>1.7.6</slf4jVersion>
 		<springSecurityVersion>3.2.2.RELEASE</springSecurityVersion>
 		<powerMockVersion>1.5.4</powerMockVersion>
+		<hibernateCoreVersion>4.3.4.Final</hibernateCoreVersion>
 	</properties>
 	<dependencyManagement>
 		<dependencies>
@@ -148,8 +149,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>${hibernateCoreVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.4.Final</version>
+			<version>${hibernateCoreVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>

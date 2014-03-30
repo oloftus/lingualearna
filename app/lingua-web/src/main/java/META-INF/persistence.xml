@@ -5,12 +5,5 @@
 	<persistence-unit name="LinguaWeb">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<class>com.lingualearna.web.notes.Note</class>
-		<properties>
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/lingua" />
-			<property name="javax.persistence.jdbc.user" value="lingua" />
-			<property name="javax.persistence.jdbc.password" value="password" />
-		</properties>
 	</persistence-unit>
 </persistence>
