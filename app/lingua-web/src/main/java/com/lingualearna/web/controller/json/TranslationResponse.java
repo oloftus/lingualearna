@@ -6,13 +6,13 @@ import java.util.Map;
 import com.google.api.client.util.Maps;
 import com.lingualearna.web.translation.TranslationProviderName;
 
-public class TranslationResult extends TranslationRequest implements Serializable {
+public class TranslationResponse extends TranslationRequest implements Serializable {
 
 	private static final long serialVersionUID = 4684016526009091839L;
 
 	private Map<TranslationProviderName, String> translations;
 
-	public TranslationResult() {
+	public TranslationResponse() {
 
 		super();
 		this.translations = Maps.newHashMap();

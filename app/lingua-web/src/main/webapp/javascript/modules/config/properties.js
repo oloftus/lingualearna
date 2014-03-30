@@ -4,8 +4,8 @@ define([], function() {
     
     properties = {
 
-        translateServiceUrl : serverPart + "/translation/translate",
-        languageNamesServiceUrl : serverPart + "/translation/languageName",
-        noteServiceUrl: serverPart + "/note/add"
+        translateServiceUrl : serverPart + "/translate",
+        languageNamesServiceUrl : serverPart + "/langName",
+        noteServiceUrl: serverPart + "/note"
     };
 });

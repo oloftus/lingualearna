@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ng="http://angularjs.org"
-    ng-app="linguaApp">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ng="http://angularjs.org" ng-app="linguaApp">
 <head>
 <meta charset="UTF8" />
 <title>LinguaLearna - Translate selection</title>

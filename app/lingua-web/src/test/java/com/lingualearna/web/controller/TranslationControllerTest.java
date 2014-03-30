@@ -15,11 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.lingualearna.web.controller.json.LanguageNameRequest;
-import com.lingualearna.web.controller.json.LanguageNameResponse;
 import com.lingualearna.web.controller.json.TranslationRequest;
-import com.lingualearna.web.controller.json.TranslationResult;
-import com.lingualearna.web.service.LanguageNamesService;
+import com.lingualearna.web.controller.json.TranslationResponse;
 import com.lingualearna.web.service.TranslationService;
 import com.lingualearna.web.testutil.UnitTestBase;
 import com.lingualearna.web.translation.SingleTranslationResult;
@@ -33,24 +30,16 @@ public class TranslationControllerTest extends UnitTestBase {
 
 	private static final String SOURCE_LANG = "source";
 	private static final String TARGET_LANG = "target";
-	private static final String SOURCE_LANG_NAME = "sourceLangName";
 	private static final String QUERY = "query";
 	private static final String TRANSLATION = "translation";
 
-	private TranslationResult translationResult;
-	private LanguageNameResponse languageNameResponse;
+	private TranslationResponse translationResult;
 
 	@Mock
 	private TranslationRequest translationRequest;
 
 	@Mock
-	private LanguageNameRequest languageNameRequest;
-
-	@Mock
 	private TranslationService translationService;
-
-	@Mock
-	private LanguageNamesService languageNamesService;
 
 	@Mock
 	private SingleTranslationResult singleTranslationResult;
@@ -65,10 +54,10 @@ public class TranslationControllerTest extends UnitTestBase {
 		super.setup();
 
 		doReturn(TRANSLATION).when(singleTranslationResult).getTargetString();
-		when(translationService.translateString(TranslationProviderName.Google, Locale.forLanguageTag(SOURCE_LANG), Locale
-				.forLanguageTag(TARGET_LANG), QUERY)).thenReturn(singleTranslationResult);
-
-		when(languageNamesService.lookupLocalizedLangNameAsTitle(SOURCE_LANG)).thenReturn(SOURCE_LANG_NAME);
+		when(
+				translationService.translateString(TranslationProviderName.Google, Locale.forLanguageTag(SOURCE_LANG),
+						Locale
+								.forLanguageTag(TARGET_LANG), QUERY)).thenReturn(singleTranslationResult);
 	}
 
 	@Test
@@ -77,30 +66,6 @@ public class TranslationControllerTest extends UnitTestBase {
 		givenIHaveATranslationRequest();
 		whenICallTranslateString();
 		thenIGetTheCorrectTranslation();
-	}
-
-	@Test
-	public void testConvertLangCodeToNameDelegatesToLanguageNamesService() {
-
-		givenIHaveALanguageNamesRequest();
-		whenICallLookupLangName();
-		thenIGetTheCorrectLanguageName();
-	}
-
-	private void thenIGetTheCorrectLanguageName() {
-
-		assertTrue(languageNameResponse.getLangCode().equals(SOURCE_LANG));
-		assertTrue(languageNameResponse.getLangName().equals(SOURCE_LANG_NAME));
-	}
-
-	private void whenICallLookupLangName() {
-
-		languageNameResponse = translationController.lookupLangName(languageNameRequest);
-	}
-
-	private void givenIHaveALanguageNamesRequest() {
-
-		when(languageNameRequest.getLangCode()).thenReturn(SOURCE_LANG);
 	}
 
 	private void thenIGetTheCorrectTranslation() {
