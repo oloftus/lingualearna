@@ -18,7 +18,7 @@ import com.lingualearna.web.service.LanguageNamesService;
 import com.lingualearna.web.testutil.UnitTestBase;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.test.xml")
+@ContextConfiguration(locations = "/applicationContext.xml")
 public class LanguageNamesControllerTest extends UnitTestBase {
 
 	private static final String SOURCE_LANG = "source";

@@ -25,7 +25,7 @@ import com.lingualearna.web.translation.TranslationProviderName;
 import com.lingualearna.web.util.ApplicationException;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.test.xml")
+@ContextConfiguration(locations = "/applicationContext.xml")
 public class TranslationControllerTest extends UnitTestBase {
 
 	private static final String SOURCE_LANG = "source";

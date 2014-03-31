@@ -17,7 +17,7 @@ import com.lingualearna.web.testutil.UnitTestBase;
 import com.lingualearna.web.util.locale.LocalizationService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.test.xml")
+@ContextConfiguration(locations = "/applicationContext.xml")
 public class LanguageNamesServiceTest extends UnitTestBase {
 
 	private static final String EN_LANG_CODE = "en";
