@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lingualearna.web.controller.json.LanguageNameRequest;
-import com.lingualearna.web.controller.json.LanguageNameResponse;
+import com.lingualearna.web.controller.model.LanguageNameRequest;
+import com.lingualearna.web.controller.model.LanguageNameResponse;
 import com.lingualearna.web.service.LanguageNamesService;
 
 @Controller

@@ -15,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.lingualearna.web.controller.json.TranslationRequest;
-import com.lingualearna.web.controller.json.TranslationResponse;
+import com.lingualearna.web.controller.model.TranslationRequest;
+import com.lingualearna.web.controller.model.TranslationResponse;
 import com.lingualearna.web.service.TranslationService;
 import com.lingualearna.web.testutil.UnitTestBase;
 import com.lingualearna.web.translation.SingleTranslationResult;

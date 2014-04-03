@@ -1,4 +1,4 @@
-package com.lingualearna.web.controller.json;
+package com.lingualearna.web.controller.model;
 
 import java.io.Serializable;
 

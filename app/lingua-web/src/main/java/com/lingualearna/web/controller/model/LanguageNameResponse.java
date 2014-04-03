@@ -1,4 +1,4 @@
-package com.lingualearna.web.controller.json;
+package com.lingualearna.web.controller.model;
 
 public class LanguageNameResponse extends LanguageNameRequest {
 

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lingualearna.web.controller.json.TranslationRequest;
-import com.lingualearna.web.controller.json.TranslationResponse;
+import com.lingualearna.web.controller.model.TranslationRequest;
+import com.lingualearna.web.controller.model.TranslationResponse;
 import com.lingualearna.web.service.TranslationService;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProviderName;

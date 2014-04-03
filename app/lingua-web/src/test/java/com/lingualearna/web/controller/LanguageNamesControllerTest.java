@@ -12,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.lingualearna.web.controller.json.LanguageNameRequest;
-import com.lingualearna.web.controller.json.LanguageNameResponse;
+import com.lingualearna.web.controller.model.LanguageNameRequest;
+import com.lingualearna.web.controller.model.LanguageNameResponse;
 import com.lingualearna.web.service.LanguageNamesService;
 import com.lingualearna.web.testutil.UnitTestBase;
 
