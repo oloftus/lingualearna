@@ -12,7 +12,7 @@ public class LocalizationService {
 	private static final String BUNDLE_NAME = "StringsBundle";
 
 	@Autowired
-	private SimpleLocaleResolver localeResolver;
+	private UserLocaleResolver localeResolver;
 
 	public String lookupLocalizedString(String key) {
 

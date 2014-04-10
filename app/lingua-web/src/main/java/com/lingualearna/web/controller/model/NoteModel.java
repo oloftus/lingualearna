@@ -5,84 +5,83 @@ import java.util.Locale;
 
 public class NoteModel implements Serializable {
 
-	private static final long serialVersionUID = 6666949136391165628L;
+    private static final long serialVersionUID = 6666949136391165628L;
 
-	private String additionalNotes;
+    private String additionalNotes;
+    private Locale foreignLang;
+    private String foreignNote;
+    private Locale localLang;
+    private String localNote;
+    private int noteId;
+    private String sourceUrl;
 
-	private Locale foreignLang;
-	private String foreignNote;
-	private Locale localLang;
-	private String localNote;
-	private int noteId;
-	private String sourceUrl;
+    public String getAdditionalNotes() {
 
-	public String getAdditionalNotes() {
+        return additionalNotes;
+    }
 
-		return additionalNotes;
-	}
+    public Locale getForeignLang() {
 
-	public Locale getForeignLang() {
+        return foreignLang;
+    }
 
-		return foreignLang;
-	}
+    public String getForeignNote() {
 
-	public String getForeignNote() {
+        return foreignNote;
+    }
 
-		return foreignNote;
-	}
+    public Locale getLocalLang() {
 
-	public Locale getLocalLang() {
+        return localLang;
+    }
 
-		return localLang;
-	}
+    public String getLocalNote() {
 
-	public String getLocalNote() {
+        return localNote;
+    }
 
-		return localNote;
-	}
+    public int getNoteId() {
 
-	public int getNoteId() {
+        return noteId;
+    }
 
-		return noteId;
-	}
+    public String getSourceUrl() {
 
-	public String getSourceUrl() {
+        return sourceUrl;
+    }
 
-		return sourceUrl;
-	}
+    public void setAdditionalNotes(String additionalNotes) {
 
-	public void setAdditionalNotes(String additionalNotes) {
+        this.additionalNotes = additionalNotes;
+    }
 
-		this.additionalNotes = additionalNotes;
-	}
+    public void setForeignLang(Locale foreignLang) {
 
-	public void setForeignLang(Locale foreignLang) {
+        this.foreignLang = foreignLang;
+    }
 
-		this.foreignLang = foreignLang;
-	}
+    public void setForeignNote(String foreignNote) {
 
-	public void setForeignNote(String foreignNote) {
+        this.foreignNote = foreignNote;
+    }
 
-		this.foreignNote = foreignNote;
-	}
+    public void setLocalLang(Locale localLang) {
 
-	public void setLocalLang(Locale localLang) {
+        this.localLang = localLang;
+    }
 
-		this.localLang = localLang;
-	}
+    public void setLocalNote(String localNote) {
 
-	public void setLocalNote(String localNote) {
+        this.localNote = localNote;
+    }
 
-		this.localNote = localNote;
-	}
+    public void setNoteId(int noteId) {
 
-	public void setNoteId(int noteId) {
+        this.noteId = noteId;
+    }
 
-		this.noteId = noteId;
-	}
+    public void setSourceUrl(String sourceUrl) {
 
-	public void setSourceUrl(String sourceUrl) {
-
-		this.sourceUrl = sourceUrl;
-	}
+        this.sourceUrl = sourceUrl;
+    }
 }

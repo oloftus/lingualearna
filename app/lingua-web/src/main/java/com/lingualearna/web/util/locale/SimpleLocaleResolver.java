@@ -11,10 +11,11 @@ import org.springframework.stereotype.Component;
  * @author Oliver Loftus <o@oloft.us>
  */
 @Component
-public class SimpleLocaleResolver {
+public class SimpleLocaleResolver implements UserLocaleResolver {
 
-	public Locale getUserLocale() {
+    @Override
+    public Locale getUserLocale() {
 
-		return Locale.getDefault();
-	}
+        return Locale.getDefault();
+    }
 }

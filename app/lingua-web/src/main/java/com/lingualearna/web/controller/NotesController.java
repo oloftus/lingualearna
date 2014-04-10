@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lingualearna.web.controller.mappers.GenericMapper;
 import com.lingualearna.web.controller.model.NoteModel;
+import com.lingualearna.web.controller.util.ResourceNotFoundException;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.service.NotesService;
-import com.lingualearna.web.util.ApplicationException;
 
 @Controller
 @RequestMapping("/api")
@@ -28,7 +28,7 @@ public class NotesController {
 
 	@RequestMapping(value = "/note", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
 	@ResponseBody
-	public NoteModel createNote(@RequestBody NoteModel incomingNote) throws ApplicationException {
+	public NoteModel createNote(@RequestBody NoteModel incomingNote) {
 
 		Note noteEntity = new Note();
 		notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);
@@ -42,9 +42,12 @@ public class NotesController {
 
 	@RequestMapping(value = "/note/{noteId}", produces = "application/json", method = RequestMethod.GET)
 	@ResponseBody
-	public NoteModel retrieveNote(@PathVariable int noteId) throws ApplicationException {
+	public NoteModel retrieveNote(@PathVariable int noteId) {
 
 		Note noteEntity = notesService.retrieveNote(noteId);
+		if (noteEntity == null) {
+			throw new ResourceNotFoundException();
+		}
 
 		NoteModel noteModel = new NoteModel();
 		notesMapper.fromEntity(noteEntity, noteModel);
@@ -54,8 +57,7 @@ public class NotesController {
 
 	@RequestMapping(value = "/note/{noteId}", produces = "application/json", consumes = "application/json", method = RequestMethod.PUT)
 	@ResponseBody
-	public NoteModel updateNote(@PathVariable int noteId, @RequestBody NoteModel incomingNote)
-			throws ApplicationException {
+	public NoteModel updateNote(@PathVariable int noteId, @RequestBody NoteModel incomingNote) {
 
 		Note noteEntity = notesService.retrieveNote(noteId);
 		notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);

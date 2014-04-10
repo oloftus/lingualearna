@@ -11,112 +11,118 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.Length;
+
 @DependentFieldNotNull.List({
-		@DependentFieldNotNull(fieldName = "foreignNote", dependentFieldName = "foreignLang"),
-		@DependentFieldNotNull(fieldName = "localNote", dependentFieldName = "localLang")
+        @DependentFieldNotNull(fieldName = "foreignNote", dependentFieldName = "foreignLang"),
+        @DependentFieldNotNull(fieldName = "localNote", dependentFieldName = "localLang")
 })
 @Entity(name = "note")
 public class Note implements Serializable {
 
-	private static final long serialVersionUID = -1700378910934447911L;
+    private static final long serialVersionUID = -1700378910934447911L;
 
-	private String additionalNotes;
-	private Locale foreignLang;
-	private String foreignNote;
-	private Locale localLang;
-	private String localNote;
-	private int noteId;
-	private String sourceUrl;
-	private TranslationSource translationSource;
+    private String additionalNotes;
+    private Locale foreignLang;
+    private String foreignNote;
+    private Locale localLang;
+    private String localNote;
+    private int noteId;
+    private String sourceUrl;
+    private TranslationSource translationSource;
 
-	@Column(name = "additional_notes")
-	public String getAdditionalNotes() {
+    @Length(max = 2000)
+    @Column(name = "additional_notes")
+    public String getAdditionalNotes() {
 
-		return additionalNotes;
-	}
+        return additionalNotes;
+    }
 
-	@Column(name = "foreign_lang")
-	public Locale getForeignLang() {
+    @Column(name = "foreign_lang")
+    public Locale getForeignLang() {
 
-		return foreignLang;
-	}
+        return foreignLang;
+    }
 
-	@Column(name = "foreign_note")
-	public String getForeignNote() {
+    @Length(max = 2000)
+    @Column(name = "foreign_note")
+    public String getForeignNote() {
 
-		return foreignNote;
-	}
+        return foreignNote;
+    }
 
-	@Column(name = "local_lang")
-	public Locale getLocalLang() {
+    @Column(name = "local_lang")
+    public Locale getLocalLang() {
 
-		return localLang;
-	}
+        return localLang;
+    }
 
-	@Column(name = "local_note")
-	public String getLocalNote() {
+    @Length(max = 2000)
+    @Column(name = "local_note")
+    public String getLocalNote() {
 
-		return localNote;
-	}
+        return localNote;
+    }
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "note_id")
-	public int getNoteId() {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "note_id")
+    public int getNoteId() {
 
-		return noteId;
-	}
+        return noteId;
+    }
 
-	@Column(name = "source_url")
-	public String getSourceUrl() {
+    @Length(max = 2000)
+    @Column(name = "source_url")
+    public String getSourceUrl() {
 
-		return sourceUrl;
-	}
+        return sourceUrl;
+    }
 
-	@Column(name = "translation_source")
-	@Enumerated(EnumType.STRING)
-	public TranslationSource getTranslationSource() {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "translation_source")
+    public TranslationSource getTranslationSource() {
 
-		return translationSource;
-	}
+        return translationSource;
+    }
 
-	public void setAdditionalNotes(String additionalNotes) {
+    public void setAdditionalNotes(String additionalNotes) {
 
-		this.additionalNotes = additionalNotes;
-	}
+        this.additionalNotes = additionalNotes;
+    }
 
-	public void setForeignLang(Locale foreignLang) {
+    public void setForeignLang(Locale foreignLang) {
 
-		this.foreignLang = foreignLang;
-	}
+        this.foreignLang = foreignLang;
+    }
 
-	public void setForeignNote(String foreignNote) {
+    public void setForeignNote(String foreignNote) {
 
-		this.foreignNote = foreignNote;
-	}
+        this.foreignNote = foreignNote;
+    }
 
-	public void setLocalLang(Locale localLang) {
+    public void setLocalLang(Locale localLang) {
 
-		this.localLang = localLang;
-	}
+        this.localLang = localLang;
+    }
 
-	public void setLocalNote(String localNote) {
+    public void setLocalNote(String localNote) {
 
-		this.localNote = localNote;
-	}
+        this.localNote = localNote;
+    }
 
-	public void setNoteId(int noteId) {
+    public void setNoteId(int noteId) {
 
-		this.noteId = noteId;
-	}
+        this.noteId = noteId;
+    }
 
-	public void setSourceUrl(String sourceUrl) {
+    public void setSourceUrl(String sourceUrl) {
 
-		this.sourceUrl = sourceUrl;
-	}
+        this.sourceUrl = sourceUrl;
+    }
 
-	public void setTranslationSource(TranslationSource translationSource) {
+    public void setTranslationSource(TranslationSource translationSource) {
 
-		this.translationSource = translationSource;
-	}
+        this.translationSource = translationSource;
+    }
 }
