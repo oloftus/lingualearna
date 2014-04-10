@@ -18,40 +18,40 @@ import com.lingualearna.web.notes.Note;
 @Transactional
 public class NotesService {
 
-	@Autowired
-	private GenericDao<Note> notesDao;
+    @Autowired
+    private GenericDao<Note> notesDao;
 
-	@Autowired
-	private Validator validator;
+    @Autowired
+    private Validator validator;
 
-	@PostConstruct
-	public void init() {
+    @PostConstruct
+    public void init() {
 
-		notesDao.setEntityType(Note.class);
-	}
+        notesDao.setEntityType(Note.class);
+    }
 
-	public void createNote(Note note) {
+    public void createNote(Note note) {
 
-		Set<ConstraintViolation<Note>> violations = validator.validate(note);
-		if (violations.size() > 0) {
-			throw new ConstraintViolationException(violations);
-		}
+        Set<ConstraintViolation<Note>> violations = validator.validate(note);
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
 
-		notesDao.persist(note);
-	}
+        notesDao.persist(note);
+    }
 
-	public Note retrieveNote(int noteId) {
+    public Note retrieveNote(int noteId) {
 
-		return notesDao.findNoLock(noteId);
-	}
+        return notesDao.findNoLock(noteId);
+    }
 
-	public Note updateNote(Note note) {
+    public Note updateNote(Note note) {
 
-		return notesDao.merge(note);
-	}
+        return notesDao.merge(note);
+    }
 
-	public void deleteNote(int noteId) {
+    public boolean deleteNote(int noteId) {
 
-		notesDao.delete(noteId);
-	}
+        return notesDao.delete(noteId);
+    }
 }

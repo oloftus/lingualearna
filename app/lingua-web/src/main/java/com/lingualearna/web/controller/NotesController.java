@@ -18,61 +18,68 @@ import com.lingualearna.web.service.NotesService;
 @RequestMapping("/api")
 public class NotesController {
 
-	private static final String NOTE_ID_FIELD_NAME = "noteId";
+    private static final String NOTE_ID_FIELD_NAME = "noteId";
 
-	@Autowired
-	private NotesService notesService;
+    @Autowired
+    private NotesService notesService;
 
-	@Autowired
-	private GenericMapper<NoteModel, Note> notesMapper;
+    @Autowired
+    private GenericMapper<NoteModel, Note> notesMapper;
 
-	@RequestMapping(value = "/note", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
-	@ResponseBody
-	public NoteModel createNote(@RequestBody NoteModel incomingNote) {
+    @RequestMapping(value = "/note", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+    @ResponseBody
+    public NoteModel createNote(@RequestBody NoteModel incomingNote) {
 
-		Note noteEntity = new Note();
-		notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);
-		notesService.createNote(noteEntity);
+        Note noteEntity = new Note();
+        notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);
+        notesService.createNote(noteEntity);
 
-		NoteModel noteModel = new NoteModel();
-		notesMapper.fromEntity(noteEntity, noteModel);
+        NoteModel noteModel = new NoteModel();
+        notesMapper.fromEntity(noteEntity, noteModel);
 
-		return noteModel;
-	}
+        return noteModel;
+    }
 
-	@RequestMapping(value = "/note/{noteId}", produces = "application/json", method = RequestMethod.GET)
-	@ResponseBody
-	public NoteModel retrieveNote(@PathVariable int noteId) {
+    @RequestMapping(value = "/note/{noteId}", produces = "application/json", method = RequestMethod.GET)
+    @ResponseBody
+    public NoteModel retrieveNote(@PathVariable int noteId) {
 
-		Note noteEntity = notesService.retrieveNote(noteId);
-		if (noteEntity == null) {
-			throw new ResourceNotFoundException();
-		}
+        Note noteEntity = notesService.retrieveNote(noteId);
+        if (noteEntity == null) {
+            throw new ResourceNotFoundException();
+        }
 
-		NoteModel noteModel = new NoteModel();
-		notesMapper.fromEntity(noteEntity, noteModel);
+        NoteModel noteModel = new NoteModel();
+        notesMapper.fromEntity(noteEntity, noteModel);
 
-		return noteModel;
-	}
+        return noteModel;
+    }
 
-	@RequestMapping(value = "/note/{noteId}", produces = "application/json", consumes = "application/json", method = RequestMethod.PUT)
-	@ResponseBody
-	public NoteModel updateNote(@PathVariable int noteId, @RequestBody NoteModel incomingNote) {
+    @RequestMapping(value = "/note/{noteId}", produces = "application/json", consumes = "application/json", method = RequestMethod.PUT)
+    @ResponseBody
+    public NoteModel updateNote(@PathVariable int noteId, @RequestBody NoteModel incomingNote) {
 
-		Note noteEntity = notesService.retrieveNote(noteId);
-		notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);
-		notesService.updateNote(noteEntity);
+        Note noteEntity = notesService.retrieveNote(noteId);
+        if (noteEntity == null) {
+            throw new ResourceNotFoundException();
+        }
 
-		NoteModel noteModel = new NoteModel();
-		notesMapper.fromEntity(noteEntity, noteModel);
+        notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);
+        notesService.updateNote(noteEntity);
 
-		return noteModel;
-	}
+        NoteModel noteModel = new NoteModel();
+        notesMapper.fromEntity(noteEntity, noteModel);
 
-	@RequestMapping(value = "/note/{noteId}", method = RequestMethod.DELETE)
-	@ResponseBody
-	public void deleteNote(@PathVariable int noteId) {
+        return noteModel;
+    }
 
-		notesService.deleteNote(noteId);
-	}
+    @RequestMapping(value = "/note/{noteId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteNote(@PathVariable int noteId) {
+
+        boolean found = notesService.deleteNote(noteId);
+        if (!found) {
+            throw new ResourceNotFoundException();
+        }
+    }
 }
