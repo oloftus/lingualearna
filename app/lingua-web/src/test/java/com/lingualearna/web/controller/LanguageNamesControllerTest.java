@@ -8,62 +8,57 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.lingualearna.web.controller.model.LanguageNameRequest;
 import com.lingualearna.web.controller.model.LanguageNameResponse;
 import com.lingualearna.web.service.LanguageNamesService;
 import com.lingualearna.web.testutil.UnitTestBase;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.xml")
+@RunWith(MockitoJUnitRunner.class)
 public class LanguageNamesControllerTest extends UnitTestBase {
 
-	private static final String SOURCE_LANG = "source";
-	private static final String SOURCE_LANG_NAME = "sourceLangName";
+    private static final String SOURCE_LANG = "source";
+    private static final String SOURCE_LANG_NAME = "sourceLangName";
 
-	private LanguageNameResponse languageNameResponse;
+    private LanguageNameResponse languageNameResponse;
 
-	@Mock
-	private LanguageNameRequest languageNameRequest;
+    @Mock
+    private LanguageNameRequest languageNameRequest;
 
-	@Mock
-	private LanguageNamesService languageNamesService;
+    @Mock
+    private LanguageNamesService languageNamesService;
 
-	@Autowired
-	@InjectMocks
-	private LanguageNamesController languageNamesController;
+    @InjectMocks
+    private LanguageNamesController languageNamesController = new LanguageNamesController();
 
-	@Before
-	public void setup() throws Exception {
+    @Before
+    public void setup() throws Exception {
 
-		super.setup();
-		when(languageNamesService.lookupLocalizedLangNameAsTitle(SOURCE_LANG)).thenReturn(SOURCE_LANG_NAME);
-	}
+        when(languageNamesService.lookupLocalizedLangNameAsTitle(SOURCE_LANG)).thenReturn(SOURCE_LANG_NAME);
+    }
 
-	@Test
-	public void testConvertLangCodeToNameDelegatesToLanguageNamesService() {
+    @Test
+    public void testConvertLangCodeToNameDelegatesToLanguageNamesService() {
 
-		givenIHaveALanguageNamesRequest();
-		whenICallLookupLangName();
-		thenIGetTheCorrectLanguageName();
-	}
+        givenIHaveALanguageNamesRequest();
+        whenICallLookupLangName();
+        thenIGetTheCorrectLanguageName();
+    }
 
-	private void thenIGetTheCorrectLanguageName() {
+    private void thenIGetTheCorrectLanguageName() {
 
-		assertTrue(languageNameResponse.getLangCode().equals(SOURCE_LANG));
-		assertTrue(languageNameResponse.getLangName().equals(SOURCE_LANG_NAME));
-	}
+        assertTrue(languageNameResponse.getLangCode().equals(SOURCE_LANG));
+        assertTrue(languageNameResponse.getLangName().equals(SOURCE_LANG_NAME));
+    }
 
-	private void whenICallLookupLangName() {
+    private void whenICallLookupLangName() {
 
-		languageNameResponse = languageNamesController.lookupLangName(languageNameRequest);
-	}
+        languageNameResponse = languageNamesController.lookupLangName(languageNameRequest);
+    }
 
-	private void givenIHaveALanguageNamesRequest() {
+    private void givenIHaveALanguageNamesRequest() {
 
-		when(languageNameRequest.getLangCode()).thenReturn(SOURCE_LANG);
-	}
+        when(languageNameRequest.getLangCode()).thenReturn(SOURCE_LANG);
+    }
 }

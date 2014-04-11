@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lingualearna.web.controller.mappers.GenericMapper;
 import com.lingualearna.web.controller.model.NoteModel;
+import com.lingualearna.web.controller.modelmappers.ControllerModelMapper;
 import com.lingualearna.web.controller.util.ResourceNotFoundException;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.service.NotesService;
@@ -24,7 +24,7 @@ public class NotesController {
     private NotesService notesService;
 
     @Autowired
-    private GenericMapper<NoteModel, Note> notesMapper;
+    private ControllerModelMapper<NoteModel, Note> notesMapper;
 
     @RequestMapping(value = "/note", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     @ResponseBody

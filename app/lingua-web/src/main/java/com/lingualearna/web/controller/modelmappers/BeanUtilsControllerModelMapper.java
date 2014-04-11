@@ -1,16 +1,18 @@
-package com.lingualearna.web.controller.mappers;
+package com.lingualearna.web.controller.modelmappers;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class GenericMapper<S, T> {
+@Service
+public class BeanUtilsControllerModelMapper<S, T> implements ControllerModelMapper<S, T> {
 
+    @Override
     public void fromModel(S model, T entity, String... ignore) {
 
         copyProperties(model, entity, ignore);
     }
 
+    @Override
     public void fromEntity(T entity, S model, String... ignore) {
 
         copyProperties(entity, model, ignore);

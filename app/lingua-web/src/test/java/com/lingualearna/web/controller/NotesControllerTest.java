@@ -13,8 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.lingualearna.web.controller.mappers.GenericMapper;
 import com.lingualearna.web.controller.model.NoteModel;
+import com.lingualearna.web.controller.modelmappers.BeanUtilsControllerModelMapper;
 import com.lingualearna.web.controller.util.ResourceNotFoundException;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.service.NotesService;
@@ -45,12 +45,12 @@ public class NotesControllerTest {
     private NotesController notesController = new NotesController();
 
     @Mock
-    private GenericMapper<NoteModel, Note> notesMapper;
+    private BeanUtilsControllerModelMapper<NoteModel, Note> notesMapper;
 
     @Mock
     private NotesService notesService;
 
-    private void andTheCorrectValueIsReturnedFromCreateNote() {
+    private void andTheCreatedNoteIsReturned() {
 
         theEntityIsMappedToTheModel();
         assertEquals(expectedNoteModel, actualNoteModel);
@@ -72,7 +72,7 @@ public class NotesControllerTest {
 
         whenICallCreateNote();
         thenTheNoteIsCreated();
-        andTheCorrectValueIsReturnedFromCreateNote();
+        andTheCreatedNoteIsReturned();
     }
 
     @Test
@@ -95,7 +95,7 @@ public class NotesControllerTest {
 
         givenRetrieveNoteServiceFunctions();
         whenICallRetrieveNoteWithAValidNoteId();
-        thenTheCorrectValueIsReturnedFromRetrieveNote();
+        thenTheRetrievedNoteIsReturned();
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -111,7 +111,7 @@ public class NotesControllerTest {
         givenRetrieveNoteServiceFunctions();
         whenICallUpdateNoteWithAValidNoteId();
         thenTheNoteIsUpdated();
-        andTheCorrectValueIsReturnedFromCreateNote();
+        andTheCreatedNoteIsReturned();
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -133,7 +133,7 @@ public class NotesControllerTest {
         noteEntity = noteArg.getValue();
     }
 
-    private void thenTheCorrectValueIsReturnedFromRetrieveNote() {
+    private void thenTheRetrievedNoteIsReturned() {
 
         theEntityIsMappedToTheModel();
         assertEquals(expectedNoteModel, actualNoteModel);
