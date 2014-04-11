@@ -1,4 +1,4 @@
-package com.lingualearna.web.controller.util;
+package com.lingualearna.web.controller.exceptions;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolation;

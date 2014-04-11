@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.lingualearna.web.controller.exceptions.ResourceNotFoundException;
 import com.lingualearna.web.controller.model.NoteModel;
 import com.lingualearna.web.controller.modelmappers.ControllerModelMapper;
-import com.lingualearna.web.controller.util.ResourceNotFoundException;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.service.NotesService;
 

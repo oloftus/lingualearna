@@ -1,4 +1,4 @@
-package com.lingualearna.web.controller.util;
+package com.lingualearna.web.controller.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -13,9 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.lingualearna.web.controller.exceptions.ResourceNotFoundException;
 import com.lingualearna.web.controller.model.NoteModel;
 import com.lingualearna.web.controller.modelmappers.BeanUtilsControllerModelMapper;
-import com.lingualearna.web.controller.util.ResourceNotFoundException;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.service.NotesService;
 
