@@ -13,7 +13,7 @@ import javax.validation.Payload;
  */
 @Target({ java.lang.annotation.ElementType.TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = DependentFieldNoNullValidator.class)
+@Constraint(validatedBy = DependentFieldNotNullValidator.class)
 public @interface DependentFieldNotNull {
 
 	String message() default "{validationMessages.dependentFieldNotNull}";

@@ -37,7 +37,49 @@ public class GlobalControllerExceptionHandlerTest {
     @Mock
     private HttpServletRequest request;
 
-    private GlobalControllerExceptionHandler handler = new GlobalControllerExceptionHandler();
+    private final GlobalControllerExceptionHandler handler = new GlobalControllerExceptionHandler();
+
+    private ConstraintViolation<?> createFieldViolation() {
+
+        ConstraintViolation<?> violation = mock(ConstraintViolation.class, RETURNS_DEEP_STUBS);
+        when(violation.getPropertyPath().toString()).thenReturn(FIELD_NAME);
+        when(violation.getMessage()).thenReturn(FIELD_ERROR_MESSAGE);
+        return violation;
+    }
+
+    private ConstraintViolation<?> createGlobalViolationWithEmptyPropertyPath() {
+
+        ConstraintViolation<?> violation = mock(ConstraintViolation.class, RETURNS_DEEP_STUBS);
+        when(violation.getMessage()).thenReturn(GLOBAL_ERROR_MESSAGE_2);
+        when(violation.getPropertyPath().toString()).thenReturn(EMPTY_STRING);
+        return violation;
+    }
+
+    private ConstraintViolation<?> createGlobalViolationWithFieldErrorMessage() {
+
+        ConstraintViolation<?> violation = mock(ConstraintViolation.class, RETURNS_DEEP_STUBS);
+        when(violation.getPropertyPath()).thenReturn(null);
+        when(violation.getMessage()).thenReturn(FIELD_ERROR_MESSAGE);
+        return violation;
+    }
+
+    private ConstraintViolation<?> createGlobalViolationWithNullPropertyPath() {
+
+        ConstraintViolation<?> violation = mock(ConstraintViolation.class);
+        when(violation.getPropertyPath()).thenReturn(null);
+        when(violation.getMessage()).thenReturn(GLOBAL_ERROR_MESSAGE_1);
+        return violation;
+    }
+
+    private void givenTheViolationsAreSetup() {
+
+        Set<ConstraintViolation<?>> violations = new HashSet<>();
+        violations.add(createGlobalViolationWithNullPropertyPath());
+        violations.add(createGlobalViolationWithEmptyPropertyPath());
+        violations.add(createFieldViolation());
+        violations.add(createGlobalViolationWithFieldErrorMessage());
+        when(cve.getConstraintViolations()).thenReturn(violations);
+    }
 
     @Test
     public void testHandleConstraintViolations() {
@@ -59,38 +101,5 @@ public class GlobalControllerExceptionHandlerTest {
     private void whenICallHandleConstraintViolations() {
 
         returnedViolations = handler.handleConstraintViolations(request, cve);
-    }
-
-    private void givenTheViolationsAreSetup() {
-
-        Set<ConstraintViolation<?>> violations = new HashSet<>();
-        violations.add(createGlobalViolationWithNullPropertyPath());
-        violations.add(createGlobalViolationWithEmptyPropertyPath());
-        violations.add(createFieldViolation());
-        when(cve.getConstraintViolations()).thenReturn(violations);
-    }
-
-    private ConstraintViolation<?> createFieldViolation() {
-
-        ConstraintViolation<?> violation = mock(ConstraintViolation.class, RETURNS_DEEP_STUBS);
-        when(violation.getPropertyPath().toString()).thenReturn(FIELD_NAME);
-        when(violation.getMessage()).thenReturn(FIELD_ERROR_MESSAGE);
-        return violation;
-    }
-
-    private ConstraintViolation<?> createGlobalViolationWithNullPropertyPath() {
-
-        ConstraintViolation<?> violation = mock(ConstraintViolation.class);
-        when(violation.getPropertyPath()).thenReturn(null);
-        when(violation.getMessage()).thenReturn(GLOBAL_ERROR_MESSAGE_1);
-        return violation;
-    }
-
-    private ConstraintViolation<?> createGlobalViolationWithEmptyPropertyPath() {
-
-        ConstraintViolation<?> violation = mock(ConstraintViolation.class, RETURNS_DEEP_STUBS);
-        when(violation.getMessage()).thenReturn(GLOBAL_ERROR_MESSAGE_2);
-        when(violation.getPropertyPath().toString()).thenReturn(EMPTY_STRING);
-        return violation;
     }
 }

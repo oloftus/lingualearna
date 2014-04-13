@@ -8,12 +8,12 @@
 		http://www.springframework.org/schema/mvc
 		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
+	<mvc:annotation-driven />
+	<context:component-scan base-package="com.lingualearna.web.controller" />
+
 	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 		<property name="prefix" value="/WEB-INF/jsp/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
-
-	<context:component-scan base-package="com.lingualearna.web.controller" />
-	<mvc:annotation-driven />
 </beans>

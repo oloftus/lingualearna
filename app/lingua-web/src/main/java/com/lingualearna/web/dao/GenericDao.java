@@ -3,12 +3,16 @@ package com.lingualearna.web.dao;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.lingualearna.web.util.ConfigurationException;
 
 @Component
 public class GenericDao<T> {
+
+    private static final Logger LOG = LoggerFactory.getLogger(GenericDao.class);
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -17,7 +21,10 @@ public class GenericDao<T> {
     private void checkClassIsSetup() {
 
         if (entityType == null) {
-            throw new ConfigurationException("entityType field not set on " + this.getClass().toString() + " class");
+            String message = "entityType field not set in GenericDao";
+            ConfigurationException exception = new ConfigurationException(message);
+            LOG.error(message, exception);
+            throw exception;
         }
     }
 
