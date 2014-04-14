@@ -13,9 +13,9 @@ import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.Length;
 
-@DependentFieldNotNull.List({
-        @DependentFieldNotNull(fieldName = "foreignNote", dependentFieldName = "foreignLang"),
-        @DependentFieldNotNull(fieldName = "localNote", dependentFieldName = "localLang")
+@DependentPropertyNotNullOrEmpty.Properties({
+        @DependentPropertyNotNullOrEmpty(propertyName = "foreignNote", dependentPropertyName = "foreignLang"),
+        @DependentPropertyNotNullOrEmpty(propertyName = "localNote", dependentPropertyName = "localLang")
 })
 @Entity(name = "note")
 public class Note implements Serializable {
