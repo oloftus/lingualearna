@@ -18,7 +18,7 @@ public class GenericDao<T> {
     private EntityManager entityManager;
     private Class<T> entityType;
 
-    private void checkClassIsSetup() {
+    private void isClassSetup() {
 
         if (entityType == null) {
             String message = "entityType field not set in GenericDao";
@@ -29,11 +29,11 @@ public class GenericDao<T> {
     }
 
     /**
-     * @return Whether the object to delete actually existed
+     * @return Whether the object to delete actually exists
      */
     public boolean delete(int id) {
 
-        checkClassIsSetup();
+        isClassSetup();
         T retrievedObj = entityManager.find(entityType, id);
         if (retrievedObj == null) {
             return false;
@@ -47,14 +47,14 @@ public class GenericDao<T> {
 
     public T findNoLock(int id) {
 
-        checkClassIsSetup();
+        isClassSetup();
         T retrievedObj = entityManager.find(entityType, id);
         return retrievedObj;
     }
 
     public T merge(T obj) {
 
-        checkClassIsSetup();
+        isClassSetup();
         T updatedObj = entityManager.merge(obj);
         entityManager.flush();
         return updatedObj;
@@ -65,7 +65,7 @@ public class GenericDao<T> {
      */
     public void persist(T obj) {
 
-        checkClassIsSetup();
+        isClassSetup();
         entityManager.persist(obj);
         entityManager.flush();
     }

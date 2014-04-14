@@ -24,20 +24,21 @@ public class NotesService {
     @Autowired
     private Validator validator;
 
+    public void createNote(Note note) {
+
+        validateNote(note);
+        notesDao.persist(note);
+    }
+
+    public boolean deleteNote(int noteId) {
+
+        return notesDao.delete(noteId);
+    }
+
     @PostConstruct
     public void init() {
 
         notesDao.setEntityType(Note.class);
-    }
-
-    public void createNote(Note note) {
-
-        Set<ConstraintViolation<Note>> violations = validator.validate(note);
-        if (violations.size() > 0) {
-            throw new ConstraintViolationException(violations);
-        }
-
-        notesDao.persist(note);
     }
 
     public Note retrieveNote(int noteId) {
@@ -47,11 +48,15 @@ public class NotesService {
 
     public Note updateNote(Note note) {
 
+        validateNote(note);
         return notesDao.merge(note);
     }
 
-    public boolean deleteNote(int noteId) {
+    private void validateNote(Note note) {
 
-        return notesDao.delete(noteId);
+        Set<ConstraintViolation<Note>> violations = validator.validate(note);
+        if (violations.size() > 0) {
+            throw new ConstraintViolationException(violations);
+        }
     }
 }
