@@ -17,48 +17,45 @@ import com.google.api.services.translate.Translate.Translations.List;
 /**
  * Wraps the Google Translate library which has final classes/methods to permit
  * mocking.
- * 
- * @author Oliver Loftus <o@oloft.us>
  */
 @Component
 public class GoogleTranslateLibraryWrapper {
 
-	public GoogleTranslateBuilderWrapper getTranslateBuilder(HttpTransport httpTransport, JsonFactory jsonFactory,
-			HttpRequestInitializer httpRequestInitializer) {
+    public String executeAndGetTranslation(List translateList) throws WrappedGoogleJsonResponseException, IOException {
 
-		return new GoogleTranslateBuilderWrapper(httpTransport, jsonFactory, httpRequestInitializer);
-	}
+        String translatedText;
+        try {
+            translatedText = translateList.execute().getTranslations().get(0).getTranslatedText();
+        } catch (GoogleJsonResponseException e) {
+            throw new WrappedGoogleJsonResponseException(e);
+        }
+        return translatedText;
+    }
 
-	public String executeAndGetTranslation(List translateList) throws WrappedGoogleJsonResponseException, IOException {
+    public HttpTransport getHttpTransport() throws GeneralSecurityException, IOException {
 
-		String translatedText;
-		try {
-			translatedText = translateList.execute().getTranslations().get(0).getTranslatedText();
-		}
-		catch (GoogleJsonResponseException e) {
-			throw new WrappedGoogleJsonResponseException(e);
-		}
-		return translatedText;
-	}
+        return GoogleNetHttpTransport.newTrustedTransport();
+    }
 
-	public List setupClient(Translate client, String targetLang, java.util.List<String> query)
-			throws IOException {
+    public JsonFactory getJsonFactory() {
 
-		return client.translations().list(query, targetLang);
-	}
+        return JacksonFactory.getDefaultInstance();
+    }
 
-	public void setSourceLang(List translateList, String sourceLang) {
+    public GoogleTranslateBuilderWrapper getTranslateBuilder(HttpTransport httpTransport, JsonFactory jsonFactory,
+            HttpRequestInitializer httpRequestInitializer) {
 
-		translateList.setSource(sourceLang);
-	}
+        return new GoogleTranslateBuilderWrapper(httpTransport, jsonFactory, httpRequestInitializer);
+    }
 
-	public JsonFactory getJsonFactory() {
+    public void setSourceLang(List translateList, String sourceLang) {
 
-		return JacksonFactory.getDefaultInstance();
-	}
+        translateList.setSource(sourceLang);
+    }
 
-	public HttpTransport getHttpTransport() throws GeneralSecurityException, IOException {
+    public List setupClient(Translate client, String targetLang, java.util.List<String> query)
+            throws IOException {
 
-		return GoogleNetHttpTransport.newTrustedTransport();
-	}
+        return client.translations().list(query, targetLang);
+    }
 }

@@ -4,24 +4,24 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class LocalizationService {
 
-	private static final String BUNDLE_NAME = "StringsBundle";
+    private static final String BUNDLE_NAME = "StringsBundle";
 
-	@Autowired
-	private UserLocaleResolver localeResolver;
+    @Autowired
+    private UserLocaleResolver localeResolver;
 
-	public String lookupLocalizedString(String key) {
+    public Locale getUserLocale() {
 
-		ResourceBundle labels = ResourceBundle.getBundle(BUNDLE_NAME, localeResolver.getUserLocale());
-		return labels.getString(key);
-	}
+        return localeResolver.getUserLocale();
+    }
 
-	public Locale getUserLocale() {
+    public String lookupLocalizedString(String key) {
 
-		return localeResolver.getUserLocale();
-	}
+        ResourceBundle labels = ResourceBundle.getBundle(BUNDLE_NAME, getUserLocale());
+        return labels.getString(key);
+    }
 }
