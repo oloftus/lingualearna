@@ -22,7 +22,7 @@ public class DependentPropertyNotNullOrEmptyValidator implements
     private void addViolation(ConstraintValidatorContext context) {
 
         context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                .addPropertyNode(dependentPropertyName)
+                .addPropertyNode(propertyName)
                 .addConstraintViolation();
     }
 

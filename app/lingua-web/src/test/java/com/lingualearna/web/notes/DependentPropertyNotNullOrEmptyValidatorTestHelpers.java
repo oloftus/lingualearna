@@ -4,7 +4,7 @@ package com.lingualearna.web.notes;
  * Apache BeanUtils doesn't like anonymous classes, so we need a declared public
  * type for each case
  */
-public abstract class DependentFieldNotNullOrEmptyValidatorTestHelpers {
+public abstract class DependentPropertyNotNullOrEmptyValidatorTestHelpers {
 
     public static class InvalidPropertyNotNullDependentBlank implements TypeUnderValidation {
 

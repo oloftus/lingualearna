@@ -2,12 +2,14 @@ package com.lingualearna.web.notes;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.lang.annotation.Annotation;
 
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext;
 import javax.validation.Payload;
 
 import org.junit.Before;
@@ -16,17 +18,18 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.lingualearna.web.notes.DependentFieldNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentBlank;
-import com.lingualearna.web.notes.DependentFieldNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentNull;
-import com.lingualearna.web.notes.DependentFieldNotNullOrEmptyValidatorTestHelpers.TypeUnderValidation;
-import com.lingualearna.web.notes.DependentFieldNotNullOrEmptyValidatorTestHelpers.ValidPropertyBlankDependentNull;
-import com.lingualearna.web.notes.DependentFieldNotNullOrEmptyValidatorTestHelpers.ValidPropertyNotNullDependentNotNull;
-import com.lingualearna.web.notes.DependentFieldNotNullOrEmptyValidatorTestHelpers.ValidPropertyNullDependentNotNull;
-import com.lingualearna.web.notes.DependentFieldNotNullOrEmptyValidatorTestHelpers.ValidPropertyNullDependentNull;
+import com.lingualearna.web.notes.DependentPropertyNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentBlank;
+import com.lingualearna.web.notes.DependentPropertyNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentNull;
+import com.lingualearna.web.notes.DependentPropertyNotNullOrEmptyValidatorTestHelpers.TypeUnderValidation;
+import com.lingualearna.web.notes.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyBlankDependentNull;
+import com.lingualearna.web.notes.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyNotNullDependentNotNull;
+import com.lingualearna.web.notes.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyNullDependentNotNull;
+import com.lingualearna.web.notes.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyNullDependentNull;
 
 @RunWith(MockitoJUnitRunner.class)
-public class DependentFieldNotNullOrEmptyValidatorTest {
+public class DependentPropertyNotNullOrEmptyValidatorTest {
 
+    private static final String DEFAULT_CONSTRAINT_MESSAGE = "defaultConstraintMessage";
     private static final String PROPERTY_NAME = "property";
     private static final String DEPENDENT_PROPERTY_NAME = "dependentProperty";
     private static final DependentPropertyNotNullOrEmpty ANNOTATION;
@@ -82,14 +85,29 @@ public class DependentFieldNotNullOrEmptyValidatorTest {
 
     private boolean validationResult;
 
-    @Mock(answer = RETURNS_DEEP_STUBS)
+    @Mock
     private ConstraintValidatorContext context;
+
+    @Mock
+    private ConstraintViolationBuilder constraintViolationBuilder;
+
+    @Mock
+    private NodeBuilderCustomizableContext nodeBuilderCustomizableContext;
 
     private final DependentPropertyNotNullOrEmptyValidator validator = new DependentPropertyNotNullOrEmptyValidator();
 
     private void andTheObjectFailsValidation() {
 
         assertFalse(validationResult);
+    }
+
+    private void givenTheConstraintViolationContextIsSetup() {
+
+        when(context.getDefaultConstraintMessageTemplate()).thenReturn(DEFAULT_CONSTRAINT_MESSAGE);
+        when(context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())).thenReturn(
+                constraintViolationBuilder);
+        when(constraintViolationBuilder.addPropertyNode(PROPERTY_NAME)).thenReturn(
+                nodeBuilderCustomizableContext);
     }
 
     @Before
@@ -101,6 +119,7 @@ public class DependentFieldNotNullOrEmptyValidatorTest {
     @Test
     public void testInvalidObjPropertyNotNullDependentBlankTriggersViolation() {
 
+        givenTheConstraintViolationContextIsSetup();
         whenIValidateTheObject(invalidObjPropertyNotNullDependentBlank);
         thenTheErrorObjectIsCorrectlySetup();
         andTheObjectFailsValidation();
@@ -123,6 +142,7 @@ public class DependentFieldNotNullOrEmptyValidatorTest {
     @Test
     public void testObjPropertyNotNullDependentNullTriggersViolation() {
 
+        givenTheConstraintViolationContextIsSetup();
         whenIValidateTheObject(invalidObjPropertyNotNullDependentNull);
         thenTheErrorObjectIsCorrectlySetup();
         andTheObjectFailsValidation();
@@ -142,10 +162,11 @@ public class DependentFieldNotNullOrEmptyValidatorTest {
 
     private void thenTheErrorObjectIsCorrectlySetup() {
 
-        verify(context).buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                .addPropertyNode(DEPENDENT_PROPERTY_NAME)
-                .addConstraintViolation();
+        verify(nodeBuilderCustomizableContext).addConstraintViolation();
 
+        // verify(context).buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
+        // .addPropertyNode(DEPENDENT_PROPERTY_NAME)
+        // .addConstraintViolation();
     }
 
     private void thenTheObjectPassesValidation() {
