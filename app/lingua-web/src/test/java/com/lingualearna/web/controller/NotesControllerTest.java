@@ -24,6 +24,7 @@ public class NotesControllerTest {
 
     private static final int INVALID_NOTE_ID = 0;
     private static final String NOTE_ID_FIELD_NAME = "noteId";
+    private static final String SOURCE_URL_FIELD_NAME = "sourceUrl";
     private static final int VALID_NOTE_ID = 1;
 
     private NoteModel actualNoteModel;
@@ -133,10 +134,11 @@ public class NotesControllerTest {
         noteEntity = noteArg.getValue();
     }
 
-    private void thenTheRetrievedNoteIsReturned() {
+    private void theModelIsMappedToTheEntityIgnoringIdAndSourceUrl() {
 
-        theEntityIsMappedToTheModel();
-        assertEquals(expectedNoteModel, actualNoteModel);
+        verify(notesMapper).fromModel(eq(incomingNote), noteArg.capture(), eq(NOTE_ID_FIELD_NAME),
+                eq(SOURCE_URL_FIELD_NAME));
+        noteEntity = noteArg.getValue();
     }
 
     private void thenTheNoteIsCreated() {
@@ -152,8 +154,14 @@ public class NotesControllerTest {
 
     private void thenTheNoteIsUpdated() {
 
-        theModelIsMappedToTheEntityIgnoringId();
+        theModelIsMappedToTheEntityIgnoringIdAndSourceUrl();
         verify(notesService).updateNote(noteEntity);
+    }
+
+    private void thenTheRetrievedNoteIsReturned() {
+
+        theEntityIsMappedToTheModel();
+        assertEquals(expectedNoteModel, actualNoteModel);
     }
 
     private void whenICallCreateNote() {

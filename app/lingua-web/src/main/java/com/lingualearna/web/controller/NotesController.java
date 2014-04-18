@@ -19,6 +19,7 @@ import com.lingualearna.web.service.NotesService;
 public class NotesController {
 
     private static final String NOTE_ID_FIELD_NAME = "noteId";
+    private static final String SOURCE_URL_FIELD_NAME = "sourceUrl";
 
     @Autowired
     private NotesService notesService;
@@ -38,6 +39,16 @@ public class NotesController {
         notesMapper.fromEntity(noteEntity, noteModel);
 
         return noteModel;
+    }
+
+    @RequestMapping(value = "/note/{noteId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deleteNote(@PathVariable int noteId) {
+
+        boolean found = notesService.deleteNote(noteId);
+        if (!found) {
+            throw new ResourceNotFoundException();
+        }
     }
 
     @RequestMapping(value = "/note/{noteId}", produces = "application/json", method = RequestMethod.GET)
@@ -64,22 +75,12 @@ public class NotesController {
             throw new ResourceNotFoundException();
         }
 
-        notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);
+        notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME, SOURCE_URL_FIELD_NAME);
         notesService.updateNote(noteEntity);
 
         NoteModel noteModel = new NoteModel();
         notesMapper.fromEntity(noteEntity, noteModel);
 
         return noteModel;
-    }
-
-    @RequestMapping(value = "/note/{noteId}", method = RequestMethod.DELETE)
-    @ResponseBody
-    public void deleteNote(@PathVariable int noteId) {
-
-        boolean found = notesService.deleteNote(noteId);
-        if (!found) {
-            throw new ResourceNotFoundException();
-        }
     }
 }

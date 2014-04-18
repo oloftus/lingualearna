@@ -1,6 +1,6 @@
 define([ "angular", "appRoot" ], function() {
 
-    var MessageHandlers = function() {
+    var messageHandler = function() {
 
         var ERRORS_FIELD = "errors";
         var FIELD_ERRORS_CLASS = "lingua-field-messages";
@@ -92,5 +92,5 @@ define([ "angular", "appRoot" ], function() {
         };
     };
 
-    linguaApp.service("messageHandlers", [ MessageHandlers ]);
+    linguaApp.service("messageHandler", [ messageHandler ]);
 });

@@ -18,13 +18,15 @@ define([], function() {
         this.localLang = localLang;
         this.localNote = localNote;
         this.additionalNotes = additionalNotes;
-        this.sourceUrl = additionalNotes;
+        this.sourceUrl = sourceUrl;
         this.noteId = noteId;
     };
 
     HttpMethod = {
         POST: "POST",
-        GET: "GET"
+        GET: "GET",
+        PUT: "PUT",
+        DELETE: "DELETE"
     };
     
     HttpHeaders = {

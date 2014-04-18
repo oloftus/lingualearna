@@ -2,26 +2,31 @@ define([ "util/commonTypes", "util/jsonWebService" ], function() {
 
     CrudService = function(jsonWebService, serviceUrl) {
         
-        var create = function(translationRequest, successCallback, failureCallback) {
-            jsonWebService.execute(serviceUrl, HttpMethod.POST, translationRequest, successCallback,
+        var constructInstanceUrl = function(baseUrl, instanceId) {
+            
+            return baseUrl + "/" + instanceId;
+        };
+        
+        var create = function(payload, successCallback, failureCallback) {
+            jsonWebService.execute(serviceUrl, HttpMethod.POST, payload, successCallback,
                     failureCallback);
 
         };
         
-        var retrieve = function(translationRequest, successCallback, failureCallback) {
-            jsonWebService.execute(serviceUrl, HttpMethod.GET, translationRequest, successCallback,
+        var retrieve = function(id, successCallback, failureCallback) {
+            jsonWebService.execute(constructInstanceUrl(serviceUrl, id), HttpMethod.GET, null, successCallback,
                     failureCallback);
 
         };
         
-        var update = function(translationRequest, successCallback, failureCallback) {
-            jsonWebService.execute(serviceUrl, HttpMethod.PUT, translationRequest, successCallback,
+        var update = function(id, payload, successCallback, failureCallback) {
+            jsonWebService.execute(constructInstanceUrl(serviceUrl, id), HttpMethod.PUT, payload, successCallback,
                     failureCallback);
 
         };
         
-        var remove = function(translationRequest, successCallback, failureCallback) {
-            jsonWebService.execute(serviceUrl, HttpMethod.DELETE, translationRequest, successCallback,
+        var remove = function(id, successCallback, failureCallback) {
+            jsonWebService.execute(constructInstanceUrl(serviceUrl, id), HttpMethod.DELETE, null, successCallback,
                     failureCallback);
 
         };

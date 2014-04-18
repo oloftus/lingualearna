@@ -5,7 +5,7 @@ define(
  "localization/stringsDefault",
  "service/languageNamesService",
  "service/noteService",
- "controller/noteController",
+ "controller/addNoteController",
 ],
 function() {
 

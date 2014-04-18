@@ -7,21 +7,15 @@
 <link href="${pageContext.request.contextPath}/resources/css/note.css" rel="stylesheet" type="text/css">
 <script type="text/javascript">
     var initParams = {
-        foreignLang : "${param.foreignLang}",
-        foreignNote : "${param.foreignNote}",
-        localLang : "${param.localLang}",
-        localNote : "${param.localNote}",
-        additionalNotes : "${param.additionalNotes}",
-        sourceUrl : "${param.sourceUrl}",
-        noteId : null
+        noteId : "${noteId}"
     };
 </script>
-<script data-main="${pageContext.request.contextPath}/javascript/modules/addNote"
+<script data-main="${pageContext.request.contextPath}/javascript/modules/editNote"
     src="${pageContext.request.contextPath}/javascript/lib/require-2.1.11.js"></script>
 <script src="${pageContext.request.contextPath}/javascript/modules/config/requireConfig.js"></script>
 </head>
 
-<body ng-controller="addNoteController">
+<body ng-controller="editNoteController">
 
     <ng-include src="'${pageContext.request.contextPath}/ngViews/noteView.html'" class="lingua-ng-include" />
 
