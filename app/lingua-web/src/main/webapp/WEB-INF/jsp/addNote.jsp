@@ -17,7 +17,7 @@
     };
 </script>
 <script data-main="${pageContext.request.contextPath}/javascript/modules/note"
-    src="${pageContext.request.contextPath}/javascript/lib/require.js"></script>
+    src="${pageContext.request.contextPath}/javascript/lib/require-2.1.11.js"></script>
 <script src="${pageContext.request.contextPath}/javascript/modules/config/requireConfig.js"></script>
 </head>
 

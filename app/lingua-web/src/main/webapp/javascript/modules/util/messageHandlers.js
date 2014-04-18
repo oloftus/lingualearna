@@ -1,8 +1,10 @@
-define([ "angular", "appRoot", "underscore.string" ], function() {
+define([ "angular", "appRoot" ], function() {
 
     var MessageHandlers = function() {
 
-        var _s = require("underscore.string"); // TODO: Make better solution
+        var ERRORS_FIELD = "errors";
+        var FIELD_ERRORS_CLASS = "lingua-field-messages";
+        var ERROR_CLASS = "lingua-error";
         
         var addGlobalMessage = function(scope, messageText, messageSeverity) {
 
@@ -13,46 +15,48 @@ define([ "angular", "appRoot", "underscore.string" ], function() {
         };
 
         var getField = function(fieldName) {
-            var fieldSelector = _s.sprintf("textarea[data-fieldName='%s']", fieldName);
+            
+            var fieldSelector = "textarea[data-fieldName='" + fieldName + "']";
             return $(fieldSelector);
         };
         
         var addFieldError = function(fieldName, errorText) {
             
             $field = getField(fieldName);
-            if (_.isUndefined($field.data("errors"))) {
-                $field.data("errors", []);
+            if (_.isUndefined($field.data(ERRORS_FIELD))) {
+                $field.data(ERRORS_FIELD, []);
             }
             
-            $field.data("errors").push(errorText);
+            $field.data(ERRORS_FIELD).push(errorText);
         };
         
         var getElementsWithDataErrors = function() {
             
             return $("*").filter(function(index) {
-                return $(this).data("errors") != undefined;
+                return !_.isUndefined($(this).data(ERRORS_FIELD));
             });
         };
         
         var clearAllMessages = function(scope) {
             
             scope.model.globalMessages.length = 0;
-            $(".lingua-field-messages").remove();
-            getElementsWithDataErrors().removeData("errors")
+            $("." + FIELD_ERRORS_CLASS).remove();
+            getElementsWithDataErrors().removeData(ERRORS_FIELD);
         };
         
         var displayFieldMessage = function(fieldNames) {
             
             _.each(fieldNames, function(fieldName) {
                 var $field = getField(fieldName);
-                var errors = $field.data("errors");
+                var errors = $field.data(ERRORS_FIELD);
                 
-                var $errorsRoot = $("<div class='lingua-field-messages'/>");
+                var $errorsRoot = $("<div class='" + FIELD_ERRORS_CLASS + "'/>");
                 var $errorsUl = $("<ul/>").appendTo($errorsRoot);
                 
                 _.each(errors, function(errorText) {
-                    $errorsUl.append("<li class='lingua-error'>" + errorText + "</li>")
+                    $errorsUl.append("<li class='" + ERROR_CLASS + "'>" + errorText + "</li>")
                 });
+                
                 $field.after($errorsRoot);
             });
         };

@@ -1,4 +1,4 @@
-define([ "util/commonTypes", "appRoot", "util/util" ], function() {
+define([ "util/commonTypes", "appRoot", "util/util", "util/jsonWebService" ], function() {
 
     var LanguageNamesService = function(jsonWebService, languageNamesServiceUrl) {
 

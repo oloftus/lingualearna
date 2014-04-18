@@ -3,8 +3,7 @@ define([ "util/commonTypes", "appRoot", "util/util" ], function() {
     var translateController = function($scope, translateService, languageNamesService, sourceLang, targetLang,
             initQuery) {
 
-        $scope.model = {};
-        $scope.func = {};
+        setupDefaultScope($scope);
         
         $scope.model.sourceLang = sourceLang;
         $scope.model.targetLang = targetLang;

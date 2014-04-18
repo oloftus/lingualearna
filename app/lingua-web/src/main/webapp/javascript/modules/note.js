@@ -2,6 +2,7 @@ define(
 [
  "appRoot",
  "config/properties",
+ "localization/stringsDefault",
  "service/languageNamesService",
  "service/noteService",
  "controller/noteController",
