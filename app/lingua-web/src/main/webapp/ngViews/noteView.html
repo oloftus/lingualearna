@@ -1,15 +1,30 @@
 
 <div class="lingua-component" id="lingua-add-edit-note-dialog">
-    <button class="lingua-icon-button lingua-dialog-close">Close</button>
     <div class="lingua-dialog-header">
-        <h2>Add/edit note</h2>
+        <h2>{{model.operation.title}}</h2>
         <div class="lingua-controls">
-            <button class="lingua-action-button-icon" id="lingua-save-entry-button">Add to notebook</button>
+            <button class="lingua-action-button-icon" id="lingua-save-entry-button" ng-click="func.addEditNote()">
+                {{model.operation.button}}REMOVE ME</button>
         </div>
     </div>
     <div class="lingua-dialog-content">
-        <textarea class="lingua-local-language">English</textarea>
-        <textarea class="lingua-foreign-language">Spanish</textarea>
-        <textarea class="lingua-note">Additional notes</textarea>
+        <div class="column">
+            <h3>
+                <label for="lingua-local-note">{{model.localLangName}}REMOVE ME</label>
+            </h3>
+            <textarea id="lingua-local-note" ng-model="model.localNote"></textarea>
+        </div>
+        <div class="column">
+            <h3>
+                <label for="lingua-foreign-note">{{model.foreignLangName}}REMOVE ME</label>
+            </h3>
+            <textarea id="lingua-foreign-note" ng-model="model.foreignNote"></textarea>
+        </div>
+        <div class="mid-content-row">
+            <h3>
+                <label for="lingua-additional-note">Additional Notes</label>
+            </h3>
+            <textarea id="lingua-additional-note" ng-model="model.additionalNotes"></textarea>
+        </div>
     </div>
 </div>

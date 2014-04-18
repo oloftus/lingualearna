@@ -1,52 +1,209 @@
 /*Icons: https://www.iconfinder.com/search/?q=iconset:typicons-2*/
+@import url(http://fonts.googleapis.com/css?family=Alegreya);
 
-@import url(http://fonts.googleapis.com/css?family=Esteban);
+html,body {
+    height: 100%;
+}
 
-html, body{height:100%;}
-body{display:flex;margin:0;}
+body {
+    margin: 0;
+}
 
-.access, .lingua-icon-button{text-indent:-999em;}
+.access,.lingua-icon-button {
+    text-indent: -999em;
+}
 
-.lingua-align-left, .lingua-align-right{padding:0 15px;}
+.lingua-align-left,.lingua-align-right {
+    padding: 0 15px;
+}
 
-.lingua-ng-include{width:100%;}
-.lingua-component{font-family:'Esteban', serif;font-size:14px;}
-.lingua-component h1{font-size:1.2em;margin:0;}
-.lingua-component h2{font-size:1.2em;margin:0;}
-.lingua-component h3{font-size:1.1em;margin:0;}
-.lingua-component textarea, .lingua-component input[type="text"]{margin:0;outline:none;border:none;background-color:#e9e9e9;font:inherit;padding:7px 9px;color:gray;
-box-sizing:border-box;}
+.lingua-ng-include {
+    width: 100%;
+}
 
-.lingua-dialog, .lingua-static-dialog, .lingua-draggable-dialog{border:1px solid #888888;box-shadow:0 0 15px #000000;}
-.lingua-dialog-inner{width:100%;}
-.lingua-static-dialog{position:relative;}
-.lingua-draggable-dialog{position:relative;}/* Change to absolute */
-.lingua-dialog-close{position:absolute;right:0;background-image:url(../images/close.svg) !important;margin:-20px -20px 0 0 !important;}
-.lingua-dialog-header, .lingua-dialog-content, .lingua-controls-footer{padding:14px;}
-.lingua-dialog-header{border-bottom:1px solid #888888;display:flex;align-items:center;}
-.lingua-dialog-header h2{padding-left:5px;}
-.lingua-controls{margin-left:auto;}
-.lingua-controls-footer{display:flex;justify-content:flex-end;border-top:1px solid #888888;}
+.lingua-component {
+    font-family: 'Alegreya', serif;
+    font-size: 14px;
+}
 
-.lingua-controls .lingua-control-item, .lingua-controls .lingua-action-button,
-.lingua-controls .lingua-action-button-icon, .lingua-controls .lingua-icon-button{margin-left:10px;}
-.lingua-controls-left .lingua-control-item, .lingua-controls-left .lingua-action-button,
-.lingua-controls-left .lingua-action-button-icon, .lingua-controls-left .lingua-icon-button{margin-right:10px;}
+.lingua-component h1 {
+    font-size: 1.2em;
+    margin: 0;
+}
 
-.lingua-action-button-icon, .lingua-icon-link, .lingua-icon-button{background:no-repeat left center;}
-.lingua-action-button-icon, .lingua-icon-link{padding-left:25px;}
-.lingua-action-button, .lingua-action-button-icon, .lingua-icon-button{outline:none;}
-.lingua-action-button, .lingua-action-button-icon{font:inherit;border:2px outset #cccccc;background-color:white !important;}
-.lingua-icon-link{color:inherit;text-decoration:inherit;}
-.lingua-icon-button{background-color:transparent;padding-left:18px;border:none;}
+.lingua-component h2 {
+    font-size: 1.2em;
+    margin: 0;
+}
 
-#lingua-add-note-button{background-image:url(../images/pencil.svg);}
-#lingua-save-entry-button{background-image:url(../images/document.svg);}
-#lingua-notebook-link{background-image:url(../images/book.svg);}
-#lingua-add-selection-button{background-image:url(../images/document-add.svg);}
-#lingua-add-translation-button{background-image:url(../images/document-add.svg);}
-#lingua-login-button{background-image:url(../images/arrow-right.svg);}
-#lingua-search-button{background-image:url(../images/magnifier.svg);}
+.lingua-component h3 {
+    font-size: 1.1em;
+    margin: 0;
+}
 
-.lingua-validation-msgs{margin:0 0 14px;}
-.lingua-validation-msgs .lingua-error{color:red;}
+.lingua-component textarea,.lingua-component input[type="text"] {
+    margin: 0;
+    outline: none;
+    border: none;
+    background-color: #e9e9e9;
+    font: inherit;
+    padding: 7px 9px;
+    color: gray;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.lingua-component textarea {
+    border: 14px solid white !important;
+}
+
+.lingua-dialog,.lingua-static-dialog,.lingua-draggable-dialog {
+    border: 1px solid #888888;
+    box-shadow: 0 0 15px #000000;
+}
+
+.lingua-dialog-inner {
+    width: 100%;
+}
+
+.lingua-static-dialog {
+    position: relative;
+}
+
+.lingua-draggable-dialog {
+    position: relative; /* Change to absolute */
+}
+
+.lingua-dialog-close {
+    position: absolute;
+    right: 0;
+    background-image: url(../images/close.svg) !important;
+    margin: -20px -20px 0 0 !important;
+}
+
+.lingua-dialog-header,.lingua-dialog-footer {
+    padding: 14px;
+}
+
+.lingua-dialog-header {
+    border-bottom: 1px solid #888888;
+    display: flex;
+    align-items: center;
+}
+
+.lingua-dialog-header h2 {
+    padding-left: 5px;
+}
+
+.lingua-dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #888888;
+}
+
+.lingua-controls {
+    margin-left: auto;
+}
+
+.lingua-controls.left {
+    margin-left: 0;
+}
+
+.lingua-controls .lingua-control-item,.lingua-controls .lingua-action-button,.lingua-controls .lingua-action-button-icon,.lingua-controls .lingua-icon-button
+    {
+    margin-left: 10px;
+}
+
+.lingua-controls.left .lingua-control-item,.lingua-controls.left .lingua-action-button,.lingua-controls.left .lingua-action-button-icon,.lingua-controls.left .lingua-icon-button
+    {
+    margin-right: 10px;
+}
+
+.lingua-action-button-icon,.lingua-icon-link,.lingua-icon-button {
+    background: no-repeat left center;
+}
+
+.lingua-action-button-icon,.lingua-icon-link {
+    padding-left: 25px;
+}
+
+.lingua-action-button,.lingua-action-button-icon,.lingua-icon-button {
+    outline: none;
+}
+
+.lingua-action-button,.lingua-action-button-icon {
+    font: inherit;
+    border: 2px outset #cccccc;
+    background-color: white !important;
+}
+
+.lingua-icon-link {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.lingua-icon-button {
+    background-color: transparent;
+    padding-left: 18px;
+    border: none;
+}
+
+#lingua-add-note-button {
+    background-image: url(../images/pencil.svg);
+}
+
+#lingua-save-entry-button {
+    background-image: url(../images/document.svg);
+}
+
+#lingua-notebook-link {
+    background-image: url(../images/book.svg);
+}
+
+#lingua-add-selection-button {
+    background-image: url(../images/document-add.svg);
+}
+
+#lingua-add-translation-button {
+    background-image: url(../images/document-add.svg);
+}
+
+#lingua-login-button {
+    background-image: url(../images/arrow-right.svg);
+}
+
+#lingua-search-button {
+    background-image: url(../images/magnifier.svg);
+}
+
+.lingua-validation-msgs {
+    margin: 14px 0 0;
+}
+
+.lingua-validation-msgs .lingua-error {
+    color: red;
+}
+
+.lingua-dialog-content {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.lingua-dialog-content>div {
+    width: 100%;
+}
+
+.lingua-dialog-content>div.mid-content-row {
+    border-top: 1px solid #888888;
+}
+
+.lingua-dialog-content>div.column {
+    flex-basis: 50%;
+}
+
+.lingua-dialog-content h3 {
+    padding: 14px 14px;
+    width: 100%;
+    border-bottom: 1px solid #888888;
+    box-sizing: border-box;
+}

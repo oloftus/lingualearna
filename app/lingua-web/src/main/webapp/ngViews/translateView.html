@@ -1,8 +1,7 @@
 
 <div class="lingua-component" id="lingua-select-translate-dialog">
-    <button class="lingua-icon-button lingua-dialog-close">Close</button>
     <div class="lingua-dialog-header">
-        <div class="lingua-controls-left">
+        <div class="lingua-controls left">
             <button class="lingua-action-button-icon" id="lingua-add-selection-button">Selection + translation</button>
             <button class="lingua-action-button-icon" id="lingua-add-translation-button">Just selection</button>
         </div>
@@ -12,21 +11,21 @@
         </div>
     </div>
     <div class="lingua-dialog-content">
-        <div>
+        <div class="column">
             <h3>
                 <label for="lingua-local-language-1">{{model.sourceLangName}}</label>
             </h3>
-            <textarea class="lingua-local-language" id="lingua-local-language-1" ng-model="model.query">English</textarea>
+            <textarea class="lingua-local-language" id="lingua-local-language-1" ng-model="model.query"></textarea>
         </div>
-        <div>
+        <div class="column">
             <h3>
                 <label for="lingua-foreign-language-1">{{model.targetLangName}}</label>
             </h3>
             <textarea class="lingua-foreign-language" id="lingua-foreign-language-1"
-                ng-model="model.translations.google">Spanish</textarea>
+                ng-model="model.translations.google"></textarea>
         </div>
     </div>
-    <div class="lingua-controls-footer">
+    <div class="lingua-dialog-footer">
         <button class="lingua-action-button-icon" id="lingua-search-button" ng-click="func.doTranslate()">Translate</button>
     </div>
 </div>

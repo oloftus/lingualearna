@@ -1,8 +1,3 @@
-#lingua-add-edit-note-dialog .lingua-dialog-content{display:flex;flex-flow:row wrap;}
-#lingua-add-edit-note-dialog .lingua-local-language,
-#lingua-add-edit-note-dialog .lingua-foreign-language,
-#lingua-add-edit-note-dialog .lingua-note{height:70px;}
-#lingua-add-edit-note-dialog .lingua-local-language,
-#lingua-add-edit-note-dialog .lingua-foreign-language{flex-basis:49%;box-sizing:border-box;}
-#lingua-add-edit-note-dialog .lingua-foreign-language{margin-left:auto;margin-left:2%;}
-#lingua-add-edit-note-dialog .lingua-note{flex-basis:100%;margin-top:2%;}
+#lingua-local-note,#lingua-foreign-note,#lingua-additional-note {
+    height: 120px;
+}
