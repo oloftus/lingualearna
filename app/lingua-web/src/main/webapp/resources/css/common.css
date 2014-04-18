@@ -176,12 +176,30 @@ body {
     background-image: url(../images/magnifier.svg);
 }
 
-.lingua-validation-msgs {
-    margin: 14px 0 0;
+#lingua-global-messages {
+    padding: 14px;
+    border-bottom: 1px solid #888888;
+    background-color: #eeeeee;
 }
 
-.lingua-validation-msgs .lingua-error {
+#lingua-global-messages ul,.lingua-field-messages ul {
+    margin: 0;
+    padding: 0 0 0 20px;
+}
+
+.lingua-error {
     color: red;
+}
+
+#lingua-global-messages .lingua-info {
+    color: inherit;
+}
+
+.lingua-field-messages {
+    padding: 14px;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #888888;
 }
 
 .lingua-dialog-content {
@@ -199,6 +217,11 @@ body {
 
 .lingua-dialog-content>div.column {
     flex-basis: 50%;
+}
+
+p.lingua-source-url {
+    margin: 0;
+    padding: 14px;
 }
 
 .lingua-dialog-content h3 {

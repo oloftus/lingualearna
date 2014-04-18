@@ -1,7 +1,14 @@
-define([ "angular", "appRoot" ], function() {
+define([ "appRoot" ], function() {
 
-    var JsonWebService = function($http){
-        
+    setupDefaultScope = function(scope) {
+
+        scope.model = {};
+        scope.func = {};
+        scope.model.globalMessages = [];
+    };
+
+    var JsonWebService = function($http) {
+
         var execute = function(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback) {
             $http({
                 method : httpMethod,
@@ -16,11 +23,10 @@ define([ "angular", "appRoot" ], function() {
                 failureCallback(data, status, headers, config);
             });
         };
-            
+
         return {
             execute : execute
         };
     };
-
     linguaApp.service("jsonWebService", [ "$http", JsonWebService ]);
 });

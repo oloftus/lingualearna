@@ -6,21 +6,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller("/app")
 public class PagesController {
 
-	@RequestMapping("/login")
-	public String loginPage() throws Exception {
+    @RequestMapping("/login")
+    public String loginPage() throws Exception {
 
-		return "login";
-	}
+        return "login";
+    }
 
-	@RequestMapping("/translate")
-	public String translatePage() throws Exception {
+    @RequestMapping("/note")
+    public String notePage() throws Exception {
 
-		return "translate";
-	}
+        return "addNote";
+    }
 
-	@RequestMapping("/note")
-	public String notePage() throws Exception {
+    @RequestMapping("/translate")
+    public String translatePage() throws Exception {
 
-		return "note";
-	}
+        return "translate";
+    }
 }

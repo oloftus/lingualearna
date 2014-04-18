@@ -1,4 +1,4 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 
@@ -15,18 +15,20 @@
     <div class="lingua-component lingua-dialog-inner" id="lingua-login-dialog">
         <form action="${pageContext.request.contextPath}/j_spring_security_check" method="POST">
             <div class="lingua-dialog-header">
-                <h2>LinguaLearna.com - Login</h2>
+                <h2>Login</h2>
             </div>
             <div class="lingua-dialog-content">
                 <c:if test="${!empty param['loginFailed']}">
-                    <ul class="lingua-validation-msgs">
-                        <li class="lingua-error">Your username/password was incorrect. Please try again.</li>
-                    </ul>
+                    <div id="lingua-global-messages">
+                        <ul>
+                            <li class="lingua-error">Your username/password was incorrect. Please try again.</li>
+                        </ul>
+                    </div>
                 </c:if>
                 <input type="text" name="j_username" value="Username" id="lingua-username" />
                 <input type="text" name="j_password" value="Password" id="lingua-password" />
             </div>
-            <div class="lingua-controls-footer">
+            <div class="lingua-dialog-footer">
                 <input name="submit" type="submit" value="Login" class="lingua-action-button-icon"
                     id="lingua-login-button" />
             </div>

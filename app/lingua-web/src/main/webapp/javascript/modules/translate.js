@@ -13,5 +13,7 @@ function() {
     .value("languageNamesServiceUrl", properties.languageNamesServiceUrl)
     .value("sourceLang", initParams.sourceLang)
     .value("targetLang", initParams.targetLang)
-    .value("initQuery", initParams.query) 
+    .value("initQuery", initParams.query);
+
+    angular.bootstrap(document, ["linguaApp"]);
 });

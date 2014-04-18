@@ -1,30 +1,38 @@
 
 <div class="lingua-component" id="lingua-add-edit-note-dialog">
     <div class="lingua-dialog-header">
-        <h2>{{model.operation.title}}</h2>
+        <h2>{{model.operationTitle}}</h2>
         <div class="lingua-controls">
             <button class="lingua-action-button-icon" id="lingua-save-entry-button" ng-click="func.addEditNote()">
-                {{model.operation.button}}REMOVE ME</button>
+                Save to notebook</button>
         </div>
     </div>
     <div class="lingua-dialog-content">
-        <div class="column">
-            <h3>
-                <label for="lingua-local-note">{{model.localLangName}}REMOVE ME</label>
-            </h3>
-            <textarea id="lingua-local-note" ng-model="model.localNote"></textarea>
+        <div id="lingua-global-messages" ng-if="model.globalMessages.length != 0">
+            <ul>
+                <li ng-class="{'lingua-error': message.type == 'ERROR', 'lingua-info': message.type == 'INFO'}" ng-repeat="message in model.globalMessages">{{message.text}}</li>
+            </ul>
         </div>
         <div class="column">
             <h3>
-                <label for="lingua-foreign-note">{{model.foreignLangName}}REMOVE ME</label>
+                <label for="lingua-local-note">Note - {{model.localLangName}}</label>
             </h3>
-            <textarea id="lingua-foreign-note" ng-model="model.foreignNote"></textarea>
+            <textarea id="lingua-local-note" ng-model="model.localNote" data-fieldname="localNote"></textarea>
+        </div>
+        <div class="column">
+            <h3>
+                <label for="lingua-foreign-note">Note - {{model.foreignLangName}}</label>
+            </h3>
+            <textarea id="lingua-foreign-note" ng-model="model.foreignNote" data-fieldname="foreignNote"></textarea>
         </div>
         <div class="mid-content-row">
             <h3>
                 <label for="lingua-additional-note">Additional Notes</label>
             </h3>
-            <textarea id="lingua-additional-note" ng-model="model.additionalNotes"></textarea>
+            <textarea id="lingua-additional-note" ng-model="model.additionalNotes" data-fieldname="additionalNotes"></textarea>
+        </div>
+        <div class="mid-content-row">
+            <p class="lingua-source-url"><strong>Source:</strong> <a href="{{model.sourceUrl}}">{{model.sourceUrl}}</a></p>
         </div>
     </div>
 </div>

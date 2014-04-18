@@ -1,4 +1,4 @@
-define([ "angular" ], function() {
-
-    linguaApp = angular.module('linguaApp', []);
+define([ "angular", "underscore", "jquery" ], function( ) {
+    
+    linguaApp = angular.module("linguaApp", []);
 });
