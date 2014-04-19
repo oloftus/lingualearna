@@ -16,7 +16,7 @@ define([ "angular", "appRoot" ], function() {
 
         var getField = function(fieldName) {
             
-            var fieldSelector = "textarea[data-fieldName='" + fieldName + "']";
+            var fieldSelector = "[data-fieldName='" + fieldName + "']";
             return $(fieldSelector);
         };
         

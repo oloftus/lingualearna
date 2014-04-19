@@ -44,7 +44,7 @@ define([ "util/commonTypes", "appRoot", "util/util", "util/messageHandler" ], fu
 
             noteService.update($scope.model.noteId, note, function(data) {
                 addGlobalMessage(messageHandler, $scope, localStrings.noteSavedMessage, MessageSeverity.INFO);
-            }, function(data) {
+            }, function(data, status, headers) {
                 messageHandler.handleErrors($scope, data, status, headers);
             });
         };

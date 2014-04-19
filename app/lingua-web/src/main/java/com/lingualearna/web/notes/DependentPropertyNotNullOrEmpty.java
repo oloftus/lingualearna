@@ -27,7 +27,7 @@ public @interface DependentPropertyNotNullOrEmpty {
 
     Class<?>[] groups() default {};
 
-    String message() default "{validationMessages.dependentPropertyNotNull}";
+    String message() default "{org.lingualearna.web.validationMessages.dependentPropertyNotNull}";
 
     Class<? extends Payload>[] payload() default {};
 

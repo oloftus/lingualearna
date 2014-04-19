@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.URL;
 
 @DependentPropertyNotNullOrEmpty.Properties({
         @DependentPropertyNotNullOrEmpty(propertyName = "foreignNote", dependentPropertyName = "foreignLang"),
@@ -72,6 +73,7 @@ public class Note implements Serializable {
         return noteId;
     }
 
+    @URL
     @Length(max = 2000)
     @Column(name = "source_url")
     public String getSourceUrl() {
