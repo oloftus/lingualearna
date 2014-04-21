@@ -30,7 +30,7 @@ public class LanguageNamesControllerTest extends UnitTestBase {
     private LanguageNamesService languageNamesService;
 
     @InjectMocks
-    private LanguageNamesController languageNamesController = new LanguageNamesController();
+    private LanguagesController languageNamesController = new LanguagesController();
 
     @Before
     public void setup() throws Exception {

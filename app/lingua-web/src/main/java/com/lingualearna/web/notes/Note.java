@@ -10,6 +10,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
@@ -18,17 +19,18 @@ import org.hibernate.validator.constraints.URL;
         @DependentPropertyNotNullOrEmpty(propertyName = "foreignNote", dependentPropertyName = "foreignLang"),
         @DependentPropertyNotNullOrEmpty(propertyName = "localNote", dependentPropertyName = "localLang")
 })
-@Entity(name = "note")
+@Entity
+@Table(name = "notes")
 public class Note implements Serializable {
 
     private static final long serialVersionUID = -1700378910934447911L;
 
+    private int noteId;
     private String additionalNotes;
     private Locale foreignLang;
     private String foreignNote;
     private Locale localLang;
     private String localNote;
-    private int noteId;
     private String sourceUrl;
     private TranslationSource translationSource;
 

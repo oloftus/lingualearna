@@ -5,7 +5,7 @@ define([], function() {
     properties = {
 
         translateServiceUrl : serverPart + "/translate",
-        languageNamesServiceUrl : serverPart + "/langName",
+        languageNamesServiceUrl : serverPart + "/languages/langName",
         noteServiceUrl: serverPart + "/note"
     };
 });

@@ -13,8 +13,11 @@
 	<context:component-scan base-package="com.lingualearna.web.dao" />
 	<context:component-scan base-package="com.lingualearna.web.util.locale" />
 	<context:component-scan base-package="com.lingualearna.web.translation.provider" />
+	<context:component-scan base-package="com.lingualearna.web.languages" />
 
 	<context:property-placeholder location="classpath:/app.properties" />
+	<context:spring-configured />
+	<context:load-time-weaver/>
 	
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 </beans>
