@@ -1,3 +1,5 @@
+loadRequireConfig();
+
 define(
 [
  "appRoot",

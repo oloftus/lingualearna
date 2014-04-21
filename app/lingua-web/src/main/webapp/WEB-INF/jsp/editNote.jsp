@@ -10,9 +10,9 @@
         noteId : "${noteId}"
     };
 </script>
+<script src="${pageContext.request.contextPath}/javascript/modules/config/requireConfig.js"></script>
 <script data-main="${pageContext.request.contextPath}/javascript/modules/editNote"
     src="${pageContext.request.contextPath}/javascript/lib/require-2.1.11.js"></script>
-<script src="${pageContext.request.contextPath}/javascript/modules/config/requireConfig.js"></script>
 </head>
 
 <body ng-controller="editNoteController">
