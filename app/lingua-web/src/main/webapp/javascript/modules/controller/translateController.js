@@ -1,9 +1,9 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "service/languageNamesService",
+    var dependencies = [ "linguaApp", "controller/abstractController", "underscore", "service/languageNamesService",
             "service/translateService", "util/commonTypes", "util/util", "underscore" ];
 
-    define(dependencies, function(linguaApp, abstractController) {
+    define(dependencies, function(linguaApp, abstractController, _) {
 
         var translateController = function($scope, translateService, languageNamesService, sourceLang, targetLang,
                 initQuery) {

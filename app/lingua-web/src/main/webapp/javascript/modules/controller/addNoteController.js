@@ -1,10 +1,10 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "localization/stringsDefault", "controller/abstractController",
+    var dependencies = [ "linguaApp", "localization/stringsDefault", "controller/abstractController", "underscore",
             "service/languageNamesService", "service/noteService", "util/commonTypes", "util/util",
             "util/messageHandler", "underscore" ];
 
-    define(dependencies, function(linguaApp, localStrings, abstractController) {
+    define(dependencies, function(linguaApp, localStrings, abstractController, _) {
 
         var addNoteController = function($scope, noteService, languageNamesService, messageHandler, formInput) {
 
