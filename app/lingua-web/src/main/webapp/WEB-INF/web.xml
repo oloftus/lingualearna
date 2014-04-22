@@ -46,7 +46,7 @@
 
     <filter-mapping>
         <filter-name>addHeadersFilter</filter-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/ngViews/*</url-pattern>
     </filter-mapping>
 
 	<filter-mapping>
