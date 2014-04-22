@@ -1,9 +1,9 @@
 (function() {
     
-    var appRoot = "http://localhost:8080/LinguaWeb/"
-    var cssRoot = appRoot + "resources/css/"
-    var jsRoot = appRoot + "javascript/"
-    var ngViewsRoot = appRoot + "ngViews/"
+    var appRoot = "http://localhost:8080/LinguaWeb/";
+    var cssRoot = appRoot + "resources/css/";
+    var jsRoot = appRoot + "javascript/";
+    var ngViewsRoot = appRoot + "ngViews/";
     
     var addCss = function() {
         
@@ -35,7 +35,6 @@
         requireConfig.setAttribute("src", jsRoot + "modules/config/requireConfig.js");
         var requireApp = document.createElement("script");
         requireApp.setAttribute("src", jsRoot + "lib/require-2.1.11.js");
-        requireApp.setAttribute("data-main", jsRoot + "modules/miniApps/reader");
         
         document.body.appendChild(requireConfig);
         document.body.appendChild(requireApp);
@@ -46,5 +45,5 @@
     addNgInclude();
     boot();
     
-    require([jsRoot + "modules/reader.js"]);
+    require([jsRoot + "modules/miniApps/reader.js"]);
 })();

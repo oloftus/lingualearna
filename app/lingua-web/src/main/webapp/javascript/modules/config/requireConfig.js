@@ -18,6 +18,6 @@ function loadRequireConfig() {
                 exports : "$"
             }
         },
-        baseUrl : "/LinguaWeb/javascript/modules/"
+        baseUrl : "http://localhost:8080/LinguaWeb/javascript/modules/"
     });
 }
