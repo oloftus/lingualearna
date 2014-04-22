@@ -1,4 +1,4 @@
 define([ "underscore.string" ], function() {
     
-    _s = require("underscore.string");
+    return require("underscore.string");
 });

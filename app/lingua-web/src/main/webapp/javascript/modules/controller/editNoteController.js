@@ -1,65 +1,75 @@
-define([ "util/commonTypes", "appRoot", "util/util", "util/messageHandler" ], function() {
+(function() {
 
-    /**
-     * Prevent users overwriting notes because their original content couldn't
-     * be loaded
-     */
-    var disableSave = function(scope) {
+    var dependencies = [ "linguaApp", "localization/stringsDefault", "controller/abstractController",
+            "util/commonTypes", "util/util", "util/messageHandler", "service/languageNamesService",
+            "service/noteService", "underscore" ];
 
-        delete scope.func.addEditNote;
-    };
+    define(dependencies, function(linguaApp, localStrings, abstractController) {
 
-    var loadResultIntoModel = function(model, result) {
+        /*
+         * Prevent users overwriting notes because their original content
+         * couldn't be loaded
+         */
+        var disableSave = function(scope) {
 
-        model.foreignLang = result.foreignLang;
-        model.foreignNote = result.foreignNote;
-        model.localLang = result.localLang;
-        model.localNote = result.localNote;
-        model.additionalNotes = result.additionalNotes;
-        model.sourceUrl = result.sourceUrl;
-    };
+            delete scope.func.addEditNote;
+        };
 
-    var loadLanguageNames = function(languageNamesService, model) {
+        var loadResultIntoModel = function(model, result) {
 
-        languageNamesService.lookup(new LanguageNameRequest(model.foreignLang), function(data) {
-            model.foreignLangName = data.langName;
-        });
+            model.foreignLang = result.foreignLang;
+            model.foreignNote = result.foreignNote;
+            model.localLang = result.localLang;
+            model.localNote = result.localNote;
+            model.additionalNotes = result.additionalNotes;
+            model.sourceUrl = result.sourceUrl;
+        };
 
-        languageNamesService.lookup(new LanguageNameRequest(model.localLang), function(data) {
-            model.localLangName = data.langName;
-        });
-    };
+        var loadLanguageNames = function(languageNamesService, model) {
 
-    var editNoteController = function($scope, noteService, languageNamesService, messageHandler, noteId) {
+            languageNamesService.lookup(new LanguageNameRequest(model.foreignLang), function(data) {
+                model.foreignLangName = data.langName;
+            });
 
-        setupDefaultScope($scope);
-
-        $scope.model.noteId = noteId;
-        $scope.model.operationTitle = localStrings.editNoteTitle;
-
-        $scope.func.addEditNote = function() {
-
-            var note = new Note($scope.model.foreignLang, $scope.model.foreignNote, $scope.model.localLang,
-                    $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl, $scope.model.noteId);
-
-            noteService.update($scope.model.noteId, note, function(data) {
-                addGlobalMessage(messageHandler, $scope, localStrings.noteSavedMessage, MessageSeverity.INFO);
-            }, function(data, status, headers) {
-                messageHandler.handleErrors($scope, data, status, headers);
+            languageNamesService.lookup(new LanguageNameRequest(model.localLang), function(data) {
+                model.localLangName = data.langName;
             });
         };
 
-        noteService.retrieve($scope.model.noteId, function(data) {
+        var editNoteController = function($scope, noteService, languageNamesService, messageHandler, noteId) {
 
-            loadResultIntoModel($scope.model, data);
-            loadLanguageNames(languageNamesService, $scope.model);
-        }, function() {
+            _.extend(this, abstractController);
+            this.setupDefaultScope($scope);
 
-            disableSave($scope);
-            addGlobalMessage(messageHandler, $scope, localStrings.genericServerErrorMessage, MessageSeverity.ERROR);
-        });
-    };
+            $scope.model.noteId = noteId;
+            $scope.model.operationTitle = localStrings.editNoteTitle;
 
-    linguaApp.controller("editNoteController", [ "$scope", "noteService", "languageNamesService", "messageHandler",
-            "noteId", editNoteController ]);
-});
+            $scope.func.addEditNote = function() {
+
+                var note = new Note($scope.model.foreignLang, $scope.model.foreignNote, $scope.model.localLang,
+                        $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl,
+                        $scope.model.noteId);
+
+                noteService.update($scope.model.noteId, note, function(data) {
+                    messageHandler.addFreshGlobalMessage($scope, localStrings.noteSavedMessage, MessageSeverity.INFO);
+                }, function(data, status, headers) {
+                    messageHandler.handleErrors($scope, data, status, headers);
+                });
+            };
+
+            noteService.retrieve($scope.model.noteId, function(data) {
+
+                loadResultIntoModel($scope.model, data);
+                loadLanguageNames(languageNamesService, $scope.model);
+            }, function() {
+
+                disableSave($scope);
+                messageHandler.addFreshGlobalMessage($scope, localStrings.genericServerErrorMessage,
+                        MessageSeverity.ERROR);
+            });
+        };
+
+        linguaApp.controller("editNoteController", [ "$scope", "noteService", "languageNamesService", "messageHandler",
+                "noteId", editNoteController ]);
+    });
+})();

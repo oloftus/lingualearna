@@ -1,35 +1,43 @@
-define([ "util/commonTypes", "appRoot", "util/util" ], function() {
+(function() {
 
-    var translateController = function($scope, translateService, languageNamesService, sourceLang, targetLang,
-            initQuery) {
+    var dependencies = [ "linguaApp", "controller/abstractController", "service/languageNamesService",
+            "service/translateService", "util/commonTypes", "util/util", "underscore" ];
 
-        setupDefaultScope($scope);
-        
-        $scope.model.sourceLang = sourceLang;
-        $scope.model.targetLang = targetLang;
-        $scope.model.query = initQuery;
+    define(dependencies, function(linguaApp, abstractController) {
 
-        $scope.func.doTranslate = function() {
+        var translateController = function($scope, translateService, languageNamesService, sourceLang, targetLang,
+                initQuery) {
 
-            var translationRequest = new TranslationRequest($scope.model.sourceLang, $scope.model.targetLang, $scope.model.query);
-            translateService.translate(translationRequest, function(data) {
-                $scope.model.translations = {
-                    google : data.translations.Google
-                };
+            _.extend(this, abstractController);
+            this.setupDefaultScope($scope);
+
+            $scope.model.sourceLang = sourceLang;
+            $scope.model.targetLang = targetLang;
+            $scope.model.query = initQuery;
+
+            $scope.func.doTranslate = function() {
+
+                var translationRequest = new TranslationRequest($scope.model.sourceLang, $scope.model.targetLang,
+                        $scope.model.query);
+                translateService.translate(translationRequest, function(data) {
+                    $scope.model.translations = {
+                        google : data.translations.Google
+                    };
+                });
+            };
+
+            languageNamesService.lookup(new LanguageNameRequest($scope.model.sourceLang), function(data) {
+                $scope.model.sourceLangName = data.langName;
             });
+
+            languageNamesService.lookup(new LanguageNameRequest($scope.model.targetLang), function(data) {
+                $scope.model.targetLangName = data.langName;
+            });
+
+            $scope.func.doTranslate();
         };
 
-        languageNamesService.lookup(new LanguageNameRequest($scope.model.sourceLang), function(data) {
-            $scope.model.sourceLangName = data.langName;
-        });
-
-        languageNamesService.lookup(new LanguageNameRequest($scope.model.targetLang), function(data) {
-            $scope.model.targetLangName = data.langName;
-        });
-
-        $scope.func.doTranslate();
-    };
-
-    linguaApp.controller("translateController", [ "$scope", "translateService", "languageNamesService", "sourceLang",
-            "targetLang", "initQuery", translateController ]);
-});
+        linguaApp.controller("translateController", [ "$scope", "translateService", "languageNamesService",
+                "sourceLang", "targetLang", "initQuery", translateController ]);
+    });
+})();

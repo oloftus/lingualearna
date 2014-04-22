@@ -1,6 +1,6 @@
 define([], function() {
 
-    localStrings = {
+    return {
 
         addNoteTitle : "Add Note",
         editNoteTitle : "Edit note",

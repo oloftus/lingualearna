@@ -1,40 +1,46 @@
-define([], function() {
+(function() {
 
-    TranslationRequest = function(sourceLang, targetLang, query) {
+    var dependencies = [];
 
-        this.sourceLang = sourceLang;
-        this.targetLang = targetLang;
-        this.query = query;
-    };
+    define(dependencies, function() {
 
-    LanguageNameRequest = function(langCode) {
+        TranslationRequest = function(sourceLang, targetLang, query) {
 
-        this.langCode = langCode;
-    };
-    
-    Note = function(foreignLang, foreignNote, localLang, localNote, additionalNotes, sourceUrl, noteId) {
-        this.foreignLang = foreignLang;
-        this.foreignNote = foreignNote;
-        this.localLang = localLang;
-        this.localNote = localNote;
-        this.additionalNotes = additionalNotes;
-        this.sourceUrl = sourceUrl;
-        this.noteId = noteId;
-    };
+            this.sourceLang = sourceLang;
+            this.targetLang = targetLang;
+            this.query = query;
+        };
 
-    HttpMethod = {
-        POST: "POST",
-        GET: "GET",
-        PUT: "PUT",
-        DELETE: "DELETE"
-    };
-    
-    HttpHeaders = {
-        BAD_REQUEST: 400
-    };
-    
-    MessageSeverity = {
-        INFO: "INFO",
-        ERROR: "ERROR"
-    };
-});
+        LanguageNameRequest = function(langCode) {
+
+            this.langCode = langCode;
+        };
+
+        Note = function(foreignLang, foreignNote, localLang, localNote, additionalNotes, sourceUrl, noteId) {
+            
+            this.foreignLang = foreignLang;
+            this.foreignNote = foreignNote;
+            this.localLang = localLang;
+            this.localNote = localNote;
+            this.additionalNotes = additionalNotes;
+            this.sourceUrl = sourceUrl;
+            this.noteId = noteId;
+        };
+
+        HttpMethod = {
+            POST : "POST",
+            GET : "GET",
+            PUT : "PUT",
+            DELETE : "DELETE"
+        };
+
+        HttpHeaders = {
+            BAD_REQUEST : 400
+        };
+
+        MessageSeverity = {
+            INFO : "INFO",
+            ERROR : "ERROR"
+        };
+    });
+})();
