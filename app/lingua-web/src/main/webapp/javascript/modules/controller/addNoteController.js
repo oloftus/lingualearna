@@ -43,10 +43,7 @@
             });
         };
 
-        linguaApp.controllerProvider.register("addNoteController", [ "$scope", "noteService", "languageNamesService",
-                "messageHandler", "formInput", AddNoteController ]);
-        // linguaApp.controller("addNoteController", [ "$scope", "noteService",
-        // "languageNamesService", "messageHandler",
-        // "formInput", AddNoteController ]);
+         linguaApp.controllerProvider.register("addNoteController", [ "$scope", "noteService", "languageNamesService", "messageHandler",
+                "formInput", AddNoteController ]);
     });
 })();

@@ -54,7 +54,8 @@
         var pathPrefix = "/lingua";
         
         Paths = {
-            ADD_NOTE : pathPrefix + "/add_note"
+            ADD_NOTE : pathPrefix + "/add-note",
+            READER : pathPrefix + "/reader"
         };
     });
 })();

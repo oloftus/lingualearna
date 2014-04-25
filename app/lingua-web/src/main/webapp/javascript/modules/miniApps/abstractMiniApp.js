@@ -6,7 +6,7 @@
 
         var AbstractMiniApp = {
 
-            configure : function() {
+            configure : function(callback) {
 
                 var configuration = function($routeProvider, $locationProvider, $sceDelegateProvider,
                         $controllerProvider) {
@@ -27,6 +27,25 @@
 
                                 var deferred = $q.defer();
                                 var dependencies = [ Properties.javascriptRoot + "/controller/addNoteController.js" ];
+
+                                require(dependencies, function() {
+
+                                    $rootScope.$apply(function() {
+
+                                        deferred.resolve();
+                                    });
+                                });
+
+                                return deferred.promise;
+                            }
+                        }
+                    }).when(Paths.READER, {
+                        templateUrl : Properties.ngViewsRoot + "/reader.html",
+                        resolve : {
+                            lazyLoadController : function($q, $rootScope) {
+
+                                var deferred = $q.defer();
+                                var dependencies = [ Properties.javascriptRoot + "/controller/readerController.js" ];
 
                                 require(dependencies, function() {
 
