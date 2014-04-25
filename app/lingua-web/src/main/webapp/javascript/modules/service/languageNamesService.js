@@ -1,6 +1,6 @@
 (function(){
     
-    var dependencies = [ "linguaApp", "util/commonTypes", "util/util", "util/jsonWebService" ];
+    var dependencies = [ "linguaApp", "util/commonTypes", "service/jsonWebService" ];
     
     define(dependencies, function(linguaApp) {
         

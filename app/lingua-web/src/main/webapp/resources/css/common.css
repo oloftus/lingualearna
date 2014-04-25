@@ -21,13 +21,15 @@ body {
     width: 100%;
 }
 
-.lingua-component {
+.lingua-component, .lingua-component * {
     font-family: 'Alegreya', serif;
     font-size: 14px;
+    font: 100%;
+    color: black;
 }
 
 .lingua-component h1 {
-    font-size: 1.2em;
+    font-size: 1.5em;
     margin: 0;
 }
 

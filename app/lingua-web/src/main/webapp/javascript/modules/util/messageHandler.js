@@ -89,7 +89,7 @@
                 }
             };
             
-            addFreshGlobalMessage = function(scope, message, severity) {
+            var addFreshGlobalMessage = function(scope, message, severity) {
 
                 clearAllMessages(scope);
                 addGlobalMessage(scope, message, severity);

@@ -1,6 +1,6 @@
 (function(){
     
-    var dependencies = [ "util/commonTypes", "util/jsonWebService" ];
+    var dependencies = [ "util/commonTypes", "service/jsonWebService" ];
     
     define(dependencies, function() {
         

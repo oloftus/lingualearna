@@ -1,16 +1,17 @@
 (function() {
 
     var dependencies = [ "linguaApp", "localization/stringsDefault", "controller/abstractController", "underscore",
-            "service/languageNamesService", "service/noteService", "util/commonTypes", "util/util",
-            "util/messageHandler", "underscore" ];
+            "service/languageNamesService", "service/noteService", "util/commonTypes", "util/messageHandler",
+            "underscore" ];
 
     define(dependencies, function(linguaApp, localStrings, abstractController, _) {
 
-        var addNoteController = function($scope, noteService, languageNamesService, messageHandler, formInput) {
+        var AddNoteController = function($scope, noteService, languageNamesService, messageHandler, formInput) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
 
+            $scope.Properties = Properties;
             $scope.model.foreignLang = formInput.foreignLang;
             $scope.model.foreignNote = formInput.foreignNote;
             $scope.model.localLang = formInput.localLang;
@@ -42,7 +43,10 @@
             });
         };
 
-        linguaApp.controller("addNoteController", [ "$scope", "noteService", "languageNamesService", "messageHandler",
-                "formInput", addNoteController ]);
+        linguaApp.controllerProvider.register("addNoteController", [ "$scope", "noteService", "languageNamesService",
+                "messageHandler", "formInput", AddNoteController ]);
+        // linguaApp.controller("addNoteController", [ "$scope", "noteService",
+        // "languageNamesService", "messageHandler",
+        // "formInput", AddNoteController ]);
     });
 })();

@@ -1,11 +1,11 @@
 (function() {
 
     var dependencies = [ "linguaApp", "controller/abstractController", "underscore", "service/languageNamesService",
-            "service/translateService", "util/commonTypes", "util/util", "underscore" ];
+            "service/translateService", "util/commonTypes", "underscore" ];
 
     define(dependencies, function(linguaApp, abstractController, _) {
 
-        var translateController = function($scope, translateService, languageNamesService, sourceLang, targetLang,
+        var TranslateController = function($scope, translateService, languageNamesService, sourceLang, targetLang,
                 initQuery) {
 
             _.extend(this, abstractController);
@@ -38,6 +38,6 @@
         };
 
         linguaApp.controller("translateController", [ "$scope", "translateService", "languageNamesService",
-                "sourceLang", "targetLang", "initQuery", translateController ]);
+                "sourceLang", "targetLang", "initQuery", TranslateController ]);
     });
 })();

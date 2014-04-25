@@ -1,10 +1,10 @@
 (function() {
-    
+
     loadRequireConfig();
 
-    var dependencies = [ "linguaApp", "config/properties", "miniApps/abstractMiniApp", "underscore", "controller/addNoteController" ];
-    
-    define(dependencies, function(linguaApp, properties, abstractMiniApp, _) {
+    var dependencies = [ "linguaApp", "miniApps/abstractMiniApp", "underscore", "controller/addNoteController", "config/properties" ];
+
+    define(dependencies, function(linguaApp, abstractMiniApp, _) {
 
         _.extend(this, abstractMiniApp);
 
@@ -18,11 +18,10 @@
             noteId : initParams.noteId
         };
 
-        linguaApp
-        .value("noteServiceUrl", properties.noteServiceUrl)
-        .value("languageNamesServiceUrl", properties.languageNamesServiceUrl)
-        .value("formInput", formInput);
+        linguaApp.value("noteServiceUrl", Properties.noteServiceUrl).value("languageNamesServiceUrl",
+                Properties.languageNamesServiceUrl).value("formInput", formInput);
 
-        boot();
+        this.configure();
+        this.boot();
     });
 })();

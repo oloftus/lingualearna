@@ -1,8 +1,8 @@
 (function() {
 
     var dependencies = [ "linguaApp", "localization/stringsDefault", "controller/abstractController", "underscore",
-            "util/commonTypes", "util/util", "util/messageHandler", "service/languageNamesService",
-            "service/noteService", "underscore" ];
+            "util/commonTypes", "util/messageHandler", "service/languageNamesService", "service/noteService",
+            "config/properties" ];
 
     define(dependencies, function(linguaApp, localStrings, abstractController, _) {
 
@@ -36,11 +36,12 @@
             });
         };
 
-        var editNoteController = function($scope, noteService, languageNamesService, messageHandler, noteId) {
+        var EditNoteController = function($scope, noteService, languageNamesService, messageHandler, noteId) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
 
+            $scope.Properties = Properties;
             $scope.model.noteId = noteId;
             $scope.model.operationTitle = localStrings.editNoteTitle;
 
@@ -70,6 +71,6 @@
         };
 
         linguaApp.controller("editNoteController", [ "$scope", "noteService", "languageNamesService", "messageHandler",
-                "noteId", editNoteController ]);
+                "noteId", EditNoteController ]);
     });
 })();

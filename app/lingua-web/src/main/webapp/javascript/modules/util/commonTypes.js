@@ -1,6 +1,6 @@
 (function() {
 
-    var dependencies = [];
+    var dependencies = [ "config/properties" ];
 
     define(dependencies, function() {
 
@@ -26,6 +26,10 @@
             this.sourceUrl = sourceUrl;
             this.noteId = noteId;
         };
+        
+        IllegalArgumentException = function(message) {
+            this.message = message;
+        };
 
         HttpMethod = {
             POST : "POST",
@@ -41,6 +45,16 @@
         MessageSeverity = {
             INFO : "INFO",
             ERROR : "ERROR"
+        };
+        
+        Dialogs = {
+            ADD_NOTE : "ADD_NOTE"
+        };
+        
+        var pathPrefix = "/lingua";
+        
+        Paths = {
+            ADD_NOTE : pathPrefix + "/add_note"
         };
     });
 })();

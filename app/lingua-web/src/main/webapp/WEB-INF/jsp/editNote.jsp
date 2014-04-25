@@ -17,7 +17,7 @@
 
 <body ng-controller="editNoteController">
 
-    <ng-include src="'${pageContext.request.contextPath}/ngViews/noteView.html'" class="lingua-ng-include" />
+    <ng-include src="'${pageContext.request.contextPath}/ngViews/editNoteView.html'" class="lingua-ng-include" />
 
 </body>
 </html>

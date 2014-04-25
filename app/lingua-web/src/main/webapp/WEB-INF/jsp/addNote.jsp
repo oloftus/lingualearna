@@ -23,7 +23,7 @@
 
 <body ng-controller="addNoteController">
 
-    <ng-include src="'${pageContext.request.contextPath}/ngViews/noteView.html'" class="lingua-ng-include" />
+    <ng-include src="'${pageContext.request.contextPath}/ngViews/addNoteView.html'" class="lingua-ng-include" />
 
 </body>
 </html>

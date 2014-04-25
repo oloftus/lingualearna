@@ -1,4 +1,4 @@
-define([ "angular" ], function(angular) {
+define([ "ng", "ngRoute" ], function(ng) {
     
-    return angular.module("linguaAppx", []);
+    return ng.module("linguaAppx", [ "ngRoute" ]);
 });

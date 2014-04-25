@@ -7,26 +7,31 @@
     
     var addCss = function() {
         
-        var cssInclude = document.createElement("link");
-        cssInclude.setAttribute("rel", "stylesheet");
-        cssInclude.setAttribute("type", "text/css");
-        cssInclude.setAttribute("href", cssRoot + "reader.css");
+        var cssInclude = [];
+        cssInclude[0] = document.createElement("link");
+        cssInclude[1] = document.createElement("link");
         
-        document.head.appendChild(cssInclude);
-    };
-    
-    var addNgController = function() {
+        for (var i = 0; i < cssInclude.length; i++) {
+            cssInclude[i].setAttribute("rel", "stylesheet");
+            cssInclude[i].setAttribute("type", "text/css");
+        }
         
-        document.body.setAttribute("ng-controller", "readerController");
+        cssInclude[0].setAttribute("href", cssRoot + "common.css");
+        cssInclude[1].setAttribute("href", cssRoot + "reader.css");
+        
+        for (var i = 0; i < cssInclude.length; i++) {
+            document.head.appendChild(cssInclude[i]);
+        }
     };
     
     var addNgInclude = function() {
 
         var ngInclude = document.createElement("ng-include");
         ngInclude.setAttribute("class", "lingua-ng-include");
+        ngInclude.setAttribute("id", "lingua-reader");
         ngInclude.setAttribute("src", "'" + ngViewsRoot + "reader.html" + "'");
         
-        document.body.appendChild(ngInclude);
+        document.body.insertBefore(ngInclude, document.body.childNodes[0]);
     };
     
     var boot = function() {
@@ -41,7 +46,6 @@
     };
     
     addCss();
-    addNgController();
     addNgInclude();
     boot();
     

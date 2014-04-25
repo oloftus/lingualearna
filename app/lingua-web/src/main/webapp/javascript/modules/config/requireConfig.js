@@ -1,14 +1,23 @@
 function loadRequireConfig() {
     
+    Properties = {};
+    
+    with (Properties) {
+        
+        Properties.applicationRoot = "http://localhost:8080/LinguaWeb";
+        Properties.javascriptRoot = applicationRoot + "/javascript/modules";
+    }
+    
     require.config({
         paths : {
-            "angular" : "../lib/angular-1.3.0",
+            "ng" : "../lib/angular-1.3.0",
+            "ngRoute" : "../lib/angular-route-1.3.0",
             "underscore" : "../lib/underscore-1.6.0",
             "jquery" : "../lib/jquery-2.1.0",
             "underscore.string" : "../lib/underscore.string-2.3.0"
         },
         shim : {
-            "angular" : {
+            "ng" : {
                 exports : "angular"
             },
             "underscore" : {
@@ -16,8 +25,11 @@ function loadRequireConfig() {
             },
             "jquery" : {
                 exports : "$"
+            },
+            "ngRoute" : {
+                deps : [ "ng" ]
             }
         },
-        baseUrl : "http://localhost:8080/LinguaWeb/javascript/modules/"
+        baseUrl : Properties.javascriptRoot
     });
 }
