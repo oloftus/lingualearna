@@ -8,7 +8,7 @@
 
             configure : function(callback) {
 
-                // TODO why do we have ot use Properties.ngViewsRoot etc.
+                // TODO why do we have to use Properties.ngViewsRoot etc.
                 var urlAndViewAndController = function(triggerUrl, viewName, controllerName) {
 
                     return {
@@ -34,7 +34,7 @@
                     };
                 };
 
-                var Configuration = function($stateProvider, $locationProvider, $sceDelegateProvider,
+                var Configuration = function($stateProvider, $locationProvider, $sceDelegateProvider, $httpProvider,
                         $controllerProvider, $compileProvider, $filterProvider, $provide) {
 
                     var routingTable = [ {
@@ -66,9 +66,10 @@
 
                     $locationProvider.html5Mode(true);
                     $sceDelegateProvider.resourceUrlWhitelist(whitelist);
+                    $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = pageParam.csrfToken;
                 };
 
-                linguaApp.config([ "$stateProvider", "$locationProvider", "$sceDelegateProvider",
+                linguaApp.config([ "$stateProvider", "$locationProvider", "$sceDelegateProvider", "$httpProvider",
                         "$controllerProvider", "$compileProvider", "$filterProvider", "$provide", Configuration ]);
             },
 

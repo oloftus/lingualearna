@@ -27,6 +27,7 @@
                 </c:if>
                 <input type="text" name="j_username" value="Username" id="lingua-username" />
                 <input type="text" name="j_password" value="Password" id="lingua-password" />
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             </div>
             <div class="lingua-dialog-footer">
                 <input name="submit" type="submit" value="Login" class="lingua-action-button-icon"
