@@ -51,9 +51,9 @@
             ADD_NOTE : "ADD_NOTE"
         };
         
-        Paths = {
-            ADD_NOTE : "ADD_NOTE",
-            READER : "READER"
+        AppStates = {
+            MAIN : "MAIN",
+            ADD_NOTE : "ADD_NOTE"
         };
     });
 })();

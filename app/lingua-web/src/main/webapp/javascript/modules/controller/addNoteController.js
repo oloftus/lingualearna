@@ -6,6 +6,27 @@
 
     define(dependencies, function(linguaApp, localStrings, abstractController, _) {
 
+        // TODO: Temporary
+        var initParams = {
+                foreignLang : "en",
+                foreignNote : "",
+                localLang : "de",
+                localNote : "",
+                additionalNotes : "",
+                sourceUrl : "",
+                noteId : ""
+        };
+
+        var formInput = {
+            foreignLang : initParams.foreignLang,
+            localLang : initParams.localLang,
+            foreignNote : initParams.foreignNote,
+            localNote : initParams.localNote,
+            additionalNotes : initParams.additionalNotes,
+            sourceUrl : initParams.sourceUrl,
+            noteId : initParams.noteId
+        };
+
         var AddNoteController = function($scope, noteService, languageNamesService, messageHandler, formInput) {
 
             _.extend(this, abstractController);
@@ -43,7 +64,8 @@
             });
         };
 
-         linguaApp.controllerProvider.register("addNoteController", [ "$scope", "noteService", "languageNamesService", "messageHandler",
-                "formInput", AddNoteController ]);
+        linguaApp.provide.constant("formInput", formInput);
+        linguaApp.controllerProvider.register("addNoteController", [ "$scope", "noteService", "languageNamesService",
+                "messageHandler", "formInput", AddNoteController ]);
     });
 })();

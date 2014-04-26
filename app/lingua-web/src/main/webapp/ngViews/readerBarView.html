@@ -1,0 +1,11 @@
+<header class="lingua-component" id="lingua-reader-bar" ng-controller="readerController">
+    <div class="lingua-align-left">
+        <h1>LinguaLearna.com</h1>
+    </div>
+    <div class="lingua-align-centre">
+        <button class="lingua-action-button lingua-action-button-icon" id="lingua-add-note-button" ui-sref="ADD_NOTE">Add note</button>
+    </div>
+    <div class="lingua-align-right">
+        <a href="{{model.currentNotebook.url}}" class="lingua-icon-link" id="lingua-notebook-link">{{model.currentNotebook.name}}</a>
+    </div>
+</header>

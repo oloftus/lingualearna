@@ -1,24 +1,34 @@
 (function() {
 
-    var dependencies = [ "ng", "linguaApp", "util/commonTypes", "config/properties" ];
+    var dependencies = [ "ng", "linguaApp", "underscore", "util/commonTypes", "config/properties" ];
 
-    define(dependencies, function(ng, linguaApp) {
+    define(dependencies, function(ng, linguaApp, _) {
 
         var AbstractMiniApp = {
 
             configure : function(callback) {
 
-                // TODO why do we have to use Properties.ngViewsRoot etc.
-                var urlAndViewAndController = function(triggerUrl, viewName, controllerName) {
+                var viewsAndControllers = function(stateUrl, views, controllers) {
+
+                    var absoluteViews = {};
+                    _.each(views, function(view) {
+                        absoluteViews[view.viewName] = {
+                            templateUrl : Properties.ngViewsRoot + view.viewUrl
+                        };
+                    });
+
+                    var absoluteControllers = _.map(controllers, function(controller) {
+                        return Properties.javascriptRoot + controller;
+                    });
 
                     return {
-                        url : viewName,
-                        templateUrl : Properties.ngViewsRoot + viewName,
+                        url : stateUrl,
+                        views : absoluteViews,
                         resolve : {
                             lazyLoadController : function($q, $rootScope) {
 
                                 var deferred = $q.defer();
-                                var dependencies = [ Properties.javascriptRoot + controllerName ];
+                                var dependencies = absoluteControllers;
 
                                 require(dependencies, function() {
 
@@ -38,13 +48,22 @@
                         $controllerProvider, $compileProvider, $filterProvider, $provide) {
 
                     var routingTable = [ {
-                        name : Paths.ADD_NOTE,
-                        view : "/addNoteView.html",
-                        controller : "/controller/addNoteController.js"
+                        stateName : AppStates.MAIN,
+                        views : [ {
+                            viewName : "",
+                            viewUrl : "/readerBarView.html"
+                        } ],
+                        controllers : [ "/controller/readerController.js" ]
                     }, {
-                        name : Paths.READER,
-                        view : "/reader.html",
-                        controller : "/controller/readerController.js"
+                        stateName : AppStates.ADD_NOTE,
+                        views : [ {
+                            viewName : "readerBar",
+                            viewUrl : "/readerBarView.html"
+                        }, {
+                            viewName : "",
+                            viewUrl : "/addNoteView.html"
+                        } ],
+                        controllers : [ "/controller/readerController.js", "/controller/addNoteController.js" ]
                     } ];
 
                     var additionalViews = [ "/genericNoteView.html" ];
@@ -59,14 +78,23 @@
                     });
                     _.each(routingTable, function(routingEntry) {
 
-                        whitelist.push(routingEntry.view);
-                        $stateProvider.state(routingEntry.name, urlAndViewAndController(routingEntry.url, routingEntry.view,
-                                routingEntry.controller));
+                        _.each(routingEntry.views, function(view) {
+                            whitelist.push(view.viewUrl);
+                        });
+                        $stateProvider.state(routingEntry.stateName, viewsAndControllers(routingEntry.stateUrl,
+                                routingEntry.views, routingEntry.controllers));
+                    });
+
+                    $stateProvider.state("*", {
+                        children : [ {
+                            name : AppStates.MAIN
+                        } ]
                     });
 
                     $locationProvider.html5Mode(true);
                     $sceDelegateProvider.resourceUrlWhitelist(whitelist);
                     $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = pageParam.csrfToken;
+
                 };
 
                 linguaApp.config([ "$stateProvider", "$locationProvider", "$sceDelegateProvider", "$httpProvider",

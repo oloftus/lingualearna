@@ -4,6 +4,9 @@
 
     define(dependencies, function(linguaApp) {
 
-        linguaApp.controller("pagesController", [ "$state", function(){} ]);
+        linguaApp.controller("pagesController", [ "$state", function($state){
+            
+            $state.go(AppStates.MAIN);
+        } ]);
     });
 })();

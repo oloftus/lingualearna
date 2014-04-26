@@ -4,7 +4,7 @@
 
     define(dependencies, function(linguaApp, abstractController, _) {
 
-        var ReaderController = function($scope, $location, $route) {
+        var ReaderController = function($scope, $location) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
@@ -14,6 +14,6 @@
             $scope.model.currentNotebook.name = "name";
         };
 
-        linguaApp.controller("readerController", [ "$scope", "$location", "$route", ReaderController ]);
+        linguaApp.controllerProvider.register("readerController", [ "$scope", "$location", ReaderController ]);
     });
 })();
