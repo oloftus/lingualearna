@@ -10,6 +10,7 @@
                 $http({
                     method : httpMethod,
                     url : serviceUrl,
+                    withCredentials: true,
                     data : JSON.stringify(requestPayload),
                     headers : {
                         "Content-Type" : "application/json"
