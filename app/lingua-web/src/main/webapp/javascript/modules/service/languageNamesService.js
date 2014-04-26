@@ -16,6 +16,6 @@
             };
         };
         
-        linguaApp.service("languageNamesService", [ "jsonWebService", "languageNamesServiceUrl", LanguageNamesService ]);
+        linguaApp.provide.service("languageNamesService", [ "jsonWebService", "languageNamesServiceUrl", LanguageNamesService ]);
     });
 })();

@@ -35,7 +35,7 @@
         <filter-class>com.lingualearna.web.filter.AddHeadersFilter</filter-class>
         <init-param>
             <param-name>Headers</param-name>
-            <param-value>Access-Control-Allow-Origin=*</param-value>
+            <param-value>Access-Control-Allow-Origin=*;Access-Control-Allow-Headers=origin, content-type, accept</param-value>
         </init-param>
     </filter>
 
@@ -47,10 +47,11 @@
     <filter-mapping>
         <filter-name>addHeadersFilter</filter-name>
         <url-pattern>/ngViews/*</url-pattern>
+        <url-pattern>/app/api/*</url-pattern>
     </filter-mapping>
 
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/IGNOREME/*</url-pattern>
 	</filter-mapping>
 </web-app>

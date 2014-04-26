@@ -46,7 +46,7 @@ public class AddHeadersFilterTest {
     private void givenACorrectWebXml() {
 
         when(filterConfig.getInitParameter(INIT_PARAM_KEY))
-                .thenReturn(String.format("%s = %s, %s=%s", HEADER_1_KEY, HEADER_1_VALUE, HEADER_2_KEY, HEADER_2_VALUE));
+                .thenReturn(String.format("%s = %s; %s=%s", HEADER_1_KEY, HEADER_1_VALUE, HEADER_2_KEY, HEADER_2_VALUE));
     }
 
     private void givenAnInvalidWebXml() {

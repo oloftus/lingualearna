@@ -26,6 +26,6 @@
             };
         };
         
-        linguaApp.service("jsonWebService", [ "$http", JsonWebService ]);
+        linguaApp.provide.service("jsonWebService", [ "$http", JsonWebService ]);
     });
 })();

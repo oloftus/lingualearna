@@ -51,11 +51,9 @@
             ADD_NOTE : "ADD_NOTE"
         };
         
-        var pathPrefix = "/lingua";
-        
         Paths = {
-            ADD_NOTE : pathPrefix + "/add-note",
-            READER : pathPrefix + "/reader"
+            ADD_NOTE : "ADD_NOTE",
+            READER : "READER"
         };
     });
 })();

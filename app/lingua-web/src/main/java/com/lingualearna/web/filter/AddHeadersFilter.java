@@ -13,13 +13,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Header pairs separated by comma, key/value are separated by equals.
+ * Header pairs separated by semicolon, key/value are separated by equals.
  */
 public class AddHeadersFilter implements Filter {
 
     private static final String INIT_PARAM_KEY = "Headers";
     private static final String EQUALS = "=";
-    private static final String COMMA = ",";
+    private static final String SEMICOLON = ";";
 
     private Map<String, String> headers = new HashMap<>();
 
@@ -44,7 +44,7 @@ public class AddHeadersFilter implements Filter {
 
         Map<String, String> headers = new HashMap<>();
 
-        for (String strHeader : strHeaders.split(COMMA)) {
+        for (String strHeader : strHeaders.split(SEMICOLON)) {
             String[] headerComponents = strHeader.split(EQUALS);
 
             if (headerComponents.length != 2) {

@@ -6,6 +6,6 @@
         
         var NoteService = CrudService;
         
-        linguaApp.service("noteService", [ "jsonWebService", "noteServiceUrl", NoteService ]);
+        linguaApp.provide.service("noteService", [ "jsonWebService", "noteServiceUrl", NoteService ]);
     });
 })();
