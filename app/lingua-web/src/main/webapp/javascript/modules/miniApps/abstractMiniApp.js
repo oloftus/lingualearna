@@ -50,7 +50,7 @@
                     var routingTable = [ {
                         stateName : AppStates.MAIN,
                         views : [ {
-                            viewName : "",
+                            viewName : "readerBar",
                             viewUrl : "/readerBarView.html"
                         } ],
                         controllers : [ "/controller/readerController.js" ]
@@ -66,7 +66,7 @@
                         controllers : [ "/controller/readerController.js", "/controller/addNoteController.js" ]
                     } ];
 
-                    var additionalViews = [ "/genericNoteView.html" ];
+                    var additionalViews = [ "/abstractNoteView.html" ];
 
                     linguaApp.controllerProvider = $controllerProvider;
                     linguaApp.compileProvider = $compileProvider;

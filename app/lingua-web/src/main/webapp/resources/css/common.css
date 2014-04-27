@@ -21,7 +21,7 @@ body {
     width: 100%;
 }
 
-.lingua-component, .lingua-component * {
+.lingua-component,.lingua-component * {
     font-family: 'Alegreya', serif;
     font-size: 14px;
     font: 100%;
@@ -43,6 +43,11 @@ body {
     margin: 0;
 }
 
+#lingua-reader {
+    position: absolute;
+    z-index: 1000;
+}
+
 .lingua-component textarea,.lingua-component input[type="text"] {
     margin: 0;
     outline: none;
@@ -60,8 +65,12 @@ body {
 }
 
 .lingua-dialog,.lingua-static-dialog,.lingua-draggable-dialog {
+    background: white;
     border: 1px solid #888888;
     box-shadow: 0 0 15px #000000;
+    width: 70%;
+    min-width: 500px;
+    max-width: 900px;
 }
 
 .lingua-dialog-inner {
@@ -77,6 +86,7 @@ body {
 }
 
 .lingua-dialog-close {
+    width:24px;height:24px;
     position: absolute;
     right: 0;
     background-image: url(../images/close.svg) !important;

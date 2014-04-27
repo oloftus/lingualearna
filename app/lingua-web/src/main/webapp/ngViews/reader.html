@@ -1,4 +1,7 @@
 <div ng-controller="pagesController">
     <div ui-view="readerBar"></div>
-    <div ui-view></div>
+    <div class="lingua-draggable-dialog">
+        <button class="lingua-icon-button lingua-dialog-close" ui-sref="MAIN">Close</button>
+        <div ui-view></div>
+    </div>
 </div>

@@ -61,7 +61,10 @@
         document.body.appendChild(requireConfig);
         document.body.appendChild(requireApp);
 
-        require([ jsRoot + "modules/miniApps/reader.js" ]);
+        // TODO: Temporary
+        setTimeout(function() {
+            require([ jsRoot + "modules/miniApps/reader.js" ]);
+        }, 100);
     };
 
     addCss();
