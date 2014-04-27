@@ -37,7 +37,11 @@
             $scope.func.doTranslate();
         };
 
-        linguaApp.controller("translateController", [ "$scope", "translateService", "languageNamesService",
-                "sourceLang", "targetLang", "initQuery", TranslateController ]);
+        // Temporary
+        linguaApp.provide.constant("sourceLang", "en");
+        linguaApp.provide.constant("targetLang", "de");
+        linguaApp.provide.constant("initQuery", "");
+        linguaApp.controllerProvider.register("translateController", [ "$scope", "translateService",
+                "languageNamesService", "sourceLang", "targetLang", "initQuery", TranslateController ]);
     });
 })();

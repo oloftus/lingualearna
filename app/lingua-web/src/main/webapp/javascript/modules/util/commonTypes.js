@@ -53,7 +53,8 @@
         
         AppStates = {
             MAIN : "MAIN",
-            ADD_NOTE : "ADD_NOTE"
+            ADD_NOTE : "ADD_NOTE",
+            TRANSLATE : "TRANSLATE"
         };
     });
 })();

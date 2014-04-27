@@ -13,8 +13,8 @@
             });
 
             $scope.$on("$viewContentLoaded", function(blah) {
-                $(".lingua-draggable-dialog .view:empty").parent().hide();
-                $(".lingua-draggable-dialog .view:not(:empty)").parent().show();
+                $(".lingua-draggable-dialog .lingua-dialog-view:empty").parent().hide();
+                $(".lingua-draggable-dialog .lingua-dialog-view:not(:empty)").parent().show();
             });
 
             $state.go(AppStates.MAIN);

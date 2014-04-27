@@ -10,7 +10,8 @@
 
         linguaApp
         .constant("noteServiceUrl", Properties.noteServiceUrl)
-        .constant("languageNamesServiceUrl", Properties.languageNamesServiceUrl);
+        .constant("languageNamesServiceUrl", Properties.languageNamesServiceUrl)
+        .constant("translateServiceUrl", Properties.translateServiceUrl);
 
         this.configure();
         this.boot();

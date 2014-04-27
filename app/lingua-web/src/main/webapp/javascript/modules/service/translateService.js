@@ -17,6 +17,6 @@
             };
         };
         
-        linguaApp.service("translateService", [ "jsonWebService", "translateServiceUrl", TranslateService ]);
+        linguaApp.provide.service("translateService", [ "jsonWebService", "translateServiceUrl", TranslateService ]);
     });
 })();
