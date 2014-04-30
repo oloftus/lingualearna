@@ -1,6 +1,6 @@
 package com.lingualearna.web.controller;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import org.junit.Before;
@@ -32,6 +32,12 @@ public class LanguageNamesControllerTest extends UnitTestBase {
     @InjectMocks
     private LanguagesController languageNamesController = new LanguagesController();
 
+    private void givenIHaveALanguageNamesRequest() {
+
+        when(languageNameRequest.getLangCode()).thenReturn(SOURCE_LANG);
+    }
+
+    @Override
     @Before
     public void setup() throws Exception {
 
@@ -48,17 +54,12 @@ public class LanguageNamesControllerTest extends UnitTestBase {
 
     private void thenIGetTheCorrectLanguageName() {
 
-        assertTrue(languageNameResponse.getLangCode().equals(SOURCE_LANG));
-        assertTrue(languageNameResponse.getLangName().equals(SOURCE_LANG_NAME));
+        assertEquals(SOURCE_LANG, languageNameResponse.getLangCode());
+        assertEquals(SOURCE_LANG_NAME, languageNameResponse.getLangName());
     }
 
     private void whenICallLookupLangName() {
 
         languageNameResponse = languageNamesController.lookupLangName(languageNameRequest);
-    }
-
-    private void givenIHaveALanguageNamesRequest() {
-
-        when(languageNameRequest.getLangCode()).thenReturn(SOURCE_LANG);
     }
 }

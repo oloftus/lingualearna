@@ -1,6 +1,6 @@
 package com.lingualearna.web.translation.provider;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isNull;
 import static org.mockito.Mockito.mock;
@@ -19,10 +19,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpRequestInitializer;
@@ -36,139 +34,172 @@ import com.lingualearna.web.testutil.AnswerWithSelf;
 import com.lingualearna.web.testutil.UnitTestBase;
 import com.lingualearna.web.translation.SingleTranslationResult;
 import com.lingualearna.web.translation.TranslationException;
-import com.lingualearna.web.translation.TranslationProvider;
 import com.lingualearna.web.util.ApplicationException;
+import com.lingualearna.web.util.locale.LocalizationService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.test.xml")
+@RunWith(MockitoJUnitRunner.class)
 public class GoogleTranslationProviderTest extends UnitTestBase {
 
-	private static final String QUERY = "local";
-	private static final String TRANSLATED_STRING = "foreign";
-	private static final String SOURCE_LANGUAGE = "en";
-	private static final String TARGET_LANGUAGE = "es";
-	private static final String APP_NAME = "appName";
-	private static final String API_KEY = "apiKey";
-	private static final String API_ROOT_URL = "https://example.com";
-	private static final String API_SERVICE_PATH = "/api/api";
+    private static final String QUERY = "local";
+    private static final String TRANSLATED_STRING = "foreign";
+    private static final String SOURCE_LANGUAGE = "en";
+    private static final String TARGET_LANGUAGE = "es";
+    private static final String APP_NAME = "appName";
+    private static final String API_KEY = "apiKey";
+    private static final String API_ROOT_URL = "https://example.com";
+    private static final String API_SERVICE_PATH = "/api/api";
+    private static final String BLANK = "    ";
 
-	@Captor
-	private ArgumentCaptor<TranslateRequestInitializer> translateRequestInitializerArg;
+    @Captor
+    private ArgumentCaptor<TranslateRequestInitializer> translateRequestInitializerArg;
 
-	@Captor
-	private ArgumentCaptor<ArrayList<String>> arrayListStringArg;
+    @Captor
+    private ArgumentCaptor<ArrayList<String>> arrayListStringArg;
 
-	@Mock
-	private GoogleTranslateLibraryWrapper googleTranslateLibraryWrapper;
+    @Mock
+    private GoogleTranslateLibraryWrapper googleTranslateLibraryWrapper;
 
-	@Mock
-	private GoogleTranslateBuilderWrapper translatorBuilder;
+    @Mock
+    private GoogleTranslateBuilderWrapper translatorBuilder;
 
-	private JacksonFactory jacksonFactory;
-	private NetHttpTransport netHttpTransport;
+    @Mock
+    private LocalizationService localizationService;
 
-	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
-	private Translate client;
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private Translate client;
 
-	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
-	private List translateList;
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private List translateList;
 
-	private SingleTranslationResult result;
+    private String applicationName = APP_NAME;
+    private String apiKey = API_KEY;
+    private String apiUrl = API_ROOT_URL + API_SERVICE_PATH;
+    private JacksonFactory jacksonFactory;
+    private NetHttpTransport netHttpTransport;
 
-	@Autowired
-	@Qualifier("GoogleTranslate")
-	@InjectMocks
-	private TranslationProvider translationProvider;
+    private SingleTranslationResult result;
 
-	private void givenTheGoogleTranslateLibraryIsSetup() throws Exception {
+    @InjectMocks
+    private GoogleTranslationProvider translationProvider = new GoogleTranslationProvider();
 
-		java.util.List<String> query = Lists.newArrayList(QUERY);
-		translatorBuilder = mock(GoogleTranslateBuilderWrapper.class, new AnswerWithSelf(
-				GoogleTranslateBuilderWrapper.class));
+    private void andTheLibraryThrowsAGoogleJsonResponseExceptionWithStatusBadRequest() throws IOException,
+            WrappedGoogleJsonResponseException {
 
-		jacksonFactory = JacksonFactory.getDefaultInstance();
-		netHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
-		when(googleTranslateLibraryWrapper.getJsonFactory()).thenReturn(jacksonFactory);
-		when(googleTranslateLibraryWrapper.getHttpTransport()).thenReturn(netHttpTransport);
-		when(
-				googleTranslateLibraryWrapper.getTranslateBuilder(eq(netHttpTransport), eq(jacksonFactory),
-						isNull(HttpRequestInitializer.class))).thenReturn(translatorBuilder);
-		when(translatorBuilder.build()).thenReturn(client);
-		when(googleTranslateLibraryWrapper.setupClient(eq(client), eq(TARGET_LANGUAGE), eq(Lists.newArrayList(query))))
-				.thenReturn(translateList);
-		when(googleTranslateLibraryWrapper.executeAndGetTranslation(translateList)).thenReturn(TRANSLATED_STRING);
-	}
+        WrappedGoogleJsonResponseException exception = mock(WrappedGoogleJsonResponseException.class);
+        when(exception.getStatusCode()).thenReturn(HttpStatus.SC_BAD_REQUEST);
+        when(googleTranslateLibraryWrapper.executeAndGetTranslation(translateList)).thenThrow(exception);
+    }
 
-	@Test
-	public void testTranslateCallsGoogleApi() throws Exception {
+    private void andTheLibraryThrowsAnIOException() throws Exception {
 
-		givenTheGoogleTranslateLibraryIsSetup();
-		whenICallTranslate();
-		thenTheCorrectApiMethodsAreCalled();
-		andTheTranslationIsCorrect();
-	}
+        when(googleTranslateLibraryWrapper.executeAndGetTranslation(translateList)).thenThrow(new IOException());
+    }
 
-	@Test(expected = ApplicationException.class)
-	public void testTranslateRethrowsGenericExceptionsAsApplicationException() throws Exception,
-			IOException, ApplicationException {
+    private void andTheTranslationIsCorrect() {
 
-		givenTheGoogleTranslateLibraryIsSetup();
-		andTheLibraryThrowsAnIOException();
-		whenICallTranslateThenApplicationExceptionIsThrown();
-	}
+        assertEquals(TRANSLATED_STRING, result.getTargetString());
+    }
 
-	@Test(expected = TranslationException.class)
-	public void testTranslateRethrowsGoogleJsonResponseExceptionAsTranslateException() throws Exception,
-			TranslationException, ApplicationException {
+    private SingleTranslationResult doCallTranslate(String query) throws TranslationException, ApplicationException {
 
-		givenTheGoogleTranslateLibraryIsSetup();
-		andTheLibraryThrowsAGoogleJsonResponseExceptionWithStatusBadRequest();
-		whenICallTranslateThenTranslateExceptionIsThrown();
-	}
+        result = translationProvider.translate(Locale.forLanguageTag(SOURCE_LANGUAGE), Locale
+                .forLanguageTag(TARGET_LANGUAGE), query);
+        return result;
+    }
 
-	private void whenICallTranslateThenTranslateExceptionIsThrown() throws TranslationException, ApplicationException {
+    private void givenTheGoogleTranslateLibraryIsSetup() throws Exception {
 
-		whenICallTranslate();
-	}
+        java.util.List<String> query = Lists.newArrayList(QUERY);
+        translatorBuilder = mock(GoogleTranslateBuilderWrapper.class, new AnswerWithSelf(
+                GoogleTranslateBuilderWrapper.class));
 
-	private void andTheLibraryThrowsAGoogleJsonResponseExceptionWithStatusBadRequest() throws IOException,
-			WrappedGoogleJsonResponseException {
+        jacksonFactory = JacksonFactory.getDefaultInstance();
+        netHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        when(googleTranslateLibraryWrapper.getJsonFactory()).thenReturn(jacksonFactory);
+        when(googleTranslateLibraryWrapper.getHttpTransport()).thenReturn(netHttpTransport);
+        when(
+                googleTranslateLibraryWrapper.getTranslateBuilder(eq(netHttpTransport), eq(jacksonFactory),
+                        isNull(HttpRequestInitializer.class))).thenReturn(translatorBuilder);
+        when(translatorBuilder.build()).thenReturn(client);
+        when(googleTranslateLibraryWrapper.setupClient(eq(client), eq(TARGET_LANGUAGE), eq(Lists.newArrayList(query))))
+                .thenReturn(translateList);
+        when(googleTranslateLibraryWrapper.executeAndGetTranslation(translateList)).thenReturn(TRANSLATED_STRING);
 
-		WrappedGoogleJsonResponseException exception = mock(WrappedGoogleJsonResponseException.class);
-		when(exception.getStatusCode()).thenReturn(HttpStatus.SC_BAD_REQUEST);
-		when(googleTranslateLibraryWrapper.executeAndGetTranslation(translateList)).thenThrow(exception);
-	}
+        ReflectionTestUtils.setField(translationProvider, "applicationName", applicationName);
+        ReflectionTestUtils.setField(translationProvider, "apiKey", apiKey);
+        ReflectionTestUtils.setField(translationProvider, "apiUrl", apiUrl);
 
-	private void andTheLibraryThrowsAnIOException() throws Exception {
+        translationProvider.init();
+    }
 
-		when(googleTranslateLibraryWrapper.executeAndGetTranslation(translateList)).thenThrow(new IOException());
-	}
+    @Test
+    public void testTranslateCallsGoogleApi() throws Exception {
 
-	private SingleTranslationResult whenICallTranslateThenApplicationExceptionIsThrown() throws TranslationException,
-			ApplicationException {
+        givenTheGoogleTranslateLibraryIsSetup();
+        whenICallTranslate();
+        thenTheCorrectApiMethodsAreCalled();
+        andTheTranslationIsCorrect();
+    }
 
-		return whenICallTranslate();
-	}
+    @Test(expected = ApplicationException.class)
+    public void testTranslateRethrowsGenericExceptionsAsApplicationException() throws Exception,
+            IOException, ApplicationException {
 
-	private void andTheTranslationIsCorrect() {
+        givenTheGoogleTranslateLibraryIsSetup();
+        andTheLibraryThrowsAnIOException();
+        whenICallTranslateThenApplicationExceptionIsThrown();
+    }
 
-		assertTrue(result.getTargetString().equals(TRANSLATED_STRING));
-	}
+    @Test(expected = TranslationException.class)
+    public void testTranslateRethrowsGoogleJsonResponseExceptionAsTranslateException() throws Exception,
+            TranslationException, ApplicationException {
 
-	private void thenTheCorrectApiMethodsAreCalled() {
+        givenTheGoogleTranslateLibraryIsSetup();
+        andTheLibraryThrowsAGoogleJsonResponseExceptionWithStatusBadRequest();
+        whenICallTranslateThenTranslateExceptionIsThrown();
+    }
 
-		verify(translatorBuilder).setGoogleClientRequestInitializer(translateRequestInitializerArg.capture());
-		assertTrue(translateRequestInitializerArg.getValue().getKey().equals(API_KEY));
-		verify(translatorBuilder).setApplicationName(APP_NAME);
-		verify(translatorBuilder).setRootUrl(API_ROOT_URL);
-		verify(translatorBuilder).setServicePath(API_SERVICE_PATH);
-		verify(googleTranslateLibraryWrapper).setSourceLang(translateList, SOURCE_LANGUAGE);
-	}
+    @Test
+    public void testTranslateReturnsBlankOnBlankQuery() throws Exception {
 
-	private SingleTranslationResult whenICallTranslate() throws TranslationException, ApplicationException {
+        givenTheGoogleTranslateLibraryIsSetup();
+        whenICallTranslateWithABlankQuery();
+        thenTheResultIsBlank();
+    }
 
-		result = translationProvider.translate(Locale.forLanguageTag(SOURCE_LANGUAGE), Locale
-				.forLanguageTag(TARGET_LANGUAGE), QUERY);
-		return result;
-	}
+    private void thenTheCorrectApiMethodsAreCalled() {
+
+        verify(translatorBuilder).setGoogleClientRequestInitializer(translateRequestInitializerArg.capture());
+        assertEquals(API_KEY, translateRequestInitializerArg.getValue().getKey());
+        verify(translatorBuilder).setApplicationName(APP_NAME);
+        verify(translatorBuilder).setRootUrl(API_ROOT_URL);
+        verify(translatorBuilder).setServicePath(API_SERVICE_PATH);
+        verify(googleTranslateLibraryWrapper).setSourceLang(translateList, SOURCE_LANGUAGE);
+    }
+
+    private void thenTheResultIsBlank() {
+
+        assertEquals(BLANK.trim(), result.getTargetString());
+    }
+
+    private SingleTranslationResult whenICallTranslate() throws TranslationException, ApplicationException {
+
+        return doCallTranslate(QUERY);
+    }
+
+    private SingleTranslationResult whenICallTranslateThenApplicationExceptionIsThrown() throws TranslationException,
+            ApplicationException {
+
+        return whenICallTranslate();
+    }
+
+    private void whenICallTranslateThenTranslateExceptionIsThrown() throws TranslationException, ApplicationException {
+
+        whenICallTranslate();
+    }
+
+    private SingleTranslationResult whenICallTranslateWithABlankQuery() throws Exception {
+
+        return doCallTranslate(BLANK);
+    }
 }

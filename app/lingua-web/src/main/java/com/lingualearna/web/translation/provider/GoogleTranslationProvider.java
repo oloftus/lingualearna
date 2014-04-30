@@ -32,81 +32,87 @@ import com.lingualearna.web.util.locale.LocalizationService;
 @Qualifier("GoogleTranslate")
 public class GoogleTranslationProvider implements TranslationProvider {
 
-	private static final Logger LOG = LoggerFactory.getLogger(GoogleTranslationProvider.class);
-	private static final String API_URL_REGEX = "(^https?://[^/]*)(/.*$)";
+    private static final String BLANK = "";
+    private static final Logger LOG = LoggerFactory.getLogger(GoogleTranslationProvider.class);
+    private static final String API_URL_REGEX = "(^https?://[^/]*)(/.*$)";
 
-	@Value("${translation.service.google.appName}")
-	private String applicationName;
+    @Value("${translation.service.google.appName}")
+    private String applicationName;
 
-	@Value("${translation.service.google.apiKey}")
-	private String apiKey;
+    @Value("${translation.service.google.apiKey}")
+    private String apiKey;
 
-	@Value("${translation.service.google.apiUrl}")
-	private String apiUrl;
+    @Value("${translation.service.google.apiUrl}")
+    private String apiUrl;
 
-	@Autowired
-	private LocalizationService localizationService;
+    @Autowired
+    private LocalizationService localizationService;
 
-	@Autowired
-	private GoogleTranslateLibraryWrapper googleTranslateLibraryWrapper;
+    @Autowired
+    private GoogleTranslateLibraryWrapper googleTranslateLibraryWrapper;
 
-	private String apiUrlRootUrl;
-	private String apiUrlServicePath;
+    private String apiUrlRootUrl;
+    private String apiUrlServicePath;
 
-	@PostConstruct
-	public void init() {
+    @PostConstruct
+    public void init() {
 
-		splitApiUrlComponents();
-	}
+        splitApiUrlComponents();
+    }
 
-	@Override
-	public SingleTranslationResult translate(Locale sourceLang, Locale targetLang, String query)
-			throws TranslationException, ApplicationException {
+    private void splitApiUrlComponents() {
 
-		String result;
-		try {
-			JsonFactory jsonFactory = googleTranslateLibraryWrapper.getJsonFactory();
-			HttpTransport httpTransport = googleTranslateLibraryWrapper.getHttpTransport();
+        Pattern pattern = Pattern.compile(API_URL_REGEX);
+        Matcher matcher = pattern.matcher(apiUrl);
+        matcher.matches();
+        apiUrlRootUrl = matcher.group(1);
+        apiUrlServicePath = matcher.group(2);
+    }
 
-			Translate client = googleTranslateLibraryWrapper.getTranslateBuilder(httpTransport, jsonFactory, null)
-					.setGoogleClientRequestInitializer(new TranslateRequestInitializer(apiKey))
-					.setApplicationName(applicationName)
-					.setRootUrl(apiUrlRootUrl)
-					.setServicePath(apiUrlServicePath)
-					.build();
-			List translateList = googleTranslateLibraryWrapper.setupClient(client, targetLang.getLanguage(), Lists
-					.newArrayList(query));
-			googleTranslateLibraryWrapper.setSourceLang(translateList, sourceLang.getLanguage());
+    @Override
+    public SingleTranslationResult translate(Locale sourceLang, Locale targetLang, String query)
+            throws TranslationException, ApplicationException {
 
-			try {
-				result = googleTranslateLibraryWrapper.executeAndGetTranslation(translateList);
-			}
-			catch (WrappedGoogleJsonResponseException e) {
-				if (e.getStatusCode() == HttpStatus.SC_BAD_REQUEST) {
-					String localizedMessage = localizationService
-							.lookupLocalizedString("translation.languageUnsupported");
-					throw new TranslationException(localizedMessage, e);
-				}
-				else {
-					throw e.getRootGoogleJsonResponseException();
-				}
-			}
-		}
-		catch (IOException | GeneralSecurityException e) {
-			String localizedMessage = localizationService.lookupLocalizedString("translation.genericProblem");
-			LOG.error("Exception getting HTTPTransport object in GoogleTranslationProvider", e);
-			throw new ApplicationException(localizedMessage, e);
-		}
+        String result;
+        if (query.trim().equals(BLANK)) {
+            result = BLANK;
+        }
+        else {
+            try {
+                JsonFactory jsonFactory = googleTranslateLibraryWrapper.getJsonFactory();
+                HttpTransport httpTransport = googleTranslateLibraryWrapper.getHttpTransport();
 
-		return new SingleTranslationResult(result);
-	}
+                Translate client = googleTranslateLibraryWrapper.getTranslateBuilder(httpTransport, jsonFactory, null)
+                        .setGoogleClientRequestInitializer(new TranslateRequestInitializer(apiKey))
+                        .setApplicationName(applicationName)
+                        .setRootUrl(apiUrlRootUrl)
+                        .setServicePath(apiUrlServicePath)
+                        .build();
+                List translateList = googleTranslateLibraryWrapper.setupClient(client, targetLang.getLanguage(), Lists
+                        .newArrayList(query));
+                googleTranslateLibraryWrapper.setSourceLang(translateList, sourceLang.getLanguage());
 
-	private void splitApiUrlComponents() {
+                try {
+                    result = googleTranslateLibraryWrapper.executeAndGetTranslation(translateList);
+                }
+                catch (WrappedGoogleJsonResponseException e) {
+                    if (e.getStatusCode() == HttpStatus.SC_BAD_REQUEST) {
+                        String localizedMessage = localizationService
+                                .lookupLocalizedString("translation.languageUnsupported");
+                        throw new TranslationException(localizedMessage, e);
+                    }
+                    else {
+                        throw e.getRootGoogleJsonResponseException();
+                    }
+                }
+            }
+            catch (IOException | GeneralSecurityException e) {
+                String localizedMessage = localizationService.lookupLocalizedString("translation.genericProblem");
+                LOG.error("Exception getting HTTPTransport object in GoogleTranslationProvider", e);
+                throw new ApplicationException(localizedMessage, e);
+            }
+        }
 
-		Pattern pattern = Pattern.compile(API_URL_REGEX);
-		Matcher matcher = pattern.matcher(apiUrl);
-		matcher.matches();
-		apiUrlRootUrl = matcher.group(1);
-		apiUrlServicePath = matcher.group(2);
-	}
+        return new SingleTranslationResult(result);
+    }
 }

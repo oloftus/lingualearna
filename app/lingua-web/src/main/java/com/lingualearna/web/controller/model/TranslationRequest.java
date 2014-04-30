@@ -2,41 +2,46 @@ package com.lingualearna.web.controller.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 public class TranslationRequest implements Serializable {
 
-	private static final long serialVersionUID = 5794467755285069294L;
+    private static final long serialVersionUID = 5794467755285069294L;
 
-	private String sourceLang;
-	private String targetLang;
-	private String query;
+    private String query;
+    private String sourceLang;
+    private String targetLang;
 
-	public String getSourceLang() {
+    @NotNull
+    public String getQuery() {
 
-		return sourceLang;
-	}
+        return query;
+    }
 
-	public void setSourceLang(String sourceLang) {
+    @NotNull
+    public String getSourceLang() {
 
-		this.sourceLang = sourceLang;
-	}
+        return sourceLang;
+    }
 
-	public String getTargetLang() {
+    @NotNull
+    public String getTargetLang() {
 
-		return targetLang;
-	}
+        return targetLang;
+    }
 
-	public void setTargetLang(String targetLang) {
+    public void setQuery(String query) {
 
-		this.targetLang = targetLang;
-	}
+        this.query = query;
+    }
 
-	public String getQuery() {
+    public void setSourceLang(String sourceLang) {
 
-		return query;
-	}
+        this.sourceLang = sourceLang;
+    }
 
-	public void setQuery(String query) {
+    public void setTargetLang(String targetLang) {
 
-		this.query = query;
-	}
+        this.targetLang = targetLang;
+    }
 }

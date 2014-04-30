@@ -2,7 +2,6 @@ package com.lingualearna.web.translation.provider;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Answers.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -36,229 +35,231 @@ import com.lingualearna.web.testutil.UnitTestBase;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ List.class, TranslationsListResponse.class, TranslationsResource.class,
-		GoogleTranslateLibraryWrapper.class, JacksonFactory.class, GoogleNetHttpTransport.class })
+        GoogleTranslateLibraryWrapper.class, JacksonFactory.class, GoogleNetHttpTransport.class })
 @PowerMockIgnore("com.google.api.client.http.*")
 public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
 
-	private static final String TRANSLATION = "translation";
-	private static final String QUERY = "query";
-	private static final String LANGUAGE = "targetLang";
+    private static final String TRANSLATION = "translation";
+    private static final String QUERY = "query";
+    private static final String LANGUAGE = "targetLang";
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
-	private JacksonFactory jacksonFactory;
-	private NetHttpTransport httpTransport;
-	private HttpRequestInitializer httpRequestInitializer;
+    private JacksonFactory jacksonFactory;
+    private NetHttpTransport httpTransport;
+    private HttpRequestInitializer httpRequestInitializer;
 
-	@Mock
-	private GoogleTranslateBuilderWrapper expectedGoogleTranslateBuilderWrapper;
-	private GoogleTranslateBuilderWrapper actualGoogleTranslateBuilderWrapper;
-	@Mock
-	private List expectedList;
-	private List actualList;
-	private GoogleJsonResponseException expectedGoogleJsonResponseException;
-	private NetHttpTransport actualNetHttpTransport;
-	private NetHttpTransport expectedNetHttpTransport;
-	private JacksonFactory actualJacksonFactory;
-	private JacksonFactory expectedJacksonFactory;
-	private String actualTranslation;
+    @Mock
+    private GoogleTranslateBuilderWrapper expectedGoogleTranslateBuilderWrapper;
+    private GoogleTranslateBuilderWrapper actualGoogleTranslateBuilderWrapper;
+    @Mock
+    private List expectedList;
+    private List actualList;
+    private GoogleJsonResponseException expectedGoogleJsonResponseException;
+    private NetHttpTransport actualNetHttpTransport;
+    private NetHttpTransport expectedNetHttpTransport;
+    private JacksonFactory actualJacksonFactory;
+    private JacksonFactory expectedJacksonFactory;
+    private String actualTranslation;
 
-	@Mock(answer = RETURNS_DEEP_STUBS)
-	private Translate client;
-	@Mock
-	private java.util.List<TranslationsResource> listTranslationsResource;
-	private List translateList;
-	private TranslationsListResponse translationsListResponse;
-	private TranslationsResource translationsResource;
-	private java.util.List<String> query = Lists.newArrayList(QUERY);
+    @Mock(answer = RETURNS_DEEP_STUBS)
+    private Translate client;
+    @Mock
+    private java.util.List<TranslationsResource> listTranslationsResource;
+    private List translateList;
+    private TranslationsListResponse translationsListResponse;
+    private TranslationsResource translationsResource;
+    private java.util.List<String> query = Lists.newArrayList(QUERY);
 
-	private GoogleTranslateLibraryWrapper googleTranslateLibraryWrapper;
+    private GoogleTranslateLibraryWrapper googleTranslateLibraryWrapper;
 
-	@Before
-	public void setup() throws Exception {
+    private HttpRequestInitializer getMockHttpRequestInitializer() {
 
-		translateList = PowerMockito.mock(List.class);
-		translationsListResponse = PowerMockito.mock(TranslationsListResponse.class);
-		translationsResource = PowerMockito.mock(TranslationsResource.class);
+        return new HttpRequestInitializer() {
 
-		googleTranslateLibraryWrapper = new GoogleTranslateLibraryWrapper();
+            @Override
+            public void initialize(HttpRequest request) throws IOException {
+
+            }
+        };
+    }
 
-		super.setup();
-	}
+    private void givenAGoogleJsonResponseExceptionIsThrownInExecuteAndGetTranslation() throws Exception {
 
-	@Test
-	public void testGetTranslateBuilderCallsThrough() throws Exception {
+        expectedGoogleJsonResponseException = mock(GoogleJsonResponseException.class);
+        when(translateList.execute()).thenThrow(expectedGoogleJsonResponseException);
+    }
 
-		givenTheGoogleTranslateLibraryWrapperIsSetup();
-		whenICallGetTranslateBuilder();
-		thenTheCorrectlySetupBuilderIsReturned();
-	}
+    private void givenGoogleNetHttpTransportIsSetup() throws Exception {
 
-	private void thenTheCorrectlySetupBuilderIsReturned() {
+        expectedNetHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        PowerMockito.mockStatic(GoogleNetHttpTransport.class);
+        PowerMockito.when(GoogleNetHttpTransport.newTrustedTransport()).thenReturn(expectedNetHttpTransport);
+    }
 
-		assertEquals(actualGoogleTranslateBuilderWrapper, expectedGoogleTranslateBuilderWrapper);
-	}
+    private void givenJacksonFactoryIsSetup() {
 
-	private void whenICallGetTranslateBuilder() {
+        expectedJacksonFactory = JacksonFactory.getDefaultInstance();
+        PowerMockito.mockStatic(JacksonFactory.class);
+        PowerMockito.when(JacksonFactory.getDefaultInstance()).thenReturn(expectedJacksonFactory);
+    }
 
-		actualGoogleTranslateBuilderWrapper = googleTranslateLibraryWrapper
-				.getTranslateBuilder(httpTransport, jacksonFactory, httpRequestInitializer);
-	}
+    private void givenTheGoogleTranslateLibraryWrapperIsSetup() throws Exception {
 
-	private void givenTheGoogleTranslateLibraryWrapperIsSetup() throws Exception {
+        jacksonFactory = JacksonFactory.getDefaultInstance();
+        httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+        httpRequestInitializer = getMockHttpRequestInitializer();
+        PowerMockito.whenNew(GoogleTranslateBuilderWrapper.class).withArguments(httpTransport, jacksonFactory,
+                httpRequestInitializer).thenReturn(
+                expectedGoogleTranslateBuilderWrapper);
+    }
 
-		jacksonFactory = JacksonFactory.getDefaultInstance();
-		httpTransport = GoogleNetHttpTransport.newTrustedTransport();
-		httpRequestInitializer = getMockHttpRequestInitializer();
-		PowerMockito.whenNew(GoogleTranslateBuilderWrapper.class).withArguments(httpTransport, jacksonFactory,
-				httpRequestInitializer).thenReturn(
-				expectedGoogleTranslateBuilderWrapper);
-	}
+    private void givenTheWrapperIsSetupForExecuteAndGetTranslation() throws Exception {
 
-	private HttpRequestInitializer getMockHttpRequestInitializer() {
+        when(translateList.execute()).thenReturn(translationsListResponse);
+        when(translationsListResponse.getTranslations()).thenReturn(listTranslationsResource);
+        when(listTranslationsResource.get(0)).thenReturn(translationsResource);
+        when(translationsResource.getTranslatedText()).thenReturn(TRANSLATION);
+    }
 
-		return new HttpRequestInitializer() {
-			@Override
-			public void initialize(HttpRequest request) throws IOException {
+    private void givenTheWrapperIsSetupForSetupClient() throws IOException {
 
-			}
-		};
-	}
+        when(client.translations().list(query, LANGUAGE)).thenReturn(expectedList);
+    }
 
-	@Test
-	public void testExecuteAndGetTranslationCallThrough() throws Exception {
+    @Override
+    @Before
+    public void setup() throws Exception {
 
-		givenTheWrapperIsSetupForExecuteAndGetTranslation();
-		whenICallExecuteAndGetTranslation();
-		thenExecuteAndGetTranslationHasCalledThrough();
-	}
+        translateList = PowerMockito.mock(List.class);
+        translationsListResponse = PowerMockito.mock(TranslationsListResponse.class);
+        translationsResource = PowerMockito.mock(TranslationsResource.class);
 
-	private void thenExecuteAndGetTranslationHasCalledThrough() {
+        googleTranslateLibraryWrapper = new GoogleTranslateLibraryWrapper();
 
-		assertTrue(actualTranslation.equals(TRANSLATION));
-	}
+        super.setup();
+    }
 
-	private void whenICallExecuteAndGetTranslation() throws Exception {
+    @Test
+    public void testExecuteAndGetTranslationCallThrough() throws Exception {
 
-		actualTranslation = googleTranslateLibraryWrapper.executeAndGetTranslation(translateList);
-	}
+        givenTheWrapperIsSetupForExecuteAndGetTranslation();
+        whenICallExecuteAndGetTranslation();
+        thenExecuteAndGetTranslationHasCalledThrough();
+    }
 
-	private void givenTheWrapperIsSetupForExecuteAndGetTranslation() throws Exception {
+    @Test
+    public void testExecuteAndGetTranslationThrowsWrappedException() throws Exception {
 
-		when(translateList.execute()).thenReturn(translationsListResponse);
-		when(translationsListResponse.getTranslations()).thenReturn(listTranslationsResource);
-		when(listTranslationsResource.get(0)).thenReturn(translationsResource);
-		when(translationsResource.getTranslatedText()).thenReturn(TRANSLATION);
-	}
+        givenAGoogleJsonResponseExceptionIsThrownInExecuteAndGetTranslation();
+        thenIExpectAWrappedGoogleJsonResponseExceptionToBeThrown();
+        whenICallExecuteAndGetTranslation();
+    }
 
-	@Test
-	public void testExecuteAndGetTranslationThrowsWrappedException() throws Exception {
+    @Test
+    public void testGetHttpTransportCallsThrough() throws Exception {
 
-		givenAGoogleJsonResponseExceptionIsThrownInExecuteAndGetTranslation();
-		thenIExpectAWrappedGoogleJsonResponseExceptionToBeThrown();
-		whenICallExecuteAndGetTranslation();
-	}
+        givenGoogleNetHttpTransportIsSetup();
+        whenICallNewTrustedTransport();
+        thenNewTrustedTransportHasCalledThrough();
+    }
 
-	private void thenIExpectAWrappedGoogleJsonResponseExceptionToBeThrown() {
+    @Test
+    public void testGetJsonFactoryCallsThrough() {
 
-		thrown.expect(WrappedGoogleJsonResponseException.class);
-		thrown.expectCause(equalTo(expectedGoogleJsonResponseException));
-	}
+        givenJacksonFactoryIsSetup();
+        whenICallGetDefaultInstance();
+        thenGetDefaultInstanceHasCalledThrough();
+    }
 
-	private void givenAGoogleJsonResponseExceptionIsThrownInExecuteAndGetTranslation() throws Exception {
+    @Test
+    public void testGetTranslateBuilderCallsThrough() throws Exception {
 
-		expectedGoogleJsonResponseException = mock(GoogleJsonResponseException.class);
-		when(translateList.execute()).thenThrow(expectedGoogleJsonResponseException);
-	}
+        givenTheGoogleTranslateLibraryWrapperIsSetup();
+        whenICallGetTranslateBuilder();
+        thenTheCorrectlySetupBuilderIsReturned();
+    }
 
-	@Test
-	public void testSetupClientCallsThrough() throws Exception {
+    @Test
+    public void testSetSourceLangCallsThrough() {
 
-		givenTheWrapperIsSetupForSetupClient();
-		whenICallSetupClient();
-		thenSetupClientHasCalledThrough();
-	}
+        whenICallSetSourceLang();
+        thenSetSourceLangHasCalledThrough();
+    }
 
-	private void thenSetupClientHasCalledThrough() {
+    @Test
+    public void testSetupClientCallsThrough() throws Exception {
 
-		assertEquals(actualList, expectedList);
-	}
+        givenTheWrapperIsSetupForSetupClient();
+        whenICallSetupClient();
+        thenSetupClientHasCalledThrough();
+    }
 
-	private void whenICallSetupClient() throws Exception {
+    private void thenExecuteAndGetTranslationHasCalledThrough() {
 
-		actualList = googleTranslateLibraryWrapper.setupClient(client, LANGUAGE, query);
-	}
+        assertEquals(TRANSLATION, actualTranslation);
+    }
 
-	private void givenTheWrapperIsSetupForSetupClient() throws IOException {
+    private void thenGetDefaultInstanceHasCalledThrough() {
 
-		when(client.translations().list(query, LANGUAGE)).thenReturn(expectedList);
-	}
+        assertEquals(expectedJacksonFactory, actualJacksonFactory);
+    }
 
-	@Test
-	public void testSetSourceLangCallsThrough() {
+    private void thenIExpectAWrappedGoogleJsonResponseExceptionToBeThrown() {
 
-		whenICallSetSourceLang();
-		thenSetSourceLangHasCalledThrough();
-	}
+        thrown.expect(WrappedGoogleJsonResponseException.class);
+        thrown.expectCause(equalTo(expectedGoogleJsonResponseException));
+    }
 
-	private void thenSetSourceLangHasCalledThrough() {
+    private void thenNewTrustedTransportHasCalledThrough() {
 
-		verify(translateList).setSource(LANGUAGE);
-	}
+        assertEquals(expectedNetHttpTransport, actualNetHttpTransport);
+    }
 
-	private void whenICallSetSourceLang() {
+    private void thenSetSourceLangHasCalledThrough() {
 
-		googleTranslateLibraryWrapper.setSourceLang(translateList, LANGUAGE);
-	}
+        verify(translateList).setSource(LANGUAGE);
+    }
 
-	@Test
-	public void testGetJsonFactoryCallsThrough() {
+    private void thenSetupClientHasCalledThrough() {
 
-		givenJacksonFactoryIsSetup();
-		whenICallGetDefaultInstance();
-		thenGetDefaultInstanceHasCalledThrough();
-	}
+        assertEquals(actualList, expectedList);
+    }
 
-	private void thenGetDefaultInstanceHasCalledThrough() {
+    private void thenTheCorrectlySetupBuilderIsReturned() {
 
-		assertEquals(expectedJacksonFactory, actualJacksonFactory);
-	}
+        assertEquals(actualGoogleTranslateBuilderWrapper, expectedGoogleTranslateBuilderWrapper);
+    }
 
-	private void whenICallGetDefaultInstance() {
+    private void whenICallExecuteAndGetTranslation() throws Exception {
 
-		actualJacksonFactory = JacksonFactory.getDefaultInstance();
-	}
+        actualTranslation = googleTranslateLibraryWrapper.executeAndGetTranslation(translateList);
+    }
 
-	@Test
-	public void testGetHttpTransportCallsThrough() throws Exception {
+    private void whenICallGetDefaultInstance() {
 
-		givenGoogleNetHttpTransportIsSetup();
-		whenICallNewTrustedTransport();
-		thenNewTrustedTransportHasCalledThrough();
-	}
+        actualJacksonFactory = JacksonFactory.getDefaultInstance();
+    }
 
-	private void thenNewTrustedTransportHasCalledThrough() {
+    private void whenICallGetTranslateBuilder() {
 
-		assertEquals(expectedNetHttpTransport, actualNetHttpTransport);
-	}
+        actualGoogleTranslateBuilderWrapper = googleTranslateLibraryWrapper
+                .getTranslateBuilder(httpTransport, jacksonFactory, httpRequestInitializer);
+    }
 
-	public void whenICallNewTrustedTransport() throws Exception {
+    public void whenICallNewTrustedTransport() throws Exception {
 
-		actualNetHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
-	}
+        actualNetHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
+    }
 
-	private void givenJacksonFactoryIsSetup() {
+    private void whenICallSetSourceLang() {
 
-		expectedJacksonFactory = JacksonFactory.getDefaultInstance();
-		PowerMockito.mockStatic(JacksonFactory.class);
-		PowerMockito.when(JacksonFactory.getDefaultInstance()).thenReturn(expectedJacksonFactory);
-	}
+        googleTranslateLibraryWrapper.setSourceLang(translateList, LANGUAGE);
+    }
 
-	private void givenGoogleNetHttpTransportIsSetup() throws Exception {
+    private void whenICallSetupClient() throws Exception {
 
-		expectedNetHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
-		PowerMockito.mockStatic(GoogleNetHttpTransport.class);
-		PowerMockito.when(GoogleNetHttpTransport.newTrustedTransport()).thenReturn(expectedNetHttpTransport);
-	}
+        actualList = googleTranslateLibraryWrapper.setupClient(client, LANGUAGE, query);
+    }
 }

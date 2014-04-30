@@ -1,6 +1,6 @@
 package com.lingualearna.web.service;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.util.Locale;
@@ -8,69 +8,63 @@ import java.util.Locale;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import com.lingualearna.web.testutil.UnitTestBase;
 import com.lingualearna.web.util.locale.LocalizationService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "/applicationContext.xml")
-public class LanguageNamesServiceTest extends UnitTestBase {
+@RunWith(MockitoJUnitRunner.class)
+public class LanguageNamesServiceTest {
 
-	private static final String EN_LANG_CODE = "en";
-	private static final String EN_LANG_NAME = "English";
-	private static final String DE_LANG_CODE = "de";
-	private static final String DE_LANG_NAME_LOCAL = "German";
-	private static final String DE_LANG_NAME_FOREIGN = "Deutsch";
-	private static final String FR_LANG_CODE = "fr";
-	private static final String FR_LANG_NAME_LOCAL = "French";
-	private static final String FR_LANG_NAME_FOREIGN = "fran\u00e7ais";
-	private static final String FR_LANG_NAME_FOREIGN_CAPS = "Fran\u00e7ais";
+    private static final String EN_LANG_CODE = "en";
+    private static final String EN_LANG_NAME = "English";
+    private static final String DE_LANG_CODE = "de";
+    private static final String DE_LANG_NAME_LOCAL = "German";
+    private static final String DE_LANG_NAME_FOREIGN = "Deutsch";
+    private static final String FR_LANG_CODE = "fr";
+    private static final String FR_LANG_NAME_LOCAL = "French";
+    private static final String FR_LANG_NAME_FOREIGN = "fran\u00e7ais";
+    private static final String FR_LANG_NAME_FOREIGN_CAPS = "Fran\u00e7ais";
 
-	@Mock
-	private LocalizationService localizationService;
+    @Mock
+    private LocalizationService localizationService;
 
-	@Autowired
-	private LanguageNamesService languageNamesService;
+    @InjectMocks
+    private LanguageNamesService languageNamesService = new LanguageNamesService();
 
-	@Before
-	public void setup() throws Exception {
+    @Before
+    public void setup() {
 
-		super.setup();
+        Locale enLocale = Locale.forLanguageTag(EN_LANG_CODE);
+        when(localizationService.getUserLocale()).thenReturn(enLocale);
+    }
 
-		Locale enLocale = Locale.forLanguageTag(EN_LANG_CODE);
-		when(localizationService.getUserLocale()).thenReturn(enLocale);
-	}
+    @Test
+    public void testlookupLocalizedLangName() {
 
-	@Test
-	public void testLookupLocalizedLangNameAsTitleReturnsCorrectLanguageName() {
+        whenICallLookupLocalizedLangNameThenIExpectTheCorrectLanguageName();
+    }
 
-		whenICallLookupLocalizedLangNameAsTitleThenIExpectTheCorrectLanguageNameAndFormat();
-	}
+    @Test
+    public void testLookupLocalizedLangNameAsTitleReturnsCorrectLanguageName() {
 
-	@Test
-	public void testlookupLocalizedLangName() {
+        whenICallLookupLocalizedLangNameAsTitleThenIExpectTheCorrectLanguageNameAndFormat();
+    }
 
-		whenICallLookupLocalizedLangNameThenIExpectTheCorrectLanguageName();
-	}
+    private void whenICallLookupLocalizedLangNameAsTitleThenIExpectTheCorrectLanguageNameAndFormat() {
 
-	private void whenICallLookupLocalizedLangNameThenIExpectTheCorrectLanguageName() {
+        assertEquals(EN_LANG_NAME, languageNamesService.lookupLocalizedLangNameAsTitle(EN_LANG_CODE));
+        assertEquals(DE_LANG_NAME_FOREIGN + " (" + DE_LANG_NAME_LOCAL + ")",
+                languageNamesService.lookupLocalizedLangNameAsTitle(DE_LANG_CODE));
+        assertEquals(FR_LANG_NAME_FOREIGN_CAPS + " (" + FR_LANG_NAME_LOCAL + ")",
+                languageNamesService.lookupLocalizedLangNameAsTitle(FR_LANG_CODE));
+    }
 
-		assertTrue(languageNamesService.lookupLocalizedLangName(EN_LANG_CODE).equals(EN_LANG_NAME));
-		assertTrue(languageNamesService.lookupLocalizedLangName(DE_LANG_CODE).equals(DE_LANG_NAME_FOREIGN));
-		assertTrue(languageNamesService.lookupLocalizedLangName(FR_LANG_CODE).equals(FR_LANG_NAME_FOREIGN));
-	}
+    private void whenICallLookupLocalizedLangNameThenIExpectTheCorrectLanguageName() {
 
-	private void whenICallLookupLocalizedLangNameAsTitleThenIExpectTheCorrectLanguageNameAndFormat() {
-
-		assertTrue(languageNamesService.lookupLocalizedLangNameAsTitle(EN_LANG_CODE).equals(
-				EN_LANG_NAME));
-		assertTrue(languageNamesService.lookupLocalizedLangNameAsTitle(DE_LANG_CODE).equals(
-				DE_LANG_NAME_FOREIGN + " (" + DE_LANG_NAME_LOCAL + ")"));
-		assertTrue(languageNamesService.lookupLocalizedLangNameAsTitle(FR_LANG_CODE).equals(
-				FR_LANG_NAME_FOREIGN_CAPS + " (" + FR_LANG_NAME_LOCAL + ")"));
-	}
+        assertEquals(EN_LANG_NAME, languageNamesService.lookupLocalizedLangName(EN_LANG_CODE));
+        assertEquals(DE_LANG_NAME_FOREIGN, languageNamesService.lookupLocalizedLangName(DE_LANG_CODE));
+        assertEquals(FR_LANG_NAME_FOREIGN, languageNamesService.lookupLocalizedLangName(FR_LANG_CODE));
+    }
 }

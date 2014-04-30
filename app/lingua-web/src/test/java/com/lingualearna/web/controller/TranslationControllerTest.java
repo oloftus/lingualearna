@@ -1,6 +1,6 @@
 package com.lingualearna.web.controller;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +42,14 @@ public class TranslationControllerTest extends UnitTestBase {
     @InjectMocks
     private TranslationController translationController = new TranslationController();
 
+    private void givenIHaveATranslationRequest() {
+
+        when(translationRequest.getSourceLang()).thenReturn(SOURCE_LANG);
+        when(translationRequest.getTargetLang()).thenReturn(TARGET_LANG);
+        when(translationRequest.getQuery()).thenReturn(QUERY);
+    }
+
+    @Override
     @Before
     public void setup() throws Exception {
 
@@ -60,18 +68,11 @@ public class TranslationControllerTest extends UnitTestBase {
 
     private void thenIGetTheCorrectTranslation() {
 
-        assertTrue(translationResult.getQuery().equals(QUERY));
-        assertTrue(translationResult.getTargetLang().equals(TARGET_LANG));
-        assertTrue(translationResult.getSourceLang().equals(SOURCE_LANG));
-        assertTrue(translationResult.getTranslations().size() == 1);
-        assertTrue(translationResult.getTranslations().get(TranslationProviderName.Google).equals(TRANSLATION));
-    }
-
-    private void givenIHaveATranslationRequest() {
-
-        when(translationRequest.getSourceLang()).thenReturn(SOURCE_LANG);
-        when(translationRequest.getTargetLang()).thenReturn(TARGET_LANG);
-        when(translationRequest.getQuery()).thenReturn(QUERY);
+        assertEquals(QUERY, translationResult.getQuery());
+        assertEquals(TARGET_LANG, translationResult.getTargetLang());
+        assertEquals(SOURCE_LANG, translationResult.getSourceLang());
+        assertEquals(1, translationResult.getTranslations().size());
+        assertEquals(TRANSLATION, translationResult.getTranslations().get(TranslationProviderName.Google));
     }
 
     private void whenICallTranslateString() throws Exception {
