@@ -2,10 +2,9 @@
 
     loadRequireConfig();
 
-    var dependencies = [ "linguaApp", "miniApps/abstractMiniApp", "underscore", "jquery",
-            "config/properties", "controller/pagesController" ];
+    var dependencies = [ "linguaApp", "miniApps/abstractMiniApp" ];
 
-    define(dependencies, function(linguaApp, abstractMiniApp, _, $) {
+    define(dependencies, function(linguaApp, abstractMiniApp) {
 
         _.extend(this, abstractMiniApp);
 

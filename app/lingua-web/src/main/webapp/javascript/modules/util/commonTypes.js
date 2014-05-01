@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "config/properties" ];
+    var dependencies = [ "linguaApp" ];
 
-    define(dependencies, function() {
+    define(dependencies, function(linguaApp) {
 
         TranslationRequest = function(sourceLang, targetLang, query) {
 
@@ -29,32 +29,6 @@
         
         IllegalArgumentException = function(message) {
             this.message = message;
-        };
-
-        HttpMethod = {
-            POST : "POST",
-            GET : "GET",
-            PUT : "PUT",
-            DELETE : "DELETE"
-        };
-
-        HttpHeaders = {
-            BAD_REQUEST : 400
-        };
-
-        MessageSeverity = {
-            INFO : "INFO",
-            ERROR : "ERROR"
-        };
-        
-        Dialogs = {
-            ADD_NOTE : "ADD_NOTE"
-        };
-        
-        AppStates = {
-            MAIN : "MAIN",
-            ADD_NOTE : "ADD_NOTE",
-            TRANSLATE : "TRANSLATE"
         };
     });
 })();

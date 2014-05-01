@@ -1,21 +1,23 @@
-(function(){
-    
-    var dependencies = [ "linguaApp", "util/commonTypes", "service/jsonWebService" ];
-    
+(function() {
+
+    var dependencies = [ "linguaApp", "service/jsonWebService" ];
+
     define(dependencies, function(linguaApp) {
-        
+
         var LanguageNamesService = function(jsonWebService, languageNamesServiceUrl) {
-            
+
             var lookup = function(languageNameRequest, successCallback, failureCallback) {
+                
                 jsonWebService.execute(languageNamesServiceUrl, HttpMethod.POST, languageNameRequest, successCallback,
                         failureCallback);
             };
-            
+
             return {
                 lookup : lookup
             };
         };
-        
-        linguaApp.provide.service("languageNamesService", [ "jsonWebService", "languageNamesServiceUrl", LanguageNamesService ]);
+
+        linguaApp.provide.service("languageNamesService", [ "jsonWebService", "languageNamesServiceUrl",
+                LanguageNamesService ]);
     });
 })();

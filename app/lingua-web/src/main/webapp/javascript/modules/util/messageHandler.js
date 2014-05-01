@@ -4,7 +4,7 @@
     
     define(dependencies, function(linguaApp, _, $) {
         
-        var messageHandler = function() {
+        var MessageHandler = function() {
             
             var ERRORS_FIELD = "errors";
             var FIELD_ERRORS_CLASS = "lingua-field-messages";
@@ -83,7 +83,7 @@
             
             var handleErrors = function(scope, data, status, headers) {
                 
-                if (status == HttpHeaders.BAD_REQUEST && !_.isUndefined(data.fieldErrors)
+                if (status === HttpHeaders.BAD_REQUEST && !_.isUndefined(data.fieldErrors)
                         && !_.isUndefined(data.globalErrors)) {
                     handleValidationErrors(scope, data);
                 }
@@ -103,6 +103,6 @@
             };
         };
         
-        linguaApp.provide.factory("messageHandler", [ messageHandler ]);
+        linguaApp.provide.factory("messageHandler", [ MessageHandler ]);
     });
 })();

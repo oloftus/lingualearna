@@ -1,23 +1,25 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "ui.router", "jquery.ui" ];
+    var dependencies = [ "linguaApp" ];
 
     define(dependencies, function(linguaApp) {
 
-        linguaApp.controller("pagesController", [ "$scope", "$state", function($scope, $state) {
+        var PageController = function($scope, $state) {
 
             $(".lingua-draggable-dialog").draggable({
                 handle : ".lingua-dialog-header",
                 containment : "document",
-                scroll: false
+                scroll : false
             });
 
-            $scope.$on("$viewContentLoaded", function(blah) {
+            $scope.$on("$viewContentLoaded", function() {
                 $(".lingua-draggable-dialog .lingua-dialog-view:empty").parent().hide();
                 $(".lingua-draggable-dialog .lingua-dialog-view:not(:empty)").parent().show();
             });
 
             $state.go(AppStates.MAIN);
-        } ]);
+        };
+
+        linguaApp.controller("pageController", [ "$scope", "$state", PageController ]);
     });
 })();
