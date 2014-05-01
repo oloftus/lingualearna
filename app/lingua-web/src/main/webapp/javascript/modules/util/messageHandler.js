@@ -103,6 +103,6 @@
             };
         };
         
-        linguaApp.provide.service("messageHandler", [ messageHandler ]);
+        linguaApp.provide.factory("messageHandler", [ messageHandler ]);
     });
 })();

@@ -96,7 +96,6 @@
 
                     $sceDelegateProvider.resourceUrlWhitelist(whitelist);
                     $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = pageParam.csrfToken;
-
                 };
 
                 linguaApp.config([ "$stateProvider", "$locationProvider", "$sceDelegateProvider", "$httpProvider",
