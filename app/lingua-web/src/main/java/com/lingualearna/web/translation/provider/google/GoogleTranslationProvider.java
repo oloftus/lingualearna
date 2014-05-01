@@ -1,4 +1,4 @@
-package com.lingualearna.web.translation.provider;
+package com.lingualearna.web.translation.provider.google;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;

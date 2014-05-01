@@ -1,4 +1,4 @@
-package com.lingualearna.web.translation.provider;
+package com.lingualearna.web.translation.provider.google;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
@@ -32,6 +32,9 @@ import com.google.api.services.translate.model.TranslationsListResponse;
 import com.google.api.services.translate.model.TranslationsResource;
 import com.google.common.collect.Lists;
 import com.lingualearna.web.testutil.UnitTestBase;
+import com.lingualearna.web.translation.provider.google.GoogleTranslateBuilderWrapper;
+import com.lingualearna.web.translation.provider.google.GoogleTranslateLibraryWrapper;
+import com.lingualearna.web.translation.provider.google.WrappedGoogleJsonResponseException;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ List.class, TranslationsListResponse.class, TranslationsResource.class,

@@ -1,4 +1,4 @@
-package com.lingualearna.web.translation.provider;
+package com.lingualearna.web.translation.provider.google;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
@@ -34,6 +34,10 @@ import com.lingualearna.web.testutil.AnswerWithSelf;
 import com.lingualearna.web.testutil.UnitTestBase;
 import com.lingualearna.web.translation.SingleTranslationResult;
 import com.lingualearna.web.translation.TranslationException;
+import com.lingualearna.web.translation.provider.google.GoogleTranslateBuilderWrapper;
+import com.lingualearna.web.translation.provider.google.GoogleTranslateLibraryWrapper;
+import com.lingualearna.web.translation.provider.google.GoogleTranslationProvider;
+import com.lingualearna.web.translation.provider.google.WrappedGoogleJsonResponseException;
 import com.lingualearna.web.util.ApplicationException;
 import com.lingualearna.web.util.locale.LocalizationService;
 

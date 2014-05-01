@@ -1,4 +1,4 @@
-package com.lingualearna.web.translation.provider;
+package com.lingualearna.web.translation.provider.google;
 
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.google.api.client.http.HttpRequestInitializer;

@@ -1,4 +1,4 @@
-package com.lingualearna.web.translation.provider;
+package com.lingualearna.web.translation.provider.google;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -25,6 +25,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.Translate.Builder;
 import com.lingualearna.web.testutil.UnitTestBase;
+import com.lingualearna.web.translation.provider.google.GoogleTranslateBuilderWrapper;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Builder.class, GoogleTranslateBuilderWrapper.class })
