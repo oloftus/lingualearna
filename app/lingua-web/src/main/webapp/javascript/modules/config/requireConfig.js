@@ -1,6 +1,9 @@
+/*
+ * Has to be manually loaded as this is configuring RequireJS!
+ */
 function loadRequireConfig() {
     
-    Properties = {};
+    Properties = Properties || {};
     
     with (Properties) {
         
@@ -14,7 +17,6 @@ function loadRequireConfig() {
             "ui.router" : "../lib/angular-ui-router-0.2.10",
             "underscore" : "../lib/underscore-1.6.0",
             "jquery" : "../lib/jquery-2.1.0",
-            "underscore.string" : "../lib/underscore.string-2.3.0",
             "jquery.ui" : "../lib/jquery-ui-1.10.4"
         },
         shim : {

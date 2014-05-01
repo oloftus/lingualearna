@@ -1,11 +1,11 @@
 (function(){
     
-    var dependencies = [ "util/commonTypes", "service/jsonWebService" ];
+    var dependencies = [ "linguaApp" ];
     
-    define(dependencies, function() {
+    define(dependencies, function(linguaApp) {
         
         /*
-         * The intention to use a reference to CrudService later and let Angular to the DI 
+         * The intention to use a reference to CrudService later and let Angular do the DI 
          */
         var CrudService = function(jsonWebService, serviceUrl) {
             

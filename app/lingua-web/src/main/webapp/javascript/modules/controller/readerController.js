@@ -1,48 +1,22 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "underscore", "util/interAppMailbox",
-            "util/commonTypes" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "util/textSelector", "underscore",
+            "util/interAppMailbox" ];
 
-    define(dependencies, function(linguaApp, abstractController, _) {
-
-        var getSelected = function() {
-
-            var selected = "";
-            if (window.getSelection) {
-                selected = window.getSelection();
-            }
-            else if (document.getSelection) {
-                selected = document.getSelection();
-            }
-            else if (document.selection) {
-                selected = document.selection.createRange().text;
-            }
-            return selected;
-        };
-
-        var clearSelected = function() {
-
-            if (window.getSelection().empty) {
-                window.getSelection().empty();
-            }
-            else if (window.getSelection().removeAllRanges) {
-                window.getSelection().removeAllRanges();
-            }
-            else if (document.selection) {
-                document.selection.empty();
-            }
-        };
+    define(dependencies, function(linguaApp, abstractController, textSelector, _) {
 
         var mouseupHandler = function(interAppMailbox, $state, $scope) {
 
-            var selected = getSelected().toString();
-            if (selected != "") {
+            var selected = textSelector.getSelected().toString();
+
+            if (selected !== "") {
                 var message = new TranslationRequest($scope.model.sourceLang, $scope.model.targetLang, selected);
-                $state.go(AppStates.TRANSLATE)
-                .then(function() {
-                    interAppMailbox.send("reader", "translate", message);
-                    clearSelected();
+                
+                $state.go(AppStates.TRANSLATE).then(function() {
+                    interAppMailbox.send(Components.READER, Components.TRANSLATE, message);
                 });
+                
+                textSelector.clearSelected();
             }
         };
 

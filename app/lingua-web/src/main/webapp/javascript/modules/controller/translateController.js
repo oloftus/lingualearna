@@ -1,7 +1,7 @@
 (function() {
 
     var dependencies = [ "linguaApp", "controller/abstractController", "underscore", "util/interAppMailbox",
-            "service/languageNamesService", "service/translateService", "util/commonTypes", "underscore" ];
+            "service/languageNamesService", "service/translateService" ];
 
     define(dependencies, function(linguaApp, abstractController, _) {
 
@@ -25,8 +25,7 @@
             $scope.func.doTranslate();
         };
 
-        var TranslateController = function($scope, translateService, languageNamesService, interAppMailbox, $state,
-                $rootScope) {
+        var TranslateController = function($scope, translateService, languageNamesService, interAppMailbox) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
@@ -35,6 +34,7 @@
 
                 var translationRequest = new TranslationRequest($scope.model.sourceLang, $scope.model.targetLang,
                         $scope.model.query);
+                
                 translateService.translate(translationRequest, function(data) {
                     $scope.model.translations = {
                         google : data.translations.Google
@@ -42,15 +42,15 @@
                 });
             };
 
-            interAppMailbox.subscribe("reader", "translate", function(messages) {
+            interAppMailbox.subscribe(Components.READER, Components.TRANSLATE, function(messages) {
 
-                var translationRequest = messages[messages.length - 1];
+                var translationRequest = _.last(messages);
                 populateModel($scope, translationRequest);
                 doTranslation($scope, languageNamesService);
             });
         };
 
         linguaApp.controllerProvider.register("translateController", [ "$scope", "translateService",
-                "languageNamesService", "interAppMailbox", "$state", "$rootScope", TranslateController ]);
+                "languageNamesService", "interAppMailbox", TranslateController ]);
     });
 })();

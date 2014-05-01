@@ -1,6 +1,6 @@
 (function() {
 
-    var dependencies = [ "ng", "linguaApp", "underscore" ];
+    var dependencies = [ "ng", "linguaApp", "underscore", "controller/pageController" ];
 
     define(dependencies, function(ng, linguaApp, _) {
 
@@ -123,7 +123,7 @@
 
                     stashProviders($controllerProvider, $compileProvider, $filterProvider, $provide);
                     setupStates($stateProvider, $sceDelegateProvider);
-                    $httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = pageParam.csrfToken;
+                    $httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = Properties.csrfToken;
                 };
 
                 linguaApp.config([ "$stateProvider", "$sceDelegateProvider", "$httpProvider", "$controllerProvider",

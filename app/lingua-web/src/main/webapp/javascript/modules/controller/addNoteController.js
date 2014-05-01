@@ -1,7 +1,7 @@
 (function() {
 
     var dependencies = [ "linguaApp", "localization/stringsDefault", "controller/abstractController", "underscore",
-            "service/languageNamesService", "service/noteService", "util/commonTypes", "util/messageHandler",
+            "service/languageNamesService", "service/noteService", "util/messageHandler",
             "underscore" ];
 
     define(dependencies, function(linguaApp, localStrings, abstractController, _) {

@@ -1,10 +1,9 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "localization/stringsDefault", "controller/abstractController", "underscore",
-            "util/commonTypes", "util/messageHandler", "service/languageNamesService", "service/noteService",
-            "config/properties" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "localization/stringsDefault", "underscore",
+            "util/messageHandler", "service/languageNamesService", "service/noteService" ];
 
-    define(dependencies, function(linguaApp, localStrings, abstractController, _) {
+    define(dependencies, function(linguaApp, abstractController, localStrings, _) {
 
         /*
          * Prevent users overwriting notes because their original content

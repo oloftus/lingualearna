@@ -1,36 +1,42 @@
 (function() {
     
-    var appRoot = "http://localhost:8080/LinguaWeb/";
-    var cssRoot = appRoot + "resources/css/";
-    var jsRoot = appRoot + "javascript/";
-    var ngViewsRoot = appRoot + "ngViews/";
-    var apiRoot = appRoot + "app/api/";
+    var appRoot = "http://localhost:8080/LinguaWeb";
+    var cssRoot = appRoot + "/resources/css";
+    var jsRoot = appRoot + "/javascript";
+    var libRoot = jsRoot + "/lib";
+    var moduleRoot = jsRoot + "/modules";
+    var viewRoot = appRoot + "/ngViews";
+    var apiRoot = appRoot + "/app/api";
+    
+    var csrfTokenApiUrl = apiRoot + "/security/csrfToken";
 
+    var cssFiles = [ "/common.css", "/reader.css" ];
+    var scriptFiles = [ libRoot + "/require-2.1.11.js", moduleRoot + "/config/requireConfig.js" ];
+    var ngIncludeFile = "/reader.html";
+    var readerJsFile = moduleRoot + "/miniApps/reader.js";
+    
+    var ngIncludeClass = "lingua-ng-include";
+    var ngIncludeId = "lingua-reader";
+    
+    Properties = {};
+    
     var addCss = function() {
 
-        var cssInclude = [];
-        cssInclude[0] = document.createElement("link");
-        cssInclude[1] = document.createElement("link");
-
-        for (var i = 0; i < cssInclude.length; i++) {
-            cssInclude[i].setAttribute("rel", "stylesheet");
-            cssInclude[i].setAttribute("type", "text/css");
-        }
-
-        cssInclude[0].setAttribute("href", cssRoot + "common.css");
-        cssInclude[1].setAttribute("href", cssRoot + "reader.css");
-
-        for (var i = 0; i < cssInclude.length; i++) {
-            document.head.appendChild(cssInclude[i]);
+        for (var i = 0; i < cssFiles.length; i++) {
+            var cssInclude = document.createElement("link");
+            cssInclude.setAttribute("rel", "stylesheet");
+            cssInclude.setAttribute("type", "text/css");
+            cssInclude.setAttribute("href", cssRoot + cssFiles[i]);
+            document.head.appendChild(cssInclude);
         }
     };
 
     var addNgInclude = function() {
 
         var ngInclude = document.createElement("ng-include");
-        ngInclude.setAttribute("class", "lingua-ng-include");
-        ngInclude.setAttribute("id", "lingua-reader");
-        ngInclude.setAttribute("src", "'" + ngViewsRoot + "reader.html" + "'");
+        ngInclude.setAttribute("class", ngIncludeClass);
+        ngInclude.setAttribute("id", ngIncludeId);
+        ngInclude.setAttribute("src", "'" + viewRoot + ngIncludeFile + "'");
 
         document.body.insertBefore(ngInclude, document.body.childNodes[0]);
     };
@@ -38,38 +44,35 @@
     var addCsrfToken = function(readyCallback) {
 
         function reqListener() {
-            
-            pageParam = {};
-            pageParam.csrfToken = this.responseText;
+            Properties.csrfToken = this.responseText;
             readyCallback();
         }
 
         var csrfTokenRequest = new XMLHttpRequest();
         csrfTokenRequest.onload = reqListener;
         csrfTokenRequest.withCredentials = true;
-        csrfTokenRequest.open("GET", apiRoot + "security/csrfToken", true);
+        csrfTokenRequest.open("GET", csrfTokenApiUrl, true);
         csrfTokenRequest.send();
     };
 
+    var addScripts = function() {
+
+        for (var i = 0; i < scriptFiles.length; i++) {
+            var scriptFile = document.createElement("script");
+            scriptFile.setAttribute("src", scriptFiles[i]);
+            document.body.appendChild(scriptFile);
+        }
+    };
+    
     var boot = function() {
-
-        var requireConfig = document.createElement("script");
-        requireConfig.setAttribute("src", jsRoot + "modules/config/requireConfig.js");
-        var requireApp = document.createElement("script");
-        requireApp.setAttribute("src", jsRoot + "lib/require-2.1.11.js");
-
-        document.body.appendChild(requireConfig);
-        document.body.appendChild(requireApp);
-
-        // TODO: Temporary
-        setTimeout(function() {
-            require([ jsRoot + "modules/miniApps/reader.js" ]);
-        }, 100);
+        
+        require([ readerJsFile ]);
     };
 
     addCss();
     addNgInclude();
     addCsrfToken(function() {
+        addScripts();
         boot();
     });
 })();
