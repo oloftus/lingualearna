@@ -84,15 +84,16 @@
 
         var addAdditionalViewsToWhitelist = function() {
             
-            _.map(additionalViews, function(viewName) {
-                return Properties.ngViewsRoot + viewName + VIEW_EXTENSION;
+            var additionalViewUrls = _.map(additionalViews, function(viewUrl) {
+                return Properties.ngViewsRoot + viewUrl + VIEW_EXTENSION;
             });
+            whitelist = _.union(whitelist, additionalViewUrls);
         };
 
         var addViewsToWhitelist = function(views) {
 
             _.each(views, function(view) {
-                whitelist.push(view.viewUrl);
+                whitelist.push(Properties.ngViewsRoot + view.viewUrl + VIEW_EXTENSION);
             });
         };
 

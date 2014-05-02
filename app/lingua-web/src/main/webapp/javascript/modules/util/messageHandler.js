@@ -10,9 +10,9 @@
             var FIELD_ERRORS_CLASS = "lingua-field-messages";
             var ERROR_CLASS = "lingua-error";
             
-            var addGlobalMessage = function(scope, messageText, messageSeverity) {
+            var addGlobalMessage = function($scope, messageText, messageSeverity) {
                 
-                scope.model.globalMessages.push({
+                $scope.model.globalMessages.push({
                     type : messageSeverity,
                     text : messageText
                 });
@@ -41,9 +41,9 @@
                 });
             };
             
-            var clearAllMessages = function(scope) {
+            var clearAllMessages = function($scope) {
                 
-                scope.model.globalMessages.length = 0;
+                $scope.model.globalMessages.length = 0;
                 $("." + FIELD_ERRORS_CLASS).remove();
                 getElementsWithDataErrors().removeData(ERRORS_FIELD);
             };
@@ -65,9 +65,9 @@
                 });
             };
             
-            var handleValidationErrors = function(scope, errors) {
+            var handleValidationErrors = function($scope, errors) {
                 
-                clearAllMessages(scope);
+                clearAllMessages($scope);
                 
                 _.each(errors.fieldErrors, function(errors, fieldName) {
                     _.each(errors, function(errorText) {
@@ -75,24 +75,24 @@
                     });
                 });
                 _.each(errors.globalErrors, function(errorText) {
-                    addGlobalMessage(scope, errorText, MessageSeverity.ERROR);
+                    addGlobalMessage($scope, errorText, MessageSeverity.ERROR);
                 });
                 
                 displayFieldMessage(_.keys(errors.fieldErrors));
             };
             
-            var handleErrors = function(scope, data, status, headers) {
+            var handleErrors = function($scope, data, status, headers) {
                 
                 if (status === HttpHeaders.BAD_REQUEST && !_.isUndefined(data.fieldErrors)
                         && !_.isUndefined(data.globalErrors)) {
-                    handleValidationErrors(scope, data);
+                    handleValidationErrors($scope, data);
                 }
             };
             
-            var addFreshGlobalMessage = function(scope, message, severity) {
+            var addFreshGlobalMessage = function($scope, message, severity) {
 
-                clearAllMessages(scope);
-                addGlobalMessage(scope, message, severity);
+                clearAllMessages($scope);
+                addGlobalMessage($scope, message, severity);
             };
             
             return {

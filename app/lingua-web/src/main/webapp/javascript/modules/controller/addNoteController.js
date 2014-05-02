@@ -1,59 +1,22 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "localization/stringsDefault", "controller/abstractController", "underscore",
-            "service/languageNamesService", "service/noteService", "util/messageHandler",
-            "underscore" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "underscore", "localization/stringsDefault",
+            "service/languageNamesService", "service/noteService", "util/messageHandler", "util/interAppMailbox" ];
 
-    define(dependencies, function(linguaApp, localStrings, abstractController, _) {
+    define(dependencies, function(linguaApp, abstractController, _) {
 
-        // TODO: Temporary
-        var initParams = {
-                foreignLang : "en",
-                foreignNote : "",
-                localLang : "de",
-                localNote : "",
-                additionalNotes : "",
-                sourceUrl : "",
-                noteId : ""
+        var populateModel = function($scope, note) {
+
+            $scope.model.foreignLang = note.foreignLang;
+            $scope.model.foreignNote = note.foreignNote;
+            $scope.model.localLang = note.localLang;
+            $scope.model.localNote = note.localNote;
+            $scope.model.additionalNotes = note.additionalNotes;
+            $scope.model.sourceUrl = note.sourceUrl;
+            $scope.model.noteId = null;
         };
 
-        var formInput = {
-            foreignLang : initParams.foreignLang,
-            localLang : initParams.localLang,
-            foreignNote : initParams.foreignNote,
-            localNote : initParams.localNote,
-            additionalNotes : initParams.additionalNotes,
-            sourceUrl : initParams.sourceUrl,
-            noteId : initParams.noteId
-        };
-
-        var AddNoteController = function($scope, noteService, languageNamesService, messageHandler, formInput) {
-
-            _.extend(this, abstractController);
-            this.setupDefaultScope($scope);
-
-            $scope.Properties = Properties;
-            $scope.model.foreignLang = formInput.foreignLang;
-            $scope.model.foreignNote = formInput.foreignNote;
-            $scope.model.localLang = formInput.localLang;
-            $scope.model.localNote = formInput.localNote;
-            $scope.model.additionalNotes = formInput.additionalNotes;
-            $scope.model.sourceUrl = formInput.sourceUrl;
-            $scope.model.noteId = formInput.noteId;
-            $scope.model.operationTitle = localStrings.addNoteTitle;
-
-            $scope.func.addEditNote = function() {
-
-                var note = new Note($scope.model.foreignLang, $scope.model.foreignNote, $scope.model.localLang,
-                        $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl,
-                        $scope.model.noteId);
-
-                noteService.create(note, function(data) {
-                    messageHandler.addFreshGlobalMessage($scope, localStrings.noteSavedMessage, MessageSeverity.INFO);
-                }, function(data, status, headers) {
-                    messageHandler.handleErrors($scope, data, status, headers);
-                });
-            };
+        var initDialog = function($scope, languageNamesService) {
 
             languageNamesService.lookup(new LanguageNameRequest($scope.model.foreignLang), function(data) {
                 $scope.model.foreignLangName = data.langName;
@@ -63,9 +26,42 @@
                 $scope.model.localLangName = data.langName;
             });
         };
+        
+        var setDialogTitle = function($scope) {
+            
+            $scope.model.operationTitle = LocalStrings.addNoteTitle;
+            $scope.Properties = Properties;
+        };
+        
+        var AddNoteController = function($scope, noteService, languageNamesService, messageHandler, interAppMailbox) {
 
-        linguaApp.provide.constant("formInput", formInput);
+            _.extend(this, abstractController);
+            this.setupDefaultScope($scope);
+
+            setDialogTitle($scope);
+
+            $scope.func.addEditNote = function() {
+
+                var note = new Note($scope.model.foreignLang, $scope.model.foreignNote, $scope.model.localLang,
+                        $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl,
+                        $scope.model.noteId);
+
+                noteService.create(note, function(data) {
+                    messageHandler.addFreshGlobalMessage($scope, LocalStrings.noteSavedMessage, MessageSeverity.INFO);
+                }, function(data, status, headers) {
+                    messageHandler.handleErrors($scope, data, status, headers);
+                });
+            };
+
+            interAppMailbox.subscribe(Components.READER, Components.ADD_NOTE, function(messages) {
+
+                var note = _.last(messages);
+                populateModel($scope, note);
+                initDialog($scope, languageNamesService);
+            });
+        };
+
         linguaApp.controllerProvider.register("addNoteController", [ "$scope", "noteService", "languageNamesService",
-                "messageHandler", "formInput", AddNoteController ]);
+                "messageHandler", "interAppMailbox", AddNoteController ]);
     });
 })();

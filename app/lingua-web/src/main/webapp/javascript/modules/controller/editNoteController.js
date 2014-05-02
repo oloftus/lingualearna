@@ -9,9 +9,9 @@
          * Prevent users overwriting notes because their original content
          * couldn't be loaded
          */
-        var disableSave = function(scope) {
+        var disableSave = function($scope) {
 
-            delete scope.func.addEditNote;
+            delete $scope.func.addEditNote;
         };
 
         var loadResultIntoModel = function(model, result) {

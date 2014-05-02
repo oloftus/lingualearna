@@ -4,17 +4,27 @@
 
     define(dependencies, function(linguaApp) {
 
+        var DIALOG_NAME = "#lingua-main-dialog";
+        
         var PageController = function($scope, $state) {
 
-            $(".lingua-draggable-dialog").draggable({
+            $(DIALOG_NAME).draggable({
                 handle : ".lingua-dialog-header",
                 containment : "document",
                 scroll : false
             });
 
             $scope.$on("$viewContentLoaded", function() {
-                $(".lingua-draggable-dialog .lingua-dialog-view:empty").parent().hide();
-                $(".lingua-draggable-dialog .lingua-dialog-view:not(:empty)").parent().show();
+                
+                var leftOffset = (($(window).width() - $(DIALOG_NAME).outerWidth()) / 2)
+                        + $(window).scrollLeft();
+                
+                $(DIALOG_NAME + " .lingua-dialog-view:empty").parent().hide();
+                $(DIALOG_NAME + " .lingua-dialog-view:not(:empty)").parent().show();
+                $(DIALOG_NAME).css({
+                    "left" : leftOffset + "px",
+                    "top" : "50px"
+                });
             });
 
             $state.go(AppStates.MAIN);

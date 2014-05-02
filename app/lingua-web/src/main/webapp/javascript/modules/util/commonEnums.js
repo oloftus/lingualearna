@@ -38,7 +38,8 @@
         Components = {
             ANY : "*",
             READER : "READER",
-            TRANSLATE : "TRANSLATE"
+            TRANSLATE : "TRANSLATE",
+            ADD_NOTE : "ADD_NOTE"
         };
     });
 })();

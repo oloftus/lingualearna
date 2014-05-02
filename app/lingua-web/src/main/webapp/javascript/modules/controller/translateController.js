@@ -12,7 +12,7 @@
             $scope.model.query = translationRequest.query;
         };
 
-        var doTranslation = function($scope, languageNamesService) {
+        var initDialog = function($scope, languageNamesService) {
 
             languageNamesService.lookup(new LanguageNameRequest($scope.model.sourceLang), function(data) {
                 $scope.model.sourceLangName = data.langName;
@@ -46,7 +46,7 @@
 
                 var translationRequest = _.last(messages);
                 populateModel($scope, translationRequest);
-                doTranslation($scope, languageNamesService);
+                initDialog($scope, languageNamesService);
             });
         };
 

@@ -82,7 +82,7 @@ body {
 }
 
 .lingua-draggable-dialog {
-    position: relative; /* Change to absolute */
+    position: absolute;
 }
 
 .lingua-dialog-close {

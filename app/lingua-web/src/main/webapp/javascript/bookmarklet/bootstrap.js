@@ -1,5 +1,5 @@
 (function() {
-    
+
     var appRoot = "http://localhost:8080/LinguaWeb";
     var cssRoot = appRoot + "/resources/css";
     var jsRoot = appRoot + "/javascript";
@@ -7,19 +7,19 @@
     var moduleRoot = jsRoot + "/modules";
     var viewRoot = appRoot + "/ngViews";
     var apiRoot = appRoot + "/app/api";
-    
+
     var csrfTokenApiUrl = apiRoot + "/security/csrfToken";
 
     var cssFiles = [ "/common.css", "/reader.css" ];
     var scriptFiles = [ libRoot + "/require-2.1.11.js", moduleRoot + "/config/requireConfig.js" ];
     var ngIncludeFile = "/reader.html";
     var readerJsFile = moduleRoot + "/miniApps/reader.js";
-    
+
     var ngIncludeClass = "lingua-ng-include";
     var ngIncludeId = "lingua-reader";
-    
+
     Properties = {};
-    
+
     var addCss = function() {
 
         for (var i = 0; i < cssFiles.length; i++) {
@@ -63,9 +63,11 @@
             document.body.appendChild(scriptFile);
         }
     };
-    
+
     var boot = function() {
-        
+
+        while (require === undefined) {
+        }
         require([ readerJsFile ]);
     };
 
