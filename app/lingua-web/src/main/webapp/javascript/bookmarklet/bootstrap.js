@@ -6,13 +6,10 @@
     var libRoot = jsRoot + "/lib";
     var moduleRoot = jsRoot + "/modules";
     var viewRoot = appRoot + "/ngViews";
-    var apiRoot = appRoot + "/app/api";
-
-    var csrfTokenApiUrl = apiRoot + "/security/csrfToken";
 
     var cssFiles = [ "/common.css", "/reader.css" ];
     var scriptFiles = [ libRoot + "/require-2.1.11.js", moduleRoot + "/config/requireConfig.js" ];
-    var ngIncludeFile = "/reader.html";
+    var ngIncludeFile = viewRoot + "/reader.html";
     var readerJsFile = moduleRoot + "/miniApps/reader.js";
 
     var ngIncludeClass = "lingua-ng-include";
@@ -20,6 +17,8 @@
 
     Properties = {};
 
+    var scriptsLoadedCounter = 0;
+    
     var addCss = function() {
 
         for (var i = 0; i < cssFiles.length; i++) {
@@ -36,30 +35,22 @@
         var ngInclude = document.createElement("ng-include");
         ngInclude.setAttribute("class", ngIncludeClass);
         ngInclude.setAttribute("id", ngIncludeId);
-        ngInclude.setAttribute("src", "'" + viewRoot + ngIncludeFile + "'");
+        ngInclude.setAttribute("src", "'" + ngIncludeFile + "'");
 
         document.body.insertBefore(ngInclude, document.body.childNodes[0]);
     };
 
-    var addCsrfToken = function(readyCallback) {
-
-        function reqListener() {
-            Properties.csrfToken = this.responseText;
-            readyCallback();
-        }
-
-        var csrfTokenRequest = new XMLHttpRequest();
-        csrfTokenRequest.onload = reqListener;
-        csrfTokenRequest.withCredentials = true;
-        csrfTokenRequest.open("GET", csrfTokenApiUrl, true);
-        csrfTokenRequest.send();
-    };
-
-    var addScripts = function() {
+    var addScripts = function(loadedCallback) {
 
         for (var i = 0; i < scriptFiles.length; i++) {
             var scriptFile = document.createElement("script");
             scriptFile.setAttribute("src", scriptFiles[i]);
+            scriptFile.onload = function() {
+                scriptsLoadedCounter++;
+                if (scriptsLoadedCounter === scriptFiles.length) {
+                    loadedCallback();
+                }
+            };
             document.body.appendChild(scriptFile);
         }
     };
@@ -73,8 +64,7 @@
 
     addCss();
     addNgInclude();
-    addCsrfToken(function() {
-        addScripts();
+    addScripts(function() {
         boot();
     });
 })();

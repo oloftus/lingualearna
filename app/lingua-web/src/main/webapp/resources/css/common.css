@@ -1,5 +1,10 @@
 /*Icons: https://www.iconfinder.com/search/?q=iconset:typicons-2*/
-@import url(http://fonts.googleapis.com/css?family=Alegreya);
+@font-face {
+  font-family: 'Alegreya';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Alegreya'), local('Alegreya-Regular'), url(../fonts/alegreya.normal.400.woff) format('woff');
+}
 
 html,body {
     height: 100%;
