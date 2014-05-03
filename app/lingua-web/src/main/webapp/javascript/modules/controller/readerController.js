@@ -1,11 +1,11 @@
 (function() {
 
     var dependencies = [ "linguaApp", "controller/abstractController", "util/textSelector",
-            "util/ngRegistrationHelper", "underscore", "util/interAppMailbox" ];
+            "util/ngRegistrationHelper", "underscore", "util/commsPipe" ];
 
     define(dependencies, function(linguaApp, abstractController, textSelector, ngRegistrationHelper, _) {
 
-        var mouseupHandler = function(interAppMailbox, $state, $scope) {
+        var mouseupHandler = function(commsPipe, $state, $scope) {
 
             var selected = textSelector.getSelected().toString();
 
@@ -13,20 +13,20 @@
                 var message = new TranslationRequest($scope.model.sourceLang, $scope.model.targetLang, selected);
 
                 $state.go(AppStates.TRANSLATE).then(function() {
-                    interAppMailbox.send(Components.READER, Components.TRANSLATE, message);
+                    commsPipe.send(Components.READER, Components.TRANSLATE, message);
                 });
 
                 textSelector.clearSelected();
             }
         };
 
-        var ReaderController = function($scope, interAppMailbox, $state) {
+        var ReaderController = function($scope, commsPipe, $state) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
 
             $(document).bind("mouseup", function() {
-                mouseupHandler(interAppMailbox, $state, $scope);
+                mouseupHandler(commsPipe, $state, $scope);
             });
 
             $scope.model.sourceLang = "en";
@@ -37,6 +37,6 @@
         };
 
         ngRegistrationHelper(linguaApp).registerController("readerController",
-                [ "$scope", "interAppMailbox", "$state", ReaderController ]);
+                [ "$scope", "commsPipe", "$state", ReaderController ]);
     });
 })();

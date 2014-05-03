@@ -1,7 +1,7 @@
 (function() {
 
     var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
-            "util/interAppMailbox", "service/languageNamesService", "service/translateService" ];
+            "util/commsPipe", "service/languageNamesService", "service/translateService" ];
 
     define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
@@ -25,7 +25,7 @@
             $scope.func.doTranslate();
         };
 
-        var TranslateController = function($scope, translateService, languageNamesService, interAppMailbox, $location,
+        var TranslateController = function($scope, translateService, languageNamesService, commsPipe, $location,
                 $state) {
 
             _.extend(this, abstractController);
@@ -49,13 +49,12 @@
                         $scope.model.sourceLang, $scope.model.query, "", $location.absUrl(), TranslationSources.GOOGLE);
 
                 $state.go(AppStates.ADD_NOTE).then(function() {
-                    interAppMailbox.send(Components.TRANSLATE, Components.ADD_NOTE, message);
+                    commsPipe.send(Components.TRANSLATE, Components.ADD_NOTE, message);
                 });
             };
 
-            interAppMailbox.subscribe(Components.READER, Components.TRANSLATE, function(messages) {
+            commsPipe.subscribe(Components.ANY, Components.TRANSLATE, function(translationRequest) {
 
-                var translationRequest = _.last(messages);
                 populateModel($scope, translationRequest);
                 initDialog($scope, languageNamesService);
             });
@@ -63,7 +62,7 @@
 
         ngRegistrationHelper(linguaApp).registerController(
                 "translateController",
-                [ "$scope", "translateService", "languageNamesService", "interAppMailbox", "$location", "$state",
+                [ "$scope", "translateService", "languageNamesService", "commsPipe", "$location", "$state",
                         TranslateController ]);
     });
 })();
