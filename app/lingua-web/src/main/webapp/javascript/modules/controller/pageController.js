@@ -1,12 +1,14 @@
 (function() {
 
-    var dependencies = [ "linguaApp" ];
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper" ];
 
-    define(dependencies, function(linguaApp) {
+    define(dependencies, function(linguaApp, ngRegistrationHelper) {
 
         var DIALOG_NAME = "#lingua-main-dialog";
-        
+
         var PageController = function($scope, $state) {
+
+            $scope.Properties = Properties;
 
             $(DIALOG_NAME).draggable({
                 handle : ".lingua-dialog-header",
@@ -15,10 +17,9 @@
             });
 
             $scope.$on("$viewContentLoaded", function() {
-                
-                var leftOffset = (($(window).width() - $(DIALOG_NAME).outerWidth()) / 2)
-                        + $(window).scrollLeft();
-                
+
+                var leftOffset = (($(window).width() - $(DIALOG_NAME).outerWidth()) / 2) + $(window).scrollLeft();
+
                 $(DIALOG_NAME + " .lingua-dialog-view:empty").parent().hide();
                 $(DIALOG_NAME + " .lingua-dialog-view:not(:empty)").parent().show();
                 $(DIALOG_NAME).css({
@@ -30,6 +31,6 @@
             $state.go(AppStates.MAIN);
         };
 
-        linguaApp.controller("pageController", [ "$scope", "$state", PageController ]);
+        ngRegistrationHelper(linguaApp).registerController("pageController", [ "$scope", "$state", PageController ]);
     });
 })();

@@ -1,9 +1,10 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "localization/stringsDefault", "underscore",
-            "util/messageHandler", "service/languageNamesService", "service/noteService" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "localization/stringsDefault",
+            "util/ngRegistrationHelper", "underscore", "util/messageHandler", "service/languageNamesService",
+            "service/noteService" ];
 
-    define(dependencies, function(linguaApp, abstractController, localStrings, _) {
+    define(dependencies, function(linguaApp, abstractController, localStrings, ngRegistrationHelper, _) {
 
         /*
          * Prevent users overwriting notes because their original content
@@ -69,7 +70,7 @@
             });
         };
 
-        linguaApp.controller("editNoteController", [ "$scope", "noteService", "languageNamesService", "messageHandler",
-                "noteId", EditNoteController ]);
+        ngRegistrationHelper(linguaApp).registerController("editNoteController",
+                [ "$scope", "noteService", "languageNamesService", "messageHandler", "noteId", EditNoteController ]);
     });
 })();

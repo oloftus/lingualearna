@@ -1,13 +1,13 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "service/jsonWebService" ];
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService" ];
 
-    define(dependencies, function(linguaApp) {
+    define(dependencies, function(linguaApp, ngRegistrationHelper) {
 
         var LanguageNamesService = function(jsonWebService, languageNamesServiceUrl) {
 
             var lookup = function(languageNameRequest, successCallback, failureCallback) {
-                
+
                 jsonWebService.execute(languageNamesServiceUrl, HttpMethod.POST, languageNameRequest, successCallback,
                         failureCallback);
             };
@@ -17,7 +17,7 @@
             };
         };
 
-        linguaApp.provide.service("languageNamesService", [ "jsonWebService", "languageNamesServiceUrl",
-                LanguageNamesService ]);
+        ngRegistrationHelper(linguaApp).registerService("languageNamesService",
+                [ "jsonWebService", "languageNamesServiceUrl", LanguageNamesService ]);
     });
 })();

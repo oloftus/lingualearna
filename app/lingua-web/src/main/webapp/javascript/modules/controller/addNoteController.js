@@ -1,9 +1,10 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "underscore", "localization/stringsDefault",
-            "service/languageNamesService", "service/noteService", "util/messageHandler", "util/interAppMailbox" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
+            "localization/stringsDefault", "service/languageNamesService", "service/noteService",
+            "util/messageHandler", "util/interAppMailbox" ];
 
-    define(dependencies, function(linguaApp, abstractController, _) {
+    define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
         var populateModel = function($scope, note) {
 
@@ -26,13 +27,12 @@
                 $scope.model.localLangName = data.langName;
             });
         };
-        
+
         var setDialogTitle = function($scope) {
-            
+
             $scope.model.operationTitle = LocalStrings.addNoteTitle;
-            $scope.Properties = Properties;
         };
-        
+
         var AddNoteController = function($scope, noteService, languageNamesService, messageHandler, interAppMailbox) {
 
             _.extend(this, abstractController);
@@ -61,7 +61,9 @@
             });
         };
 
-        linguaApp.controllerProvider.register("addNoteController", [ "$scope", "noteService", "languageNamesService",
-                "messageHandler", "interAppMailbox", AddNoteController ]);
+        ngRegistrationHelper(linguaApp).registerController(
+                "addNoteController",
+                [ "$scope", "noteService", "languageNamesService", "messageHandler", "interAppMailbox",
+                        AddNoteController ]);
     });
 })();

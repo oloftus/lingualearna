@@ -31,8 +31,7 @@
         };
         
         Views = {
-            MAIN : "",
-            READER_BAR : "readerBar"
+            MAIN : ""
         };
         
         Components = {

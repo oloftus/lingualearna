@@ -1,15 +1,15 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "underscore" ];
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "underscore" ];
 
     /*
-     * Really simple messaging system. A mailbox contains messages send
-     * from a single sender to a single receiver. Messages are deleted
-     * immediately when read. If a mailbox has no subscriber, sent messages are
-     * queued and pushed when a subscriber is added. Subscribers are anonymous
-     * functions. Messages are always sent in an array.
+     * Really simple messaging system. A mailbox contains messages send from a
+     * single sender to a single receiver. Messages are deleted immediately when
+     * read. If a mailbox has no subscriber, sent messages are queued and pushed
+     * when a subscriber is added. Subscribers are anonymous functions. Messages
+     * are always sent in an array.
      */
-    define(dependencies, function(linguaApp, _) {
+    define(dependencies, function(linguaApp, ngRegistrationHelper, _) {
 
         var InterAppMailbox = function() {
 
@@ -91,6 +91,6 @@
             };
         };
 
-        linguaApp.provide.factory("interAppMailbox", [ InterAppMailbox ]);
+        ngRegistrationHelper(linguaApp).registerFactory("interAppMailbox", [ InterAppMailbox ]);
     });
 })();

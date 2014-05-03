@@ -1,17 +1,17 @@
-(function(){
-    
-    var dependencies = [ "linguaApp" ];
-    
-    define(dependencies, function(linguaApp) {
-        
+(function() {
+
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper" ];
+
+    define(dependencies, function(linguaApp, ngRegistrationHelper) {
+
         var JsonWebService = function($http) {
-            
+
             var execute = function(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback) {
 
                 $http({
                     method : httpMethod,
                     url : serviceUrl,
-                    withCredentials: true,
+                    withCredentials : true,
                     data : JSON.stringify(requestPayload),
                     headers : {
                         "Content-Type" : "application/json"
@@ -22,12 +22,12 @@
                     failureCallback(data, status, headers, config);
                 });
             };
-            
+
             return {
                 execute : execute
             };
         };
-        
-        linguaApp.provide.service("jsonWebService", [ "$http", JsonWebService ]);
+
+        ngRegistrationHelper(linguaApp).registerService("jsonWebService", [ "$http", JsonWebService ]);
     });
 })();

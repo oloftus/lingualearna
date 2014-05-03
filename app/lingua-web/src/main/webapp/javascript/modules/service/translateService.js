@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "service/jsonWebService" ];
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService" ];
 
-    define(dependencies, function(linguaApp) {
+    define(dependencies, function(linguaApp, ngRegistrationHelper) {
 
         var TranslateService = function(jsonWebService, translateServiceUrl) {
 
@@ -17,6 +17,7 @@
             };
         };
 
-        linguaApp.provide.service("translateService", [ "jsonWebService", "translateServiceUrl", TranslateService ]);
+        ngRegistrationHelper(linguaApp).registerService("translateService",
+                [ "jsonWebService", "translateServiceUrl", TranslateService ]);
     });
 })();

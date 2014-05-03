@@ -1,9 +1,9 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "util/textSelector", "underscore",
-            "util/interAppMailbox" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "util/textSelector",
+            "util/ngRegistrationHelper", "underscore", "util/interAppMailbox" ];
 
-    define(dependencies, function(linguaApp, abstractController, textSelector, _) {
+    define(dependencies, function(linguaApp, abstractController, textSelector, ngRegistrationHelper, _) {
 
         var mouseupHandler = function(interAppMailbox, $state, $scope) {
 
@@ -11,11 +11,11 @@
 
             if (selected !== "") {
                 var message = new TranslationRequest($scope.model.sourceLang, $scope.model.targetLang, selected);
-                
+
                 $state.go(AppStates.TRANSLATE).then(function() {
                     interAppMailbox.send(Components.READER, Components.TRANSLATE, message);
                 });
-                
+
                 textSelector.clearSelected();
             }
         };
@@ -36,7 +36,7 @@
             $scope.model.currentNotebook.name = "name";
         };
 
-        linguaApp.controllerProvider.register("readerController", [ "$scope", "interAppMailbox", "$state",
-                ReaderController ]);
+        ngRegistrationHelper(linguaApp).registerController("readerController",
+                [ "$scope", "interAppMailbox", "$state", ReaderController ]);
     });
 })();

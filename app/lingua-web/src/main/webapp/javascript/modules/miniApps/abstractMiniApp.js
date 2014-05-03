@@ -11,37 +11,29 @@
         var whitelist = [];
 
         var routingTable = [ {
-            stateName : AppStates.MAIN,
-            views : [ {
-                viewName : Views.READER_BAR,
-                viewUrl : "/readerBarView"
-            } ],
-            controllers : [ "/controller/readerController" ]
+            stateName : AppStates.MAIN
         }, {
             stateName : AppStates.ADD_NOTE,
             views : [ {
-                viewName : Views.READER_BAR,
-                viewUrl : "/readerBarView"
-            }, {
                 viewName : Views.MAIN,
                 viewUrl : "/addNoteView"
             } ],
-            controllers : [ "/controller/readerController", "/controller/addNoteController" ]
+            controllers : [ "/controller/addNoteController" ]
         }, {
             stateName : AppStates.TRANSLATE,
             views : [ {
-                viewName : Views.READER_BAR,
-                viewUrl : "/readerBarView"
-            }, {
                 viewName : Views.MAIN,
                 viewUrl : "/translateView"
             } ],
-            controllers : [ "/controller/readerController", "/controller/translateController" ]
+            controllers : [ "/controller/translateController" ]
         } ];
 
         var additionalViews = [ "/abstractNoteView" ];
 
         var viewsAndControllers = function(views, controllers) {
+            
+            views = views || [];
+            controllers = controllers || [];
 
             var absoluteViews = {};
             _.each(views, function(view) {

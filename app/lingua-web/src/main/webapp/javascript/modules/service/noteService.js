@@ -1,11 +1,12 @@
-(function(){
-    
-    var dependencies = [  "linguaApp", "service/crudService", "service/jsonWebService" ];
-    
-    define(dependencies, function(linguaApp, CrudService) {
-        
+(function() {
+
+    var dependencies = [ "linguaApp", "service/crudService", "util/ngRegistrationHelper", "service/jsonWebService" ];
+
+    define(dependencies, function(linguaApp, CrudService, ngRegistrationHelper) {
+
         var NoteService = CrudService;
-        
-        linguaApp.provide.service("noteService", [ "jsonWebService", "noteServiceUrl", NoteService ]);
+
+        ngRegistrationHelper(linguaApp).registerService("noteService",
+                [ "jsonWebService", "noteServiceUrl", NoteService ]);
     });
 })();

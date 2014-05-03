@@ -1,9 +1,9 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "underscore", "util/interAppMailbox",
-            "service/languageNamesService", "service/translateService" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
+            "util/interAppMailbox", "service/languageNamesService", "service/translateService" ];
 
-    define(dependencies, function(linguaApp, abstractController, _) {
+    define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
         var populateModel = function($scope, translationRequest) {
 
@@ -34,7 +34,7 @@
 
                 var translationRequest = new TranslationRequest($scope.model.sourceLang, $scope.model.targetLang,
                         $scope.model.query);
-                
+
                 translateService.translate(translationRequest, function(data) {
                     $scope.model.translations = {
                         google : data.translations.Google
@@ -50,7 +50,7 @@
             });
         };
 
-        linguaApp.controllerProvider.register("translateController", [ "$scope", "translateService",
-                "languageNamesService", "interAppMailbox", TranslateController ]);
+        ngRegistrationHelper(linguaApp).registerController("translateController",
+                [ "$scope", "translateService", "languageNamesService", "interAppMailbox", TranslateController ]);
     });
 })();
