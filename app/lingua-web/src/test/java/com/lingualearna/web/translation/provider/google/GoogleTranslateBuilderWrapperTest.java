@@ -24,13 +24,13 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.Translate.Builder;
-import com.lingualearna.web.testutil.UnitTestBase;
+import com.lingualearna.web.testutil.MockitoUnitTestBase;
 import com.lingualearna.web.translation.provider.google.GoogleTranslateBuilderWrapper;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ Builder.class, GoogleTranslateBuilderWrapper.class })
 @PowerMockIgnore("com.google.api.client.http.*")
-public class GoogleTranslateBuilderWrapperTest extends UnitTestBase {
+public class GoogleTranslateBuilderWrapperTest extends MockitoUnitTestBase {
 
     private static final String APPLICATION_NAME = "applicationName";
     private static final String API_URL_ROOT_URL = "apiUrlRootUrl";

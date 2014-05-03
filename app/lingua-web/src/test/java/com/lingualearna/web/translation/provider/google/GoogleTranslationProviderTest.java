@@ -31,7 +31,7 @@ import com.google.api.services.translate.Translate.Translations.List;
 import com.google.api.services.translate.TranslateRequestInitializer;
 import com.google.common.collect.Lists;
 import com.lingualearna.web.testutil.AnswerWithSelf;
-import com.lingualearna.web.testutil.UnitTestBase;
+import com.lingualearna.web.testutil.MockitoUnitTestBase;
 import com.lingualearna.web.translation.SingleTranslationResult;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.provider.google.GoogleTranslateBuilderWrapper;
@@ -42,7 +42,7 @@ import com.lingualearna.web.util.ApplicationException;
 import com.lingualearna.web.util.locale.LocalizationService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class GoogleTranslationProviderTest extends UnitTestBase {
+public class GoogleTranslationProviderTest extends MockitoUnitTestBase {
 
     private static final String QUERY = "local";
     private static final String TRANSLATED_STRING = "foreign";

@@ -31,16 +31,13 @@ import com.google.api.services.translate.Translate.Translations.List;
 import com.google.api.services.translate.model.TranslationsListResponse;
 import com.google.api.services.translate.model.TranslationsResource;
 import com.google.common.collect.Lists;
-import com.lingualearna.web.testutil.UnitTestBase;
-import com.lingualearna.web.translation.provider.google.GoogleTranslateBuilderWrapper;
-import com.lingualearna.web.translation.provider.google.GoogleTranslateLibraryWrapper;
-import com.lingualearna.web.translation.provider.google.WrappedGoogleJsonResponseException;
+import com.lingualearna.web.testutil.MockitoUnitTestBase;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ List.class, TranslationsListResponse.class, TranslationsResource.class,
         GoogleTranslateLibraryWrapper.class, JacksonFactory.class, GoogleNetHttpTransport.class })
 @PowerMockIgnore("com.google.api.client.http.*")
-public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
+public class GoogleTranslateLibraryWrapperTest extends MockitoUnitTestBase {
 
     private static final String TRANSLATION = "translation";
     private static final String QUERY = "query";
@@ -49,15 +46,22 @@ public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    private JacksonFactory jacksonFactory;
-    private NetHttpTransport httpTransport;
-    private HttpRequestInitializer httpRequestInitializer;
-
     @Mock
     private GoogleTranslateBuilderWrapper expectedGoogleTranslateBuilderWrapper;
     private GoogleTranslateBuilderWrapper actualGoogleTranslateBuilderWrapper;
+
     @Mock
     private List expectedList;
+
+    @Mock(answer = RETURNS_DEEP_STUBS)
+    private Translate client;
+
+    @Mock
+    private java.util.List<TranslationsResource> listTranslationsResource;
+
+    private JacksonFactory jacksonFactory;
+    private NetHttpTransport httpTransport;
+    private HttpRequestInitializer httpRequestInitializer;
     private List actualList;
     private GoogleJsonResponseException expectedGoogleJsonResponseException;
     private NetHttpTransport actualNetHttpTransport;
@@ -65,11 +69,6 @@ public class GoogleTranslateLibraryWrapperTest extends UnitTestBase {
     private JacksonFactory actualJacksonFactory;
     private JacksonFactory expectedJacksonFactory;
     private String actualTranslation;
-
-    @Mock(answer = RETURNS_DEEP_STUBS)
-    private Translate client;
-    @Mock
-    private java.util.List<TranslationsResource> listTranslationsResource;
     private List translateList;
     private TranslationsListResponse translationsListResponse;
     private TranslationsResource translationsResource;

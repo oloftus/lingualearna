@@ -4,7 +4,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 import org.junit.Before;
 
-public class UnitTestBase {
+public class MockitoUnitTestBase {
 
 	@Before
 	public void setup() throws Exception {

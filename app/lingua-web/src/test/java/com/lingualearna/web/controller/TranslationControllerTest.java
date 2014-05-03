@@ -16,12 +16,12 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.lingualearna.web.controller.model.TranslationRequest;
 import com.lingualearna.web.controller.model.TranslationResponse;
 import com.lingualearna.web.service.TranslationService;
-import com.lingualearna.web.testutil.UnitTestBase;
+import com.lingualearna.web.testutil.MockitoUnitTestBase;
 import com.lingualearna.web.translation.SingleTranslationResult;
 import com.lingualearna.web.translation.TranslationProviderName;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TranslationControllerTest extends UnitTestBase {
+public class TranslationControllerTest extends MockitoUnitTestBase {
 
     private static final String SOURCE_LANG = "source";
     private static final String TARGET_LANG = "target";
