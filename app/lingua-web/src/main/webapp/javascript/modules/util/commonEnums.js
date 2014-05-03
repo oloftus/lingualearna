@@ -12,7 +12,8 @@
         };
 
         HttpHeaders = {
-            BAD_REQUEST : 400
+            BAD_REQUEST : 400,
+            PSEUDO_CSRF_NOT_PERMITTED : 0
         };
 
         MessageSeverity = {
@@ -27,7 +28,8 @@
         AppStates = {
             MAIN : "MAIN",
             ADD_NOTE : "ADD_NOTE",
-            TRANSLATE : "TRANSLATE"
+            TRANSLATE : "TRANSLATE",
+            LOGIN : "LOGIN"
         };
         
         Views = {
@@ -38,7 +40,9 @@
             ANY : "*",
             READER : "READER",
             TRANSLATE : "TRANSLATE",
-            ADD_NOTE : "ADD_NOTE"
+            ADD_NOTE : "ADD_NOTE",
+            LOGIN : "LOGIN",
+            PAGE : "PAGE"
         };
         
         TranslationSources = {

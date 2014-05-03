@@ -11,4 +11,10 @@ public class PagesController {
 
         return "login";
     }
+
+    @RequestMapping("/loginSuccess")
+    public String loginSuccessPage() throws Exception {
+
+        return "loginSuccess";
+    }
 }

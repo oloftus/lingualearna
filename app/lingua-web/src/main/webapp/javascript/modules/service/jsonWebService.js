@@ -22,9 +22,15 @@
                     failureCallback(data, status, headers, config);
                 });
             };
+            
+            var executeSimple = function(serviceUrl, successCallback, failureCallback) {
+                
+                execute(serviceUrl, HttpMethod.GET, null, successCallback, failureCallback);
+            };  
 
             return {
-                execute : execute
+                execute : execute,
+                executeSimple : executeSimple
             };
         };
 

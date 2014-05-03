@@ -6,7 +6,6 @@
 
         var VIEW_EXTENSION = ".html";
         var JS_EXTENSION = ".js";
-        var CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
 
         var whitelist = [];
 
@@ -26,9 +25,17 @@
                 viewUrl : "/translateView"
             } ],
             controllers : [ "/controller/translateController" ]
+        }, {
+            stateName : AppStates.LOGIN,
+            views : [ {
+                viewName : Views.MAIN,
+                viewUrl : "/loginView"
+            } ],
+            controllers : [ "/controller/loginController" ]
         } ];
 
         var additionalViews = [ "/abstractNoteView" ];
+        var additionalWhitelistUrls = [ Properties.pagesRoot + "/login" ];
 
         var viewsAndControllers = function(views, controllers) {
             
@@ -66,12 +73,13 @@
             };
         };
 
-        var stashProviders = function($controllerProvider, $compileProvider, $filterProvider, $provide) {
+        var stashProviders = function($controllerProvider, $compileProvider, $filterProvider, $provide, $httpProvider) {
 
             linguaApp.controllerProvider = $controllerProvider;
             linguaApp.compileProvider = $compileProvider;
             linguaApp.filterProvider = $filterProvider;
             linguaApp.provide = $provide;
+            linguaApp.httpProvider = $httpProvider;
         };
 
         var addAdditionalViewsToWhitelist = function() {
@@ -79,7 +87,7 @@
             var additionalViewUrls = _.map(additionalViews, function(viewUrl) {
                 return Properties.ngViewsRoot + viewUrl + VIEW_EXTENSION;
             });
-            whitelist = _.union(whitelist, additionalViewUrls);
+            whitelist = _.union(whitelist, additionalViewUrls, additionalWhitelistUrls);
         };
 
         var addViewsToWhitelist = function(views) {
@@ -114,9 +122,8 @@
                 var Configuration = function($stateProvider, $sceDelegateProvider, $httpProvider, $controllerProvider,
                         $compileProvider, $filterProvider, $provide) {
 
-                    stashProviders($controllerProvider, $compileProvider, $filterProvider, $provide);
+                    stashProviders($controllerProvider, $compileProvider, $filterProvider, $provide, $httpProvider);
                     setupStates($stateProvider, $sceDelegateProvider);
-                    $httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = Properties.csrfToken;
                 };
 
                 linguaApp.config([ "$stateProvider", "$sceDelegateProvider", "$httpProvider", "$controllerProvider",

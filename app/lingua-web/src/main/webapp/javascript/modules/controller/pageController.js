@@ -1,16 +1,33 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper" ];
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService", "util/commsPipe" ];
 
     define(dependencies, function(linguaApp, ngRegistrationHelper) {
 
-        var DIALOG_NAME = "#lingua-main-dialog";
+        var CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
 
-        var PageController = function($scope, $state) {
+        var doLoginAndCsrf = function(jsonWebService, $state, commsPipe) {
 
-            $scope.Properties = Properties;
+            jsonWebService.executeSimple(Properties.csrfTokenApiUrl, function(data, status) {
+                
+                linguaApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
+                $state.go(AppStates.MAIN);
+            }, function(data, status) {
 
-            $(DIALOG_NAME).draggable({
+                if (status === HttpHeaders.PSEUDO_CSRF_NOT_PERMITTED) {
+                    commsPipe.subscribe(Components.LOGIN, Components.PAGE, function(message) {
+                        doLoginAndCsrf(jsonWebService, $state, commsPipe);
+                    });
+                    $state.go(AppStates.LOGIN);
+                }
+            });
+        };
+
+        var setupDialogs = function($scope) {
+
+            var dialogName = "#lingua-main-dialog";
+
+            $(dialogName).draggable({
                 handle : ".lingua-dialog-header",
                 containment : "document",
                 scroll : false
@@ -18,19 +35,25 @@
 
             $scope.$on("$viewContentLoaded", function() {
 
-                var leftOffset = (($(window).width() - $(DIALOG_NAME).outerWidth()) / 2) + $(window).scrollLeft();
+                var leftOffset = (($(window).width() - $(dialogName).outerWidth()) / 2) + $(window).scrollLeft();
 
-                $(DIALOG_NAME + " .lingua-dialog-view:empty").parent().hide();
-                $(DIALOG_NAME + " .lingua-dialog-view:not(:empty)").parent().show();
-                $(DIALOG_NAME).css({
+                $(dialogName + " .lingua-dialog-view:empty").parent().hide();
+                $(dialogName + " .lingua-dialog-view:not(:empty)").parent().show();
+                $(dialogName).css({
                     "left" : leftOffset + "px",
                     "top" : "70px"
                 });
             });
-
-            $state.go(AppStates.MAIN);
         };
 
-        ngRegistrationHelper(linguaApp).registerController("pageController", [ "$scope", "$state", PageController ]);
+        var PageController = function($scope, $state, jsonWebService, commsPipe) {
+
+            $scope.Properties = Properties;
+            setupDialogs($scope);
+            doLoginAndCsrf(jsonWebService, $state, commsPipe);
+        };
+
+        ngRegistrationHelper(linguaApp).registerController("pageController",
+                [ "$scope", "$state", "jsonWebService", "commsPipe", PageController ]);
     });
 })();
