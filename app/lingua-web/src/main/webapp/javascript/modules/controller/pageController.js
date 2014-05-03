@@ -24,7 +24,7 @@
                 $(DIALOG_NAME + " .lingua-dialog-view:not(:empty)").parent().show();
                 $(DIALOG_NAME).css({
                     "left" : leftOffset + "px",
-                    "top" : "50px"
+                    "top" : "70px"
                 });
             });
 

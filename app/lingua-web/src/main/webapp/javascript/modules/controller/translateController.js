@@ -25,7 +25,8 @@
             $scope.func.doTranslate();
         };
 
-        var TranslateController = function($scope, translateService, languageNamesService, interAppMailbox) {
+        var TranslateController = function($scope, translateService, languageNamesService, interAppMailbox, $location,
+                $state) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
@@ -42,6 +43,16 @@
                 });
             };
 
+            $scope.func.doAddToNotebook = function() {
+
+                var message = new Note($scope.model.targetLang, $scope.model.translations.google,
+                        $scope.model.sourceLang, $scope.model.query, "", $location.absUrl(), TranslationSources.GOOGLE);
+
+                $state.go(AppStates.ADD_NOTE).then(function() {
+                    interAppMailbox.send(Components.TRANSLATE, Components.ADD_NOTE, message);
+                });
+            };
+
             interAppMailbox.subscribe(Components.READER, Components.TRANSLATE, function(messages) {
 
                 var translationRequest = _.last(messages);
@@ -50,7 +61,9 @@
             });
         };
 
-        ngRegistrationHelper(linguaApp).registerController("translateController",
-                [ "$scope", "translateService", "languageNamesService", "interAppMailbox", TranslateController ]);
+        ngRegistrationHelper(linguaApp).registerController(
+                "translateController",
+                [ "$scope", "translateService", "languageNamesService", "interAppMailbox", "$location", "$state",
+                        TranslateController ]);
     });
 })();

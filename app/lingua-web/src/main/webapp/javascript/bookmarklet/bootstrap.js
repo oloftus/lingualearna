@@ -66,9 +66,9 @@
 
     var boot = function() {
 
-        while (require === undefined) {
-        }
-        require([ readerJsFile ]);
+        setTimeout(function() {
+            require([ readerJsFile ]);
+        }, 100);
     };
 
     addCss();

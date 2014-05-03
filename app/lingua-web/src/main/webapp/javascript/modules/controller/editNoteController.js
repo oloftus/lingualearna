@@ -49,7 +49,7 @@
 
                 var note = new Note($scope.model.foreignLang, $scope.model.foreignNote, $scope.model.localLang,
                         $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl,
-                        $scope.model.noteId);
+                        $scope.model.translationSource, $scope.model.noteId);
 
                 noteService.update($scope.model.noteId, note, function(data) {
                     messageHandler.addFreshGlobalMessage($scope, localStrings.noteSavedMessage, MessageSeverity.INFO);

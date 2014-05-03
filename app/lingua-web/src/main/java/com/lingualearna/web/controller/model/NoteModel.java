@@ -3,6 +3,8 @@ package com.lingualearna.web.controller.model;
 import java.io.Serializable;
 import java.util.Locale;
 
+import com.lingualearna.web.notes.TranslationSource;
+
 public class NoteModel implements Serializable {
 
     private static final long serialVersionUID = 6666949136391165628L;
@@ -14,6 +16,7 @@ public class NoteModel implements Serializable {
     private String localNote;
     private int noteId;
     private String sourceUrl;
+    private TranslationSource translationSource;
 
     public String getAdditionalNotes() {
 
@@ -50,6 +53,11 @@ public class NoteModel implements Serializable {
         return sourceUrl;
     }
 
+    public TranslationSource getTranslationSource() {
+
+        return translationSource;
+    }
+
     public void setAdditionalNotes(String additionalNotes) {
 
         this.additionalNotes = additionalNotes;
@@ -83,5 +91,10 @@ public class NoteModel implements Serializable {
     public void setSourceUrl(String sourceUrl) {
 
         this.sourceUrl = sourceUrl;
+    }
+
+    public void setTranslationSource(TranslationSource translationSource) {
+
+        this.translationSource = translationSource;
     }
 }

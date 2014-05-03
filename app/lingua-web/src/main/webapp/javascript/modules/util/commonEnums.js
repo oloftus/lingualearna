@@ -40,5 +40,9 @@
             TRANSLATE : "TRANSLATE",
             ADD_NOTE : "ADD_NOTE"
         };
+        
+        TranslationSources = {
+            GOOGLE: "Google"
+        };
     });
 })();
