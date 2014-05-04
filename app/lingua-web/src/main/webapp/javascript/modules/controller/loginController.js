@@ -17,7 +17,7 @@
                 messageCallback : function(message) {
 
                     if (message.message === Properties.loginSuccessSignal) {
-                        commsPipe.send(Components.LOGIN, Components.PAGE, Properties.loginSuccessSignal);
+                        commsPipe.send(Components.LOGIN, Components.ANY, Properties.loginSuccessSignal);
                     }
                 }
             });

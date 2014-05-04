@@ -13,6 +13,7 @@
 
         HttpHeaders = {
             BAD_REQUEST : 400,
+            FORBIDDEN : 403,
             PSEUDO_CSRF_NOT_PERMITTED : 0
         };
 

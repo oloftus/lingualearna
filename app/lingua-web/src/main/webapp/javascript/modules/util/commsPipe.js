@@ -7,7 +7,7 @@
         var CommsPipe = function() {
 
             var subscribers = {};
-            var anySubscribers = {};
+            var subscribersToAnySender = {};
 
             var send = function(senderName, receiverName, message) {
 
@@ -15,20 +15,15 @@
                         && !_.isUndefined(subscribers[receiverName][senderName])) {
                     subscribers[receiverName][senderName](message);
                 }
-                if (!_.isUndefined(anySubscribers[receiverName])) {
-                    _.each(anySubscribers[receiverName], function(subscriberCallback) {
-                        subscriberCallback(message);
-                    });
+                if (!_.isUndefined(subscribersToAnySender[receiverName])) {
+                    subscribersToAnySender[receiverName](message);
                 }
             };
 
             var subscribe = function(senderName, receiverName, subscriberCallback) {
 
                 if (senderName === Components.ANY) {
-                    if (_.isUndefined(anySubscribers[receiverName])) {
-                        anySubscribers[receiverName] = [];
-                    }
-                    anySubscribers[receiverName].push(subscriberCallback);
+                    subscribersToAnySender[receiverName] = subscriberCallback;
                 }
                 else {
                     if (_.isUndefined(subscribers[receiverName])) {

@@ -1,10 +1,9 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService", "util/commsPipe" ];
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService" ];
 
     define(dependencies, function(linguaApp, ngRegistrationHelper) {
 
-        var CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
         var linguaReaderName = "lingua-reader";
         var dialogName = "lingua-main-dialog";
         var overlayName = "lingua-overlay";
@@ -40,23 +39,9 @@
             });
         };
 
-        var doLoginAndCsrf = function(jsonWebService, $state, commsPipe, $scope) {
+        var triggerLogin = function(jsonWebService) {
 
-            manageLoginOverlay($scope);
-
-            jsonWebService.executeSimple(Properties.csrfTokenApiUrl, function(data, status) {
-
-                linguaApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
-                $state.go(AppStates.MAIN);
-            }, function(data, status) {
-
-                if (status === HttpHeaders.PSEUDO_CSRF_NOT_PERMITTED) {
-                    commsPipe.subscribe(Components.LOGIN, Components.PAGE, function(message) {
-                        doLoginAndCsrf(jsonWebService, $state, commsPipe, $scope);
-                    });
-                    $state.go(AppStates.LOGIN);
-                }
-            });
+            jsonWebService.executeSimple(Properties.pingUrl);
         };
         
         var makeDialogsDraggable = function() {
@@ -94,15 +79,17 @@
             enableDialogToggle($scope);
         };
 
-        var PageController = function($scope, $state, jsonWebService, commsPipe) {
+        var PageController = function($scope, $state, jsonWebService) {
 
             $scope.Properties = Properties;
+            $state.go(AppStates.MAIN);
             setupDialogs($scope);
-            doLoginAndCsrf(jsonWebService, $state, commsPipe, $scope);
+            manageLoginOverlay($scope);
+            triggerLogin(jsonWebService, $scope);
         };
 
         ngRegistrationHelper(linguaApp).registerController("pageController",
-                [ "$scope", "$state", "jsonWebService", "commsPipe", PageController ]);
+                [ "$scope", "$state", "jsonWebService", PageController ]);
     });
 })();
 ;
