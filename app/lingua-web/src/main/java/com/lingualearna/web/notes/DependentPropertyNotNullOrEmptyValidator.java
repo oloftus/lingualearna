@@ -41,7 +41,8 @@ public class DependentPropertyNotNullOrEmptyValidator implements
                 addViolation(context);
                 return false;
             }
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException cause) {
+        }
+        catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException cause) {
             String message = "DependentPropertyNotNull validator incorrectly setup";
             ConfigurationException exception = new ConfigurationException(message, cause);
             LOG.error(message, exception);

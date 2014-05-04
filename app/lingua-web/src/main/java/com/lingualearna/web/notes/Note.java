@@ -19,6 +19,7 @@ import org.hibernate.validator.constraints.URL;
         @DependentPropertyNotNullOrEmpty(propertyName = "foreignNote", dependentPropertyName = "foreignLang"),
         @DependentPropertyNotNullOrEmpty(propertyName = "localNote", dependentPropertyName = "localLang")
 })
+@MinimumOnePropertyNotEmpty(propertyNames = { "additionalNotes", "foreignNote", "localNote" })
 @Entity
 @Table(name = "notes")
 public class Note implements Serializable {
