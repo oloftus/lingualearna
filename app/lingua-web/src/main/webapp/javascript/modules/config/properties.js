@@ -14,7 +14,6 @@
             Properties.languageNamesServiceUrl = apiRoot + "/languages/langName";
             Properties.noteServiceUrl = apiRoot + "/note";
             Properties.csrfTokenApiUrl = apiRoot + "/security/csrfToken";
-            Properties.pingUrl = apiRoot + "/ping";
             Properties.loginSuccessSignal = "lingua-login-success";
         }
     });

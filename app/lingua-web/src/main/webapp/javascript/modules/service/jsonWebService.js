@@ -22,9 +22,9 @@
                     callIfNotUndefined(successCallback, this);
                 });
             };
-            
+
             var goToLogin = function($state, commsPipe) {
-                
+
                 commsPipe.subscribe(Components.LOGIN, Components.ANY, function(message) {
                     getCsrfToken(function() {
                         $state.go(AppStates.MAIN);
@@ -61,14 +61,9 @@
                 }).success(successHandler).error(errorHandler);
             };
 
-            var executeSimple = function(serviceUrl, successCallback, failureCallback) {
-
-                execute(serviceUrl, HttpMethod.GET, null, successCallback, failureCallback);
-            };
-
             return {
                 execute : execute,
-                executeSimple : executeSimple
+                getCsrfToken : getCsrfToken
             };
         };
 

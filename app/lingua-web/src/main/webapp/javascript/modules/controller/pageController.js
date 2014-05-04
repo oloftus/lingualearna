@@ -41,7 +41,7 @@
 
         var triggerLogin = function(jsonWebService) {
 
-            jsonWebService.executeSimple(Properties.pingUrl);
+            jsonWebService.getCsrfToken();
         };
         
         var makeDialogsDraggable = function() {
