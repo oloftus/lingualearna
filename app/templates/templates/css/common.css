@@ -33,6 +33,7 @@ box-sizing:border-box;}
 
 .lingua-action-button-icon, .lingua-icon-link, .lingua-icon-button{background:no-repeat left center;}
 .lingua-action-button-icon, .lingua-icon-link{padding-left:25px;}
+.lingua-icon-link{background-size:20px;}
 .lingua-action-button, .lingua-action-button-icon, .lingua-icon-button{outline:none;}
 .lingua-action-button, .lingua-action-button-icon{font:inherit;border:2px outset #cccccc;background-color:white !important;}
 .lingua-icon-link{color:inherit;text-decoration:inherit;}

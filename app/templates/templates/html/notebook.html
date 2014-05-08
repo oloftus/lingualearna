@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="US-ASCII">
+<title>Notebook</title>
+<head>
+<meta charset="UTF8">
+<title>Add/edit note dialog</title>
+<link href="../css/common.css" rel="stylesheet" type="text/css">
+<link href="../css/notebook.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+    <div id="notebook-container" class="lingua-component">
+        <header id="page-header">
+            <div id="notebooks-tools">
+                <select id="notebook-selector">
+                    <option value="spanish">Spanish</option>
+                </select>
+                <button class="lingua-action-button-icon" id="new-notebook-button">New notebook</button>
+            </div>
+            <h1>LinguaLearna.com</h1>
+            <ul id="header-tools">
+                <li><a href="#">Resources</a></li>
+                <li id="account-link"><a href="#" class="lingua-icon-link">Oliver Loftus</a></li>
+            </ul>
+        </header>
+        
+        <div id="notebook-pane">
+            <header id="notebook-header">
+                <h2 id="notebook-title">Spanish & English</h2>
+                <div id="notebook-tools">
+                    <input type="text" value="Search/lookup" id="notebook-search" />
+                    <button class="lingua-action-button-icon" id="new-entry-button">Add entry</button>
+                    <button class="lingua-action-button-icon" id="start-test-button">Knowledge test</button>
+                </div>
+            </header>
+            <div id="notebook-page"></div>
+            <div id="notebook-tabs-pane">
+                <ul id="notebook-tabs">
+                    <li><a href="#">Verbs</a></li>
+                    <li><a href="#">Tricky vocab</a></li>
+                    <li><a href="#">Grammar things</a></li>
+                    <li><a href="#">Expressions</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="right-pane"></div>
+    </div>
+
+</body>
+</html>
