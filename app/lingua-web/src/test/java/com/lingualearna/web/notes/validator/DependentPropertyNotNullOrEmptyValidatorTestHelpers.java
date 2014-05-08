@@ -1,4 +1,4 @@
-package com.lingualearna.web.notes;
+package com.lingualearna.web.notes.validator;
 
 /**
  * Apache BeanUtils doesn't like anonymous classes, so we need a declared public

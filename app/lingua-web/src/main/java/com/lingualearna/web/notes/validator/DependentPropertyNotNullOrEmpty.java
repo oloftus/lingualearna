@@ -1,4 +1,4 @@
-package com.lingualearna.web.notes;
+package com.lingualearna.web.notes.validator;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 

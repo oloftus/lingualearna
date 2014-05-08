@@ -1,4 +1,4 @@
-package com.lingualearna.web.notes;
+package com.lingualearna.web.notes.validator;
 
 import java.lang.reflect.InvocationTargetException;
 

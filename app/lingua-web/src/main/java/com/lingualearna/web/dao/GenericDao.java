@@ -16,9 +16,10 @@ public class GenericDao<T> {
 
     @PersistenceContext
     private EntityManager entityManager;
+
     private Class<T> entityType;
 
-    private void isClassSetup() {
+    private void assertClassSetup() {
 
         if (entityType == null) {
             String message = "entityType field not set in GenericDao";
@@ -33,7 +34,7 @@ public class GenericDao<T> {
      */
     public boolean delete(int id) {
 
-        isClassSetup();
+        assertClassSetup();
         T retrievedObj = entityManager.find(entityType, id);
         if (retrievedObj == null) {
             return false;
@@ -47,14 +48,19 @@ public class GenericDao<T> {
 
     public T findNoLock(int id) {
 
-        isClassSetup();
+        assertClassSetup();
         T retrievedObj = entityManager.find(entityType, id);
         return retrievedObj;
     }
 
+    protected EntityManager getEntityManager() {
+
+        return entityManager;
+    }
+
     public T merge(T obj) {
 
-        isClassSetup();
+        assertClassSetup();
         T updatedObj = entityManager.merge(obj);
         entityManager.flush();
         return updatedObj;
@@ -65,7 +71,7 @@ public class GenericDao<T> {
      */
     public void persist(T obj) {
 
-        isClassSetup();
+        assertClassSetup();
         entityManager.persist(obj);
         entityManager.flush();
     }

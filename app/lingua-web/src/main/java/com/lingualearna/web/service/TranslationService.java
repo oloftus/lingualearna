@@ -15,19 +15,20 @@ import com.lingualearna.web.util.ApplicationException;
 @Service
 public class TranslationService {
 
-	@Autowired
-	@Qualifier("GoogleTranslate")
-	private TranslationProvider googleTranslationProvider;
+    @Autowired
+    @Qualifier("DummyTranslate")
+    private TranslationProvider googleTranslationProvider;
 
-	public SingleTranslationResult translateString(TranslationProviderName provider, Locale sourceLang, Locale targetLang,
-			String query) throws TranslationException, ApplicationException {
+    public SingleTranslationResult translateString(TranslationProviderName provider, Locale sourceLang,
+            Locale targetLang,
+            String query) throws TranslationException, ApplicationException {
 
-		SingleTranslationResult result = null;
-		switch (provider) {
-			case Google:
-				result = googleTranslationProvider.translate(sourceLang, targetLang, query);
-		}
+        SingleTranslationResult result = null;
+        switch (provider) {
+            case Google:
+                result = googleTranslationProvider.translate(sourceLang, targetLang, query);
+        }
 
-		return result;
-	}
+        return result;
+    }
 }

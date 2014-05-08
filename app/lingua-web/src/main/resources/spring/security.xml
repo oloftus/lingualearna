@@ -12,16 +12,14 @@
 		<intercept-url pattern="/app/**" access="ROLE_USER" />
 		<form-login login-page="/app/login"
 			authentication-failure-url="/app/login?loginFailed=true"
-			default-target-url="/app/loginSuccess"
-			always-use-default-target="true" />
+			default-target-url="/app/loginSuccess" always-use-default-target="true" />
 		<csrf />
 	</http>
 
 	<authentication-manager>
-		<authentication-provider>
-			<user-service>
-				<user name="mkyong" password="123" authorities="ROLE_USER" />
-			</user-service>
-		</authentication-provider>
+		<authentication-provider user-service-ref="jpaUserDetailsService" />
 	</authentication-manager>
+
+	<beans:bean id="jpaUserDetailsService"
+		class="com.lingualearna.web.security.JpaUserDetailsService" />
 </beans:beans>
