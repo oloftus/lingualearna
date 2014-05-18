@@ -1,5 +1,7 @@
 package com.lingualearna.web.service;
 
+import static com.lingualearna.web.security.SecuredConfigAttributes.ALLOW_OWNER;
+
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -9,10 +11,12 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import com.lingualearna.web.dao.GenericDao;
 import com.lingualearna.web.notes.Note;
+import com.lingualearna.web.security.SecuredType;
 
 @Service
 @Transactional
@@ -30,6 +34,8 @@ public class NotesService {
         notesDao.persist(note);
     }
 
+    @SecuredType(Note.class)
+    @Secured(ALLOW_OWNER)
     public boolean deleteNote(int noteId) {
 
         return notesDao.delete(noteId);
@@ -41,11 +47,14 @@ public class NotesService {
         notesDao.setEntityType(Note.class);
     }
 
+    @SecuredType(Note.class)
+    @Secured(ALLOW_OWNER)
     public Note retrieveNote(int noteId) {
 
         return notesDao.findNoLock(noteId);
     }
 
+    @Secured(ALLOW_OWNER)
     public Note updateNote(Note note) {
 
         validateNote(note);

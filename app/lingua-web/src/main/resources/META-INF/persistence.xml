@@ -7,5 +7,7 @@
 		<class>com.lingualearna.web.notes.Note</class>
 		<class>com.lingualearna.web.languages.SupportedLanguage</class>
 		<class>com.lingualearna.web.security.User</class>
+		<class>com.lingualearna.web.notes.Notebook</class>
+		<class>com.lingualearna.web.notes.Page</class>
 	</persistence-unit>
 </persistence>

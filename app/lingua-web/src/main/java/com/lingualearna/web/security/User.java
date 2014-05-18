@@ -20,24 +20,17 @@ import org.hibernate.validator.constraints.Length;
 @Table(name = "users")
 @NamedQueries({
         @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.emailAddress = :username")
+        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
 })
 public class User implements Serializable {
 
     private static final long serialVersionUID = -9112339745471679923L;
 
     private int userId;
-    private String emailAddress;
+    private String username;
     private boolean enabled;
     private String password;
     private Role role;
-
-    @Column(name = "email_address")
-    @Email
-    public String getEmailAddress() {
-
-        return this.emailAddress;
-    }
 
     public boolean getEnabled() {
 
@@ -58,16 +51,18 @@ public class User implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
     public int getUserId() {
 
         return this.userId;
     }
 
-    public void setEmailAddress(String emailAddress) {
+    @Column(name = "email_address")
+    @Email
+    public String getUsername() {
 
-        this.emailAddress = emailAddress;
+        return this.username;
     }
 
     public void setEnabled(boolean enabled) {
@@ -88,5 +83,10 @@ public class User implements Serializable {
     public void setUserId(int userId) {
 
         this.userId = userId;
+    }
+
+    public void setUsername(String username) {
+
+        this.username = username;
     }
 }

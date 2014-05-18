@@ -29,7 +29,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(userEntity.getRole().toString()));
-        User user = new User(userEntity.getEmailAddress(), userEntity.getPassword(), authorities);
+        User user = new User(userEntity.getUsername(), userEntity.getPassword(), authorities);
 
         return user;
     }

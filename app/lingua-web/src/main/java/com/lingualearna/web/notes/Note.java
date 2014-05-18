@@ -10,19 +10,36 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+
+import com.lingualearna.web.dao.NotesDao;
+import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmpty;
+import com.lingualearna.web.notes.validator.MinimumOnePropertyNotEmpty;
+import com.lingualearna.web.security.HasOwner;
 
 @DependentPropertyNotNullOrEmpty.Properties({
         @DependentPropertyNotNullOrEmpty(propertyName = "foreignNote", dependentPropertyName = "foreignLang"),
         @DependentPropertyNotNullOrEmpty(propertyName = "localNote", dependentPropertyName = "localLang")
 })
 @MinimumOnePropertyNotEmpty(propertyNames = { "additionalNotes", "foreignNote", "localNote" })
+@Configurable
+@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+@NamedQuery(name = "Note.getOwner", query = "SELECT nb.owner FROM Note n JOIN n.page AS p JOIN"
+        + " n.page.notebook AS nb WHERE n.noteId = :noteId")
 @Entity
 @Table(name = "notes")
-public class Note implements Serializable {
+public class Note implements Serializable, HasOwner {
 
     private static final long serialVersionUID = -1700378910934447911L;
 
@@ -34,6 +51,10 @@ public class Note implements Serializable {
     private String localNote;
     private String sourceUrl;
     private TranslationSource translationSource;
+    private Page page;
+
+    @Autowired
+    private NotesDao notesDao;
 
     @Length(max = 2000)
     @Column(name = "additional_notes")
@@ -74,6 +95,20 @@ public class Note implements Serializable {
     public int getNoteId() {
 
         return noteId;
+    }
+
+    @Transient
+    @Override
+    public String getOwnerUsername() {
+
+        return notesDao.getNoteOwner(noteId).getUsername();
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "page")
+    public Page getPage() {
+
+        return page;
     }
 
     @URL
@@ -119,6 +154,11 @@ public class Note implements Serializable {
     public void setNoteId(int noteId) {
 
         this.noteId = noteId;
+    }
+
+    public void setPage(Page page) {
+
+        this.page = page;
     }
 
     public void setSourceUrl(String sourceUrl) {

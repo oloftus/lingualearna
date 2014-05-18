@@ -46,11 +46,15 @@ public class GenericDao<T> {
         return true;
     }
 
+    public <S> S findNoLock(Class<S> entityType, int id) {
+
+        return entityManager.find(entityType, id);
+    }
+
     public T findNoLock(int id) {
 
         assertClassSetup();
-        T retrievedObj = entityManager.find(entityType, id);
-        return retrievedObj;
+        return findNoLock(entityType, id);
     }
 
     protected EntityManager getEntityManager() {
@@ -79,7 +83,7 @@ public class GenericDao<T> {
     /**
      * Workaround for compile time/runtime nature of Java generics.<br/>
      * <br/>
-     * <b>This method must be called before usingthis class.</b>
+     * <b>This method must be called before using this class.</b>
      */
     public void setEntityType(Class<T> type) {
 

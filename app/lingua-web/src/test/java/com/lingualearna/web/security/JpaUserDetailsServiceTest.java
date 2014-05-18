@@ -39,7 +39,7 @@ public class JpaUserDetailsServiceTest {
 
     private void givenTheUserExists() {
 
-        when(userEntity.getEmailAddress()).thenReturn(EMAIL_ADDRESS);
+        when(userEntity.getUsername()).thenReturn(EMAIL_ADDRESS);
         when(userEntity.getPassword()).thenReturn(PASSWORD);
         when(userEntity.getRole()).thenReturn(Role.ROLE_ADMIN);
         when(userEntity.getEnabled()).thenReturn(true);
