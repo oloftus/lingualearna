@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:beans="http://www.springframework.org/schema/beans"
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:beans="http://www.springframework.org/schema/beans"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/security
@@ -10,16 +9,26 @@
 	<http auto-config="true">
 		<intercept-url pattern="/app/login" access="ROLE_ANONYMOUS,ROLE_USER" />
 		<intercept-url pattern="/app/**" access="ROLE_USER" />
-		<form-login login-page="/app/login"
-			authentication-failure-url="/app/login?loginFailed=true"
+		<form-login login-page="/app/login" authentication-failure-url="/app/login?loginFailed=true"
 			default-target-url="/app/loginSuccess" always-use-default-target="true" />
 		<csrf />
 	</http>
 
+	<global-method-security secured-annotations="enabled" access-decision-manager-ref="accessDecisionManager" />
+
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
+				<beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+				<beans:bean class="com.lingualearna.web.security.OwnerBasedVoter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
 	<authentication-manager>
-		<authentication-provider user-service-ref="jpaUserDetailsService" />
+		<authentication-provider user-service-ref="userDetailsService" />
 	</authentication-manager>
 
-	<beans:bean id="jpaUserDetailsService"
-		class="com.lingualearna.web.security.JpaUserDetailsService" />
+	<beans:bean id="userDetailsService" class="com.lingualearna.web.security.JpaUserDetailsService" />
 </beans:beans>
