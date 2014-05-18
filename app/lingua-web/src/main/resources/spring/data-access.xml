@@ -16,7 +16,7 @@
 			<props>
 				<prop key="javax.persistence.jdbc.url">${datasource.url}</prop>
 				<prop key="javax.persistence.jdbc.user">${datasouce.user}</prop>
-				<prop key="javax.persistence.jdbc.password">${datasource.passwd}</prop>
+				<prop key="javax.persistence.jdbc.password">${datasource.password}</prop>
 				<prop key="hibernate.dialect">${datasource.dialect}</prop>
 			    <prop key="hibernate.c3p0.acquire_increment">1</prop>
 			    <prop key="hibernate.c3p0.idle_test_period">100</prop>
