@@ -21,25 +21,8 @@ public class OwnerBasedVoter implements AccessDecisionVoter<MethodInvocation> {
     @Autowired
     private GenericDao<?> genericDao;
 
-    private int isOwner(HasOwner ownedObject, UserDetails userDetails) {
+    private HasOwner getOwnedObject(MethodInvocation methodInvocation, Integer ownedObjectId) {
 
-        if (ownedObject != null && ownedObject.getOwnerUsername().equals(userDetails.getUsername())) {
-            return ACCESS_GRANTED;
-        }
-        else {
-            return ACCESS_DENIED;
-        }
-    }
-
-    private int isOwnerOfObject(Object ownedObjectObj, UserDetails userDetails) {
-
-        HasOwner ownedObject = (HasOwner) ownedObjectObj;
-        return isOwner(ownedObject, userDetails);
-    }
-
-    private int isOwnerOfObjectId(Object ownedObjectIdObj, UserDetails userDetails, MethodInvocation methodInvocation) {
-
-        Integer ownedObjectId = (Integer) ownedObjectIdObj;
         HasOwner ownedObject = null;
 
         for (Annotation annotation : methodInvocation.getMethod().getAnnotations()) {
@@ -55,10 +38,32 @@ public class OwnerBasedVoter implements AccessDecisionVoter<MethodInvocation> {
             }
         }
 
+        return ownedObject;
+    }
+
+    private int isOwner(HasOwner ownedObject, UserDetails userDetails) {
+
+        if (ownedObject != null && ownedObject.getOwnerUsername().equals(userDetails.getUsername())) {
+            return ACCESS_GRANTED;
+        }
+
+        return ACCESS_DENIED;
+    }
+
+    private int isOwnerOfObject(Object ownedObjectObj, UserDetails userDetails) {
+
+        HasOwner ownedObject = (HasOwner) ownedObjectObj;
         return isOwner(ownedObject, userDetails);
     }
 
-    public int isOwnerOfObjectOrId(UserDetails userDetails, MethodInvocation methodInvocation) {
+    private int isOwnerOfObjectId(Object ownedObjectIdObj, UserDetails userDetails, MethodInvocation methodInvocation) {
+
+        Integer ownedObjectId = (Integer) ownedObjectIdObj;
+        HasOwner ownedObject = getOwnedObject(methodInvocation, ownedObjectId);
+        return isOwner(ownedObject, userDetails);
+    }
+
+    private int isOwnerOfObjectOrId(UserDetails userDetails, MethodInvocation methodInvocation) {
 
         Object ownedObjectOrId = methodInvocation.getArguments()[OWNED_OBJECT_OR_ID_POSITION];
 
