@@ -21,6 +21,15 @@
 			</plugin>
 		</plugins>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.6</version>
+			</plugin>
+		</plugins>
+	</reporting>
 	<properties>
 		<slf4jVersion>1.7.6</slf4jVersion>
 		<springSecurityVersion>3.2.2.RELEASE</springSecurityVersion>
