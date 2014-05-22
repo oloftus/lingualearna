@@ -6,13 +6,15 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-	<http auto-config="true">
+	<http auto-config="true" entry-point-ref="deniedEntryPoint">
 		<intercept-url pattern="/app/login" access="ROLE_ANONYMOUS,ROLE_USER" />
 		<intercept-url pattern="/app/**" access="ROLE_USER" />
 		<form-login login-page="/app/login" authentication-failure-url="/app/login?loginFailed=true"
 			default-target-url="/app/loginSuccess" always-use-default-target="true" />
 		<csrf />
 	</http>
+
+    <beans:bean id="deniedEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
 
 	<global-method-security secured-annotations="enabled" access-decision-manager-ref="accessDecisionManager" />
 
@@ -26,7 +28,7 @@
 		</beans:property>
 	</beans:bean>
 
-	<authentication-manager>
+	<authentication-manager erase-credentials="false">
 		<authentication-provider user-service-ref="userDetailsService" />
 	</authentication-manager>
 

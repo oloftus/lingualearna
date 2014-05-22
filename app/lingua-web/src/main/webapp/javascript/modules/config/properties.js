@@ -15,6 +15,7 @@
             Properties.noteServiceUrl = apiRoot + "/note";
             Properties.csrfTokenApiUrl = apiRoot + "/security/csrfToken";
             Properties.loginSuccessSignal = "lingua-login-success";
+            Properties.csrfSecret = csrfSecret;            
         }
     });
 })();

@@ -63,6 +63,13 @@ class GlobalControllerExceptionHandler {
         return response;
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public String handleGenericExceptions(HttpServletRequest request, Exception exception) {
+
+        return "error";
+    }
+
     private boolean isDuplicateViolation(ConstraintViolation<?> fieldViolation, ConstraintViolation<?> globalViolation) {
 
         return globalViolation.getMessage().equals(fieldViolation.getMessage());

@@ -14,10 +14,15 @@
                     callback.apply(thisArg, args);
                 }
             };
+            
+            var createCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
+                
+                return apiUrl + "/" + csrfSecret;
+            };
 
             var getCsrfToken = function(successCallback) {
 
-                execute(Properties.csrfTokenApiUrl, HttpMethod.GET, null, function(data) {
+                execute(createCsrfTokenApiUrl(Properties.csrfTokenApiUrl, Properties.csrfSecret), HttpMethod.GET, null, function(data) {
                     linguaApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
                     callIfNotUndefined(successCallback, this);
                 });
@@ -42,7 +47,7 @@
 
                 var errorHandler = function(data, status, headers, config) {
 
-                    if (_.contains([ HttpHeaders.PSEUDO_CSRF_NOT_PERMITTED, HttpHeaders.FORBIDDEN ], status)) {
+                    if (status === HttpHeaders.FORBIDDEN) {
                         goToLogin($state, commsPipe);
                     }
                     else {
