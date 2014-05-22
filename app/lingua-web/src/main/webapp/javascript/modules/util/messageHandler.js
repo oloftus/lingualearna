@@ -1,6 +1,7 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "underscore", "jquery" ];
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "underscore", "jquery",
+            "localization/stringsDefault" ];
 
     define(dependencies, function(linguaApp, ngRegistrationHelper, _, $) {
 
@@ -86,6 +87,9 @@
                 if (status === HttpHeaders.BAD_REQUEST && !_.isUndefined(data.fieldErrors)
                         && !_.isUndefined(data.globalErrors)) {
                     handleValidationErrors($scope, data);
+                }
+                else {
+                    addFreshGlobalMessage($scope, LocalStrings.genericServerErrorMessage, MessageSeverity.ERROR);
                 }
             };
 

@@ -1,10 +1,9 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "localization/stringsDefault",
-            "util/ngRegistrationHelper", "underscore", "util/messageHandler", "service/languageNamesService",
-            "service/noteService" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
+            "localization/stringsDefault", "util/messageHandler", "service/languageNamesService", "service/noteService" ];
 
-    define(dependencies, function(linguaApp, abstractController, localStrings, ngRegistrationHelper, _) {
+    define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
         /*
          * Prevent users overwriting notes because their original content
@@ -65,7 +64,7 @@
             }, function() {
 
                 disableSave($scope);
-                messageHandler.addFreshGlobalMessage($scope, localStrings.genericServerErrorMessage,
+                messageHandler.addFreshGlobalMessage($scope, LocalStrings.genericServerErrorMessage,
                         MessageSeverity.ERROR);
             });
         };

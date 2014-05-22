@@ -59,11 +59,9 @@
                 populateModel($scope, note);
                 initDialog($scope, languageNamesService);
             });
-};
+        };
 
-        ngRegistrationHelper(linguaApp).registerController(
-                "addNoteController",
-                [ "$scope", "noteService", "languageNamesService", "messageHandler", "commsPipe",
-                        AddNoteController ]);
+        ngRegistrationHelper(linguaApp).registerController("addNoteController",
+                [ "$scope", "noteService", "languageNamesService", "messageHandler", "commsPipe", AddNoteController ]);
     });
 })();
