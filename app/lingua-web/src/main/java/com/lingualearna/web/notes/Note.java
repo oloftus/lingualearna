@@ -12,14 +12,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
-import com.lingualearna.web.dao.NotesDao;
 import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmpty;
 import com.lingualearna.web.notes.validator.MinimumOnePropertyNotEmpty;
 import com.lingualearna.web.security.HasOwner;
@@ -29,8 +27,6 @@ import com.lingualearna.web.security.HasOwner;
         @DependentPropertyNotNullOrEmpty(propertyName = "localNote", dependentPropertyName = "localLang")
 })
 @MinimumOnePropertyNotEmpty(propertyNames = { "additionalNotes", "foreignNote", "localNote" })
-@NamedQuery(name = "Note.getOwner", query = "SELECT nb.owner FROM Note n JOIN n.page AS p JOIN"
-        + " n.page.notebook AS nb WHERE n.noteId = :noteId")
 @Entity
 @Table(name = "notes")
 public class Note implements Serializable, HasOwner {
@@ -46,8 +42,6 @@ public class Note implements Serializable, HasOwner {
     private String sourceUrl;
     private TranslationSource translationSource;
     private Page page;
-
-    private NotesDao notesDao;
 
     @Length(max = 2000)
     @Column(name = "additional_notes")
@@ -94,11 +88,7 @@ public class Note implements Serializable, HasOwner {
     @Override
     public String getOwnerUsername() {
 
-        if (notesDao == null) {
-            return null;
-        }
-
-        return notesDao.getNoteOwner(noteId).getUsername();
+        return getPage().getNotebook().getOwner().getUsername();
     }
 
     @ManyToOne
@@ -151,12 +141,6 @@ public class Note implements Serializable, HasOwner {
     public void setNoteId(int noteId) {
 
         this.noteId = noteId;
-    }
-
-    @Transient
-    public void setNotesDao(NotesDao notesDao) {
-
-        this.notesDao = notesDao;
     }
 
     public void setPage(Page page) {

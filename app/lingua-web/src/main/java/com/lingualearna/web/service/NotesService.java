@@ -31,7 +31,6 @@ public class NotesService {
 
         validateNote(note);
         notesDao.persist(note);
-        setNotesDao(note);
     }
 
     @SecuredType(Note.class)
@@ -45,23 +44,14 @@ public class NotesService {
     @Secured(ALLOW_OWNER)
     public Note retrieveNote(int noteId) {
 
-        Note note = notesDao.findNoLock(noteId);
-        setNotesDao(note);
-        return note;
-    }
-
-    private void setNotesDao(Note note) {
-
-        note.setNotesDao(notesDao);
+        return notesDao.findNoLock(noteId);
     }
 
     @Secured(ALLOW_OWNER)
     public Note updateNote(Note note) {
 
         validateNote(note);
-        Note mergedNote = notesDao.merge(note);
-        setNotesDao(mergedNote);
-        return mergedNote;
+        return notesDao.merge(note);
     }
 
     private void validateNote(Note note) {

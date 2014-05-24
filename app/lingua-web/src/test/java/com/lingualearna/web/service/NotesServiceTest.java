@@ -1,6 +1,7 @@
 package com.lingualearna.web.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,7 +27,6 @@ import com.lingualearna.web.security.User;
 public class NotesServiceTest {
 
     private static final int NOTE_ID = 1;
-    private static final String USERNAME = "username";
 
     @Mock
     private Validator validator;
@@ -40,49 +40,53 @@ public class NotesServiceTest {
     @Mock
     private NotesDao notesDao;
 
-    private Note note;
-    private Note daoReturnedNote;
-    private Note serviceReturnedNote;
+    @Mock
+    private Note passedInNote;
+
+    @Mock
+    private Note expectedNote;
+
+    private Note returnedNote;
+    private boolean deletedSuccess;
 
     @InjectMocks
     private NotesService notesService = new NotesService();
 
-    private void andTheDaoIsSetOnThePassedInNote() {
-
-        assertEquals(USERNAME, note.getOwnerUsername());
-    }
-
-    private void andTheDaoIsSetOnTheReturnedNote() {
-
-        assertEquals(USERNAME, serviceReturnedNote.getOwnerUsername());
-    }
-
     private void andTheNoteIsPersisted() {
 
-        verify(notesDao).persist(note);
+        verify(notesDao).persist(passedInNote);
+    }
+
+    private void andTheNoteIsUpdated() {
+
+        assertEquals(expectedNote, returnedNote);
     }
 
     private void givenValidationFails() {
 
         Set<ConstraintViolation<Note>> violations = new HashSet<>();
         violations.add(violation);
-        when(validator.validate(note)).thenReturn(violations);
+        when(validator.validate(passedInNote)).thenReturn(violations);
     }
 
     @Before
     public void setup() {
 
-        daoReturnedNote = new Note();
-        daoReturnedNote.setNoteId(NOTE_ID);
+        setupNotes();
+        setupNotesDao();
+    }
 
-        note = new Note();
-        note.setNoteId(NOTE_ID);
+    private void setupNotes() {
 
-        when(notesDao.getNoteOwner(NOTE_ID)).thenReturn(user);
-        when(user.getUsername()).thenReturn(USERNAME);
+        when(passedInNote.getNoteId()).thenReturn(NOTE_ID);
+        when(expectedNote.getNoteId()).thenReturn(NOTE_ID);
+    }
 
-        when(notesDao.findNoLock(NOTE_ID)).thenReturn(daoReturnedNote);
-        when(notesDao.merge(note)).thenReturn(daoReturnedNote);
+    private void setupNotesDao() {
+
+        when(notesDao.findNoLock(NOTE_ID)).thenReturn(expectedNote);
+        when(notesDao.merge(passedInNote)).thenReturn(expectedNote);
+        when(notesDao.delete(NOTE_ID)).thenReturn(true);
     }
 
     @Test
@@ -91,7 +95,6 @@ public class NotesServiceTest {
         whenICallCreateNote();
         thenTheNoteIsValidated();
         andTheNoteIsPersisted();
-        andTheDaoIsSetOnThePassedInNote();
     }
 
     @Test
@@ -106,7 +109,6 @@ public class NotesServiceTest {
 
         whenICallRetrieveNote();
         thenTheNoteIsRetrieved();
-        andTheDaoIsSetOnTheReturnedNote();
     }
 
     @Test
@@ -114,8 +116,7 @@ public class NotesServiceTest {
 
         whenICallUpdateNote();
         thenTheNoteIsValidated();
-        thenTheNoteIsUpdated();
-        andTheDaoIsSetOnTheReturnedNote();
+        andTheNoteIsUpdated();
     }
 
     @Test(expected = ConstraintViolationException.class)
@@ -127,22 +128,17 @@ public class NotesServiceTest {
 
     private void thenTheNoteIsDeleted() {
 
-        verify(notesDao).delete(NOTE_ID);
+        assertTrue(deletedSuccess);
     }
 
     private void thenTheNoteIsRetrieved() {
 
-        verify(notesDao).findNoLock(NOTE_ID);
-    }
-
-    private void thenTheNoteIsUpdated() {
-
-        verify(notesDao).merge(note);
+        assertEquals(expectedNote, returnedNote);
     }
 
     private void thenTheNoteIsValidated() {
 
-        verify(validator).validate(note);
+        verify(validator).validate(passedInNote);
     }
 
     private void whenANoteIsValidatedTheCorrectExceptionIsThrown() {
@@ -152,21 +148,21 @@ public class NotesServiceTest {
 
     private void whenICallCreateNote() {
 
-        notesService.createNote(note);
+        notesService.createNote(passedInNote);
     }
 
     private void whenICallDeleteNote() {
 
-        notesService.deleteNote(NOTE_ID);
+        deletedSuccess = notesService.deleteNote(NOTE_ID);
     }
 
     private void whenICallRetrieveNote() {
 
-        serviceReturnedNote = notesService.retrieveNote(NOTE_ID);
+        returnedNote = notesService.retrieveNote(NOTE_ID);
     }
 
     private void whenICallUpdateNote() {
 
-        serviceReturnedNote = notesService.updateNote(note);
+        returnedNote = notesService.updateNote(passedInNote);
     }
 }
