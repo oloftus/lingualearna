@@ -15,7 +15,7 @@ import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.service.NotesService;
 
 @Controller
-@RequestMapping("/api")
+@RequestMapping("/api/note")
 public class NotesController {
 
     private static final String NOTE_ID_FIELD_NAME = "noteId";
@@ -27,7 +27,7 @@ public class NotesController {
     @Autowired
     private ControllerModelMapper<NoteModel, Note> notesMapper;
 
-    @RequestMapping(value = "/note", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+    @RequestMapping(value = "", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     @ResponseBody
     public NoteModel createNote(@RequestBody NoteModel incomingNote) {
 
@@ -41,7 +41,7 @@ public class NotesController {
         return noteModel;
     }
 
-    @RequestMapping(value = "/note/{noteId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{noteId}", method = RequestMethod.DELETE)
     @ResponseBody
     public void deleteNote(@PathVariable int noteId) {
 
@@ -51,7 +51,7 @@ public class NotesController {
         }
     }
 
-    @RequestMapping(value = "/note/{noteId}", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(value = "/{noteId}", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public NoteModel retrieveNote(@PathVariable int noteId) {
 
@@ -66,7 +66,7 @@ public class NotesController {
         return noteModel;
     }
 
-    @RequestMapping(value = "/note/{noteId}", produces = "application/json", consumes = "application/json", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{noteId}", produces = "application/json", consumes = "application/json", method = RequestMethod.PUT)
     @ResponseBody
     public NoteModel updateNote(@PathVariable int noteId, @RequestBody NoteModel incomingNote) {
 

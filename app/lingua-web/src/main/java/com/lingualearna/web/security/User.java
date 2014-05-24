@@ -9,12 +9,16 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+
+import com.lingualearna.web.notes.LastUsed;
 
 @Entity
 @Table(name = "users")
@@ -31,10 +35,18 @@ public class User implements Serializable {
     private boolean enabled;
     private String password;
     private Role role;
+    private LastUsed lastUsed;
 
     public boolean getEnabled() {
 
         return this.enabled;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    public LastUsed getLastUsed() {
+
+        return lastUsed;
     }
 
     @Length(max = 45)
@@ -58,8 +70,8 @@ public class User implements Serializable {
         return this.userId;
     }
 
-    @Column(name = "email_address")
     @Email
+    @Column(name = "email_address")
     public String getUsername() {
 
         return this.username;
@@ -68,6 +80,11 @@ public class User implements Serializable {
     public void setEnabled(boolean enabled) {
 
         this.enabled = enabled;
+    }
+
+    public void setLastUsed(LastUsed lastUsed) {
+
+        this.lastUsed = lastUsed;
     }
 
     public void setPassword(String password) {
