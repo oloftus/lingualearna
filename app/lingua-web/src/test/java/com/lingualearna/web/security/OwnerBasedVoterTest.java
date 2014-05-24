@@ -75,6 +75,12 @@ public class OwnerBasedVoterTest {
         when(userDetails.getUsername()).thenReturn(OWNER_USERNAME);
     }
 
+    private void andTheOwnerIsNull() {
+
+        when(ownedObject.getOwnerUsername()).thenReturn(null);
+        when(userDetails.getUsername()).thenReturn(OWNER_USERNAME);
+    }
+
     private void givenTheOwnedObjectIsGivenById() throws Exception {
 
         Integer[] ownedObjectIds = new Integer[] { OWNED_OBJECT_ID };
@@ -113,6 +119,15 @@ public class OwnerBasedVoterTest {
 
         givenTheOwnedObjectIsGivenByType();
         andAccessIsDenied();
+        whenIRequestAVote();
+        thenAccessIsDenied();
+    }
+
+    @Test
+    public void testDeniesAccessIfOwnerIsNull() throws Exception {
+
+        givenTheOwnedObjectIsGivenByType();
+        andTheOwnerIsNull();
         whenIRequestAVote();
         thenAccessIsDenied();
     }

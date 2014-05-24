@@ -4,7 +4,6 @@ import static com.lingualearna.web.security.SecuredConfigAttributes.ALLOW_OWNER;
 
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -14,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
-import com.lingualearna.web.dao.GenericDao;
+import com.lingualearna.web.dao.NotesDao;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.security.SecuredType;
 
@@ -23,7 +22,7 @@ import com.lingualearna.web.security.SecuredType;
 public class NotesService {
 
     @Autowired
-    private GenericDao<Note> notesDao;
+    private NotesDao notesDao;
 
     @Autowired
     private Validator validator;
@@ -32,6 +31,7 @@ public class NotesService {
 
         validateNote(note);
         notesDao.persist(note);
+        setNotesDao(note);
     }
 
     @SecuredType(Note.class)
@@ -41,24 +41,27 @@ public class NotesService {
         return notesDao.delete(noteId);
     }
 
-    @PostConstruct
-    public void init() {
-
-        notesDao.setEntityType(Note.class);
-    }
-
     @SecuredType(Note.class)
     @Secured(ALLOW_OWNER)
     public Note retrieveNote(int noteId) {
 
-        return notesDao.findNoLock(noteId);
+        Note note = notesDao.findNoLock(noteId);
+        setNotesDao(note);
+        return note;
+    }
+
+    private void setNotesDao(Note note) {
+
+        note.setNotesDao(notesDao);
     }
 
     @Secured(ALLOW_OWNER)
     public Note updateNote(Note note) {
 
         validateNote(note);
-        return notesDao.merge(note);
+        Note mergedNote = notesDao.merge(note);
+        setNotesDao(mergedNote);
+        return mergedNote;
     }
 
     private void validateNote(Note note) {

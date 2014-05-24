@@ -18,10 +18,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.Scope;
 
 import com.lingualearna.web.dao.NotesDao;
 import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmpty;
@@ -33,8 +29,6 @@ import com.lingualearna.web.security.HasOwner;
         @DependentPropertyNotNullOrEmpty(propertyName = "localNote", dependentPropertyName = "localLang")
 })
 @MinimumOnePropertyNotEmpty(propertyNames = { "additionalNotes", "foreignNote", "localNote" })
-@Configurable
-@Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @NamedQuery(name = "Note.getOwner", query = "SELECT nb.owner FROM Note n JOIN n.page AS p JOIN"
         + " n.page.notebook AS nb WHERE n.noteId = :noteId")
 @Entity
@@ -53,7 +47,6 @@ public class Note implements Serializable, HasOwner {
     private TranslationSource translationSource;
     private Page page;
 
-    @Autowired
     private NotesDao notesDao;
 
     @Length(max = 2000)
@@ -100,6 +93,10 @@ public class Note implements Serializable, HasOwner {
     @Transient
     @Override
     public String getOwnerUsername() {
+
+        if (notesDao == null) {
+            return null;
+        }
 
         return notesDao.getNoteOwner(noteId).getUsername();
     }
@@ -154,6 +151,12 @@ public class Note implements Serializable, HasOwner {
     public void setNoteId(int noteId) {
 
         this.noteId = noteId;
+    }
+
+    @Transient
+    public void setNotesDao(NotesDao notesDao) {
+
+        this.notesDao = notesDao;
     }
 
     public void setPage(Page page) {

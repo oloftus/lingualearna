@@ -43,7 +43,7 @@ public class OwnerBasedVoter implements AccessDecisionVoter<MethodInvocation> {
 
     private int isOwner(HasOwner ownedObject, UserDetails userDetails) {
 
-        if (ownedObject != null && ownedObject.getOwnerUsername().equals(userDetails.getUsername())) {
+        if (ownedObject != null && userDetails.getUsername().equals(ownedObject.getOwnerUsername())) {
             return ACCESS_GRANTED;
         }
 
