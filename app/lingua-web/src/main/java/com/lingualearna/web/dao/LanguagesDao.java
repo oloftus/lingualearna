@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.lingualearna.web.languages.SupportedLanguage;
 
 @Component
-public class SupportedLanguagesDao {
+public class LanguagesDao {
 
     private static final String FIND_ALL_QUERY = "SupportedLanguage.findAll";
 

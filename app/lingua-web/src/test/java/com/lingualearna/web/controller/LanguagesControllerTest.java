@@ -12,11 +12,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.lingualearna.web.controller.model.LanguageNameRequest;
 import com.lingualearna.web.controller.model.LanguageNameResponse;
-import com.lingualearna.web.service.LanguageNamesService;
+import com.lingualearna.web.service.LanguagesService;
 import com.lingualearna.web.testutil.MockitoUnitTestBase;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LanguageNamesControllerTest extends MockitoUnitTestBase {
+public class LanguagesControllerTest extends MockitoUnitTestBase {
 
     private static final String SOURCE_LANG = "source";
     private static final String SOURCE_LANG_NAME = "sourceLangName";
@@ -27,7 +27,7 @@ public class LanguageNamesControllerTest extends MockitoUnitTestBase {
     private LanguageNameRequest languageNameRequest;
 
     @Mock
-    private LanguageNamesService languageNamesService;
+    private LanguagesService languageNamesService;
 
     @InjectMocks
     private LanguagesController languageNamesController = new LanguagesController();

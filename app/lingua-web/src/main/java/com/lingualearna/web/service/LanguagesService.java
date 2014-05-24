@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.lingualearna.web.util.locale.LocalizationService;
 
 @Service
-public class LanguageNamesService {
+public class LanguagesService {
 
 	private static final String TITLE_FORMAT = "%s (%s)";
 
