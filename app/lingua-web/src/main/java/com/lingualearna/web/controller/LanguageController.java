@@ -11,19 +11,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lingualearna.web.controller.model.LanguageNameRequest;
 import com.lingualearna.web.controller.model.LanguageNameResponse;
-import com.lingualearna.web.dao.LanguagesDao;
+import com.lingualearna.web.dao.LanguageDao;
 import com.lingualearna.web.languages.SupportedLanguage;
-import com.lingualearna.web.service.LanguagesService;
+import com.lingualearna.web.service.LanguageService;
 
 @Controller
 @RequestMapping("/api/languages")
-public class LanguagesController {
+public class LanguageController {
 
     @Autowired
-    private LanguagesService languageNamesService;
+    private LanguageService languageNamesService;
 
     @Autowired
-    private LanguagesDao supportedLanguagesDao;
+    private LanguageDao supportedLanguagesDao;
 
     @RequestMapping(value = "/supported", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody

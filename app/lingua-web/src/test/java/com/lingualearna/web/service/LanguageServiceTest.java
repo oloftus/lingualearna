@@ -15,7 +15,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.lingualearna.web.util.locale.LocalizationService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LanguagesServiceTest {
+public class LanguageServiceTest {
 
     private static final String EN_LANG_CODE = "en";
     private static final String EN_LANG_NAME = "English";
@@ -31,7 +31,7 @@ public class LanguagesServiceTest {
     private LocalizationService localizationService;
 
     @InjectMocks
-    private LanguagesService languageNamesService = new LanguagesService();
+    private LanguageService languageNamesService = new LanguageService();
 
     @Before
     public void setup() {

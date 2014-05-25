@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.lingualearna.web.languages.SupportedLanguage;
 
 @Component
-public class LanguagesDao extends AbstractDao {
+public class LanguageDao extends AbstractDao {
 
     @PersistenceContext
     private EntityManager entityManager;

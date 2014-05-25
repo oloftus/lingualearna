@@ -19,12 +19,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.lingualearna.web.dao.NotesDao;
+import com.lingualearna.web.dao.GenericDao;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.security.User;
 
 @RunWith(MockitoJUnitRunner.class)
-public class NotesServiceTest {
+public class NoteServiceTest {
 
     private static final int NOTE_ID = 1;
 
@@ -38,7 +38,7 @@ public class NotesServiceTest {
     private User user;
 
     @Mock
-    private NotesDao notesDao;
+    private GenericDao<Note> notesDao;
 
     @Mock
     private Note passedInNote;
@@ -50,7 +50,7 @@ public class NotesServiceTest {
     private boolean deletedSuccess;
 
     @InjectMocks
-    private NotesService notesService = new NotesService();
+    private NoteService notesService = new NoteService();
 
     private void andTheNoteIsPersisted() {
 

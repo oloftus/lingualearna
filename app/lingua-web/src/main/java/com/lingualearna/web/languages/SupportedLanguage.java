@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 
-import com.lingualearna.web.service.LanguagesService;
+import com.lingualearna.web.service.LanguageService;
 
 @NamedQueries({
         @NamedQuery(name = "SupportedLanguage.findAll", query = "SELECT sl FROM SupportedLanguage sl")
@@ -31,7 +31,7 @@ public class SupportedLanguage implements Serializable {
 
     @Transient
     @Autowired
-    private LanguagesService languageNamesService;
+    private LanguageService languageNamesService;
 
     @Id
     @Column(name = "language_code")

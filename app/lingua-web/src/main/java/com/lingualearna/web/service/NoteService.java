@@ -19,7 +19,7 @@ import com.lingualearna.web.security.OwnedObjectType;
 
 @Service
 @Transactional
-public class NotesService {
+public class NoteService {
 
     @Autowired
     private GenericDao<Note> notesDao;

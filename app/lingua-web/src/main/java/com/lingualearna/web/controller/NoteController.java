@@ -12,17 +12,17 @@ import com.lingualearna.web.controller.exceptions.ResourceNotFoundException;
 import com.lingualearna.web.controller.model.NoteModel;
 import com.lingualearna.web.controller.modelmappers.ControllerModelMapper;
 import com.lingualearna.web.notes.Note;
-import com.lingualearna.web.service.NotesService;
+import com.lingualearna.web.service.NoteService;
 
 @Controller
 @RequestMapping("/api/note")
-public class NotesController {
+public class NoteController {
 
     private static final String NOTE_ID_FIELD_NAME = "noteId";
     private static final String SOURCE_URL_FIELD_NAME = "sourceUrl";
 
     @Autowired
-    private NotesService notesService;
+    private NoteService notesService;
 
     @Autowired
     private ControllerModelMapper<NoteModel, Note> notesMapper;

@@ -17,10 +17,10 @@ import com.lingualearna.web.controller.exceptions.ResourceNotFoundException;
 import com.lingualearna.web.controller.model.NoteModel;
 import com.lingualearna.web.controller.modelmappers.BeanUtilsControllerModelMapper;
 import com.lingualearna.web.notes.Note;
-import com.lingualearna.web.service.NotesService;
+import com.lingualearna.web.service.NoteService;
 
 @RunWith(MockitoJUnitRunner.class)
-public class NotesControllerTest {
+public class NoteControllerTest {
 
     private static final int INVALID_NOTE_ID = 0;
     private static final String NOTE_ID_FIELD_NAME = "noteId";
@@ -43,13 +43,13 @@ public class NotesControllerTest {
     private ArgumentCaptor<NoteModel> noteModelArg;
 
     @InjectMocks
-    private NotesController notesController = new NotesController();
+    private NoteController notesController = new NoteController();
 
     @Mock
     private BeanUtilsControllerModelMapper<NoteModel, Note> notesMapper;
 
     @Mock
-    private NotesService notesService;
+    private NoteService notesService;
 
     private void andTheCreatedNoteIsReturned() {
 
