@@ -7,12 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.lingualearna.web.security.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "last_used")
@@ -21,31 +18,22 @@ public class LastUsed implements Serializable {
     private static final long serialVersionUID = 2334064167668062489L;
 
     private int userId;
-    private User user;
-    private Page page;
-    private Notebook notebook;
+    private int pageId;
+    private int notebookId;
 
-    @ManyToOne
-    @JoinColumn(name = "notebook")
-    public Notebook getNotebook() {
+    @Column(name = "notebook")
+    public int getNotebookId() {
 
-        return notebook;
+        return notebookId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "page")
-    public Page getPage() {
+    @Column(name = "page")
+    public int getPageId() {
 
-        return page;
+        return pageId;
     }
 
-    @OneToOne
-    @JoinColumn(name = "user")
-    public User getUser() {
-
-        return user;
-    }
-
+    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user")
@@ -54,19 +42,14 @@ public class LastUsed implements Serializable {
         return userId;
     }
 
-    public void setNotebook(Notebook notebook) {
+    public void setNotebookId(int notebook) {
 
-        this.notebook = notebook;
+        this.notebookId = notebook;
     }
 
-    public void setPage(Page page) {
+    public void setPageId(int page) {
 
-        this.page = page;
-    }
-
-    public void setUser(User user) {
-
-        this.user = user;
+        this.pageId = page;
     }
 
     public void setUserId(int userId) {

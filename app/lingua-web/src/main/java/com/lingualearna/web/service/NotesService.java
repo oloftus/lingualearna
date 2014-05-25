@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
-import com.lingualearna.web.dao.NotesDao;
+import com.lingualearna.web.dao.GenericDao;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.security.OwnedObjectType;
 
@@ -22,7 +22,7 @@ import com.lingualearna.web.security.OwnedObjectType;
 public class NotesService {
 
     @Autowired
-    private NotesDao notesDao;
+    private GenericDao<Note> notesDao;
 
     @Autowired
     private Validator validator;

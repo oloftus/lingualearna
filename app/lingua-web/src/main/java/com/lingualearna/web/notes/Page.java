@@ -12,8 +12,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "pages")
@@ -42,6 +45,7 @@ public class Page implements Serializable {
         return this.name;
     }
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "notebook")
     public Notebook getNotebook() {
@@ -49,6 +53,7 @@ public class Page implements Serializable {
         return this.notebook;
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "page")
     public List<Note> getNotes() {
 
@@ -67,6 +72,12 @@ public class Page implements Serializable {
     public int getPosition() {
 
         return this.position;
+    }
+
+    @Transient
+    public boolean isLastUsed() {
+
+        return getNotebook().getOwner().getLastUsed().getPageId() == getPageId();
     }
 
     public Note removeNote(Note note) {

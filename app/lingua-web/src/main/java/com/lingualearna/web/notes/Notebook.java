@@ -5,20 +5,25 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lingualearna.web.security.User;
 
 @Entity
 @Table(name = "notebooks")
+@NamedQuery(name = "Notebook.findAllByUser", query = "SELECT n FROM Notebook n WHERE n.owner.userId = :user")
 public class Notebook implements Serializable {
 
     private static final long serialVersionUID = 5569311441731774188L;
@@ -64,6 +69,7 @@ public class Notebook implements Serializable {
         return this.notebookId;
     }
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "owner")
     public User getOwner() {
@@ -71,10 +77,16 @@ public class Notebook implements Serializable {
         return this.owner;
     }
 
-    @OneToMany(mappedBy = "notebook")
+    @OneToMany(mappedBy = "notebook", fetch = FetchType.EAGER)
     public List<Page> getPages() {
 
         return this.pages;
+    }
+
+    @Transient
+    public boolean isLastUsed() {
+
+        return getOwner().getLastUsed().getNotebookId() == getNotebookId();
     }
 
     public Page removePage(Page page) {
