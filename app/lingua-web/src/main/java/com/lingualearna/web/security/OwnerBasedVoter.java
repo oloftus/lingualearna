@@ -26,9 +26,9 @@ public class OwnerBasedVoter implements AccessDecisionVoter<MethodInvocation> {
         HasOwner ownedObject = null;
 
         for (Annotation annotation : methodInvocation.getMethod().getAnnotations()) {
-            if (annotation instanceof SecuredType) {
+            if (annotation instanceof OwnedObjectType) {
 
-                SecuredType securedTypeAnnotation = (SecuredType) annotation;
+                OwnedObjectType securedTypeAnnotation = (OwnedObjectType) annotation;
                 Class<?> securedType = securedTypeAnnotation.value();
 
                 if (HasOwner.class.isAssignableFrom(securedType)) {

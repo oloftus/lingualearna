@@ -2,6 +2,7 @@ package com.lingualearna.web.notes;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -19,6 +20,7 @@ public class LastUsed implements Serializable {
 
     private static final long serialVersionUID = 2334064167668062489L;
 
+    private int userId;
     private User user;
     private Page page;
     private Notebook notebook;
@@ -37,13 +39,19 @@ public class LastUsed implements Serializable {
         return page;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @OneToOne
     @JoinColumn(name = "user")
     public User getUser() {
 
         return user;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user")
+    public int getUserId() {
+
+        return userId;
     }
 
     public void setNotebook(Notebook notebook) {
@@ -59,5 +67,10 @@ public class LastUsed implements Serializable {
     public void setUser(User user) {
 
         this.user = user;
+    }
+
+    public void setUserId(int userId) {
+
+        this.userId = userId;
     }
 }

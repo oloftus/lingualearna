@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  */
 @Target({ ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SecuredType {
+public @interface OwnedObjectType {
 
     Class<?> value();
 }

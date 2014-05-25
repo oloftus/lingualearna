@@ -27,7 +27,7 @@ public class OwnerBasedVoterTest {
 
     private class OwnerBasedVoterTestHelper {
 
-        @SecuredType(HasOwner.class)
+        @OwnedObjectType(HasOwner.class)
         public void securedMethod() {
 
         }

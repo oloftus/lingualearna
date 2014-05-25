@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.lingualearna.web.dao.NotesDao;
 import com.lingualearna.web.notes.Note;
-import com.lingualearna.web.security.SecuredType;
+import com.lingualearna.web.security.OwnedObjectType;
 
 @Service
 @Transactional
@@ -33,14 +33,14 @@ public class NotesService {
         notesDao.persist(note);
     }
 
-    @SecuredType(Note.class)
+    @OwnedObjectType(Note.class)
     @Secured(ALLOW_OWNER)
     public boolean deleteNote(int noteId) {
 
         return notesDao.delete(noteId);
     }
 
-    @SecuredType(Note.class)
+    @OwnedObjectType(Note.class)
     @Secured(ALLOW_OWNER)
     public Note retrieveNote(int noteId) {
 
