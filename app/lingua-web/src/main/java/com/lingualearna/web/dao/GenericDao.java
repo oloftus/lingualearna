@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.lingualearna.web.util.ConfigurationException;
 
 @Component
-public class GenericDao<T> {
+public class GenericDao<T> extends AbstractDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(GenericDao.class);
 
