@@ -69,7 +69,7 @@ public class NoteService {
 
     private void setLastUsed(Note note) {
 
-        LastUsed lastUsed = note.getPage().getNotebook().getOwner().getLastUsed();
+        LastUsed lastUsed = note.getOwner().getLastUsed();
         lastUsed.setPageId(note.getPage().getPageId());
         lastUsed.setNotebookId(note.getPage().getNotebook().getNotebookId());
         dao.merge(lastUsed);

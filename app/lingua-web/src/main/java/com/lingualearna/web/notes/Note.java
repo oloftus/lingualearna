@@ -21,6 +21,7 @@ import org.hibernate.validator.constraints.URL;
 import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmpty;
 import com.lingualearna.web.notes.validator.MinimumOnePropertyNotEmpty;
 import com.lingualearna.web.security.HasOwner;
+import com.lingualearna.web.security.User;
 
 @DependentPropertyNotNullOrEmpty.Properties({
         @DependentPropertyNotNullOrEmpty(propertyName = "foreignNote", dependentPropertyName = "foreignLang"),
@@ -85,10 +86,16 @@ public class Note implements Serializable, HasOwner {
     }
 
     @Transient
+    public User getOwner() {
+
+        return getPage().getNotebook().getOwner();
+    }
+
+    @Transient
     @Override
     public String getOwnerUsername() {
 
-        return getPage().getNotebook().getOwner().getUsername();
+        return getOwner().getUsername();
     }
 
     @ManyToOne

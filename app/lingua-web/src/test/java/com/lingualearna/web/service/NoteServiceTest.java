@@ -24,7 +24,6 @@ import com.lingualearna.web.dao.GenericDao;
 import com.lingualearna.web.notes.LastUsed;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.security.User;
-import com.lingualearna.web.service.NoteService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NoteServiceTest {
@@ -45,13 +44,13 @@ public class NoteServiceTest {
     @Mock
     private GenericDao dao;
 
-    @Mock
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Note passedInNote;
 
-    @Mock
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Note expectedNote;
 
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    @Mock
     private LastUsed lastUsed;
 
     private Note returnedNote;
@@ -77,7 +76,13 @@ public class NoteServiceTest {
         assertEquals(expectedNote, returnedNote);
     }
 
-    private void givenThereIsALastUsedEntry(Note note) {
+    private void givenLastUsedIsSetup() {
+
+        givenThereIsALastUsedEntryFor(passedInNote);
+        givenThereIsALastUsedEntryFor(expectedNote);
+    }
+
+    private void givenThereIsALastUsedEntryFor(Note note) {
 
         when(note.getOwner().getLastUsed()).thenReturn(lastUsed);
         when(note.getPage().getPageId()).thenReturn(PAGE_ID);
@@ -114,7 +119,7 @@ public class NoteServiceTest {
     @Test
     public void testCreateNoteFunctions() {
 
-        givenThereIsALastUsedEntry(passedInNote);
+        givenLastUsedIsSetup();
         whenICallCreateNote();
         thenTheNoteIsValidated();
         andTheNoteIsPersisted();
@@ -124,23 +129,29 @@ public class NoteServiceTest {
     @Test
     public void testDeleteNoteFunctions() {
 
+        givenLastUsedIsSetup();
         whenICallDeleteNote();
         thenTheNoteIsDeleted();
+        andLastUsedIsUpdated();
     }
 
     @Test
     public void testRetrieveNoteFunctions() {
 
+        givenLastUsedIsSetup();
         whenICallRetrieveNote();
         thenTheNoteIsRetrieved();
+        andLastUsedIsUpdated();
     }
 
     @Test
     public void testUpdateNoteFunctions() {
 
+        givenLastUsedIsSetup();
         whenICallUpdateNote();
         thenTheNoteIsValidated();
         andTheNoteIsUpdated();
+        andLastUsedIsUpdated();
     }
 
     @Test(expected = ConstraintViolationException.class)
