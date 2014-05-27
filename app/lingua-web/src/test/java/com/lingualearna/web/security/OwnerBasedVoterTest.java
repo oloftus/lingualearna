@@ -20,7 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.google.common.collect.Sets;
-import com.lingualearna.web.dao.GenericDao;
+import com.lingualearna.web.dao.AbstractDao;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OwnerBasedVoterTest {
@@ -54,7 +54,7 @@ public class OwnerBasedVoterTest {
     private HasOwner ownedObject;
 
     @Mock
-    private GenericDao genericDao;
+    private AbstractDao genericDao;
 
     private int actualVote;
 

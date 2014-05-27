@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.lingualearna.web.security.User;
 
 @Component
-public class UserDao extends GenericDao {
+public class UserDao extends AbstractDao {
 
     /**
      * @return Returns null if a user with such a username does not exist
@@ -33,6 +33,6 @@ public class UserDao extends GenericDao {
 
     public List<User> getAllUsers() {
 
-        return doQueryAsList(getEntityManager(), "User.findAll", User.class);
+        return doQueryAsList("User.findAll", User.class);
     }
 }

@@ -8,7 +8,7 @@ import com.lingualearna.web.service.UserService;
 
 public class AbstractController {
 
-    protected User getUser(UserService userService, Authentication authentication) {
+    protected User getCurrentUser(UserService userService, Authentication authentication) {
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User user = userService.getUserByUsername(userDetails.getUsername());

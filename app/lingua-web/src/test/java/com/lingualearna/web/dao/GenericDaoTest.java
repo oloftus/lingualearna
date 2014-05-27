@@ -36,7 +36,7 @@ public class GenericDaoTest {
     private Object entitytManagerResult;
 
     @InjectMocks
-    private final GenericDao dao = new GenericDao();
+    private final AbstractDao dao = new GenericDao();
 
     private void givenEntityManagerFindIsSetup() {
 

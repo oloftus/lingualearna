@@ -29,7 +29,7 @@ public class NotebookController extends AbstractController {
     @ResponseBody
     public LastUsed getLastUsed(Authentication authentication) {
 
-        User user = getUser(userService, authentication);
+        User user = getCurrentUser(userService, authentication);
         LastUsed lastUsed = user.getLastUsed();
         return lastUsed;
     }
@@ -38,7 +38,7 @@ public class NotebookController extends AbstractController {
     @ResponseBody
     public List<Notebook> getNotebooks(Authentication authentication) {
 
-        User user = getUser(userService, authentication);
+        User user = getCurrentUser(userService, authentication);
         List<Notebook> notebooks = notebookService.getAllNotebooksByUser(user.getUserId());
         return notebooks;
     }

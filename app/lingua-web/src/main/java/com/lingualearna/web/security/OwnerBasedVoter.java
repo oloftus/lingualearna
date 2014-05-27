@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import com.lingualearna.web.dao.GenericDao;
+import com.lingualearna.web.dao.AbstractDao;
 
 @Component
 public class OwnerBasedVoter implements AccessDecisionVoter<MethodInvocation> {
@@ -19,7 +19,7 @@ public class OwnerBasedVoter implements AccessDecisionVoter<MethodInvocation> {
     private static final int OWNED_OBJECT_OR_ID_POSITION = 0;
 
     @Autowired
-    private GenericDao genericDao;
+    private AbstractDao genericDao;
 
     private HasOwner getOwnedObject(MethodInvocation methodInvocation, Integer ownedObjectId) {
 
