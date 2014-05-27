@@ -2,7 +2,6 @@ package com.lingualearna.web.dao;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.lingualearna.web.security.User;
 
 @Component
-public class UserDao extends GenericDao<User> {
+public class UserDao extends GenericDao {
 
     /**
      * @return Returns null if a user with such a username does not exist
@@ -35,11 +34,5 @@ public class UserDao extends GenericDao<User> {
     public List<User> getAllUsers() {
 
         return doQueryAsList(getEntityManager(), "User.findAll", User.class);
-    }
-
-    @PostConstruct
-    public void init() {
-
-        setEntityType(User.class);
     }
 }

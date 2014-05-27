@@ -9,14 +9,11 @@ import static org.mockito.Mockito.when;
 import javax.persistence.EntityManager;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import com.lingualearna.web.util.ConfigurationException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class GenericDaoTest {
@@ -39,7 +36,7 @@ public class GenericDaoTest {
     private Object entitytManagerResult;
 
     @InjectMocks
-    private final GenericDao<Object> dao = new GenericDao<>();
+    private final GenericDao dao = new GenericDao();
 
     private void givenEntityManagerFindIsSetup() {
 
@@ -52,17 +49,6 @@ public class GenericDaoTest {
         when(entityManager.merge(inputObject)).thenReturn(entitytManagerResult);
     }
 
-    private void givenTheDaoIsSetup() {
-
-        dao.setEntityType(DAO_GENERIC_TYPE);
-    }
-
-    @Before
-    public void setup() {
-
-        dao.setEntityType(null);
-    }
-
     @After
     public void teardown() {
 
@@ -72,7 +58,6 @@ public class GenericDaoTest {
     @Test
     public void testDeleteFunctions() {
 
-        givenTheDaoIsSetup();
         givenEntityManagerFindIsSetup();
         whenICallDeleteWithAValidId();
         thenTheObjectIsRemoved();
@@ -81,60 +66,31 @@ public class GenericDaoTest {
     @Test
     public void testDeleteReturnsFalseOnInvalidId() {
 
-        givenTheDaoIsSetup();
         whenICallDeleteWithAnInvalidId();
         thenFalseIsReturned();
-    }
-
-    // TODO: Can we merge these 4 tests with a single rule?
-    @Test(expected = ConfigurationException.class)
-    public void testDeleteThrowsExceptionWhenNotSetup() {
-
-        dao.delete(OBJ_ID);
     }
 
     @Test
     public void testFindFunctions() {
 
-        givenTheDaoIsSetup();
         givenEntityManagerFindIsSetup();
         whenICallFindWithAValidId();
         thenTheTheObjectIsFound();
     }
 
-    @Test(expected = ConfigurationException.class)
-    public void testFindThrowsExceptionWhenNotSetup() {
-
-        dao.findNoLock(OBJ_ID);
-    }
-
     @Test
     public void testMergeFunctions() {
 
-        givenTheDaoIsSetup();
         givenEntityManagerMergeIsSetup();
         whenICallMergeWithAValidId();
         thenTheObjectIsMerged();
     }
 
-    @Test(expected = ConfigurationException.class)
-    public void testMergeThrowsExceptionWhenNotSetup() {
-
-        dao.merge(inputObject);
-    }
-
     @Test
     public void testPersistFunctions() {
 
-        givenTheDaoIsSetup();
         whenICallPersistWithAValidId();
         thenTheObjectIsPersisted();
-    }
-
-    @Test(expected = ConfigurationException.class)
-    public void testPersistThrowsExceptionWhenNotSetup() {
-
-        dao.persist(inputObject);
     }
 
     private void thenFalseIsReturned() {
@@ -168,17 +124,17 @@ public class GenericDaoTest {
 
     private void whenICallDeleteWithAnInvalidId() {
 
-        deleteSuccess = dao.delete(INVALID_ID);
+        deleteSuccess = dao.delete(Object.class, INVALID_ID);
     }
 
     private void whenICallDeleteWithAValidId() {
 
-        deleteSuccess = dao.delete(VALID_ID);
+        deleteSuccess = dao.delete(Object.class, VALID_ID);
     }
 
     private void whenICallFindWithAValidId() {
 
-        actualResult = dao.findNoLock(VALID_ID);
+        actualResult = dao.find(Object.class, VALID_ID);
     }
 
     private void whenICallMergeWithAValidId() {

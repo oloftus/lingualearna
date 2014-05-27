@@ -15,18 +15,23 @@ import javax.validation.Validator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.lingualearna.web.dao.GenericDao;
+import com.lingualearna.web.notes.LastUsed;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.security.User;
+import com.lingualearna.web.service.NoteService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NoteServiceTest {
 
     private static final int NOTE_ID = 1;
+    private static final int PAGE_ID = 2;
+    private static final int NOTEBOOK_ID = 3;
 
     @Mock
     private Validator validator;
@@ -38,7 +43,7 @@ public class NoteServiceTest {
     private User user;
 
     @Mock
-    private GenericDao<Note> notesDao;
+    private GenericDao dao;
 
     @Mock
     private Note passedInNote;
@@ -46,20 +51,37 @@ public class NoteServiceTest {
     @Mock
     private Note expectedNote;
 
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private LastUsed lastUsed;
+
     private Note returnedNote;
     private boolean deletedSuccess;
 
     @InjectMocks
     private NoteService notesService = new NoteService();
 
+    private void andLastUsedIsUpdated() {
+
+        verify(lastUsed).setNotebookId(NOTEBOOK_ID);
+        verify(lastUsed).setPageId(PAGE_ID);
+        verify(dao).merge(lastUsed);
+    }
+
     private void andTheNoteIsPersisted() {
 
-        verify(notesDao).persist(passedInNote);
+        verify(dao).persist(passedInNote);
     }
 
     private void andTheNoteIsUpdated() {
 
         assertEquals(expectedNote, returnedNote);
+    }
+
+    private void givenThereIsALastUsedEntry(Note note) {
+
+        when(note.getOwner().getLastUsed()).thenReturn(lastUsed);
+        when(note.getPage().getPageId()).thenReturn(PAGE_ID);
+        when(note.getPage().getNotebook().getNotebookId()).thenReturn(NOTEBOOK_ID);
     }
 
     private void givenValidationFails() {
@@ -84,17 +106,19 @@ public class NoteServiceTest {
 
     private void setupNotesDao() {
 
-        when(notesDao.findNoLock(NOTE_ID)).thenReturn(expectedNote);
-        when(notesDao.merge(passedInNote)).thenReturn(expectedNote);
-        when(notesDao.delete(NOTE_ID)).thenReturn(true);
+        when(dao.find(Note.class, NOTE_ID)).thenReturn(expectedNote);
+        when(dao.merge(passedInNote)).thenReturn(expectedNote);
+        when(dao.delete(Note.class, NOTE_ID)).thenReturn(true);
     }
 
     @Test
     public void testCreateNoteFunctions() {
 
+        givenThereIsALastUsedEntry(passedInNote);
         whenICallCreateNote();
         thenTheNoteIsValidated();
         andTheNoteIsPersisted();
+        andLastUsedIsUpdated();
     }
 
     @Test

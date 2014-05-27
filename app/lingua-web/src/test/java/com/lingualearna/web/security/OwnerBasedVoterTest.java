@@ -54,7 +54,7 @@ public class OwnerBasedVoterTest {
     private HasOwner ownedObject;
 
     @Mock
-    private GenericDao<?> genericDao;
+    private GenericDao genericDao;
 
     private int actualVote;
 
@@ -101,7 +101,7 @@ public class OwnerBasedVoterTest {
 
         configAttributes = Sets.newHashSet(configAttribute);
         when(configAttribute.getAttribute()).thenReturn(SecuredConfigAttributes.ALLOW_OWNER);
-        when(genericDao.findNoLock(HasOwner.class, OWNED_OBJECT_ID)).thenReturn(ownedObject);
+        when(genericDao.find(HasOwner.class, OWNED_OBJECT_ID)).thenReturn(ownedObject);
         when(authentication.getPrincipal()).thenReturn(userDetails);
     }
 

@@ -19,7 +19,7 @@ public class OwnerBasedVoter implements AccessDecisionVoter<MethodInvocation> {
     private static final int OWNED_OBJECT_OR_ID_POSITION = 0;
 
     @Autowired
-    private GenericDao<?> genericDao;
+    private GenericDao genericDao;
 
     private HasOwner getOwnedObject(MethodInvocation methodInvocation, Integer ownedObjectId) {
 
@@ -32,7 +32,7 @@ public class OwnerBasedVoter implements AccessDecisionVoter<MethodInvocation> {
                 Class<?> securedType = securedTypeAnnotation.value();
 
                 if (HasOwner.class.isAssignableFrom(securedType)) {
-                    ownedObject = (HasOwner) genericDao.findNoLock(securedType, ownedObjectId);
+                    ownedObject = (HasOwner) genericDao.find(securedType, ownedObjectId);
                     break;
                 }
             }

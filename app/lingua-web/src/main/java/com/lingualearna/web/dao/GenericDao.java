@@ -7,34 +7,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.lingualearna.web.util.ConfigurationException;
-
 @Component
-public class GenericDao<T> extends AbstractDao {
+public class GenericDao extends AbstractDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(GenericDao.class);
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    private Class<T> entityType;
-
-    private void assertClassSetup() {
-
-        if (entityType == null) {
-            String message = "entityType field not set in GenericDao";
-            ConfigurationException exception = new ConfigurationException(message);
-            LOG.error(message, exception);
-            throw exception;
-        }
-    }
-
     /**
      * @return Whether the object to delete actually exists
      */
-    public boolean delete(int id) {
+    public <T> boolean delete(Class<T> entityType, int id) {
 
-        assertClassSetup();
         T retrievedObj = entityManager.find(entityType, id);
         if (retrievedObj == null) {
             return false;
@@ -46,15 +31,9 @@ public class GenericDao<T> extends AbstractDao {
         return true;
     }
 
-    public <S> S findNoLock(Class<S> entityType, int id) {
+    public <T> T find(Class<T> entityType, int id) {
 
         return entityManager.find(entityType, id);
-    }
-
-    public T findNoLock(int id) {
-
-        assertClassSetup();
-        return findNoLock(entityType, id);
     }
 
     protected EntityManager getEntityManager() {
@@ -62,9 +41,8 @@ public class GenericDao<T> extends AbstractDao {
         return entityManager;
     }
 
-    public T merge(T obj) {
+    public <T> T merge(T obj) {
 
-        assertClassSetup();
         T updatedObj = entityManager.merge(obj);
         entityManager.flush();
         return updatedObj;
@@ -73,20 +51,9 @@ public class GenericDao<T> extends AbstractDao {
     /**
      * Parameter obj is updated with any changes made by the database
      */
-    public void persist(T obj) {
+    public <T> void persist(T obj) {
 
-        assertClassSetup();
         entityManager.persist(obj);
         entityManager.flush();
-    }
-
-    /**
-     * Workaround for compile time/runtime nature of Java generics.<br/>
-     * <br/>
-     * <b>This method must be called before using this class.</b>
-     */
-    public void setEntityType(Class<T> type) {
-
-        this.entityType = type;
     }
 }
