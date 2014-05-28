@@ -9,7 +9,7 @@
         var overlayName = "lingua-overlay";
         var closeButtonName = "lingua-dialog-close-main";
 
-        var manageLoginOverlay = function($scope) {
+        var setupSpecialDialogs = function($scope) {
 
             $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 
@@ -78,18 +78,26 @@
             makeDialogsDraggable();
             enableDialogToggle($scope);
         };
+        
+        var setupGlobalScope = function($scope) {
+            
+            $scope.global = {};
+            $scope.global.model = {};
+            $scope.global.func = {};
+            
+            $scope.global.properties = Properties;
+        };
 
         var PageController = function($scope, $state, jsonWebService) {
 
-            $scope.Properties = Properties;
-            $state.go(AppStates.MAIN);
+            setupGlobalScope($scope);
             setupDialogs($scope);
-            manageLoginOverlay($scope);
+            setupSpecialDialogs($scope);
             triggerLogin(jsonWebService, $scope);
+            $state.go(AppStates.MAIN);
         };
 
         ngRegistrationHelper(linguaApp).registerController("pageController",
                 [ "$scope", "$state", "jsonWebService", PageController ]);
     });
 })();
-;

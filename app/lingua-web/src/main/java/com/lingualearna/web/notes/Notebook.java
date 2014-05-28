@@ -84,6 +84,12 @@ public class Notebook implements Serializable {
     }
 
     @Transient
+    public String getUrl() {
+
+        return ""; // TODO
+    }
+
+    @Transient
     public boolean isLastUsed() {
 
         return getOwner().getLastUsed().getNotebookId() == getNotebookId();

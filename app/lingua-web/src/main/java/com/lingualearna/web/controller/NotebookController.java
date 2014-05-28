@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lingualearna.web.notes.LastUsed;
 import com.lingualearna.web.notes.Notebook;
 import com.lingualearna.web.security.User;
 import com.lingualearna.web.service.NotebookService;
@@ -25,16 +24,7 @@ public class NotebookController extends AbstractController {
     @Autowired
     private NotebookService notebookService;
 
-    @RequestMapping(value = "/lastUsed", produces = "application/json", method = RequestMethod.GET)
-    @ResponseBody
-    public LastUsed getLastUsed(Authentication authentication) {
-
-        User user = getCurrentUser(userService, authentication);
-        LastUsed lastUsed = user.getLastUsed();
-        return lastUsed;
-    }
-
-    @RequestMapping(value = "/notebooks", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(value = "/notebooksPages", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public List<Notebook> getNotebooks(Authentication authentication) {
 

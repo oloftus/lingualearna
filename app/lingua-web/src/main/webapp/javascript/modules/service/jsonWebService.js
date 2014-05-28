@@ -28,18 +28,24 @@
                 });
             };
 
-            var goToLogin = function($state, commsPipe) {
+            var goToLogin = function($state, commsPipe, completedCallback) {
 
                 commsPipe.subscribe(Components.LOGIN, Components.ANY, function(message) {
                     getCsrfToken(function() {
                         $state.go(AppStates.MAIN);
+                        callIfNotUndefined(completedCallback, this);
                     });
                 });
                 $state.go(AppStates.LOGIN);
             };
 
-            var execute = function(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback) {
+            var execute = function(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback, retryOnAuthentication) {
 
+                var reExecute = function() {
+
+                    execute(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback, false);
+                };
+                
                 var successHandler = function(data, status, headers, config) {
 
                     callIfNotUndefined(successCallback, this, [ data, status, headers, config ]);
@@ -48,7 +54,12 @@
                 var errorHandler = function(data, status, headers, config) {
 
                     if (status === HttpHeaders.FORBIDDEN) {
-                        goToLogin($state, commsPipe);
+                        if (retryOnAuthentication) {
+                            goToLogin($state, commsPipe, reExecute);
+                        }
+                        else {
+                            goToLogin($state, commsPipe);
+                        }
                     }
                     else {
                         callIfNotUndefined(failureCallback, this, [ data, status, headers, config ]);

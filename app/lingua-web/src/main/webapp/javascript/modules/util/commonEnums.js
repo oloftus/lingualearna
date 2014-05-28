@@ -47,7 +47,8 @@
         };
         
         TranslationSources = {
-            GOOGLE: "Google"
+            GOOGLE: "Google",
+            MANUAL: "Manual"
         };
     });
 })();

@@ -40,7 +40,6 @@
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
 
-            $scope.Properties = Properties;
             $scope.model.noteId = noteId;
             $scope.model.operationTitle = localStrings.editNoteTitle;
 
