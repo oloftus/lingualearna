@@ -5,9 +5,9 @@
     define(dependencies, function(linguaApp) {
 
         Signals = {
-            loginSuccessSignal : "lingua-login-success",
-            noteSubmittedSuccessSignal : "note-submitted-success",
-            currentNotebookChanged : "current-notebook-changed"
+            LoginSuccess : "lingua-login-success",
+            NoteSubmittedSuccessSignal : "note-submitted-success",
+            CurrentNotebookChanged : "current-notebook-changed"
         };
     });
 })();

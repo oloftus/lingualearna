@@ -36,8 +36,8 @@
         var subscribeToAddNoteRequests = function(commsPipe, $scope, languageNamesService) {
 
             commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, function(note, subject) {
-                
-                if (subject === Subjects.note) {
+
+                if (subject === Subjects.Note) {
                     populateModelFromNote($scope, note);
                     setLanguageTitles($scope, languageNamesService);
                 }
@@ -60,7 +60,7 @@
                 noteService.create(note, function(data) {
 
                     messageHandler.addFreshGlobalMessage($scope, LocalStrings.noteSavedMessage, MessageSeverity.INFO);
-                    commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.noteSubmittedSuccessSignal);
+                    commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.NoteSubmittedSuccess);
 
                 }, function(data, status, headers) {
                     messageHandler.handleErrors($scope, data, status, headers);
@@ -85,8 +85,18 @@
         var subscribeToCurrentNotebookChangedEvents = function($scope, commsPipe) {
 
             commsPipe.subscribe(Components.READER, Components.ANY, function(message) {
-                if (message === Signals.currentNotebookChanged) {
-                    $scope.model.page = null;
+                if (message === Signals.CurrentNotebookChanged) {
+
+                    var newPagesContainsOldCurrent = _.some($scope.global.model.currentNotebook.pages, function(
+                            newPage) {
+
+                        var oldCurrentPage = $scope.model.page;
+                        return newPage.pageId === oldCurrentPage.pageId && newPage.name === oldCurrentPage.name;
+                    });
+
+                    if (!newPagesContainsOldCurrent) {
+                        $scope.model.page = null;
+                    }
                 }
             });
         };

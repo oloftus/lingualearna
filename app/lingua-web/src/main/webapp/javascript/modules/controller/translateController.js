@@ -40,7 +40,7 @@
             };
         };
         
-        var addAddToNotebookButtonHandler = function($scope, commsPipe, $state) {
+        var addAddToNotebookButtonHandler = function($scope, commsPipe, $state, $location) {
             
             $scope.func.doAddToNotebook = function() {
 
@@ -49,7 +49,7 @@
                         $scope.model.sourceLang, $scope.model.query, additionalNotes, $location.absUrl(), TranslationSources.GOOGLE);
 
                 $state.go(AppStates.ADD_NOTE).then(function() {
-                    commsPipe.send(Components.TRANSLATE, Components.ADD_NOTE, message, Subjects.note);
+                    commsPipe.send(Components.TRANSLATE, Components.ADD_NOTE, message, Subjects.Note);
                 });
             };
         };
@@ -58,7 +58,7 @@
             
             commsPipe.subscribe(Components.ANY, Components.TRANSLATE, function(translationRequest, subject) {
 
-                if (subject === Subjects.translationRequest) {
+                if (subject === Subjects.TranslationRequest) {
                     populateModelFromTranslationRequest($scope, translationRequest);
                     setLanguagesTitles($scope, languageNamesService);
                 }
@@ -72,7 +72,7 @@
             this.setupDefaultScope($scope);
 
             addTranslateButtonHandler($scope, translateService);
-            addAddToNotebookButtonHandler($scope, commsPipe, $state);
+            addAddToNotebookButtonHandler($scope, commsPipe, $state, $location);
             subscribeToTranslationRequests(commsPipe, $scope, languageNamesService);
         };
 

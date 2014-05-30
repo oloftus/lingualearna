@@ -5,8 +5,8 @@
     define(dependencies, function(linguaApp) {
 
         Subjects = {
-            translationRequest : "translationRequest",
-            note : "note"
+            TranslationRequest : "translationRequest",
+            Note : "note"
         };
     });
 })();

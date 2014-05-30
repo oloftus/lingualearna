@@ -32,7 +32,7 @@
 
                 commsPipe.subscribe(Components.LOGIN, Components.ANY, function(message) {
                     
-                    if (message === Signals.loginSuccessSignal) {
+                    if (message === Signals.LoginSuccess) {
                         getCsrfToken(function() {
                             $state.go(AppStates.MAIN);
                             callIfNotUndefined(completedCallback, this);

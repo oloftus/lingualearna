@@ -14,7 +14,7 @@
                         $scope.global.model.currentNotebook.foreignLang, selected);
 
                 $state.go(AppStates.TRANSLATE).then(function() {
-                    commsPipe.send(Components.READER, Components.TRANSLATE, translationRequest, Subjects.translationRequest);
+                    commsPipe.send(Components.READER, Components.TRANSLATE, translationRequest, Subjects.TranslationRequest);
                 });
 
                 textSelector.clearSelected();
@@ -29,7 +29,7 @@
         };
         
         
-        var setupNotebookEnvironment = function($scope, notebookService) {
+        var setupNotebookEnvironment = function($scope, notebookService, commsPipe) {
             
             notebookService.getNotebooksAndPages(function(notebooks) {
 
@@ -45,11 +45,12 @@
                             done = true;
                         }
                         
-                        delete page.lastUsed;
                         return done;
                     });
                     return done;
                 });
+                
+                signalCurrentNotebookChanged(commsPipe);
                 
             }, function() {
                 addFreshGlobalMessage($scope, LocalStrings.genericServerErrorMessage, MessageSeverity.ERROR);
@@ -59,16 +60,21 @@
         var subscribeToNoteSubmissions = function(commsPipe, $scope, notebookService) {
 
             commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, function(message) {
-                if (message === Signals.noteSubmittedSuccessSignal) {
-                    setupNotebookEnvironment($scope, notebookService);
+                if (message === Signals.NoteSubmittedSuccess) {
+                    setupNotebookEnvironment($scope, notebookService, commsPipe);
                 }
             });
+        };
+        
+        var signalCurrentNotebookChanged = function(commsPipe) {
+            
+            commsPipe.send(Components.READER, Components.ANY, Signals.CurrentNotebookChanged);
         };
         
         var subscribeToCurrentNotebookChangedEvents = function(commsPipe, $scope) {
 
             $scope.func.currentNotebookChanged = function() {
-                commsPipe.send(Components.READER, Components.ANY, Signals.currentNotebookChanged);
+                signalCurrentNotebookChanged(commsPipe);
             };
         };
 
@@ -79,7 +85,7 @@
 
             setupClickToTranslate(commsPipe, $state, $scope);
             subscribeToCurrentNotebookChangedEvents(commsPipe, $scope);
-            setupNotebookEnvironment($scope, notebookService);
+            setupNotebookEnvironment($scope, notebookService, commsPipe);
             subscribeToNoteSubmissions(commsPipe, $scope, notebookService);
         };
 
