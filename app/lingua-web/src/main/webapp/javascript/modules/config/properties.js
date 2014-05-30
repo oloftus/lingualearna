@@ -18,7 +18,6 @@
             Properties.notebookServiceUrl = apiRoot + "/notebook";
             Properties.notesPagesServiceUrl = notebookServiceUrl + "/notebooksPages";
             
-            Properties.loginSuccessSignal = "lingua-login-success";
             Properties.csrfSecret = csrfSecret;            
         }
     });

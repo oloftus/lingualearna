@@ -9,14 +9,14 @@
             var subscribers = {};
             var subscribersToAnySender = {};
 
-            var send = function(senderName, receiverName, message) {
+            var send = function(senderName, receiverName, message, subject) {
 
                 if (!_.isUndefined(subscribers[receiverName])
                         && !_.isUndefined(subscribers[receiverName][senderName])) {
-                    subscribers[receiverName][senderName](message);
+                    subscribers[receiverName][senderName](message, subject);
                 }
                 if (!_.isUndefined(subscribersToAnySender[receiverName])) {
-                    subscribersToAnySender[receiverName](message);
+                    subscribersToAnySender[receiverName](message, subject);
                 }
             };
 

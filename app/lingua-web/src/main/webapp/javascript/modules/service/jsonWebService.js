@@ -31,11 +31,15 @@
             var goToLogin = function($state, commsPipe, completedCallback) {
 
                 commsPipe.subscribe(Components.LOGIN, Components.ANY, function(message) {
-                    getCsrfToken(function() {
-                        $state.go(AppStates.MAIN);
-                        callIfNotUndefined(completedCallback, this);
-                    });
+                    
+                    if (message === Signals.loginSuccessSignal) {
+                        getCsrfToken(function() {
+                            $state.go(AppStates.MAIN);
+                            callIfNotUndefined(completedCallback, this);
+                        });
+                    }
                 });
+                
                 $state.go(AppStates.LOGIN);
             };
 

@@ -89,12 +89,6 @@ public class Notebook implements Serializable {
         return ""; // TODO
     }
 
-    @Transient
-    public boolean isLastUsed() {
-
-        return getOwner().getLastUsed().getNotebookId() == getNotebookId();
-    }
-
     public Page removePage(Page page) {
 
         getPages().remove(page);

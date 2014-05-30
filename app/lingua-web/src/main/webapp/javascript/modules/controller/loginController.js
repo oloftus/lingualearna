@@ -15,9 +15,8 @@
                 checkOrigin : false,
                 heightCalculationMethod : "max",
                 messageCallback : function(message) {
-
-                    if (message.message === Properties.loginSuccessSignal) {
-                        commsPipe.send(Components.LOGIN, Components.ANY, Properties.loginSuccessSignal);
+                    if (message.message === Signals.loginSuccessSignal) {
+                        commsPipe.send(Components.LOGIN, Components.ANY, Signals.loginSuccessSignal);
                     }
                 }
             });

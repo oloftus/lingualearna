@@ -19,13 +19,6 @@ public class LastUsed implements Serializable {
 
     private int userId;
     private int pageId;
-    private int notebookId;
-
-    @Column(name = "notebook")
-    public int getNotebookId() {
-
-        return notebookId;
-    }
 
     @Column(name = "page")
     public int getPageId() {
@@ -40,11 +33,6 @@ public class LastUsed implements Serializable {
     public int getUserId() {
 
         return userId;
-    }
-
-    public void setNotebookId(int notebook) {
-
-        this.notebookId = notebook;
     }
 
     public void setPageId(int page) {

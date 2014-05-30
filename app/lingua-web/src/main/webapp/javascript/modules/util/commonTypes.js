@@ -17,7 +17,7 @@
         };
 
         Note = function(foreignLang, foreignNote, localLang, localNote, additionalNotes, sourceUrl, translationSource,
-                noteId) {
+                pageId, noteId) {
 
             this.foreignLang = foreignLang;
             this.foreignNote = foreignNote;
@@ -27,6 +27,7 @@
             this.sourceUrl = sourceUrl;
             this.noteId = noteId;
             this.translationSource = translationSource;
+            this.pageId = pageId;
         };
 
         IllegalArgumentException = function(message) {

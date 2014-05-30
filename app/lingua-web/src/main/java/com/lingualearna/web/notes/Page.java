@@ -11,16 +11,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lingualearna.web.security.HasOwner;
 
 @Entity
 @Table(name = "pages")
-public class Page implements Serializable {
+public class Page implements Serializable, HasOwner {
 
     private static final long serialVersionUID = 674115054477001746L;
 
@@ -29,6 +31,7 @@ public class Page implements Serializable {
     private int position;
     private Notebook notebook;
     private List<Note> notes;
+    private LastUsed lastUsed;
 
     public Note addNote(Note note) {
 
@@ -36,6 +39,14 @@ public class Page implements Serializable {
         note.setPage(this);
 
         return note;
+    }
+
+    @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "page_id")
+    private LastUsed getLastUsedEntity() {
+
+        return lastUsed;
     }
 
     @Length(max = 45)
@@ -60,6 +71,14 @@ public class Page implements Serializable {
         return this.notes;
     }
 
+    @JsonIgnore
+    @Transient
+    @Override
+    public String getOwnerUsername() {
+
+        return getNotebook().getOwner().getUsername();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "page_id")
@@ -77,7 +96,7 @@ public class Page implements Serializable {
     @Transient
     public boolean isLastUsed() {
 
-        return getNotebook().getOwner().getLastUsed().getPageId() == getPageId();
+        return getLastUsedEntity() != null;
     }
 
     public Note removeNote(Note note) {
@@ -86,6 +105,11 @@ public class Page implements Serializable {
         note.setPage(null);
 
         return note;
+    }
+
+    private void setLastUsedEntity(LastUsed lastUsed) {
+
+        this.lastUsed = lastUsed;
     }
 
     public void setName(String name) {

@@ -7,13 +7,13 @@ import org.springframework.stereotype.Service;
 public class BeanUtilsControllerModelMapper<S, T> implements ControllerModelMapper<S, T> {
 
     @Override
-    public void fromModel(S model, T entity, String... ignore) {
+    public void copyPropertiesFromModel(S model, T entity, String... ignore) {
 
         copyProperties(model, entity, ignore);
     }
 
     @Override
-    public void fromEntity(T entity, S model, String... ignore) {
+    public void copyPropertiesFromEntity(T entity, S model, String... ignore) {
 
         copyProperties(entity, model, ignore);
     }

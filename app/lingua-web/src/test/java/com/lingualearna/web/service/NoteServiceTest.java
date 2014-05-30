@@ -61,7 +61,6 @@ public class NoteServiceTest {
 
     private void andLastUsedIsUpdated() {
 
-        verify(lastUsed).setNotebookId(NOTEBOOK_ID);
         verify(lastUsed).setPageId(PAGE_ID);
         verify(dao).merge(lastUsed);
     }

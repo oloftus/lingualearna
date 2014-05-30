@@ -2,6 +2,10 @@
     <div class="lingua-dialog-header">
         <h2>{{model.operationTitle}}</h2>
         <div class="lingua-controls">
+            <select ng-model="model.page" ng-options="page.name for page in global.model.currentNotebook.pages track by page.pageId"
+                     data-fieldname="pageId">
+                <option value="">Please select a page</option>
+            </select>
             <button class="lingua-action-button-icon" id="lingua-save-entry-button" ng-click="func.addEditNote()">
                 Save to notebook</button>
         </div>

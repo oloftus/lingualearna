@@ -1,5 +1,7 @@
 package com.lingualearna.web.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +14,9 @@ import com.lingualearna.web.controller.exceptions.ResourceNotFoundException;
 import com.lingualearna.web.controller.model.NoteModel;
 import com.lingualearna.web.controller.modelmappers.ControllerModelMapper;
 import com.lingualearna.web.notes.Note;
+import com.lingualearna.web.notes.Page;
 import com.lingualearna.web.service.NoteService;
+import com.lingualearna.web.service.NotebookService;
 
 @Controller
 @RequestMapping("/api/note")
@@ -25,18 +29,25 @@ public class NoteController {
     private NoteService notesService;
 
     @Autowired
+    private NotebookService notebookService;
+
+    @Autowired
     private ControllerModelMapper<NoteModel, Note> notesMapper;
 
     @RequestMapping(value = "", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     @ResponseBody
-    public NoteModel createNote(@RequestBody NoteModel incomingNote) {
+    public NoteModel createNote(@RequestBody @Valid NoteModel incomingNote) {
+
+        Page page = notebookService.getPageById(incomingNote.getPageId());
 
         Note noteEntity = new Note();
-        notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);
+        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);
+        noteEntity.setPage(page);
         notesService.createNote(noteEntity);
 
         NoteModel noteModel = new NoteModel();
-        notesMapper.fromEntity(noteEntity, noteModel);
+        notesMapper.copyPropertiesFromEntity(noteEntity, noteModel);
+        noteModel.setPageId(page.getPageId());
 
         return noteModel;
     }
@@ -61,7 +72,8 @@ public class NoteController {
         }
 
         NoteModel noteModel = new NoteModel();
-        notesMapper.fromEntity(noteEntity, noteModel);
+        notesMapper.copyPropertiesFromEntity(noteEntity, noteModel);
+        noteModel.setPageId(noteEntity.getPage().getPageId());
 
         return noteModel;
     }
@@ -75,11 +87,15 @@ public class NoteController {
             throw new ResourceNotFoundException();
         }
 
-        notesMapper.fromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME, SOURCE_URL_FIELD_NAME);
+        Page page = notebookService.getPageById(incomingNote.getPageId());
+
+        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME, SOURCE_URL_FIELD_NAME);
+        noteEntity.setPage(page);
         notesService.updateNote(noteEntity);
 
         NoteModel noteModel = new NoteModel();
-        notesMapper.fromEntity(noteEntity, noteModel);
+        notesMapper.copyPropertiesFromEntity(noteEntity, noteModel);
+        noteModel.setPageId(page.getPageId());
 
         return noteModel;
     }

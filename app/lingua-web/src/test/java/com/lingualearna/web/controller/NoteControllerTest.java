@@ -124,19 +124,19 @@ public class NoteControllerTest {
 
     private void theEntityIsMappedToTheModel() {
 
-        verify(notesMapper).fromEntity(eq(noteEntity), noteModelArg.capture());
+        verify(notesMapper).copyPropertiesFromEntity(eq(noteEntity), noteModelArg.capture());
         expectedNoteModel = noteModelArg.getValue();
     }
 
     private void theModelIsMappedToTheEntityIgnoringId() {
 
-        verify(notesMapper).fromModel(eq(incomingNote), noteArg.capture(), eq(NOTE_ID_FIELD_NAME));
+        verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(NOTE_ID_FIELD_NAME));
         noteEntity = noteArg.getValue();
     }
 
     private void theModelIsMappedToTheEntityIgnoringIdAndSourceUrl() {
 
-        verify(notesMapper).fromModel(eq(incomingNote), noteArg.capture(), eq(NOTE_ID_FIELD_NAME),
+        verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(NOTE_ID_FIELD_NAME),
                 eq(SOURCE_URL_FIELD_NAME));
         noteEntity = noteArg.getValue();
     }

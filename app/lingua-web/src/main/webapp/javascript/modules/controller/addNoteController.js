@@ -15,10 +15,9 @@
             $scope.model.additionalNotes = note.additionalNotes;
             $scope.model.sourceUrl = note.sourceUrl;
             $scope.model.translationSource = note.translationSource;
-            $scope.model.noteId = null;
         };
 
-        var initDialog = function($scope, languageNamesService) {
+        var setLanguageTitles = function($scope, languageNamesService) {
 
             languageNamesService.lookup(new LanguageNameRequest($scope.model.foreignLang), function(data) {
                 $scope.model.foreignLangName = data.langName;
@@ -33,58 +32,81 @@
 
             $scope.model.operationTitle = LocalStrings.addNoteTitle;
         };
-        
-        var subscribeToNotifications = function(commsPipe, $scope, languageNamesService) {
-            
-            commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, function(note) {
 
-                populateModelFromNote($scope, note);
-                initDialog($scope, languageNamesService);
+        var subscribeToAddNoteRequests = function(commsPipe, $scope, languageNamesService) {
+
+            commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, function(note, subject) {
+                
+                if (subject === Subjects.note) {
+                    populateModelFromNote($scope, note);
+                    setLanguageTitles($scope, languageNamesService);
+                }
             });
         };
-        
-        var addSubmitButtonHandler = function($scope, noteService, messageHandler) {
-            
+
+        var addSubmitButtonHandler = function(commsPipe, $scope, noteService, messageHandler) {
+
             $scope.func.addEditNote = function() {
+
+                var pageId = null;
+                if (!_.isNull($scope.model.page)) {
+                    pageId = $scope.model.page.pageId;
+                }
 
                 var note = new Note($scope.model.foreignLang, $scope.model.foreignNote, $scope.model.localLang,
                         $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl,
-                        $scope.model.translationSource, $scope.model.noteId);
+                        $scope.model.translationSource, pageId, $scope.model.noteId);
 
                 noteService.create(note, function(data) {
+
                     messageHandler.addFreshGlobalMessage($scope, LocalStrings.noteSavedMessage, MessageSeverity.INFO);
+                    commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.noteSubmittedSuccessSignal);
+
                 }, function(data, status, headers) {
                     messageHandler.handleErrors($scope, data, status, headers);
                 });
             };
         };
-        
-        var populateModelFromEnvironment = function($scope, $location) {
-            
-            $scope.model.foreignLang = $scope.global.model.currentNotebook.sourceLang;
-            $scope.model.localLang = $scope.global.model.currentNotebook.targetLang;
+
+        var populateModel = function($scope, $location) {
+
+            $scope.model.page = $scope.global.model.currentPage;
+            $scope.model.foreignLang = $scope.global.model.currentNotebook.foreignLang;
+            $scope.model.localLang = $scope.global.model.currentNotebook.localLang;
             $scope.model.sourceUrl = $location.absUrl();
             $scope.model.translationSource = TranslationSources.MANUAL;
-            
+
             $scope.model.foreignNote = null;
             $scope.model.localNote = null;
             $scope.model.additionalNotes = null;
             $scope.model.noteId = null;
         };
 
-        var AddNoteController = function($scope, $location, noteService, languageNamesService, messageHandler, commsPipe) {
+        var subscribeToCurrentNotebookChangedEvents = function($scope, commsPipe) {
+
+            commsPipe.subscribe(Components.READER, Components.ANY, function(message) {
+                if (message === Signals.currentNotebookChanged) {
+                    $scope.model.page = null;
+                }
+            });
+        };
+
+        var AddNoteController = function($scope, $location, noteService, languageNamesService, messageHandler,
+                commsPipe) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
 
-            populateModelFromEnvironment($scope, $location);
-            initDialog($scope, languageNamesService);
+            populateModel($scope, $location);
+            setLanguageTitles($scope, languageNamesService);
             setDialogTitle($scope);
-            addSubmitButtonHandler($scope, noteService, messageHandler);
-            subscribeToNotifications(commsPipe, $scope, languageNamesService);
+            addSubmitButtonHandler(commsPipe, $scope, noteService, messageHandler);
+            subscribeToAddNoteRequests(commsPipe, $scope, languageNamesService);
+            subscribeToCurrentNotebookChangedEvents($scope, commsPipe);
         };
 
-        ngRegistrationHelper(linguaApp).registerController("addNoteController",
+        ngRegistrationHelper(linguaApp).registerController(
+                "addNoteController",
                 [ "$scope", "$location", "noteService", "languageNamesService", "messageHandler", "commsPipe",
                         AddNoteController ]);
     });

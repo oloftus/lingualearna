@@ -3,6 +3,8 @@ package com.lingualearna.web.controller.model;
 import java.io.Serializable;
 import java.util.Locale;
 
+import javax.validation.constraints.Min;
+
 import com.lingualearna.web.notes.TranslationSource;
 
 public class NoteModel implements Serializable {
@@ -17,6 +19,7 @@ public class NoteModel implements Serializable {
     private int noteId;
     private String sourceUrl;
     private TranslationSource translationSource;
+    private int pageId;
 
     public String getAdditionalNotes() {
 
@@ -46,6 +49,12 @@ public class NoteModel implements Serializable {
     public int getNoteId() {
 
         return noteId;
+    }
+
+    @Min(value = 1, message = "Select a page to save the note to")
+    public int getPageId() {
+
+        return pageId;
     }
 
     public String getSourceUrl() {
@@ -86,6 +95,11 @@ public class NoteModel implements Serializable {
     public void setNoteId(int noteId) {
 
         this.noteId = noteId;
+    }
+
+    public void setPageId(int pageId) {
+
+        this.pageId = pageId;
     }
 
     public void setSourceUrl(String sourceUrl) {

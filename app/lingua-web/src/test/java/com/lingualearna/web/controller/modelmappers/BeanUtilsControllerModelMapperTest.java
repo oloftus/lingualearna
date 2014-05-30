@@ -60,11 +60,11 @@ public class BeanUtilsControllerModelMapperTest {
 
     private void whenICallFromEntity() {
 
-        mapper.fromEntity(entity, model, ignore);
+        mapper.copyPropertiesFromEntity(entity, model, ignore);
     }
 
     private void whenICallFromModel() {
 
-        mapper.fromModel(model, entity, ignore);
+        mapper.copyPropertiesFromModel(model, entity, ignore);
     }
 }

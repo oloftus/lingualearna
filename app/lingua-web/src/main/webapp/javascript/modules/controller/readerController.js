@@ -10,47 +10,66 @@
             var selected = textSelector.getSelected().toString();
 
             if (selected !== "") {
-                var message = new TranslationRequest($scope.global.model.currentNotebook.sourceLang,
-                        $scope.global.model.currentNotebook.targetLang, selected);
+                var translationRequest = new TranslationRequest($scope.global.model.currentNotebook.localLang,
+                        $scope.global.model.currentNotebook.foreignLang, selected);
 
                 $state.go(AppStates.TRANSLATE).then(function() {
-                    commsPipe.send(Components.READER, Components.TRANSLATE, message);
+                    commsPipe.send(Components.READER, Components.TRANSLATE, translationRequest, Subjects.translationRequest);
                 });
 
                 textSelector.clearSelected();
             }
         };
         
-        var setupOneClickTranslation = function(commsPipe, $state, $scope) {
+        var setupClickToTranslate = function(commsPipe, $state, $scope) {
             
             $(document).bind("mouseup", function() {
                 mouseupHandler(commsPipe, $state, $scope);
             });
         };
         
+        
         var setupNotebookEnvironment = function($scope, notebookService) {
             
-            notebookService.getListOfNotebooks(function(data) {
+            notebookService.getNotebooksAndPages(function(notebooks) {
 
-                $scope.global.model.notebooks = data;
+                $scope.global.model.notebooks = notebooks;
                 
-                _.some($scope.global.model.notebooks, function(notebook) {
-                    if (notebook.lastUsed) {
-                        $scope.global.model.currentNotebook = {};
-                        $scope.global.model.currentNotebook.url = notebook.url;
-                        $scope.global.model.currentNotebook.name = notebook.name;
-                        $scope.global.model.currentNotebook.sourceLang = notebook.foreignLang;
-                        $scope.global.model.currentNotebook.targetLang = notebook.localLang;
+                var done = false;
+                _.some(notebooks, function(notebook) {
+                    _.some(notebook.pages, function(page) {
                         
-                        return true;
-                    }
-                    
-                    return false;
+                        if (page.lastUsed) {
+                            $scope.global.model.currentNotebook = notebook;
+                            $scope.global.model.currentPage = page;
+                            done = true;
+                        }
+                        
+                        delete page.lastUsed;
+                        return done;
+                    });
+                    return done;
                 });
                 
             }, function() {
                 addFreshGlobalMessage($scope, LocalStrings.genericServerErrorMessage, MessageSeverity.ERROR);
             });
+        };
+        
+        var subscribeToNoteSubmissions = function(commsPipe, $scope, notebookService) {
+
+            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, function(message) {
+                if (message === Signals.noteSubmittedSuccessSignal) {
+                    setupNotebookEnvironment($scope, notebookService);
+                }
+            });
+        };
+        
+        var subscribeToCurrentNotebookChangedEvents = function(commsPipe, $scope) {
+
+            $scope.func.currentNotebookChanged = function() {
+                commsPipe.send(Components.READER, Components.ANY, Signals.currentNotebookChanged);
+            };
         };
 
         var ReaderController = function($scope, commsPipe, $state, notebookService) {
@@ -58,8 +77,10 @@
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
 
-            setupOneClickTranslation(commsPipe, $state, $scope);
+            setupClickToTranslate(commsPipe, $state, $scope);
+            subscribeToCurrentNotebookChangedEvents(commsPipe, $scope);
             setupNotebookEnvironment($scope, notebookService);
+            subscribeToNoteSubmissions(commsPipe, $scope, notebookService);
         };
 
         ngRegistrationHelper(linguaApp).registerController("readerController",
