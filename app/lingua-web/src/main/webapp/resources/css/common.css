@@ -204,6 +204,15 @@ body {
     background-image: url(../images/magnifier.svg);
 }
 
+#lingua-page-messages {
+    position:absolute;
+    left:50%;
+    margin-left:-25%;
+    width:50%;
+    background-color:white;
+    box-shadow: 0 0 15px #000000;
+}
+
 #lingua-global-messages {
     padding: 14px;
     border-bottom: 1px solid #888888;

@@ -10,13 +10,67 @@
             var ERRORS_FIELD = "errors";
             var FIELD_ERRORS_CLASS = "lingua-field-messages";
             var ERROR_CLASS = "lingua-error";
-
-            var addGlobalMessage = function($scope, messageText, messageSeverity) {
-
-                $scope.model.globalMessages.push({
+            
+            var getGlobalMessages = function($scope) {
+                
+                return $scope.model.globalMessages;
+            };
+            
+            var getPageMessages = function($scope) {
+                
+                return $scope.global.model.pageMessages;
+            };
+            
+            var addGlobalOrPageMessage = function(messages, messageText, messageSeverity) {
+                
+                messages.push({
                     type : messageSeverity,
                     text : messageText
                 });
+            };
+            
+            var clearGlobalOrPageMessages = function(messages) {
+                
+                messages.length = 0;
+            };
+
+            var addGlobalMessage = function($scope, messageText, messageSeverity) {
+
+                addGlobalOrPageMessage(getGlobalMessages($scope), messageText, messageSeverity);
+            };
+
+            var clearGlobalMessages = function($scope) {
+                
+                clearGlobalOrPageMessages(getGlobalMessages($scope));
+            };
+
+            var addPageMessage = function($scope, messageText, messageSeverity) {
+
+                addGlobalOrPageMessage(getPageMessages($scope), messageText, messageSeverity);
+            };
+
+            var clearPageMessages = function($scope) {
+                
+                clearGlobalOrPageMessages(getPageMessages($scope));
+            };
+
+            var addFreshPageMessage = function($scope, message, severity) {
+                
+                clearGlobalOrPageMessages($scope);
+                addPageMessage($scope, message, severity);
+            };
+
+            var addFreshGlobalMessage = function($scope, message, severity) {
+                
+                clearLocalAndGlobalMessages($scope);
+                addGlobalMessage($scope, message, severity);
+            };
+            
+            var clearLocalAndGlobalMessages = function($scope) {
+
+                clearGlobalMessages($scope);
+                $("." + FIELD_ERRORS_CLASS).remove();
+                getElementsWithDataErrors().removeData(ERRORS_FIELD);
             };
 
             var getField = function(fieldName) {
@@ -41,14 +95,7 @@
                     return !_.isUndefined($(this).data(ERRORS_FIELD));
                 });
             };
-
-            var clearAllMessages = function($scope) {
-
-                $scope.model.globalMessages.length = 0;
-                $("." + FIELD_ERRORS_CLASS).remove();
-                getElementsWithDataErrors().removeData(ERRORS_FIELD);
-            };
-
+            
             var displayFieldMessage = function(fieldNames) {
 
                 _.each(fieldNames, function(fieldName) {
@@ -68,7 +115,7 @@
 
             var handleValidationErrors = function($scope, errors) {
 
-                clearAllMessages($scope);
+                clearLocalAndGlobalMessages($scope);
 
                 _.each(errors.fieldErrors, function(errors, fieldName) {
                     _.each(errors, function(errorText) {
@@ -93,17 +140,13 @@
                 }
             };
 
-            var addFreshGlobalMessage = function($scope, message, severity) {
-
-                clearAllMessages($scope);
-                addGlobalMessage($scope, message, severity);
-            };
-
             return {
                 addFreshGlobalMessage : addFreshGlobalMessage,
-                addGlobalMessage : addGlobalMessage,
+                clearGlobalMessages : clearGlobalMessages,
+                addFreshPageMessage : addFreshPageMessage,
+                clearPageMessages : clearPageMessages,
                 handleErrors : handleErrors,
-                clearAllMessages : clearAllMessages
+                clearLocalAndGlobalMessages : clearLocalAndGlobalMessages
             };
         };
 

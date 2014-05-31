@@ -18,7 +18,8 @@
             Properties.notebookServiceUrl = apiRoot + "/notebook";
             Properties.notesPagesServiceUrl = notebookServiceUrl + "/notebooksPages";
             
-            Properties.csrfSecret = csrfSecret;            
+            Properties.csrfSecret = csrfSecret;   
+            Properties.pageMessagesTimeout = 4000; // Milliseconds
         }
     });
 })();
