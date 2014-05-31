@@ -34,7 +34,7 @@ public class Note implements Serializable, HasOwner {
 
     private static final long serialVersionUID = -1700378910934447911L;
 
-    private int noteId;
+    private Integer noteId;
     private String additionalNotes;
     private Locale foreignLang;
     private String foreignNote;
@@ -43,7 +43,7 @@ public class Note implements Serializable, HasOwner {
     private String sourceUrl;
     private TranslationSource translationSource;
     private Page page;
-    private boolean includeInTest;
+    private boolean includedInTest;
 
     @Length(max = 2000)
     @Column(name = "additional_notes")
@@ -81,7 +81,7 @@ public class Note implements Serializable, HasOwner {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "note_id")
-    public int getNoteId() {
+    public Integer getNoteId() {
 
         return noteId;
     }
@@ -122,9 +122,9 @@ public class Note implements Serializable, HasOwner {
     }
 
     @Column(name = "include_test")
-    public boolean isIncludeInTest() {
+    public boolean isIncludedInTest() {
 
-        return includeInTest;
+        return includedInTest;
     }
 
     public void setAdditionalNotes(String additionalNotes) {
@@ -142,9 +142,9 @@ public class Note implements Serializable, HasOwner {
         this.foreignNote = foreignNote;
     }
 
-    public void setIncludeInTest(boolean includeInTest) {
+    public void setIncludedInTest(boolean includedInTest) {
 
-        this.includeInTest = includeInTest;
+        this.includedInTest = includedInTest;
     }
 
     public void setLocalLang(Locale localLang) {
@@ -157,7 +157,7 @@ public class Note implements Serializable, HasOwner {
         this.localNote = localNote;
     }
 
-    public void setNoteId(int noteId) {
+    public void setNoteId(Integer noteId) {
 
         this.noteId = noteId;
     }

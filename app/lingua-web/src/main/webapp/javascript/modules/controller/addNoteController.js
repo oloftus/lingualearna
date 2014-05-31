@@ -15,7 +15,7 @@
             $scope.model.additionalNotes = note.additionalNotes;
             $scope.model.sourceUrl = note.sourceUrl;
             $scope.model.translationSource = note.translationSource;
-            $scope.model.includeInTest = note.includeInTest; 
+            $scope.model.includedInTest = note.includedInTest; 
         };
 
         var setLanguageTitles = function($scope, languageNamesService) {
@@ -57,7 +57,7 @@
 
                 var note = new Note($scope.model.foreignLang, $scope.model.foreignNote, $scope.model.localLang,
                         $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl,
-                        $scope.model.translationSource, $scope.model.includeInTest, pageId, noteId);
+                        $scope.model.translationSource, $scope.model.includedInTest, pageId, noteId);
 
                 noteService.create(note, function(data) {
 
@@ -77,7 +77,7 @@
             $scope.model.localLang = $scope.global.model.currentNotebook.localLang;
             $scope.model.sourceUrl = $location.absUrl();
             $scope.model.translationSource = TranslationSources.MANUAL;
-            $scope.model.includeInTest = true;
+            $scope.model.includedInTest = true;
 
             $scope.model.foreignNote = null;
             $scope.model.localNote = null;

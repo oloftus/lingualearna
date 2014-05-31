@@ -17,7 +17,7 @@
         };
 
         Note = function(foreignLang, foreignNote, localLang, localNote, additionalNotes, sourceUrl, translationSource,
-                includeInTest, pageId, noteId) {
+                includedInTest, pageId, noteId) {
 
             this.foreignLang = foreignLang;
             this.foreignNote = foreignNote;
@@ -26,7 +26,7 @@
             this.additionalNotes = additionalNotes;
             this.sourceUrl = sourceUrl;
             this.translationSource = translationSource;
-            this.includeInTest = includeInTest;
+            this.includedInTest = includedInTest;
             this.pageId = pageId;
             this.noteId = noteId;
         };

@@ -11,7 +11,7 @@
             $scope.model.targetLang = translationRequest.targetLang;
             $scope.model.query = translationRequest.query;
             
-            $scope.model.includeInTest = true;
+            $scope.model.includedInTest = true;
         };
 
         var setLanguagesTitles = function($scope, languageNamesService) {
@@ -49,7 +49,7 @@
                 var additionalNotes = "";
                 var message = new Note($scope.model.targetLang, $scope.model.translations.google,
                         $scope.model.sourceLang, $scope.model.query, additionalNotes, $location.absUrl(), TranslationSources.GOOGLE,
-                        $scope.model.includeInTest);
+                        $scope.model.includedInTest);
 
                 $state.go(AppStates.ADD_NOTE).then(function() {
                     commsPipe.send(Components.TRANSLATE, Components.ADD_NOTE, message, Subjects.Note);

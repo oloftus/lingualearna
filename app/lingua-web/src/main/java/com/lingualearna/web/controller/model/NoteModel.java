@@ -16,11 +16,11 @@ public class NoteModel implements Serializable {
     private String foreignNote;
     private Locale localLang;
     private String localNote;
-    private int noteId;
+    private Integer noteId;
     private String sourceUrl;
     private TranslationSource translationSource;
     private int pageId;
-    private boolean includeInTest;
+    private boolean includedInTest;
 
     public String getAdditionalNotes() {
 
@@ -47,7 +47,7 @@ public class NoteModel implements Serializable {
         return localNote;
     }
 
-    public int getNoteId() {
+    public Integer getNoteId() {
 
         return noteId;
     }
@@ -68,9 +68,9 @@ public class NoteModel implements Serializable {
         return translationSource;
     }
 
-    public boolean isIncludeInTest() {
+    public boolean isIncludedInTest() {
 
-        return includeInTest;
+        return includedInTest;
     }
 
     public void setAdditionalNotes(String additionalNotes) {
@@ -88,9 +88,9 @@ public class NoteModel implements Serializable {
         this.foreignNote = foreignNote;
     }
 
-    public void setIncludeInTest(boolean includeInTest) {
+    public void setIncludedInTest(boolean includedInTest) {
 
-        this.includeInTest = includeInTest;
+        this.includedInTest = includedInTest;
     }
 
     public void setLocalLang(Locale localLang) {
@@ -103,7 +103,7 @@ public class NoteModel implements Serializable {
         this.localNote = localNote;
     }
 
-    public void setNoteId(int noteId) {
+    public void setNoteId(Integer noteId) {
 
         this.noteId = noteId;
     }
