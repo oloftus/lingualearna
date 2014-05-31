@@ -23,7 +23,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         com.lingualearna.web.security.User userEntity = userService.getUserByUsername(username);
 
-        if (userEntity == null || !userEntity.getEnabled()) {
+        if (userEntity == null || !userEntity.isEnabled()) {
             throw new UsernameNotFoundException("No such user");
         }
 

@@ -42,13 +42,13 @@ public class JpaUserDetailsServiceTest {
         when(userEntity.getUsername()).thenReturn(EMAIL_ADDRESS);
         when(userEntity.getPassword()).thenReturn(PASSWORD);
         when(userEntity.getRole()).thenReturn(Role.ROLE_ADMIN);
-        when(userEntity.getEnabled()).thenReturn(true);
+        when(userEntity.isEnabled()).thenReturn(true);
         when(userService.getUserByUsername(USERNAME)).thenReturn(userEntity);
     }
 
     private void givenTheUserIsDisabled() {
 
-        when(userEntity.getEnabled()).thenReturn(false);
+        when(userEntity.isEnabled()).thenReturn(false);
     }
 
     @Test

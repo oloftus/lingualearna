@@ -22,8 +22,8 @@ import com.lingualearna.web.service.NotebookService;
 @RequestMapping("/api/note")
 public class NoteController {
 
-    private static final String NOTE_ID_FIELD_NAME = "noteId";
-    private static final String SOURCE_URL_FIELD_NAME = "sourceUrl";
+    private static final String NOTE_ID_FIELD = "noteId";
+    private static final String SOURCE_URL_FIELD = "sourceUrl";
 
     @Autowired
     private NoteService notesService;
@@ -41,7 +41,7 @@ public class NoteController {
         Page page = notebookService.getPageById(incomingNote.getPageId());
 
         Note noteEntity = new Note();
-        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME);
+        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, NOTE_ID_FIELD);
         noteEntity.setPage(page);
         notesService.createNote(noteEntity);
 
@@ -89,7 +89,7 @@ public class NoteController {
 
         Page page = notebookService.getPageById(incomingNote.getPageId());
 
-        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, NOTE_ID_FIELD_NAME, SOURCE_URL_FIELD_NAME);
+        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, NOTE_ID_FIELD, SOURCE_URL_FIELD);
         noteEntity.setPage(page);
         notesService.updateNote(noteEntity);
 

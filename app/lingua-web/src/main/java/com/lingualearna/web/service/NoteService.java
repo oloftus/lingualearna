@@ -14,9 +14,9 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import com.lingualearna.web.dao.GenericDao;
-import com.lingualearna.web.notes.LastUsed;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.security.OwnedObjectType;
+import com.lingualearna.web.security.User;
 
 @Service
 @Transactional
@@ -69,9 +69,9 @@ public class NoteService {
 
     private void setLastUsed(Note note) {
 
-        LastUsed lastUsed = note.getOwner().getLastUsed();
-        lastUsed.setPageId(note.getPage().getPageId());
-        dao.merge(lastUsed);
+        User owner = note.getOwner();
+        owner.setLastUsed(note.getPage());
+        dao.merge(owner);
     }
 
     @Secured(ALLOW_OWNER)

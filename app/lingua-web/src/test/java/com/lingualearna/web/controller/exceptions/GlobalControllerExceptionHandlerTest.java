@@ -7,6 +7,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import com.google.common.collect.Lists;
 import com.lingualearna.web.controller.model.ConstraintViolations;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,13 +35,16 @@ public class GlobalControllerExceptionHandlerTest {
     private static final String FIELD_NAME = "propertyPath";
     private static final String EMPTY_STRING = "";
 
-    private ConstraintViolations returnedViolations;
-
     @Mock
     private ConstraintViolationException cve;
 
     @Mock
+    private MethodArgumentNotValidException manve;
+
+    @Mock
     private HttpServletRequest request;
+
+    private ConstraintViolations returnedViolations;
 
     private final GlobalControllerExceptionHandler handler = new GlobalControllerExceptionHandler();
 
@@ -71,7 +80,25 @@ public class GlobalControllerExceptionHandlerTest {
         return violation;
     }
 
-    private void givenTheViolationsAreSetup() {
+    private void givenTheControllerModelViolationsAreSetup() {
+
+        BindingResult methodArgumentErrors = mock(BindingResult.class);
+        FieldError fieldError = mock(FieldError.class);
+        ObjectError globalError = mock(ObjectError.class);
+
+        when(fieldError.getField()).thenReturn(FIELD_NAME);
+        when(fieldError.getDefaultMessage()).thenReturn(FIELD_ERROR_MESSAGE);
+        when(globalError.getDefaultMessage()).thenReturn(GLOBAL_ERROR_MESSAGE_1);
+
+        List<FieldError> fieldErrors = Lists.newArrayList(fieldError);
+        List<ObjectError> globalErrors = Lists.newArrayList(globalError);
+
+        when(methodArgumentErrors.getFieldErrors()).thenReturn(fieldErrors);
+        when(methodArgumentErrors.getGlobalErrors()).thenReturn(globalErrors);
+        when(manve.getBindingResult()).thenReturn(methodArgumentErrors);
+    }
+
+    private void givenTheEntityViolationsAreSetup() {
 
         Set<ConstraintViolation<?>> violations = new HashSet<>();
         violations.add(createGlobalViolationWithNullPropertyPath());
@@ -82,24 +109,48 @@ public class GlobalControllerExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleConstraintViolations() {
+    public void testHandleControllerModelConstraintViolations() {
 
-        givenTheViolationsAreSetup();
-        whenICallHandleConstraintViolations();
-        thenTheViolationsAreCorrectlyHandled();
+        givenTheControllerModelViolationsAreSetup();
+        whenICallHandleControllerModelConstraintViolations();
+        thenTheControllerModelViolationsAreCorrectlyHandled();
     }
 
-    private void thenTheViolationsAreCorrectlyHandled() {
+    @Test
+    public void testHandleEntityConstraintViolations() {
 
-        assertTrue(returnedViolations.getFieldErrors().size() == 1);
+        givenTheEntityViolationsAreSetup();
+        whenICallHandleEntityConstraintViolations();
+        thenTheEntityViolationsAreCorrectlyHandled();
+    }
+
+    private void thenTheControllerModelViolationsAreCorrectlyHandled() {
+
+        assertEquals(1, returnedViolations.getFieldErrors().size());
+        assertEquals(1, returnedViolations.getFieldErrors().get(FIELD_NAME).size());
+        assertEquals(FIELD_ERROR_MESSAGE, returnedViolations.getFieldErrors().get(FIELD_NAME).get(0));
+
+        assertEquals(1, returnedViolations.getGlobalErrors().size());
+        assertEquals(GLOBAL_ERROR_MESSAGE_1, returnedViolations.getGlobalErrors().get(0));
+    }
+
+    private void thenTheEntityViolationsAreCorrectlyHandled() {
+
+        assertEquals(1, returnedViolations.getFieldErrors().size());
         assertEquals(returnedViolations.getFieldErrors().get(FIELD_NAME).iterator().next(), FIELD_ERROR_MESSAGE);
-        assertTrue(returnedViolations.getGlobalErrors().size() == 2);
+
+        assertEquals(2, returnedViolations.getGlobalErrors().size());
         assertTrue(returnedViolations.getGlobalErrors().contains(GLOBAL_ERROR_MESSAGE_1));
         assertTrue(returnedViolations.getGlobalErrors().contains(GLOBAL_ERROR_MESSAGE_2));
     }
 
-    private void whenICallHandleConstraintViolations() {
+    private void whenICallHandleControllerModelConstraintViolations() {
 
-        returnedViolations = handler.handleConstraintViolations(request, cve);
+        returnedViolations = handler.handleControllerModelConstraintViolations(request, manve);
+    }
+
+    private void whenICallHandleEntityConstraintViolations() {
+
+        returnedViolations = handler.handleEntityConstraintViolations(request, cve);
     }
 }

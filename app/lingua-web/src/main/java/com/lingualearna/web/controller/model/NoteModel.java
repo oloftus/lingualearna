@@ -20,6 +20,7 @@ public class NoteModel implements Serializable {
     private String sourceUrl;
     private TranslationSource translationSource;
     private int pageId;
+    private boolean includeInTest;
 
     public String getAdditionalNotes() {
 
@@ -67,6 +68,11 @@ public class NoteModel implements Serializable {
         return translationSource;
     }
 
+    public boolean isIncludeInTest() {
+
+        return includeInTest;
+    }
+
     public void setAdditionalNotes(String additionalNotes) {
 
         this.additionalNotes = additionalNotes;
@@ -80,6 +86,11 @@ public class NoteModel implements Serializable {
     public void setForeignNote(String foreignNote) {
 
         this.foreignNote = foreignNote;
+    }
+
+    public void setIncludeInTest(boolean includeInTest) {
+
+        this.includeInTest = includeInTest;
     }
 
     public void setLocalLang(Locale localLang) {

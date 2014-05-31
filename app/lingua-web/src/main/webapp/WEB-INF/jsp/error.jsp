@@ -13,5 +13,7 @@
 
     <h1>An error ocurred</h1>
     
+    <pre>${stacktrace}</pre>
+    
 </body>
 </html>

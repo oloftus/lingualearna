@@ -10,6 +10,8 @@
             $scope.model.sourceLang = translationRequest.sourceLang;
             $scope.model.targetLang = translationRequest.targetLang;
             $scope.model.query = translationRequest.query;
+            
+            $scope.model.includeInTest = true;
         };
 
         var setLanguagesTitles = function($scope, languageNamesService) {
@@ -46,7 +48,8 @@
 
                 var additionalNotes = "";
                 var message = new Note($scope.model.targetLang, $scope.model.translations.google,
-                        $scope.model.sourceLang, $scope.model.query, additionalNotes, $location.absUrl(), TranslationSources.GOOGLE);
+                        $scope.model.sourceLang, $scope.model.query, additionalNotes, $location.absUrl(), TranslationSources.GOOGLE,
+                        $scope.model.includeInTest);
 
                 $state.go(AppStates.ADD_NOTE).then(function() {
                     commsPipe.send(Components.TRANSLATE, Components.ADD_NOTE, message, Subjects.Note);

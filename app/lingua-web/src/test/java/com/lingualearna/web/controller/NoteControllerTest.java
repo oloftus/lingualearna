@@ -5,6 +5,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -17,7 +18,9 @@ import com.lingualearna.web.controller.exceptions.ResourceNotFoundException;
 import com.lingualearna.web.controller.model.NoteModel;
 import com.lingualearna.web.controller.modelmappers.BeanUtilsControllerModelMapper;
 import com.lingualearna.web.notes.Note;
+import com.lingualearna.web.notes.Page;
 import com.lingualearna.web.service.NoteService;
+import com.lingualearna.web.service.NotebookService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NoteControllerTest {
@@ -26,9 +29,7 @@ public class NoteControllerTest {
     private static final String NOTE_ID_FIELD_NAME = "noteId";
     private static final String SOURCE_URL_FIELD_NAME = "sourceUrl";
     private static final int VALID_NOTE_ID = 1;
-
-    private NoteModel actualNoteModel;
-    private NoteModel expectedNoteModel;
+    private static final int PAGE_ID = 2;
 
     @Mock
     private NoteModel incomingNote;
@@ -51,11 +52,14 @@ public class NoteControllerTest {
     @Mock
     private NoteService notesService;
 
-    private void andTheCreatedNoteIsReturned() {
+    @Mock
+    private NotebookService notebookService;
 
-        theEntityIsMappedToTheModel();
-        assertEquals(expectedNoteModel, actualNoteModel);
-    }
+    @Mock
+    private Page page;
+
+    private NoteModel actualNoteModel;
+    private NoteModel expectedNoteModel;
 
     private void givenDeleteNoteServiceFunctions() {
 
@@ -65,7 +69,16 @@ public class NoteControllerTest {
 
     private void givenRetrieveNoteServiceFunctions() {
 
+        when(noteEntity.getPage()).thenReturn(page);
         when(notesService.retrieveNote(VALID_NOTE_ID)).thenReturn(noteEntity);
+    }
+
+    @Before
+    public void setup() {
+
+        when(incomingNote.getPageId()).thenReturn(PAGE_ID);
+        when(page.getPageId()).thenReturn(PAGE_ID);
+        when(notebookService.getPageById(PAGE_ID)).thenReturn(page);
     }
 
     @Test
@@ -73,7 +86,7 @@ public class NoteControllerTest {
 
         whenICallCreateNote();
         thenTheNoteIsCreated();
-        andTheCreatedNoteIsReturned();
+        thenTheCorrectNoteIsReturned();
     }
 
     @Test
@@ -96,7 +109,7 @@ public class NoteControllerTest {
 
         givenRetrieveNoteServiceFunctions();
         whenICallRetrieveNoteWithAValidNoteId();
-        thenTheRetrievedNoteIsReturned();
+        thenTheCorrectNoteIsReturned();
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -112,7 +125,7 @@ public class NoteControllerTest {
         givenRetrieveNoteServiceFunctions();
         whenICallUpdateNoteWithAValidNoteId();
         thenTheNoteIsUpdated();
-        andTheCreatedNoteIsReturned();
+        thenTheCorrectNoteIsReturned();
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -120,12 +133,6 @@ public class NoteControllerTest {
 
         givenRetrieveNoteServiceFunctions();
         whenICallUpdateNoteWithAnInvalidNoteId();
-    }
-
-    private void theEntityIsMappedToTheModel() {
-
-        verify(notesMapper).copyPropertiesFromEntity(eq(noteEntity), noteModelArg.capture());
-        expectedNoteModel = noteModelArg.getValue();
     }
 
     private void theModelIsMappedToTheEntityIgnoringId() {
@@ -139,6 +146,16 @@ public class NoteControllerTest {
         verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(NOTE_ID_FIELD_NAME),
                 eq(SOURCE_URL_FIELD_NAME));
         noteEntity = noteArg.getValue();
+        assertEquals(page, noteEntity.getPage());
+    }
+
+    private void thenTheCorrectNoteIsReturned() {
+
+        verify(notesMapper).copyPropertiesFromEntity(eq(noteEntity), noteModelArg.capture());
+        expectedNoteModel = noteModelArg.getValue();
+
+        assertEquals(expectedNoteModel, actualNoteModel);
+        assertEquals(PAGE_ID, expectedNoteModel.getPageId());
     }
 
     private void thenTheNoteIsCreated() {
@@ -156,12 +173,6 @@ public class NoteControllerTest {
 
         theModelIsMappedToTheEntityIgnoringIdAndSourceUrl();
         verify(notesService).updateNote(noteEntity);
-    }
-
-    private void thenTheRetrievedNoteIsReturned() {
-
-        theEntityIsMappedToTheModel();
-        assertEquals(expectedNoteModel, actualNoteModel);
     }
 
     private void whenICallCreateNote() {

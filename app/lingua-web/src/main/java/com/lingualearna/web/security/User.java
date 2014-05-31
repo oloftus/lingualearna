@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
-import com.lingualearna.web.notes.LastUsed;
+import com.lingualearna.web.notes.Page;
 
 @Entity
 @Table(name = "users")
@@ -35,16 +35,11 @@ public class User implements Serializable {
     private boolean enabled;
     private String password;
     private Role role;
-    private LastUsed lastUsed;
-
-    public boolean getEnabled() {
-
-        return this.enabled;
-    }
+    private Page lastUsed;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
-    public LastUsed getLastUsed() {
+    @JoinColumn(name = "last_used")
+    public Page getLastUsed() {
 
         return lastUsed;
     }
@@ -77,12 +72,17 @@ public class User implements Serializable {
         return this.username;
     }
 
+    public boolean isEnabled() {
+
+        return this.enabled;
+    }
+
     public void setEnabled(boolean enabled) {
 
         this.enabled = enabled;
     }
 
-    public void setLastUsed(LastUsed lastUsed) {
+    public void setLastUsed(Page lastUsed) {
 
         this.lastUsed = lastUsed;
     }

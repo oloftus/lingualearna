@@ -43,6 +43,7 @@ public class Note implements Serializable, HasOwner {
     private String sourceUrl;
     private TranslationSource translationSource;
     private Page page;
+    private boolean includeInTest;
 
     @Length(max = 2000)
     @Column(name = "additional_notes")
@@ -120,6 +121,12 @@ public class Note implements Serializable, HasOwner {
         return translationSource;
     }
 
+    @Column(name = "include_test")
+    public boolean isIncludeInTest() {
+
+        return includeInTest;
+    }
+
     public void setAdditionalNotes(String additionalNotes) {
 
         this.additionalNotes = additionalNotes;
@@ -133,6 +140,11 @@ public class Note implements Serializable, HasOwner {
     public void setForeignNote(String foreignNote) {
 
         this.foreignNote = foreignNote;
+    }
+
+    public void setIncludeInTest(boolean includeInTest) {
+
+        this.includeInTest = includeInTest;
     }
 
     public void setLocalLang(Locale localLang) {

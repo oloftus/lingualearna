@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -28,10 +27,9 @@ public class Page implements Serializable, HasOwner {
 
     private int pageId;
     private String name;
-    private int position;
+    private Integer position;
     private Notebook notebook;
     private List<Note> notes;
-    private LastUsed lastUsed;
 
     public Note addNote(Note note) {
 
@@ -39,14 +37,6 @@ public class Page implements Serializable, HasOwner {
         note.setPage(this);
 
         return note;
-    }
-
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "page_id")
-    private LastUsed getLastUsedEntity() {
-
-        return lastUsed;
     }
 
     @Length(max = 45)
@@ -88,7 +78,7 @@ public class Page implements Serializable, HasOwner {
     }
 
     @Column(name = "position")
-    public int getPosition() {
+    public Integer getPosition() {
 
         return this.position;
     }
@@ -96,7 +86,7 @@ public class Page implements Serializable, HasOwner {
     @Transient
     public boolean isLastUsed() {
 
-        return getLastUsedEntity() != null;
+        return getNotebook().getOwner().getLastUsed().getPageId() == getPageId();
     }
 
     public Note removeNote(Note note) {
@@ -105,11 +95,6 @@ public class Page implements Serializable, HasOwner {
         note.setPage(null);
 
         return note;
-    }
-
-    private void setLastUsedEntity(LastUsed lastUsed) {
-
-        this.lastUsed = lastUsed;
     }
 
     public void setName(String name) {
@@ -132,7 +117,7 @@ public class Page implements Serializable, HasOwner {
         this.pageId = pageId;
     }
 
-    public void setPosition(int position) {
+    public void setPosition(Integer position) {
 
         this.position = position;
     }

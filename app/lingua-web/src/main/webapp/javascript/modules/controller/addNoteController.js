@@ -15,6 +15,7 @@
             $scope.model.additionalNotes = note.additionalNotes;
             $scope.model.sourceUrl = note.sourceUrl;
             $scope.model.translationSource = note.translationSource;
+            $scope.model.includeInTest = note.includeInTest; 
         };
 
         var setLanguageTitles = function($scope, languageNamesService) {
@@ -48,6 +49,7 @@
 
             $scope.func.addEditNote = function() {
 
+                var noteId = null;
                 var pageId = null;
                 if (!_.isNull($scope.model.page)) {
                     pageId = $scope.model.page.pageId;
@@ -55,7 +57,7 @@
 
                 var note = new Note($scope.model.foreignLang, $scope.model.foreignNote, $scope.model.localLang,
                         $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl,
-                        $scope.model.translationSource, pageId, $scope.model.noteId);
+                        $scope.model.translationSource, $scope.model.includeInTest, pageId, noteId);
 
                 noteService.create(note, function(data) {
 
@@ -75,11 +77,11 @@
             $scope.model.localLang = $scope.global.model.currentNotebook.localLang;
             $scope.model.sourceUrl = $location.absUrl();
             $scope.model.translationSource = TranslationSources.MANUAL;
+            $scope.model.includeInTest = true;
 
             $scope.model.foreignNote = null;
             $scope.model.localNote = null;
             $scope.model.additionalNotes = null;
-            $scope.model.noteId = null;
         };
 
         var subscribeToCurrentNotebookChangedEvents = function($scope, commsPipe) {

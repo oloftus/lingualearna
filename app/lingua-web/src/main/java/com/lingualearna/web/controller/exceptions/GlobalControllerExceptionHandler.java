@@ -1,5 +1,7 @@
 package com.lingualearna.web.controller.exceptions;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.lingualearna.web.controller.model.ConstraintViolations;
 
@@ -50,10 +53,13 @@ class GlobalControllerExceptionHandler {
         }
     }
 
+    /**
+     * Handles bean validation violations on entities
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
-    public ConstraintViolations handleConstraintViolations(HttpServletRequest request,
+    public ConstraintViolations handleEntityConstraintViolations(HttpServletRequest request,
             ConstraintViolationException exception) {
 
         Set<ConstraintViolation<?>> globalViolations = new HashSet<>();
@@ -69,15 +75,24 @@ class GlobalControllerExceptionHandler {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public String handleGenericExceptions(HttpServletRequest request, Exception exception) {
+    public ModelAndView handleGenericExceptions(HttpServletRequest request,
+            Exception exception) {
 
-        return "error";
+        ModelAndView mv = new ModelAndView("error");
+        StringWriter sw = new StringWriter();
+        PrintWriter ps = new PrintWriter(sw);
+        exception.printStackTrace(ps);
+        mv.addObject("stacktrace", sw.toString());
+        return mv;
     }
 
+    /**
+     * Handles bean validation violations on controller models
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public ConstraintViolations handleMethodArgumentNotValid(HttpServletRequest request,
+    public ConstraintViolations handleControllerModelConstraintViolations(HttpServletRequest request,
             MethodArgumentNotValidException exception) {
 
         ConstraintViolations response = new ConstraintViolations();

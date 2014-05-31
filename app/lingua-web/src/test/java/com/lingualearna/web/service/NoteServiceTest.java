@@ -15,14 +15,14 @@ import javax.validation.Validator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.lingualearna.web.dao.GenericDao;
-import com.lingualearna.web.notes.LastUsed;
 import com.lingualearna.web.notes.Note;
+import com.lingualearna.web.notes.Notebook;
+import com.lingualearna.web.notes.Page;
 import com.lingualearna.web.security.User;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -39,19 +39,22 @@ public class NoteServiceTest {
     private ConstraintViolation<Note> violation;
 
     @Mock
-    private User user;
+    private User owner;
+
+    @Mock
+    private Page page;
 
     @Mock
     private GenericDao dao;
 
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    private Note passedInNote;
-
-    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-    private Note expectedNote;
+    @Mock
+    private Notebook notebook;
 
     @Mock
-    private LastUsed lastUsed;
+    private Note passedInNote;
+
+    @Mock
+    private Note expectedNote;
 
     private Note returnedNote;
     private boolean deletedSuccess;
@@ -61,8 +64,8 @@ public class NoteServiceTest {
 
     private void andLastUsedIsUpdated() {
 
-        verify(lastUsed).setPageId(PAGE_ID);
-        verify(dao).merge(lastUsed);
+        verify(owner).setLastUsed(page);
+        verify(dao).merge(owner);
     }
 
     private void andTheNoteIsPersisted() {
@@ -83,9 +86,12 @@ public class NoteServiceTest {
 
     private void givenThereIsALastUsedEntryFor(Note note) {
 
-        when(note.getOwner().getLastUsed()).thenReturn(lastUsed);
-        when(note.getPage().getPageId()).thenReturn(PAGE_ID);
-        when(note.getPage().getNotebook().getNotebookId()).thenReturn(NOTEBOOK_ID);
+        when(page.getPageId()).thenReturn(PAGE_ID);
+        when(page.getNotebook()).thenReturn(notebook);
+        when(notebook.getNotebookId()).thenReturn(NOTEBOOK_ID);
+        when(note.getOwner()).thenReturn(owner);
+        when(owner.getLastUsed()).thenReturn(page);
+        when(note.getPage()).thenReturn(page);
     }
 
     private void givenValidationFails() {
