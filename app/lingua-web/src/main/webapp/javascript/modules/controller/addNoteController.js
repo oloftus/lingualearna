@@ -15,7 +15,7 @@
             $scope.model.additionalNotes = note.additionalNotes;
             $scope.model.sourceUrl = note.sourceUrl;
             $scope.model.translationSource = note.translationSource;
-            $scope.model.includedInTest = note.includedInTest; 
+            $scope.model.includedInTest = note.includedInTest;
         };
 
         var setLanguageTitles = function($scope, languageNamesService) {
@@ -45,7 +45,7 @@
             });
         };
 
-        var addSubmitButtonHandler = function(commsPipe, $scope, noteService, messageHandler) {
+        var addSubmitButtonHandler = function(commsPipe, $scope, noteService, messageHandler, $timeout, $state) {
 
             $scope.func.addEditNote = function() {
 
@@ -63,6 +63,10 @@
 
                     messageHandler.addFreshGlobalMessage($scope, LocalStrings.noteSavedMessage, MessageSeverity.INFO);
                     commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.NoteSubmittedSuccess);
+
+                    $timeout(function() {
+                        $state.go(AppStates.MAIN);
+                    }, Properties.dialogDisappearTimeout);
 
                 }, function(data, status, headers) {
                     messageHandler.handleErrors($scope, data, status, headers);
@@ -89,12 +93,14 @@
             commsPipe.subscribe(Components.READER, Components.ANY, function(message) {
                 if (message === Signals.CurrentNotebookChanged) {
 
-                    var newPagesContainsOldCurrent = _.some($scope.global.model.currentNotebook.pages, function(
-                            newPage) {
+                    var newPagesContainsOldCurrent = _
+                            .some($scope.global.model.currentNotebook.pages,
+                                    function(newPage) {
 
-                        var oldCurrentPage = $scope.model.page;
-                        return newPage.pageId === oldCurrentPage.pageId && newPage.name === oldCurrentPage.name;
-                    });
+                                        var oldCurrentPage = $scope.model.page;
+                                        return newPage.pageId === oldCurrentPage.pageId
+                                                && newPage.name === oldCurrentPage.name;
+                                    });
 
                     if (!newPagesContainsOldCurrent) {
                         $scope.model.page = null;
@@ -104,7 +110,7 @@
         };
 
         var AddNoteController = function($scope, $location, noteService, languageNamesService, messageHandler,
-                commsPipe) {
+                commsPipe, $timeout, $state) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
@@ -112,7 +118,7 @@
             populateModel($scope, $location);
             setLanguageTitles($scope, languageNamesService);
             setDialogTitle($scope);
-            addSubmitButtonHandler(commsPipe, $scope, noteService, messageHandler);
+            addSubmitButtonHandler(commsPipe, $scope, noteService, messageHandler, $timeout, $state);
             subscribeToAddNoteRequests(commsPipe, $scope, languageNamesService);
             subscribeToCurrentNotebookChangedEvents($scope, commsPipe);
         };
@@ -120,6 +126,6 @@
         ngRegistrationHelper(linguaApp).registerController(
                 "addNoteController",
                 [ "$scope", "$location", "noteService", "languageNamesService", "messageHandler", "commsPipe",
-                        AddNoteController ]);
+                        "$timeout", "$state", AddNoteController ]);
     });
 })();

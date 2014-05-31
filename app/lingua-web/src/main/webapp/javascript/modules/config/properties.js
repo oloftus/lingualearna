@@ -20,6 +20,7 @@
             
             Properties.csrfSecret = csrfSecret;   
             Properties.pageMessagesTimeout = 4000; // Milliseconds
+            Properties.dialogDisappearTimeout = 1000; // Milliseconds
         }
     });
 })();
