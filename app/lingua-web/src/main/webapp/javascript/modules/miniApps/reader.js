@@ -2,7 +2,7 @@
 
     loadRequireConfig();
 
-    var dependencies = [ "linguaApp", "miniApps/abstractMiniApp", "controller/readerController" ];
+    var dependencies = [ "linguaApp", "miniApps/abstractMiniApp", "controller/readerBarController" ];
 
     define(dependencies, function(linguaApp, abstractMiniApp) {
 

@@ -1,6 +1,6 @@
 (function() {
 
-    var dependencies = [ "ng", "linguaApp", "underscore", "controller/pageController" ];
+    var dependencies = [ "ng", "linguaApp", "underscore", "controller/readerController" ];
 
     define(dependencies, function(ng, linguaApp, _) {
 
