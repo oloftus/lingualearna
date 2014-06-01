@@ -1,14 +1,15 @@
-#page-container, #left-pane>.inner {
+#page-container,#left-pane>.inner {
     height: 100%;
     width: 100%;
     display: table;
+    min-height:800px;
 }
 
-#main-header, #notebook-header {
+#main-header,#notebook-header {
     display: table-row;
 }
 
-#main-header>.inner, #notebook-header>.inner {
+#main-header>.inner,#notebook-header>.inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,33 +17,41 @@
 }
 
 #main-header>.inner {
-    padding-left:20px;
+    padding-left: 20px;
 }
 
-#main-container, #notebook-container {
+#main-container,#notebook-container {
     height: 100%;
     display: table-row;
 }
 
-#main-container>.inner, #notebook-container>.inner {
+#main-container>.inner,#notebook-container>.inner {
     height: 100%;
     display: flex;
 }
 
-#left-pane, #notebook-pane {
+#left-pane,#notebook-pane {
     width: 100%;
-    height:100%;
+    height: 100%;
+}
+
+#notebook-pane {
+    background: url(../images/horizontal-line.png);
 }
 
 #notebook-content {
-    height:100%;
-    padding: 20px;
+    height: 100%;
+    padding: 20px 20px 20px 130px;
+    box-sizing: border-box;
     box-shadow: 0 0 15px #dddddd inset;
+    background: url(../images/margin-line.png) repeat-y 110px;
+    box-shadow: 0 0 15px #dddddd inset;
+    min-width:700px;
 }
 
 #right-pane {
-    padding:20px;
-    width: 350px;
+    padding: 20px;
+    width: 180px;
     border-left: 1px solid #888888;
 }
 
@@ -53,12 +62,55 @@
 
 #tabs-pane {
     width: 250px;
-    padding:20px 20px 0 0;
+    padding: 20px;
+    box-sizing: border-box;
     border-left: 1px solid #888888;
     height: 100%;
 }
-/***********************/
-ul {
+
+#main-footer {
+    padding: 5px 20px;
+    border-top: 1px solid #888888;
+}
+
+#copyright {
+    font-size: 0.9em;
+    text-align: center;
+}
+
+#new-notebook-button {
+    background-image: url(../images/book.svg);
+}
+
+#new-entry-button {
+    background-image: url(../images/document-add.svg);
+}
+
+#start-test-button {
+    background-image: url(../images/tick.svg);
+}
+
+#new-page-button {
+    background-image: url(../images/document-text.svg);
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+#new-notebook-button {
+    margin-left: 15px;
+}
+
+#notebook-search {
+    background-image: url(../images/magnifier.svg);
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    width: 300px;
+    padding-left: 30px;
+    margin-left: 15px;
+}
+
+#header-tools {
     padding: 0;
     margin: 0;
 }
@@ -68,8 +120,9 @@ a {
     text-decoration: none;
 }
 
-#page-header h1 {
+#title-container h1 {
     margin: 0;
+    display: inline-block;
 }
 
 #header-tools li {
@@ -89,4 +142,30 @@ a {
 
 #account-link .lingua-icon-link {
     background-image: url(../images/cog.svg);
+    background-position: right 10px center;
+    padding-right: 40px;
+}
+
+#notebook-tabs {
+    margin: 0;
+    margin-left: -20px;
+    padding: 0;
+}
+
+#notebook-tabs li {
+    list-style-type: none;
+    margin-bottom: 4px;
+    background-color: white;
+}
+
+#notebook-tabs a {
+    display: block;
+    padding: 6px 10px;
+    border: solid #888888;
+    border-width: 1px 1px 1px 0;
+    border-radius: 0 5px 5px 0;
+}
+
+#notebook-tabs a:hover,#notebook-tabs .selected a {
+    background-color: #e9e9e9;
 }

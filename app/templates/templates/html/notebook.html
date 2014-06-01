@@ -14,13 +14,13 @@
     <div id="page-container" class="lingua-component">
         <header id="main-header">
             <div class="inner">
-                <div id="notebooks-tools">
-                    <select id="notebook-selector">
-                        <option value="spanish">Spanish</option>
-                    </select>
+                <div id="title-container">
+                    <h1>LinguaLearna.com</h1>
                     <button class="lingua-action-button-icon" id="new-notebook-button">New notebook</button>
                 </div>
-                <h1>LinguaLearna.com</h1>
+                <select id="notebook-selector">
+                    <option value="spanish">Spanish & English</option>
+                </select>
                 <ul id="header-tools">
                     <li><a href="#">Resources</a></li>
                     <li id="account-link"><a href="#" class="lingua-icon-link">Oliver Loftus</a></li>
@@ -34,11 +34,11 @@
                     <div class="inner">
                         <header id="notebook-header">
                             <div class="inner">
-                                <h2 id="notebook-title">Spanish & English</h2>
+                                <h2 id="notebook-title">Spanish & English <span class="title-sub-info">(Spanish &#8660; English)</span></h2>
                                 <div id="notebook-tools">
-                                    <input type="text" value="Search/lookup" id="notebook-search" />
                                     <button class="lingua-action-button-icon" id="new-entry-button">Add entry</button>
                                     <button class="lingua-action-button-icon" id="start-test-button">Knowledge test</button>
+                                    <input type="text" value="Search/lookup" id="notebook-search" />
                                 </div>
                             </div>
                         </header>
@@ -48,9 +48,10 @@
                                     <div id="notebook-content">Notebook</div>
                                 </div>
                                 <div id="tabs-pane">
+                                    <button class="lingua-action-button-icon" id="new-page-button">New page</button>
                                     <ul id="notebook-tabs">
                                         <li><a href="#">Verbs</a></li>
-                                        <li><a href="#">Tricky vocab</a></li>
+                                        <li class="selected"><a href="#">Tricky vocab</a></li>
                                         <li><a href="#">Grammar things</a></li>
                                         <li><a href="#">Expressions</a></li>
                                     </ul>
@@ -59,9 +60,15 @@
                         </div>
                     </div>
                 </div>
-                <div id="right-pane">Advert</div>
+                <div id="right-pane">
+                    <img src="../images/notebook-ad-example.png" alt="Advert" />
+                </div>
             </div>
         </div>
+        
+        <footer id="main-footer">
+            <div id="copyright">Copyright LinguaLearna Ltd</div>
+        </footer>
     </div>
 
 </body>
