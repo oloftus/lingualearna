@@ -95,7 +95,7 @@ body {
     width:24px;height:24px;
     position: absolute;
     right: 0;
-    background-image: url(../images/close.svg) !important;
+    background-image: url(../images/times.svg) !important;
     margin: -20px -20px 0 0 !important;
 }
 
