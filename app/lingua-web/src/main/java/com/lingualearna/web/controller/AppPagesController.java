@@ -17,4 +17,10 @@ public class AppPagesController {
 
         return "loginSuccess";
     }
+
+    @RequestMapping("/notebook")
+    public String noteboookPage() throws Exception {
+
+        return "notebook";
+    }
 }
