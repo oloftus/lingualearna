@@ -14,33 +14,33 @@
         }, {
             stateName : AppStates.NOTEBOOK_MAIN,
             views : [ {
-                viewUrl : "/binderView"
+                viewUrl : "/binderPanelView"
             } ],
             controllers : [ "/controller/binderController" ]
         }, {
             stateName : AppStates.ADD_NOTE,
             views : [ {
                 viewName : Views.MODAL_DIALOG,
-                viewUrl : "/addNoteView"
+                viewUrl : "/addNoteDialogView"
             } ],
             controllers : [ "/controller/addNoteController" ]
         }, {
             stateName : AppStates.TRANSLATE,
             views : [ {
                 viewName : Views.MODAL_DIALOG,
-                viewUrl : "/translateView"
+                viewUrl : "/translateDialogView"
             } ],
             controllers : [ "/controller/translateController" ]
         }, {
             stateName : AppStates.LOGIN,
             views : [ {
                 viewName : Views.MODAL_DIALOG,
-                viewUrl : "/loginView"
+                viewUrl : "/loginDialogView"
             } ],
             controllers : [ "/controller/loginController" ]
         } ];
 
-        var additionalViews = [ "/abstractNoteView", "/notebookHeaderView" ];
+        var additionalViews = [ "/abstractNoteDialogView", "/notebookHeaderView" ];
         var additionalWhitelistUrls = [ Properties.pagesRoot + "/login" ];
 
         var viewsAndControllers = function(views, controllers) {

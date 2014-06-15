@@ -1,10 +1,10 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractRootController",
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractMiniAppController",
             "util/textSelector", "service/jsonWebService", "util/messageHandler", "util/commsPipe",
             "service/notebookService" ];
 
-    define(dependencies, function(linguaApp, ngRegistrationHelper, abstractRootController, textSelector) {
+    define(dependencies, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, textSelector) {
 
         var setupNotebookEnvironment = function($scope, notebookService, commsPipe, messageHandler) {
 
@@ -74,7 +74,7 @@
         var ReaderController = function($scope, $state, jsonWebService, $timeout, messageHandler, notebookService,
                 commsPipe) {
 
-            _.extend(this, abstractRootController);
+            _.extend(this, abstractMiniAppController);
             this.setMainState(AppStates.READER_MAIN);
             this.setupGlobalScope($scope, $state);
             this.setupPageMessages($scope, messageHandler, $timeout);
