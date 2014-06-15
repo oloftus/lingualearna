@@ -6,7 +6,7 @@
 
     define(dependencies, function(linguaApp, abstractController, textSelector, ngRegistrationHelper, _) {
 
-        var subscribeToCurrentNotebookChangedEvents = function(commsPipe, $scope) {
+        var addNotebookChangedHandler = function(commsPipe, $scope) {
 
             $scope.func.currentNotebookChanged = function() {
                 commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
@@ -18,7 +18,7 @@
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
             
-            subscribeToCurrentNotebookChangedEvents(commsPipe, $scope);
+            addNotebookChangedHandler(commsPipe, $scope);
         };
 
         ngRegistrationHelper(linguaApp).registerController("readerBarController",

@@ -1,7 +1,7 @@
 (function() {
 
     var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractMiniAppController",
-            "util/textSelector", "service/jsonWebService", "util/messageHandler", "util/commsPipe",
+            "util/textSelector", "controller/readerBarController", "service/jsonWebService", "util/messageHandler", "util/commsPipe",
             "service/notebookService" ];
 
     define(dependencies, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, textSelector) {
