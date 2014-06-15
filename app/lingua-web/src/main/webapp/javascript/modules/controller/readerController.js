@@ -1,110 +1,10 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "util/textSelector", "service/jsonWebService", "util/messageHandler",
-             "util/commsPipe", "service/notebookService"];
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractRootController",
+            "util/textSelector", "service/jsonWebService", "util/messageHandler", "util/commsPipe",
+            "service/notebookService" ];
 
-    define(dependencies, function(linguaApp, ngRegistrationHelper, textSelector) {
-
-        var linguaReaderName = "lingua-reader";
-        var dialogName = "lingua-main-dialog";
-        var overlayName = "lingua-overlay";
-        var closeButtonName = "lingua-dialog-close-main";
-
-        var setupSpecialDialogs = function($scope) {
-
-            $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
-
-                $overlay = $("#" + overlayName);
-                $closeButton = $("#" + closeButtonName);
-                $linguaReader = $("#" + linguaReaderName);
-                var $dialog = $("#" + dialogName);
-
-                if (toState.name === AppStates.LOGIN) {
-                    
-                    if ($overlay.length == 0) {
-                        $dialog.before("<div id='" + overlayName + "'></div>");
-                    }
-                    $closeButton.hide();
-                    $linguaReader.css({
-                        "height" : "100%"
-                    });
-                }
-                else {
-                    
-                    $overlay.remove();
-                    $closeButton.show();
-                    $linguaReader.css({
-                        "height" : "auto"
-                    });
-                }
-            });
-        };
-
-        var getCsrfToken = function(jsonWebService) {
-
-            jsonWebService.getCsrfToken();
-        };
-        
-        var makeDialogsDraggable = function() {
-            
-            var $dialog = $("#" + dialogName);
-
-            $dialog.draggable({
-                handle : ".lingua-dialog-header",
-                containment : "document",
-                scroll : false
-            });
-        };
-        
-        var enableDialogToggle = function($scope) {
-            
-            var $dialog = $("#" + dialogName);
-
-            $scope.$on("$viewContentLoaded", function() {
-
-                var $window = $(window);
-                var leftOffset = (($window.width() - $dialog.outerWidth()) / 2) + $window.scrollLeft();
-
-                $dialog.find(".lingua-dialog-view:empty").parent().hide();
-                $dialog.find(".lingua-dialog-view:not(:empty)").parent().show();
-                $dialog.css({
-                    "left" : leftOffset + "px",
-                    "top" : "70px"
-                });
-            });
-        };
-
-        var setupDialogs = function($scope) {
-
-            makeDialogsDraggable();
-            enableDialogToggle($scope);
-        };
-        
-        var setupGlobalScope = function($scope) {
-            
-            $scope.global = {};
-            $scope.global.model = {};
-            $scope.global.func = {};
-            
-            $scope.global.model.pageMessages = [];
-            $scope.global.properties = Properties;
-        };
-
-        var setupPageMessages = function($scope, messageHandler, $timeout) {
-            
-            var pageMessageTimeout = null;
-            $scope.$watchCollection("global.model.pageMessages", function(newMessages, oldMessages) {
-                
-                if (newMessages.length > oldMessages.length) {
-                    if (!_.isNull(pageMessageTimeout)) {
-                        $timeout.cancel(pageMessageTimeout);
-                    }
-                    pageMessageTimeout = $timeout(function() {
-                        messageHandler.clearPageMessages($scope);
-                    }, Properties.pageMessagesTimeout);
-                }
-            });
-        };
+    define(dependencies, function(linguaApp, ngRegistrationHelper, abstractRootController, textSelector) {
 
         var setupNotebookEnvironment = function($scope, notebookService, commsPipe, messageHandler) {
 
@@ -130,7 +30,8 @@
                 commsPipe.send(Components.READER, Components.ANY, Signals.CurrentNotebookChanged);
 
             }, function() {
-                messageHandler.addFreshPageMessage($scope, LocalStrings.genericServerErrorMessage, MessageSeverity.ERROR);
+                messageHandler.addFreshPageMessage($scope, LocalStrings.genericServerErrorMessage,
+                        MessageSeverity.ERROR);
             });
         };
 
@@ -166,22 +67,32 @@
             });
         };
 
-        var ReaderController = function($scope, $state, jsonWebService, $timeout, messageHandler, notebookService, commsPipe) {
+        var getCsrfAndTriggerLogin = function(jsonWebService) {
 
-            setupGlobalScope($scope);
-            setupPageMessages($scope, messageHandler, $timeout);
-            setupDialogs($scope);
-            setupSpecialDialogs($scope);
-            getCsrfToken(jsonWebService, $scope);
+            jsonWebService.getCsrfToken();
+        };
+        
+        var ReaderController = function($scope, $state, jsonWebService, $timeout, messageHandler, notebookService,
+                commsPipe) {
+
+            _.extend(this, abstractRootController);
+            this.setMainState(AppStates.READER_MAIN);
+            this.setupGlobalScope($scope, $state);
+            this.setupPageMessages($scope, messageHandler, $timeout);
+            this.setupDialogs($scope);
+            this.setupSpecialDialogs($scope);
             
+            getCsrfAndTriggerLogin(jsonWebService, $scope);
             setupClickToTranslate(commsPipe, $state, $scope);
             setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
             subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
-            
-            $state.go(AppStates.MAIN);
+
+            $state.go(AppStates.READER_MAIN);
         };
 
-        ngRegistrationHelper(linguaApp).registerController("readerController",
-                [ "$scope", "$state", "jsonWebService", "$timeout", "messageHandler", "notebookService", "commsPipe", ReaderController ]);
+        ngRegistrationHelper(linguaApp).registerController(
+                "readerController",
+                [ "$scope", "$state", "jsonWebService", "$timeout", "messageHandler", "notebookService", "commsPipe",
+                        ReaderController ]);
     });
 })();

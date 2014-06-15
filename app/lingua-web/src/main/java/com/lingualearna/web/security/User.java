@@ -15,7 +15,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 
 import com.lingualearna.web.notes.Page;
@@ -65,7 +64,7 @@ public class User implements Serializable {
         return this.userId;
     }
 
-    @Email
+    // @Email
     @Column(name = "email_address")
     public String getUsername() {
 

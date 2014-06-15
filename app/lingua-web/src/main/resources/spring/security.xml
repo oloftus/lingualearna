@@ -8,6 +8,7 @@
 
 	<http auto-config="true" entry-point-ref="deniedEntryPoint">
 		<intercept-url pattern="/app/login" access="ROLE_ANONYMOUS,ROLE_USER" />
+		<intercept-url pattern="/app/notebook" access="ROLE_ANONYMOUS,ROLE_USER" />
 		<intercept-url pattern="/app/**" access="ROLE_USER" />
 		<form-login login-page="/app/login" authentication-failure-url="/app/login?loginFailed=true"
 			default-target-url="/app/loginSuccess" always-use-default-target="true" />

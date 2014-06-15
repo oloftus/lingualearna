@@ -1,6 +1,6 @@
 (function() {
 
-    var dependencies = [ "linguaApp" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore" ];
 
     define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
@@ -8,8 +8,6 @@
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
-
-            // TODO
         };
 
         ngRegistrationHelper(linguaApp).registerController("headerController", [ "$scope", HeaderController ]);

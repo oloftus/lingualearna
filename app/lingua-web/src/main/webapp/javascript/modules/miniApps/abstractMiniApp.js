@@ -10,31 +10,37 @@
         var whitelist = [];
 
         var routingTable = [ {
-            stateName : AppStates.MAIN
+            stateName : AppStates.READER_MAIN
+        }, {
+            stateName : AppStates.NOTEBOOK_MAIN,
+            views : [ {
+                viewUrl : "/binderView"
+            } ],
+            controllers : [ "/controller/binderController" ]
         }, {
             stateName : AppStates.ADD_NOTE,
             views : [ {
-                viewName : Views.MAIN,
+                viewName : Views.MODAL_DIALOG,
                 viewUrl : "/addNoteView"
             } ],
             controllers : [ "/controller/addNoteController" ]
         }, {
             stateName : AppStates.TRANSLATE,
             views : [ {
-                viewName : Views.MAIN,
+                viewName : Views.MODAL_DIALOG,
                 viewUrl : "/translateView"
             } ],
             controllers : [ "/controller/translateController" ]
         }, {
             stateName : AppStates.LOGIN,
             views : [ {
-                viewName : Views.MAIN,
+                viewName : Views.MODAL_DIALOG,
                 viewUrl : "/loginView"
             } ],
             controllers : [ "/controller/loginController" ]
         } ];
 
-        var additionalViews = [ "/abstractNoteView" ];
+        var additionalViews = [ "/abstractNoteView", "/notebookHeaderView" ];
         var additionalWhitelistUrls = [ Properties.pagesRoot + "/login" ];
 
         var viewsAndControllers = function(views, controllers) {
@@ -44,6 +50,9 @@
 
             var absoluteViews = {};
             _.each(views, function(view) {
+                if (_.isUndefined(view.viewName)) {
+                    view.viewName = Views.MAIN;
+                }
                 absoluteViews[view.viewName] = {
                     templateUrl : Properties.ngViewsRoot + view.viewUrl + VIEW_EXTENSION
                 };

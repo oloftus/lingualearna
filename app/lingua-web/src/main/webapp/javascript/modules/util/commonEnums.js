@@ -26,15 +26,17 @@
             ADD_NOTE : "ADD_NOTE"
         };
         
-        AppStates = {
-            MAIN : "MAIN",
-            ADD_NOTE : "ADD_NOTE",
-            TRANSLATE : "TRANSLATE",
-            LOGIN : "LOGIN"
+        Views = {
+            MAIN : "",
+            MODAL_DIALOG : "MODAL_DIALOG"
         };
         
-        Views = {
-            MAIN : ""
+        AppStates = {
+            READER_MAIN : "READER_MAIN",
+            NOTEBOOK_MAIN : "NOTEBOOK_MAIN",
+            ADD_NOTE : "ADD_NOTE",
+            TRANSLATE : "TRANSLATE",
+            LOGIN : "LOGIN",
         };
         
         Components = {

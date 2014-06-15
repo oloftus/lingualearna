@@ -6,35 +6,33 @@
 <head>
 <meta charset="UTF8" />
 <title>LinguaLearna - Notebook</title>
+
 <script type="text/javascript">
-var Properties;
+    var Properties;
+    
+    var csrfSecret = "${_csrf.token}";
+    var appEntrypoint = "${pageContext.request.contextPath}/javascript/modules/miniApps/notebook.js";
+    
+    setTimeout(function() {
+        require([ appEntrypoint ]);
+    }, 100);
 </script>
+
 <link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/notebook.css" rel="stylesheet" type="text/css">
 <script src="${pageContext.request.contextPath}/javascript/lib/require-2.1.11.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/modules/config/requireConfig.js" type="text/javascript"></script>
-<script src="${pageContext.request.contextPath}/javascript/modules/miniApps/notebook.js" type="text/javascript"></script>
 </head>
 <body>
 
-    <div id="page-container" class="lingua-component">
+    <div id="page-container" class="lingua-component" ng-controller="notebookController">
+        <div class="lingua-draggable-dialog" id="lingua-main-dialog">
+            <button class="lingua-icon-button lingua-dialog-close" id="lingua-dialog-close-main" ui-sref="NOTEBOOK_MAIN">Close</button>
+            <div class="lingua-dialog-view" ui-view="MODAL_DIALOG"></div>
+        </div>
         <div id="left-pane">
             <div class="inner">
-                <header id="main-header" ng-controller="headerController">
-                    <div class="inner">
-                        <div id="title-container">
-                            <h1>LinguaLearna.com</h1>
-                            <button class="lingua-action-button-icon" id="new-notebook-button">New notebook</button>
-                        </div>
-                        <select id="notebook-selector">
-                            <option value="spanish">Spanish & English</option>
-                        </select>
-                        <ul id="header-tools">
-                            <li><a href="#">Resources</a></li>
-                            <li id="account-link"><a href="#" class="lingua-icon-link">Oliver Loftus</a></li>
-                        </ul>
-                    </div>
-                </header>
+                <div ng-include="global.properties.ngViewsRoot + '/notebookHeaderView.html'" class="lingua-ng-include"></div>
                 <div id="lingua-main-view" ui-view></div>
             </div>
         </div>

@@ -17,6 +17,7 @@
             Properties.csrfTokenApiUrl = apiRoot + "/security/csrfToken";
             Properties.notebookServiceUrl = apiRoot + "/notebook";
             Properties.notesPagesServiceUrl = notebookServiceUrl + "/notebooksPages";
+            Properties.pingServiceUrl = apiRoot + "/ping";
             
             Properties.csrfSecret = csrfSecret;   
             Properties.pageMessagesTimeout = 4000; // Milliseconds

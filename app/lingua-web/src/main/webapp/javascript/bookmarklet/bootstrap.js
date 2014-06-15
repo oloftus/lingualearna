@@ -9,7 +9,7 @@
 
     var cssFiles = [ "/common.css", "/reader.css" ];
     var scriptFiles = [ libRoot + "/require-2.1.11.js", moduleRoot + "/config/requireConfig.js" ];
-    var ngIncludeFile = viewRoot + "/reader.html";
+    var ngIncludeFile = viewRoot + "/readerView.html";
     var readerJsFile = moduleRoot + "/miniApps/reader.js";
 
     var ngIncludeClass = "lingua-ng-include";

@@ -39,10 +39,11 @@
                     }
                     else {
                         commsPipe.subscribe(Components.JSON_WEB_SERVICE, Components.ANY, function() {
-                            $state.go(AppStates.MAIN);
                             callIfNotUndefinedOrNull(completedCallback, this);
                         }, null, Signals.CsrfRetrieved);
                     }
+                    
+                    $state.go(AppStates.MAIN);
                 }, null, Signals.LoginSuccess);
                 
                 $state.go(AppStates.LOGIN);
