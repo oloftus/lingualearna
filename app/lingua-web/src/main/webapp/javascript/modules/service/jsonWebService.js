@@ -8,37 +8,42 @@
 
         var JsonWebService = function($http, commsPipe, $state) {
 
-            var callIfNotUndefined = function(callback, thisArg, args) {
+            var callIfNotUndefinedOrNull = function(callback, thisArg, args) {
 
-                if (!_.isUndefined(callback)) {
+                if (!_.isUndefined(callback) && !_.isNull(callback)) {
                     callback.apply(thisArg, args);
                 }
             };
             
-            var createCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
+            var getCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
                 
-                return apiUrl + "/" + csrfSecret;
+                return Properties.csrfTokenApiUrl + "/" + Properties.csrfSecret;
             };
 
-            var getCsrfToken = function(successCallback) {
+            var getCsrfToken = function() {
 
-                execute(createCsrfTokenApiUrl(Properties.csrfTokenApiUrl, Properties.csrfSecret), HttpMethod.GET, null, function(data) {
+                var successCallback = function(data) {
                     linguaApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
-                    callIfNotUndefined(successCallback, this);
-                });
+                    commsPipe.send(Components.JSON_WEB_SERVICE, Components.ANY, Signals.CsrfRetrieved);
+                };
+
+                var csrfTokenApiUrl = getCsrfTokenApiUrl();
+                execute(csrfTokenApiUrl, HttpMethod.GET, null, successCallback, null, true);
             };
 
-            var goToLogin = function($state, commsPipe, completedCallback) {
+            var goToLogin = function($state, commsPipe, isGetCsrfRequest, completedCallback) {
 
                 commsPipe.subscribe(Components.LOGIN, Components.ANY, function(message) {
-                    
-                    if (message === Signals.LoginSuccess) {
-                        getCsrfToken(function() {
-                            $state.go(AppStates.MAIN);
-                            callIfNotUndefined(completedCallback, this);
-                        });
+                    if (isGetCsrfRequest) {
+                        getCsrfToken();
                     }
-                });
+                    else {
+                        commsPipe.subscribe(Components.JSON_WEB_SERVICE, Components.ANY, function() {
+                            $state.go(AppStates.MAIN);
+                            callIfNotUndefinedOrNull(completedCallback, this);
+                        }, null, Signals.CsrfRetrieved);
+                    }
+                }, null, Signals.LoginSuccess);
                 
                 $state.go(AppStates.LOGIN);
             };
@@ -52,21 +57,23 @@
                 
                 var successHandler = function(data, status, headers, config) {
 
-                    callIfNotUndefined(successCallback, this, [ data, status, headers, config ]);
+                    callIfNotUndefinedOrNull(successCallback, this, [ data, status, headers, config ]);
                 };
 
                 var errorHandler = function(data, status, headers, config) {
 
                     if (status === HttpHeaders.FORBIDDEN) {
+                        var isGetCsrfRequest = serviceUrl === getCsrfTokenApiUrl();
+                        
                         if (retryOnAuthentication) {
-                            goToLogin($state, commsPipe, reExecute);
+                            goToLogin($state, commsPipe, isGetCsrfRequest, reExecute);
                         }
                         else {
-                            goToLogin($state, commsPipe);
+                            goToLogin($state, commsPipe, isGetCsrfRequest);
                         }
                     }
                     else {
-                        callIfNotUndefined(failureCallback, this, [ data, status, headers, config ]);
+                        callIfNotUndefinedOrNull(failureCallback, this, [ data, status, headers, config ]);
                     }
                 };
 

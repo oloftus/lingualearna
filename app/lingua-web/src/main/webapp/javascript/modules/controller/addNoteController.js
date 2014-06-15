@@ -37,12 +37,9 @@
         var subscribeToAddNoteRequests = function(commsPipe, $scope, languageNamesService) {
 
             commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, function(note, subject) {
-
-                if (subject === Subjects.Note) {
-                    populateModelFromNote($scope, note);
-                    setLanguageTitles($scope, languageNamesService);
-                }
-            });
+                populateModelFromNote($scope, note);
+                setLanguageTitles($scope, languageNamesService);
+            }, Subjects.Note);
         };
 
         var addSubmitButtonHandler = function(commsPipe, $scope, noteService, messageHandler, $timeout, $state) {
@@ -90,23 +87,17 @@
 
         var subscribeToCurrentNotebookChangedEvents = function($scope, commsPipe) {
 
-            commsPipe.subscribe(Components.READER, Components.ANY, function(message) {
-                if (message === Signals.CurrentNotebookChanged) {
+            commsPipe.subscribe(Components.READER, Components.ANY, function() {
+                var newPagesContainsOldCurrent = 
+                    _.some($scope.global.model.currentNotebook.pages, function(newPage) {
+                        var oldCurrentPage = $scope.model.page;
+                        return newPage.pageId === oldCurrentPage.pageId && newPage.name === oldCurrentPage.name;
+                    });
 
-                    var newPagesContainsOldCurrent = _
-                            .some($scope.global.model.currentNotebook.pages,
-                                    function(newPage) {
-
-                                        var oldCurrentPage = $scope.model.page;
-                                        return newPage.pageId === oldCurrentPage.pageId
-                                                && newPage.name === oldCurrentPage.name;
-                                    });
-
-                    if (!newPagesContainsOldCurrent) {
-                        $scope.model.page = null;
-                    }
+                if (!newPagesContainsOldCurrent) {
+                    $scope.model.page = null;
                 }
-            });
+            }, null, Signals.CurrentNotebookChanged);
         };
 
         var AddNoteController = function($scope, $location, noteService, languageNamesService, messageHandler,

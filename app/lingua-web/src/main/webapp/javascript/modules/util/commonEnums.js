@@ -43,7 +43,8 @@
             TRANSLATE : "TRANSLATE",
             ADD_NOTE : "ADD_NOTE",
             LOGIN : "LOGIN",
-            PAGE : "PAGE"
+            PAGE : "PAGE",
+            JSON_WEB_SERVICE : "JSON_WEB_SERVICE"
         };
         
         TranslationSources = {

@@ -40,7 +40,7 @@
             });
         };
 
-        var triggerLogin = function(jsonWebService) {
+        var getCsrfToken = function(jsonWebService) {
 
             jsonWebService.getCsrfToken();
         };
@@ -136,11 +136,9 @@
 
         var subscribeToNoteSubmissions = function(commsPipe, $scope, notebookService, messageHandler) {
 
-            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, function(message) {
-                if (message === Signals.NoteSubmittedSuccess) {
-                    setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
-                }
-            });
+            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, function() {
+                setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
+            }, null, Signals.NoteSubmittedSuccess);
         };
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
@@ -174,7 +172,7 @@
             setupPageMessages($scope, messageHandler, $timeout);
             setupDialogs($scope);
             setupSpecialDialogs($scope);
-            triggerLogin(jsonWebService, $scope);
+            getCsrfToken(jsonWebService, $scope);
             
             setupClickToTranslate(commsPipe, $state, $scope);
             setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);

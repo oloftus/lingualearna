@@ -60,12 +60,9 @@
         var subscribeToTranslationRequests = function(commsPipe, $scope, languageNamesService) {
             
             commsPipe.subscribe(Components.ANY, Components.TRANSLATE, function(translationRequest, subject) {
-
-                if (subject === Subjects.TranslationRequest) {
-                    populateModelFromTranslationRequest($scope, translationRequest);
-                    setLanguagesTitles($scope, languageNamesService);
-                }
-            });
+                populateModelFromTranslationRequest($scope, translationRequest);
+                setLanguagesTitles($scope, languageNamesService);
+            }, Subjects.TranslationRequest);
         };
 
         var TranslateController = function($scope, translateService, languageNamesService, commsPipe, $location,
