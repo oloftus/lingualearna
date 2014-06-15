@@ -55,7 +55,7 @@
                 return acceptor;
             };
 
-            var send = function(senderName, receiverName, message, subject) {
+            var send = function(senderName, receiverName, subject, message) {
 
                 if (!_.isUndefined(subscribers[receiverName])
                         && !_.isUndefined(subscribers[receiverName][senderName])) {

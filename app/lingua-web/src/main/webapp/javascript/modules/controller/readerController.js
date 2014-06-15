@@ -27,7 +27,7 @@
                     return done;
                 });
 
-                commsPipe.send(Components.READER, Components.ANY, Signals.CurrentNotebookChanged);
+                commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
 
             }, function() {
                 messageHandler.addFreshPageMessage($scope, LocalStrings.genericServerErrorMessage,
@@ -39,7 +39,7 @@
 
             commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, function() {
                 setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
-            }, null, Signals.NoteSubmittedSuccess);
+            }, Signals.NoteSubmittedSuccess);
         };
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
@@ -52,8 +52,7 @@
 
                 $state.go(AppStates.TRANSLATE).then(
                         function() {
-                            commsPipe.send(Components.READER, Components.TRANSLATE, translationRequest,
-                                    Subjects.TranslationRequest);
+                            commsPipe.send(Components.READER, Components.TRANSLATE, Subjects.TRANSLATION_REQUEST, translationRequest);
                         });
 
                 textSelector.clearSelected();

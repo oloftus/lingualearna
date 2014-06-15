@@ -39,7 +39,7 @@
             commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, function(note, subject) {
                 populateModelFromNote($scope, note);
                 setLanguageTitles($scope, languageNamesService);
-            }, Subjects.Note);
+            }, Subjects.NOTE);
         };
 
         var addSubmitButtonHandler = function(commsPipe, $scope, noteService, messageHandler, $timeout, $state) {
@@ -97,7 +97,7 @@
                 if (!newPagesContainsOldCurrent) {
                     $scope.model.page = null;
                 }
-            }, null, Signals.CurrentNotebookChanged);
+            }, Signals.CURRENT_NOTEBOOK_CHANGED);
         };
 
         var AddNoteController = function($scope, $location, noteService, languageNamesService, messageHandler,

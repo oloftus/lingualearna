@@ -5,10 +5,9 @@
     define(dependencies, function(linguaApp) {
 
         Signals = {
-            LoginSuccess : "lingua-login-success",
-            NoteSubmittedSuccessSignal : "note-submitted-success",
-            CurrentNotebookChanged : "current-notebook-changed",
-            CsrfRetrieved : "csrf-retrieved"
+            LOGIN_SUCCESS : "login-success",
+            CURRENT_NOTEBOOK_CHANGED : "current-notebook-changed",
+            CSRF_RETRIEVED : "csrf-retrieved"
         };
     });
 })();

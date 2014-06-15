@@ -52,7 +52,7 @@
                         $scope.model.includedInTest);
 
                 $state.go(AppStates.ADD_NOTE).then(function() {
-                    commsPipe.send(Components.TRANSLATE, Components.ADD_NOTE, message, Subjects.Note);
+                    commsPipe.send(Components.TRANSLATE, Components.ADD_NOTE, Subjects.NOTE, message);
                 });
             };
         };
@@ -62,7 +62,7 @@
             commsPipe.subscribe(Components.ANY, Components.TRANSLATE, function(translationRequest, subject) {
                 populateModelFromTranslationRequest($scope, translationRequest);
                 setLanguagesTitles($scope, languageNamesService);
-            }, Subjects.TranslationRequest);
+            }, Subjects.TRANSLATION_REQUEST);
         };
 
         var TranslateController = function($scope, translateService, languageNamesService, commsPipe, $location,

@@ -9,7 +9,7 @@
         var subscribeToCurrentNotebookChangedEvents = function(commsPipe, $scope) {
 
             $scope.func.currentNotebookChanged = function() {
-                commsPipe.send(Components.READER, Components.ANY, Signals.CurrentNotebookChanged);
+                commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
             };
         };
         

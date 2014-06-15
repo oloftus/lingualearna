@@ -24,7 +24,7 @@
 
                 var successCallback = function(data) {
                     linguaApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
-                    commsPipe.send(Components.JSON_WEB_SERVICE, Components.ANY, Signals.CsrfRetrieved);
+                    commsPipe.send(Components.JSON_WEB_SERVICE, Components.ANY, Signals.CSRF_RETRIEVED);
                 };
 
                 var csrfTokenApiUrl = getCsrfTokenApiUrl();
@@ -40,11 +40,11 @@
                     else {
                         commsPipe.subscribe(Components.JSON_WEB_SERVICE, Components.ANY, function() {
                             callIfNotUndefinedOrNull(completedCallback, this);
-                        }, null, Signals.CsrfRetrieved);
+                        }, Signals.CSRF_RETRIEVED);
                     }
                     
                     $state.go(AppStates.MAIN);
-                }, null, Signals.LoginSuccess);
+                }, Signals.LOGIN_SUCCESS);
                 
                 $state.go(AppStates.LOGIN);
             };

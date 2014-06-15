@@ -11,7 +11,7 @@
 <body>
 
     <script type="text/javascript">
-        var loginSuccessSignal = "lingua-login-success";
+        var loginSuccessSignal = "login-success";
         
         function signalIfLoaded() {
             if (!_.isUndefined(window.parentIFrame)) {
