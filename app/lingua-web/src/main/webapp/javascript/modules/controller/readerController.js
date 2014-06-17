@@ -1,10 +1,10 @@
 (function() {
 
     var imports = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractMiniAppController",
-            "util/textSelector", "underscore", "controller/readerBarController", "service/jsonWebService",
-            "util/messageHandler", "util/commsPipe", "service/notebookService" ];
+            "util/textSelector", "util/appStates", "underscore", "controller/readerBarController",
+            "service/jsonWebService", "util/messageHandler", "util/commsPipe", "service/notebookService" ];
 
-    define(imports, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, textSelector, _) {
+    define(imports, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, textSelector, appStates, _) {
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
 
@@ -40,7 +40,7 @@
                 commsPipe) {
 
             _.extend(this, abstractMiniAppController);
-            this.setMainState(AppStates.READER_MAIN);
+            appStates.setMainState(AppStates.READER_MAIN);
             this.setupGlobalScope($scope, $state);
             this.setupPageMessages($scope, messageHandler, $timeout);
             this.setupDialogs($scope);

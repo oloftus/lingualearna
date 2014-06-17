@@ -1,8 +1,8 @@
 (function() {
 
-    var imports = [ "linguaApp", "util/ngRegistrationHelper", "util/commsPipe" ];
+    var imports = [ "linguaApp", "util/ngRegistrationHelper", "util/appStates", "util/commsPipe" ];
 
-    define(imports, function(linguaApp, ngRegistrationHelper) {
+    define(imports, function(linguaApp, ngRegistrationHelper, appStates) {
 
         var CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
 
@@ -46,7 +46,7 @@
                     $state.go(AppStates.MAIN);
                 }, Signals.LOGIN_SUCCESS);
                 
-                $state.go(AppStates.LOGIN);
+                $state.go("."+AppStates.LOGIN);
             };
 
             var execute = function(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback, retryOnAuthentication) {

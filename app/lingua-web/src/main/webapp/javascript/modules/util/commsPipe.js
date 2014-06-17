@@ -42,7 +42,7 @@
                 if (_.isUndefined(acceptorOrSignal) || _.isNull(acceptorOrSignal)) {
                     return acceptor;
                 }
-                else if (typeof acceptorOrSignal == "function") {
+                else if (_.isFunction(acceptorOrSignal)) {
                     acceptor = acceptorOrSignal;
                 }
                 else {

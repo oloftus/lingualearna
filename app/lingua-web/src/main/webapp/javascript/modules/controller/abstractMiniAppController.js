@@ -110,7 +110,7 @@
             enableDialogToggle($scope);
         };
 
-        var setupGlobalScope = function($scope, $state) {
+        var setupGlobalScope = function($scope) {
             
             $scope.global = {};
             $scope.global.model = {};
@@ -120,11 +120,6 @@
             $scope.global.properties = Properties;
         };
         
-        var setMainState = function(stateName) {
-            
-            AppStates.MAIN = stateName;
-        };
-
         var setupPageMessages = function($scope, messageHandler, $timeout) {
             
             var pageMessageTimeout = null;
@@ -146,7 +141,6 @@
             setupDialogs : setupDialogs,
             setupPageMessages : setupPageMessages,
             setupGlobalScope : setupGlobalScope,
-            setMainState : setMainState,
             setupNotebookEnvironment : setupNotebookEnvironment, 
             subscribeToNoteSubmissions : subscribeToNoteSubmissions
         };

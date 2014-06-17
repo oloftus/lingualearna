@@ -5,7 +5,7 @@
 
     define(imports, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
-        var NotebookHeaderController = function($scope, commsPipe) {
+        var NotebookHeaderController = function($scope, commsPipe, $state) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
@@ -13,6 +13,6 @@
         };
 
         ngRegistrationHelper(linguaApp).registerController("notebookHeaderController",
-                [ "$scope", "commsPipe", NotebookHeaderController ]);
+                [ "$scope", "commsPipe", "$state", NotebookHeaderController ]);
     });
 })();
