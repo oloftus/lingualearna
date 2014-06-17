@@ -1,15 +1,15 @@
-<header id="main-header" ng-controller="headerController">
+<header id="main-header" ng-controller="notebookHeaderController">
     <div class="inner">
         <div id="title-container">
             <h1>LinguaLearna.com</h1>
             <button class="lingua-action-button-icon" id="new-notebook-button">New notebook</button>
         </div>
-        <select id="notebook-selector">
-            <option value="spanish">Spanish & English</option>
-        </select>
+        <select ng-model="global.model.currentNotebook"
+            ng-options="notebook.name for notebook in global.model.notebooks track by notebook.notebookId"
+            ng-change="func.currentNotebookChanged()"></select>
         <ul id="header-tools">
             <li><a href="#">Resources</a></li>
-            <li id="account-link"><a href="#" class="lingua-icon-link">Oliver Loftus</a></li>
+            <li id="account-link"><a ui-sref="NOTEBOOK_MAIN.SETTINGS" class="lingua-icon-link">Oliver Loftus</a></li>
         </ul>
     </div>
 </header>

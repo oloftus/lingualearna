@@ -1,8 +1,7 @@
 (function() {
 
     var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
-            "localization/stringsDefault", "service/languageNamesService", "service/noteService",
-            "util/messageHandler", "util/commsPipe" ];
+            "service/languageNamesService", "service/noteService", "util/messageHandler", "util/commsPipe" ];
 
     define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
@@ -88,11 +87,10 @@
         var subscribeToCurrentNotebookChangedEvents = function($scope, commsPipe) {
 
             commsPipe.subscribe(Components.READER, Components.ANY, function() {
-                var newPagesContainsOldCurrent = 
-                    _.some($scope.global.model.currentNotebook.pages, function(newPage) {
-                        var oldCurrentPage = $scope.model.page;
-                        return newPage.pageId === oldCurrentPage.pageId && newPage.name === oldCurrentPage.name;
-                    });
+                var newPagesContainsOldCurrent = _.some($scope.global.model.currentNotebook.pages, function(newPage) {
+                    var oldCurrentPage = $scope.model.page;
+                    return newPage.pageId === oldCurrentPage.pageId && newPage.name === oldCurrentPage.name;
+                });
 
                 if (!newPagesContainsOldCurrent) {
                     $scope.model.page = null;

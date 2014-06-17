@@ -1,15 +1,18 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
+            "util/commsPipe" ];
 
     define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
-        var HeaderController = function($scope) {
+        var NotebookHeaderController = function($scope, commsPipe) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
+            this.addNotebookChangedHandler(commsPipe, $scope);
         };
 
-        ngRegistrationHelper(linguaApp).registerController("headerController", [ "$scope", HeaderController ]);
+        ngRegistrationHelper(linguaApp).registerController("notebookHeaderController",
+                [ "$scope", "commsPipe", NotebookHeaderController ]);
     });
 })();

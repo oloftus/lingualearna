@@ -9,6 +9,42 @@
         var overlayName = "lingua-overlay";
         var closeButtonName = "lingua-dialog-close-main";
 
+        var setupNotebookEnvironment = function($scope, notebookService, commsPipe, messageHandler) {
+
+            notebookService.getNotebooksAndPages(function(notebooks) {
+
+                $scope.global.model.notebooks = notebooks;
+
+                var done = false;
+                _.some(notebooks, function(notebook) {
+                    _.some(notebook.pages, function(page) {
+
+                        if (page.lastUsed) {
+                            $scope.global.model.currentNotebook = notebook;
+                            $scope.global.model.currentPage = page;
+                            done = true;
+                        }
+
+                        return done;
+                    });
+                    return done;
+                });
+
+                commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
+
+            }, function() {
+                messageHandler.addFreshPageMessage($scope, LocalStrings.genericServerErrorMessage,
+                        MessageSeverity.ERROR);
+            });
+        };
+        
+        var subscribeToNoteSubmissions = function(commsPipe, $scope, notebookService, messageHandler) {
+
+            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, function() {
+                setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
+            }, Signals.NoteSubmittedSuccess);
+        };
+        
         var makeDialogsDraggable = function() {
             
             var $dialog = $("#" + dialogName);
@@ -110,7 +146,9 @@
             setupDialogs : setupDialogs,
             setupPageMessages : setupPageMessages,
             setupGlobalScope : setupGlobalScope,
-            setMainState : setMainState
+            setMainState : setMainState,
+            setupNotebookEnvironment : setupNotebookEnvironment, 
+            subscribeToNoteSubmissions : subscribeToNoteSubmissions
         };
         
         return AbstractRootController;

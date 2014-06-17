@@ -1,27 +1,18 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "util/textSelector",
-            "util/ngRegistrationHelper", "underscore", "localization/stringsDefault", "util/commsPipe",
-            "service/notebookService", "util/messageHandler" ];
+    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
+            "util/commsPipe", ];
 
-    define(dependencies, function(linguaApp, abstractController, textSelector, ngRegistrationHelper, _) {
+    define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
-        var addNotebookChangedHandler = function(commsPipe, $scope) {
-
-            $scope.func.currentNotebookChanged = function() {
-                commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
-            };
-        };
-        
-        var ReaderBarController = function($scope, commsPipe, $state, notebookService, messageHandler) {
+        var ReaderBarController = function($scope, commsPipe, $state) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
-            
-            addNotebookChangedHandler(commsPipe, $scope);
+            this.addNotebookChangedHandler(commsPipe, $scope);
         };
 
         ngRegistrationHelper(linguaApp).registerController("readerBarController",
-                [ "$scope", "commsPipe", "$state", "notebookService", "messageHandler", ReaderBarController ]);
+                [ "$scope", "commsPipe", ReaderBarController ]);
     });
 })();

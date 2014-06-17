@@ -1,7 +1,6 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "underscore", "jquery",
-            "localization/stringsDefault" ];
+    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "underscore", "jquery" ];
 
     define(dependencies, function(linguaApp, ngRegistrationHelper, _, $) {
 
@@ -10,27 +9,27 @@
             var ERRORS_FIELD = "errors";
             var FIELD_ERRORS_CLASS = "lingua-field-messages";
             var ERROR_CLASS = "lingua-error";
-            
+
             var getGlobalMessages = function($scope) {
-                
+
                 return $scope.model.globalMessages;
             };
-            
+
             var getPageMessages = function($scope) {
-                
+
                 return $scope.global.model.pageMessages;
             };
-            
+
             var addGlobalOrPageMessage = function(messages, messageText, messageSeverity) {
-                
+
                 messages.push({
                     type : messageSeverity,
                     text : messageText
                 });
             };
-            
+
             var clearGlobalOrPageMessages = function(messages) {
-                
+
                 messages.length = 0;
             };
 
@@ -40,7 +39,7 @@
             };
 
             var clearGlobalMessages = function($scope) {
-                
+
                 clearGlobalOrPageMessages(getGlobalMessages($scope));
             };
 
@@ -50,22 +49,22 @@
             };
 
             var clearPageMessages = function($scope) {
-                
+
                 clearGlobalOrPageMessages(getPageMessages($scope));
             };
 
             var addFreshPageMessage = function($scope, message, severity) {
-                
+
                 clearGlobalOrPageMessages($scope);
                 addPageMessage($scope, message, severity);
             };
 
             var addFreshGlobalMessage = function($scope, message, severity) {
-                
+
                 clearLocalAndGlobalMessages($scope);
                 addGlobalMessage($scope, message, severity);
             };
-            
+
             var clearLocalAndGlobalMessages = function($scope) {
 
                 clearGlobalMessages($scope);
@@ -95,7 +94,7 @@
                     return !_.isUndefined($(this).data(ERRORS_FIELD));
                 });
             };
-            
+
             var displayFieldMessage = function(fieldNames) {
 
                 _.each(fieldNames, function(fieldName) {

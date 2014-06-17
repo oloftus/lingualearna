@@ -37,6 +37,7 @@
             ADD_NOTE : "ADD_NOTE",
             TRANSLATE : "TRANSLATE",
             LOGIN : "LOGIN",
+            SETTINGS : "SETTINGS"
         };
         
         Components = {

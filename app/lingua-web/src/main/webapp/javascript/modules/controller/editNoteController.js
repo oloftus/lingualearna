@@ -1,7 +1,7 @@
 (function() {
 
     var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
-            "localization/stringsDefault", "util/messageHandler", "service/languageNamesService", "service/noteService" ];
+            "util/messageHandler", "service/languageNamesService", "service/noteService" ];
 
     define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 

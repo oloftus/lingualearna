@@ -1,16 +1,18 @@
 (function() {
 
     var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractMiniAppController",
-            "controller/notebookHeaderController", "service/jsonWebService", "util/messageHandler" ];
+            "underscore", "util/commsPipe", "service/notebookService", "controller/notebookHeaderController",
+            "service/jsonWebService", "util/messageHandler" ];
 
-    define(dependencies, function(linguaApp, ngRegistrationHelper, abstractMiniAppController) {
+    define(dependencies, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, _) {
 
         var triggerLogin = function(jsonWebService) {
 
             jsonWebService.execute(Properties.pingServiceUrl, HttpMethod.GET);
         };
 
-        var NotebookController = function($scope, $state, jsonWebService, $timeout, messageHandler) {
+        var NotebookController = function($scope, $state, jsonWebService, $timeout, messageHandler, notebookService,
+                commsPipe) {
 
             _.extend(this, abstractMiniAppController);
             this.setMainState(AppStates.NOTEBOOK_MAIN);
@@ -18,13 +20,17 @@
             this.setupPageMessages($scope, messageHandler, $timeout);
             this.setupDialogs($scope);
             this.setupSpecialDialogs($scope);
-            
+            this.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
+            this.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
+
             triggerLogin(jsonWebService, $scope);
-            
+
             $state.go(AppStates.NOTEBOOK_MAIN);
         };
 
-        ngRegistrationHelper(linguaApp).registerController("notebookController",
-                [ "$scope", "$state", "jsonWebService", "$timeout", "messageHandler", NotebookController ]);
+        ngRegistrationHelper(linguaApp).registerController(
+                "notebookController",
+                [ "$scope", "$state", "jsonWebService", "$timeout", "messageHandler", "notebookService", "commsPipe",
+                        NotebookController ]);
     });
 })();
