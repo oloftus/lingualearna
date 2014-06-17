@@ -1,10 +1,10 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractMiniAppController",
+    var imports = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractMiniAppController",
             "util/textSelector", "underscore", "controller/readerBarController", "service/jsonWebService",
             "util/messageHandler", "util/commsPipe", "service/notebookService" ];
 
-    define(dependencies, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, textSelector, _) {
+    define(imports, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, textSelector, _) {
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
 

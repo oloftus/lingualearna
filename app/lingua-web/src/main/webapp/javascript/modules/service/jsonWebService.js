@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "util/commsPipe" ];
+    var imports = [ "linguaApp", "util/ngRegistrationHelper", "util/commsPipe" ];
 
-    define(dependencies, function(linguaApp, ngRegistrationHelper) {
+    define(imports, function(linguaApp, ngRegistrationHelper) {
 
         var CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
 

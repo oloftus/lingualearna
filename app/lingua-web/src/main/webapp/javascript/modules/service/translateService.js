@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService" ];
+    var imports = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService" ];
 
-    define(dependencies, function(linguaApp, ngRegistrationHelper) {
+    define(imports, function(linguaApp, ngRegistrationHelper) {
 
         var TranslateService = function(jsonWebService, translateServiceUrl) {
 

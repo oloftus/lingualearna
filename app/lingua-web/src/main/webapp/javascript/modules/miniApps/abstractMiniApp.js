@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "ng", "linguaApp", "util/appStates", "underscore" ];
+    var imports = [ "ng", "linguaApp", "util/appStates", "underscore" ];
 
-    define(dependencies, function(ng, linguaApp, appStates, _) {
+    define(imports, function(ng, linguaApp, appStates, _) {
 
         var stashProviders = function($controllerProvider, $compileProvider, $filterProvider, $provide, $httpProvider) {
 

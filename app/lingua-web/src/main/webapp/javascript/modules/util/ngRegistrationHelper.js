@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "underscore" ];
+    var imports = [ "underscore" ];
 
-    define(dependencies, function(_) {
+    define(imports, function(_) {
 
         var ComponentType = {
             CONTROLLER : 0,

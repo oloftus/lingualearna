@@ -1,9 +1,9 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
+    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
             "util/commsPipe" ];
 
-    define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    define(imports, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
         var NotebookHeaderController = function($scope, commsPipe) {
 

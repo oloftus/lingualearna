@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "underscore" ];
+    var imports = [ "linguaApp", "util/ngRegistrationHelper", "underscore" ];
 
-    define(dependencies, function(linguaApp, ngRegistrationHelper, _) {
+    define(imports, function(linguaApp, ngRegistrationHelper, _) {
 
         var Subscriber = function(callback, subjectAcceptor, messageAcceptor) {
             

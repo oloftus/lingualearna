@@ -1,10 +1,10 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractMiniAppController",
+    var imports = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractMiniAppController",
             "underscore", "util/commsPipe", "service/notebookService", "controller/notebookHeaderController",
             "service/jsonWebService", "util/messageHandler" ];
 
-    define(dependencies, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, _) {
+    define(imports, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, _) {
 
         var triggerLogin = function(jsonWebService) {
 

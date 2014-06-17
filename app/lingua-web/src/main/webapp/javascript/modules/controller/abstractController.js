@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "linguaApp" ];
+    var imports = [ "linguaApp" ];
 
-    define(dependencies, function(linguaApp) {
+    define(imports, function(linguaApp) {
 
         var addNotebookChangedHandler = function(commsPipe, $scope) {
             

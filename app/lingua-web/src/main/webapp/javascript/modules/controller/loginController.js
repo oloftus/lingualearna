@@ -1,9 +1,9 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "iframeResizer",
+    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "iframeResizer",
             "util/commsPipe" ];
 
-    define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper) {
+    define(imports, function(linguaApp, abstractController, ngRegistrationHelper) {
 
             var LoginController = function($scope, $state, commsPipe) {
 

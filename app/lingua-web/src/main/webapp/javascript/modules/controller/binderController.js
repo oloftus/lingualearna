@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore" ];
+    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore" ];
 
-    define(dependencies, function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    define(imports, function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
         var BinderController = function($scope) {
 

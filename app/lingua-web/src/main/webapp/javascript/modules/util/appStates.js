@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "ng", "linguaApp", "underscore" ];
+    var imports = [ "ng", "linguaApp", "underscore" ];
 
-    define(dependencies, function(ng, linguaApp, _) {
+    define(imports, function(ng, linguaApp, _) {
 
         var VIEW_EXTENSION = ".html";
         var JS_EXTENSION = ".js";
@@ -90,9 +90,9 @@
                     lazyLoadController : function($q, $rootScope) {
 
                         var deferred = $q.defer();
-                        var dependencies = absoluteControllers;
+                        var imports = absoluteControllers;
 
-                        require(dependencies, function() {
+                        require(imports, function() {
                             $rootScope.$apply(function() {
                                 deferred.resolve();
                             });

@@ -1,8 +1,8 @@
 (function() {
 
-    var dependencies = [ "linguaApp", "service/crudService", "util/ngRegistrationHelper", "service/jsonWebService" ];
+    var imports = [ "linguaApp", "service/crudService", "util/ngRegistrationHelper", "service/jsonWebService" ];
 
-    define(dependencies, function(linguaApp, CrudService, ngRegistrationHelper) {
+    define(imports, function(linguaApp, CrudService, ngRegistrationHelper) {
 
         var NoteService = CrudService;
 

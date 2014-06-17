@@ -2,9 +2,9 @@
 
     loadRequireConfig();
 
-    var dependencies = [ "linguaApp", "miniApps/abstractMiniApp", "controller/notebookController" ];
+    var imports = [ "linguaApp", "miniApps/abstractMiniApp", "controller/notebookController" ];
 
-    define(dependencies, function(linguaApp, abstractMiniApp) {
+    define(imports, function(linguaApp, abstractMiniApp) {
 
         _.extend(this, abstractMiniApp);
 

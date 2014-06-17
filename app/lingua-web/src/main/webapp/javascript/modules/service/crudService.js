@@ -1,8 +1,8 @@
 (function(){
     
-    var dependencies = [ "linguaApp" ];
+    var imports = [ "linguaApp" ];
     
-    define(dependencies, function(linguaApp) {
+    define(imports, function(linguaApp) {
         
         /*
          * The intention to use a reference to CrudService later and let Angular do the DI 
