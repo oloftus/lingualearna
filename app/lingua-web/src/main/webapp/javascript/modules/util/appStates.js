@@ -1,10 +1,11 @@
 (function() {
 
     var imports = [];
+    
     imports.push("linguaApp");
     imports.push("underscore");
 
-    define(imports, function(linguaApp, _) {
+    define(doImport(imports), function(linguaApp, _) {
 
         var StateDefinition = function(views, controllers) {
 
@@ -175,10 +176,16 @@
 
             AppStates.MAIN = stateName;
         };
+        
+        var goRelative = function($state, stateName) {
+            
+            $state.go("." + stateName);
+        };
 
         return {
             setupStates : setupStates,
-            setMainState : setMainState
+            setMainState : setMainState,
+            goRelative : goRelative
         };
     });
 })();

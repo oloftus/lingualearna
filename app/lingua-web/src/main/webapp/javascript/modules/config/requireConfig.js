@@ -1,16 +1,26 @@
 /*
  * Has to be manually loaded as this is configuring RequireJS!
  */
+
+function doImport() {
+
+    var imports = [];
+    for (var i = 0; i < arguments.length; i++) {
+        imports = imports.concat(arguments[i]);
+    }
+    return imports;
+}
+
 function loadRequireConfig() {
-    
+
     Properties = Properties || {};
-    
+
     with (Properties) {
-        
+
         Properties.applicationRoot = "http://localhost:8080/LinguaWeb";
         Properties.javascriptRoot = applicationRoot + "/javascript/modules";
     }
-    
+
     require.config({
         paths : {
             "ng" : "../lib/angular-1.3.0",

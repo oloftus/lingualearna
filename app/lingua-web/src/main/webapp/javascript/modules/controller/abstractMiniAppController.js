@@ -1,13 +1,19 @@
 (function() {
 
-    var imports = [ "linguaApp" ];
+    var imports = [];
+    
+    imports.push("linguaApp");
 
-    define(imports, function(linguaApp) {
+    define(doImport(imports), function(linguaApp) {
 
-        var linguaReaderName = "lingua-reader";
-        var dialogName = "lingua-main-dialog";
-        var overlayName = "lingua-overlay";
-        var closeButtonName = "lingua-dialog-close-main";
+        var DIALOG_TOP_OFFSET = 70;
+        
+        var READER_NAME = "lingua-reader";
+        var DIALOG_NAME = "lingua-main-dialog";
+        var DIALOG_HEADER_NAME = "lingua-dialog-header";
+        var DIALOG_VIEW_NAME = "lingua-dialog-view";
+        var OVERLAY_NAME = "lingua-overlay";
+        var CLOSE_BUTTON_NAME = "lingua-dialog-close-main";
 
         var setupNotebookEnvironment = function($scope, notebookService, commsPipe, messageHandler) {
 
@@ -45,12 +51,22 @@
             }, Signals.NoteSubmittedSuccess);
         };
         
+        var asId = function(idName) {
+            
+            return "#" + idName;
+        };
+        
+        var asClass = function(className) {
+            
+            return "." + className;
+        };
+        
         var makeDialogsDraggable = function() {
             
-            var $dialog = $("#" + dialogName);
+            var $dialog = $(asId(DIALOG_NAME));
 
             $dialog.draggable({
-                handle : ".lingua-dialog-header",
+                handle : asClass(DIALOG_HEADER_NAME),
                 containment : "document",
                 scroll : false
             });
@@ -58,18 +74,18 @@
         
         var enableDialogToggle = function($scope) {
             
-            var $dialog = $("#" + dialogName);
+            var $dialog = $(asId(DIALOG_NAME));
 
             $scope.$on("$viewContentLoaded", function() {
 
                 var $window = $(window);
                 var leftOffset = (($window.width() - $dialog.outerWidth()) / 2) + $window.scrollLeft();
 
-                $dialog.find(".lingua-dialog-view:empty").parent().hide();
-                $dialog.find(".lingua-dialog-view:not(:empty)").parent().show();
+                $dialog.find(asClass(DIALOG_VIEW_NAME) + ":empty").parent().hide();
+                $dialog.find(asClass(DIALOG_VIEW_NAME) + ":not(:empty)").parent().show();
                 $dialog.css({
                     "left" : leftOffset + "px",
-                    "top" : "70px"
+                    "top" : DIALOG_TOP_OFFSET + "px"
                 });
             });
         };
@@ -78,15 +94,15 @@
 
             $scope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
 
-                $overlay = $("#" + overlayName);
-                $closeButton = $("#" + closeButtonName);
-                $linguaReader = $("#" + linguaReaderName);
-                var $dialog = $("#" + dialogName);
+                var $overlay = $(asId(OVERLAY_NAME));
+                var $closeButton = $(asId(CLOSE_BUTTON_NAME));
+                var $linguaReader = $(asId(READER_NAME));
+                var $dialog = $(asId(DIALOG_NAME));
 
-                if (toState.name === AppStates.LOGIN) {
+                if (toState.name.endsWith(AppStates.LOGIN)) {
                     
                     if ($overlay.length == 0) {
-                        $dialog.before("<div id='" + overlayName + "'></div>");
+                        $dialog.before("<div id='" + OVERLAY_NAME + "'></div>");
                     }
                     $closeButton.hide();
                     $linguaReader.css({

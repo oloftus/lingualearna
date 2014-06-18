@@ -1,8 +1,10 @@
 (function() {
 
-    var imports = [ "underscore" ];
+    var imports = [];
+    
+    imports.push("underscore");
 
-    define(imports, function(_) {
+    define(doImport(imports), function(_) {
 
         var ComponentType = {
             CONTROLLER : 0,
@@ -12,15 +14,29 @@
 
         registerHelper = function(componentType, ngApp) {
 
+            var registerFunc;
+
             switch (componentType) {
                 case ComponentType.CONTROLLER:
-                    return _.isUndefined(ngApp.controllerProvider) ? ngApp.controller
+                    registerFunc = _.isUndefined(ngApp.controllerProvider) ? ngApp.controller
                             : ngApp.controllerProvider.register;
+                    break;
                 case ComponentType.SERVICE:
-                    return _.isUndefined(ngApp.provide) ? ngApp.service : ngApp.provide.service;
+                    registerFunc = _.isUndefined(ngApp.provide) ? ngApp.service : ngApp.provide.service;
+                    break;
                 case ComponentType.FACTORY:
-                    return _.isUndefined(ngApp.provide) ? ngApp.factory : ngApp.provide.factory;
+                    registerFunc = _.isUndefined(ngApp.provide) ? ngApp.factory : ngApp.provide.factory;
+                    break;
             }
+
+            return function(componentName, dependencies, component) {
+
+                if (!_.isUndefined(component)) {
+                    dependencies.push(component);
+                }
+
+                registerFunc(componentName, dependencies);
+            };
         };
 
         var registrationHelper = function(ngApp) {

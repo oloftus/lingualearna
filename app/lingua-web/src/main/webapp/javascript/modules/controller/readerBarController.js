@@ -1,18 +1,30 @@
 (function() {
 
-    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
-            "util/commsPipe", ];
+    var componentName = "readerBarController";
 
-    define(imports, function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    var imports = [];
+    var ngImports = [];
+    var ngDependencies = [];
 
-        var ReaderBarController = function($scope, commsPipe, $state) {
+    imports.push("linguaApp");
+    imports.push("controller/abstractController");
+    imports.push("util/ngRegistrationHelper");
+    imports.push("underscore");
+
+    ngImports.push("util/commsPipe");
+
+    ngDependencies.push("$scope");
+    ngDependencies.push("commsPipe");
+
+    define(doImport(imports, ngImports), function(linguaApp, abstractController, ngRegistrationHelper, _) {
+
+        var ReaderBarController = function($scope, commsPipe) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
             this.addNotebookChangedHandler(commsPipe, $scope);
         };
 
-        ngRegistrationHelper(linguaApp).registerController("readerBarController",
-                [ "$scope", "commsPipe", ReaderBarController ]);
+        ngRegistrationHelper(linguaApp).registerController(componentName, ngDependencies, ReaderBarController);
     });
 })();

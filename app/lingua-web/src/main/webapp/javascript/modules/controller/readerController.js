@@ -1,24 +1,46 @@
 (function() {
 
-    var imports = [ "linguaApp", "util/ngRegistrationHelper", "controller/abstractMiniAppController",
-            "util/textSelector", "util/appStates", "underscore", "controller/readerBarController",
-            "service/jsonWebService", "util/messageHandler", "util/commsPipe", "service/notebookService" ];
+    var componentName = "readerController";
 
-    define(imports, function(linguaApp, ngRegistrationHelper, abstractMiniAppController, textSelector, appStates, _) {
+    var imports = [];
+    var ngImports = [];
+    var ngDependencies = [];
+
+    imports.push("linguaApp");
+    imports.push("controller/abstractMiniAppController");
+    imports.push("util/ngRegistrationHelper");
+    imports.push("util/textSelector");
+    imports.push("util/appStates");
+    imports.push("underscore");
+
+    ngImports.push("controller/readerBarController");
+    ngImports.push("service/jsonWebService");
+    ngImports.push("service/notebookService");
+    ngImports.push("util/messageHandler");
+    ngImports.push("util/commsPipe");
+
+    ngDependencies.push("$scope");
+    ngDependencies.push("$state");
+    ngDependencies.push("$timeout");
+    ngDependencies.push("jsonWebService");
+    ngDependencies.push("notebookService");
+    ngDependencies.push("messageHandler");
+    ngDependencies.push("commsPipe");
+
+    define(doImport(imports, ngImports), function(linguaApp, abstractMiniAppController, ngRegistrationHelper, textSelector, appStates, _) {
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
 
             var selected = textSelector.getSelected().toString();
 
-            if (selected !== "") {
+            if (!_.isEmpty(selected)) {
                 var translationRequest = new TranslationRequest($scope.global.model.currentNotebook.localLang,
                         $scope.global.model.currentNotebook.foreignLang, selected);
 
-                $state.go(AppStates.TRANSLATE).then(
-                        function() {
-                            commsPipe.send(Components.READER, Components.TRANSLATE, Subjects.TRANSLATION_REQUEST,
-                                    translationRequest);
-                        });
+                $state.go(AppStates.TRANSLATE).then(function() {
+                    commsPipe.send(Components.READER, Components.TRANSLATE, Subjects.TRANSLATION_REQUEST,
+                            translationRequest);
+                });
 
                 textSelector.clearSelected();
             }
@@ -36,27 +58,28 @@
             jsonWebService.getCsrfToken();
         };
 
-        var ReaderController = function($scope, $state, jsonWebService, $timeout, messageHandler, notebookService,
+        var ReaderController = function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,
                 commsPipe) {
 
+            var self = this;
+
             _.extend(this, abstractMiniAppController);
+            self.setupGlobalScope($scope, $state);
             appStates.setMainState(AppStates.READER_MAIN);
-            this.setupGlobalScope($scope, $state);
-            this.setupPageMessages($scope, messageHandler, $timeout);
-            this.setupDialogs($scope);
-            this.setupSpecialDialogs($scope);
-            this.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
-            this.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
 
-            getCsrfAndTriggerLogin(jsonWebService, $scope);
-            setupClickToTranslate(commsPipe, $state, $scope);
-
-            $state.go(AppStates.READER_MAIN);
+            $state.go(AppStates.MAIN).then(function() {
+                
+                self.setupPageMessages($scope, messageHandler, $timeout);
+                self.setupDialogs($scope);
+                self.setupSpecialDialogs($scope);
+                self.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
+                self.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
+                
+                getCsrfAndTriggerLogin(jsonWebService, $scope);
+                setupClickToTranslate(commsPipe, $state, $scope);
+            });
         };
 
-        ngRegistrationHelper(linguaApp).registerController(
-                "readerController",
-                [ "$scope", "$state", "jsonWebService", "$timeout", "messageHandler", "notebookService", "commsPipe",
-                        ReaderController ]);
+        ngRegistrationHelper(linguaApp).registerController(componentName, ngDependencies, ReaderController);
     });
 })();

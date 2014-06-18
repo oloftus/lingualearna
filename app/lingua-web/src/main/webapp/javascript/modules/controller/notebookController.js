@@ -1,22 +1,23 @@
 (function() {
 
-    var component = "notebookController";
+    var componentName = "notebookController";
 
     var imports = [];
+    var ngImports = [];
+    var ngDependencies = [];
+
     imports.push("linguaApp");
     imports.push("controller/abstractMiniAppController");
     imports.push("util/ngRegistrationHelper");
     imports.push("util/appStates");
     imports.push("underscore");
 
-    var ngImports = [];
     ngImports.push("controller/notebookHeaderController");
     ngImports.push("service/notebookService");
     ngImports.push("service/jsonWebService");
     ngImports.push("util/commsPipe");
     ngImports.push("util/messageHandler");
 
-    var ngDependencies = [];
     ngDependencies.push("$scope");
     ngDependencies.push("$state");
     ngDependencies.push("$timeout");
@@ -25,9 +26,7 @@
     ngDependencies.push("messageHandler");
     ngDependencies.push("commsPipe");
 
-    var allImports = imports.concat(ngImports);
-
-    define(allImports, function(linguaApp, abstractMiniAppController, ngRegistrationHelper, appStates, _) {
+    define(doImport(imports, ngImports), function(linguaApp, abstractMiniAppController, ngRegistrationHelper, appStates, _) {
 
         var triggerLogin = function(jsonWebService) {
 
@@ -43,7 +42,7 @@
             self.setupGlobalScope($scope);
             appStates.setMainState(AppStates.NOTEBOOK_MAIN);
 
-            $state.go(AppStates.NOTEBOOK_MAIN).then(function() {
+            $state.go(AppStates.MAIN).then(function() {
                 self.setupPageMessages($scope, messageHandler, $timeout);
                 self.setupDialogs($scope);
                 self.setupSpecialDialogs($scope);
@@ -53,7 +52,6 @@
             });
         };
 
-        ngDependencies.push(NotebookController);
-        ngRegistrationHelper(linguaApp).registerController(component, ngDependencies);
+        ngRegistrationHelper(linguaApp).registerController(componentName, ngDependencies, NotebookController);
     });
 })();

@@ -1,8 +1,10 @@
 (function() {
 
-    var imports = [ "linguaApp" ];
+    var imports = [];
+    
+    imports.push("linguaApp");
 
-    define(imports, function(linguaApp) {
+    define(doImport(imports), function(linguaApp) {
 
         var addNotebookChangedHandler = function(commsPipe, $scope) {
             

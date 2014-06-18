@@ -1,8 +1,22 @@
 (function() {
 
-    var imports = [ "linguaApp", "util/ngRegistrationHelper", "util/appStates", "util/commsPipe" ];
+    var componentName = "jsonWebService";
 
-    define(imports, function(linguaApp, ngRegistrationHelper, appStates) {
+    var imports = [];
+    var ngImports = [];
+    var ngDependencies = [];
+
+    imports.push("linguaApp");
+    imports.push("util/ngRegistrationHelper");
+    imports.push("util/appStates");
+
+    ngImports.push("util/commsPipe");
+
+    ngDependencies.push("$http");
+    ngDependencies.push("commsPipe");
+    ngDependencies.push("$state");
+
+    define(doImport(imports, ngImports), function(linguaApp, ngRegistrationHelper, appStates) {
 
         var CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
 
@@ -14,9 +28,9 @@
                     callback.apply(thisArg, args);
                 }
             };
-            
+
             var getCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
-                
+
                 return Properties.csrfTokenApiUrl + "/" + Properties.csrfSecret;
             };
 
@@ -33,29 +47,30 @@
 
             var goToLogin = function($state, commsPipe, isGetCsrfRequest, completedCallback) {
 
-                commsPipe.subscribe(Components.LOGIN, Components.ANY, function(message) {
+                var onLoginCallback = function() {
+
                     if (isGetCsrfRequest) {
                         getCsrfToken();
                     }
                     else {
-                        commsPipe.subscribe(Components.JSON_WEB_SERVICE, Components.ANY, function() {
+                        var onCsrfRetrievedCallback = function() {
                             callIfNotUndefinedOrNull(completedCallback, this);
-                        }, Signals.CSRF_RETRIEVED);
+                        };
+
+                        commsPipe.subscribe(Components.JSON_WEB_SERVICE, Components.ANY, onCsrfRetrievedCallback,
+                                Signals.CSRF_RETRIEVED);
                     }
-                    
+
                     $state.go(AppStates.MAIN);
-                }, Signals.LOGIN_SUCCESS);
-                
-                $state.go("."+AppStates.LOGIN);
+                };
+
+                commsPipe.subscribe(Components.LOGIN, Components.ANY, onLoginCallback, Signals.LOGIN_SUCCESS);
+                appStates.goRelative($state, AppStates.LOGIN);
             };
 
-            var execute = function(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback, retryOnAuthentication) {
+            var execute = function(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback,
+                    retryOnAuthentication) {
 
-                var reExecute = function() {
-
-                    execute(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback, false);
-                };
-                
                 var successHandler = function(data, status, headers, config) {
 
                     callIfNotUndefinedOrNull(successCallback, this, [ data, status, headers, config ]);
@@ -65,8 +80,12 @@
 
                     if (status === HttpHeaders.FORBIDDEN) {
                         var isGetCsrfRequest = serviceUrl === getCsrfTokenApiUrl();
-                        
+
                         if (retryOnAuthentication) {
+                            var reExecute = function() {
+                                execute(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback, false);
+                            };
+                            
                             goToLogin($state, commsPipe, isGetCsrfRequest, reExecute);
                         }
                         else {
@@ -95,7 +114,6 @@
             };
         };
 
-        ngRegistrationHelper(linguaApp).registerService("jsonWebService",
-                [ "$http", "commsPipe", "$state", JsonWebService ]);
+        ngRegistrationHelper(linguaApp).registerService(componentName, ngDependencies, JsonWebService);
     });
 })();

@@ -1,8 +1,18 @@
 (function() {
 
-    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore" ];
-
-    define(imports, function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    var componentName = "settingsController";
+    
+    var imports = [];
+    var ngDependencies = [];
+    
+    imports.push("linguaApp");
+    imports.push("controller/abstractController");
+    imports.push("util/ngRegistrationHelper");
+    imports.push("underscore");
+    
+    ngDependencies.push("$scope");
+    
+    define(doImport(imports), function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
         var SettingsController = function($scope) {
 
@@ -10,6 +20,6 @@
             this.setupDefaultScope($scope);
         };
 
-        ngRegistrationHelper(linguaApp).registerController("settingsController", [ "$scope", SettingsController ]);
+        ngRegistrationHelper(linguaApp).registerController(componentName, ngDependencies, SettingsController);
     });
 })();
