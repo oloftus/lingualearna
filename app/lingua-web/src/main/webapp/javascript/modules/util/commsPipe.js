@@ -2,9 +2,10 @@ App.Factory.createNew(function() {
 
     this.isCalled("commsPipe");
     
+    this.imports("rootApp");
     this.imports("underscore");
 
-    this.hasDefinition(function(_) {
+    this.hasDefinition(function(rootApp, _) {
 
         var Subscriber = function(callback, subjectAcceptor, messageAcceptor) {
             

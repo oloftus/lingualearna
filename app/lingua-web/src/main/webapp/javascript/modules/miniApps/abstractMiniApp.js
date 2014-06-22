@@ -2,12 +2,12 @@ App.Module.createNew(function() {
 
     this.isCalled("abstractMiniApp");
     
-    this.imports("ng");
     this.imports("rootApp");
+    this.imports("ng");
     this.imports("util/appStates");
     this.imports("underscore");
 
-    this.hasDefinition(function(ng, rootApp, appStates, _) {
+    this.hasDefinition(function(rootApp, ng, appStates, _) {
 
         var applyJsOverrides = function() {
             

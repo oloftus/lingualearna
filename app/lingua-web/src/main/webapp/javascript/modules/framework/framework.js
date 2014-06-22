@@ -135,7 +135,7 @@ App.Controller = {
         App.NgComponent.Proto.call(this);
         
         this._importsFirst("rootApp");
-        this._importsFirst("util/ngRegistrationHelper");
+        this._importsFirst("framework/ngRegistrationHelper");
         
         var _registerComponent = function(rootApp, ngRegistrationHelper, controller) {
             ngRegistrationHelper(rootApp).registerController(this.moduleProps._moduleName,

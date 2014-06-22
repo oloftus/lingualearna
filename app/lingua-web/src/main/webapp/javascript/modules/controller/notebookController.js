@@ -2,6 +2,7 @@ App.Controller.createNew(function() {
 
     this.isCalled("notebookController");
     
+    this.imports("rootApp");
     this.imports("controller/abstractMiniAppController");
     this.imports("util/appStates");
     this.imports("underscore");
@@ -20,7 +21,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("messageHandler");
     this.dependsOnNg("commsPipe");
 
-    this.hasDefinition(function(abstractMiniAppController, appStates, _) {
+    this.hasDefinition(function(rootApp, abstractMiniAppController, appStates, _) {
 
         var triggerLogin = function(jsonWebService) {
 

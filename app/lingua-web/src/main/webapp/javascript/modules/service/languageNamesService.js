@@ -2,12 +2,14 @@ App.Service.createNew(function() {
 
     this.isCalled("languageNamesService");
 
+    this.imports("rootApp");
+
     this.importsNg("service/jsonWebService");
 
     this.dependsOnNg("jsonWebService");
     this.dependsOnNg("languageNamesServiceUrl");
 
-    this.hasDefinition(function() {
+    this.hasDefinition(function(rootApp) {
 
         return function(jsonWebService, languageNamesServiceUrl) {
 

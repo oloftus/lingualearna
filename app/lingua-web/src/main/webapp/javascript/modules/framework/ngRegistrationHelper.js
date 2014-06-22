@@ -2,9 +2,10 @@ App.Module.createNew(function() {
 
     this.isCalled("ngRegistrationHelper");
     
+    this.imports("rootApp");
     this.imports("underscore");
 
-    this.hasDefinition(function(_) {
+    this.hasDefinition(function(rootApp, _) {
 
         var ComponentType = {
             CONTROLLER : 0,

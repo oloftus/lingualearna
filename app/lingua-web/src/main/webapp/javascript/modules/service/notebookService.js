@@ -2,13 +2,14 @@ App.Service.createNew(function() {
 
     this.isCalled("notebookService");
 
+    this.imports("rootApp");
 
     this.importsNg("service/jsonWebService");
 
     this.dependsOnNg("jsonWebService");
     this.dependsOnNg("notesPagesServiceUrl");
 
-    this.hasDefinition(function() {
+    this.hasDefinition(function(rootApp) {
 
         return function(jsonWebService, notesPagesServiceUrl) {
 

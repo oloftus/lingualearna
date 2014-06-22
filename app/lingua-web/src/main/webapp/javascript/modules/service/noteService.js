@@ -2,6 +2,7 @@ App.Service.createNew(function() {
 
     this.isCalled("noteService");
 
+    this.imports("rootApp");
     this.imports("service/crudService");
     
     this.importsNg("service/jsonWebService");
@@ -9,7 +10,7 @@ App.Service.createNew(function() {
     this.dependsOnNg("jsonWebService");
     this.dependsOnNg("noteServiceUrl");
 
-    this.hasDefinition(function(CrudService) {
+    this.hasDefinition(function(rootApp, CrudService) {
 
         return CrudService;
     });

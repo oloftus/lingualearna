@@ -12,7 +12,7 @@ App.Module.createNew(function() {
     this.imports("config/properties");
     this.imports("localization/stringsDefault");
     
-    this.hasDefinition(function(ng) {
+    this.hasDefinition(function(ng, rootApp) {
         return ng.module("rootAppx", [ "ui.router" ]);
     });
 });

@@ -1,9 +1,9 @@
 App.Module.createNew(function() {
 
-    this.isCalled("properties");
-    
     this.imports("rootApp");
 
+    this.isCalled("properties");
+    
     this.hasDefinition(function(rootApp) {
 
         with (Properties) {
