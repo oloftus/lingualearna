@@ -2,7 +2,7 @@ App.Service.createNew(function() {
 
     this.isCalled("jsonWebService");
 
-    this.imports("rootApp");
+    this.imports("framework/rootApp");
     this.imports("util/appStates");
 
     this.loads("util/commsPipe");
@@ -15,35 +15,24 @@ App.Service.createNew(function() {
 
         var CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
 
+        var callIfNotUndefinedOrNull = function(callback, thiz, args) {
+            
+            if (!_.isUndefined(callback) && !_.isNull(callback)) {
+                callback.apply(thiz, args);
+            }
+        };
+        
+        var getCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
+            
+            return Properties.csrfTokenApiUrl + "/" + Properties.csrfSecret;
+        };
+        
         return function($http, commsPipe, $state) {
 
-            var callIfNotUndefinedOrNull = function(callback, thisArg, args) {
-
-                if (!_.isUndefined(callback) && !_.isNull(callback)) {
-                    callback.apply(thisArg, args);
-                }
-            };
-
-            var getCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
-
-                return Properties.csrfTokenApiUrl + "/" + Properties.csrfSecret;
-            };
-
-            var getCsrfToken = function() {
-
-                var successCallback = function(data) {
-                    rootApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
-                    commsPipe.send(Components.JSON_WEB_SERVICE, Components.ANY, Signals.CSRF_RETRIEVED);
-                };
-
-                var csrfTokenApiUrl = getCsrfTokenApiUrl();
-                execute(csrfTokenApiUrl, HttpMethod.GET, null, successCallback, null, true);
-            };
-
             var goToLogin = function($state, commsPipe, isGetCsrfRequest, completedCallback) {
-
+                
                 var onLoginCallback = function() {
-
+                    
                     if (isGetCsrfRequest) {
                         getCsrfToken();
                     }
@@ -51,20 +40,31 @@ App.Service.createNew(function() {
                         var onCsrfRetrievedCallback = function() {
                             callIfNotUndefinedOrNull(completedCallback, this);
                         };
-
+                        
                         commsPipe.subscribe(Components.JSON_WEB_SERVICE, Components.ANY, onCsrfRetrievedCallback,
                                 Signals.CSRF_RETRIEVED);
                     }
-
+                    
                     $state.go(AppStates.MAIN);
                 };
-
+                
                 commsPipe.subscribe(Components.LOGIN, Components.ANY, onLoginCallback, Signals.LOGIN_SUCCESS);
                 appStates.goRelative($state, AppStates.LOGIN);
             };
+            
+            var getCsrfToken = function() {
+
+                var csrfTokenApiUrl = getCsrfTokenApiUrl();
+                var successCallback = function(data) {
+                    rootApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
+                    commsPipe.send(Components.JSON_WEB_SERVICE, Components.ANY, Signals.CSRF_RETRIEVED);
+                };
+
+                execute(csrfTokenApiUrl, HttpMethod.GET, null, successCallback, null, true);
+            };
 
             var execute = function(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback,
-                    retryOnAuthentication) {
+                    retryOnAuthChallenge) {
 
                 var successHandler = function(data, status, headers, config) {
 
@@ -75,17 +75,13 @@ App.Service.createNew(function() {
 
                     if (status === HttpHeaders.FORBIDDEN) {
                         var isGetCsrfRequest = serviceUrl === getCsrfTokenApiUrl();
-
-                        if (retryOnAuthentication) {
-                            var reExecute = function() {
+                        var reExecute = null;
+                        if (retryOnAuthChallenge) {
+                            reExecute = function() {
                                 execute(serviceUrl, httpMethod, requestPayload, successCallback, failureCallback, false);
                             };
-                            
-                            goToLogin($state, commsPipe, isGetCsrfRequest, reExecute);
                         }
-                        else {
-                            goToLogin($state, commsPipe, isGetCsrfRequest);
-                        }
+                        goToLogin($state, commsPipe, isGetCsrfRequest, reExecute);
                     }
                     else {
                         callIfNotUndefinedOrNull(failureCallback, this, [ data, status, headers, config ]);

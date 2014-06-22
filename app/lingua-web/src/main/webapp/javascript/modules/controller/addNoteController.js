@@ -1,15 +1,15 @@
 App.Controller.createNew(function() {
 
     this.isCalled("addNoteController");
-    
+
     this.imports("controller/abstractController");
     this.imports("underscore");
-    
+
     this.loads("service/languageNamesService");
     this.loads("service/noteService");
     this.loads("util/messageHandler");
     this.loads("util/commsPipe");
-    
+
     this.dependsOnNg("$scope");
     this.dependsOnNg("$location");
     this.dependsOnNg("noteService");
@@ -102,7 +102,8 @@ App.Controller.createNew(function() {
 
         var subscribeToCurrentNotebookChangedEvents = function($scope, commsPipe) {
 
-            commsPipe.subscribe(Components.READER, Components.ANY, function() {
+            var currentNotebookChangedHandler = function() {
+                
                 var newPagesContainsOldCurrent = _.some($scope.global.model.currentNotebook.pages, function(newPage) {
                     var oldCurrentPage = $scope.model.page;
                     return newPage.pageId === oldCurrentPage.pageId && newPage.name === oldCurrentPage.name;
@@ -111,11 +112,14 @@ App.Controller.createNew(function() {
                 if (!newPagesContainsOldCurrent) {
                     $scope.model.page = null;
                 }
-            }, Signals.CURRENT_NOTEBOOK_CHANGED);
+            };
+            
+            commsPipe.subscribe(Components.READER, Components.ANY, currentNotebookChangedHandler,
+                    Signals.CURRENT_NOTEBOOK_CHANGED);
         };
 
-        return function($scope, $location, noteService, languageNamesService, messageHandler,
-                commsPipe, $timeout, $state) {
+        return function($scope, $location, noteService, languageNamesService, messageHandler, commsPipe, $timeout,
+                $state) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);

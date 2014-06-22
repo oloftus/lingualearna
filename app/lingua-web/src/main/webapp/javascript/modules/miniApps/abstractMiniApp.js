@@ -2,7 +2,7 @@ App.Module.createNew(function() {
 
     this.isCalled("abstractMiniApp");
     
-    this.imports("rootApp");
+    this.imports("framework/rootApp");
     this.imports("ng");
     this.imports("util/appStates");
     this.imports("underscore");

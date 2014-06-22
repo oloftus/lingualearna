@@ -2,7 +2,7 @@ App.MiniApp.createNew(function() {
 
     this.isCalled("notebookMiniApp")
     
-    this.imports("rootApp");
+    this.imports("framework/rootApp");
     this.imports("miniApps/abstractMiniApp");
     
     this.loads("controller/notebookController");

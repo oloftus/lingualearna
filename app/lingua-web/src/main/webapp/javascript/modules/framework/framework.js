@@ -5,9 +5,9 @@ App.Module = {
 
         this.moduleProps = {};
 
-        this.moduleProps._importsFirst = [];
+        this.moduleProps._firstImports = [];
+        this.moduleProps._firstLoads = [];
         this.moduleProps._imports = [];
-        this.moduleProps._loadsFirst = [];
         this.moduleProps._loads = [];
 
         this._doImport = function() {
@@ -19,12 +19,12 @@ App.Module = {
             return imports;
         };
 
-        this._importsFirst = function(moduleName) {
-            this.moduleProps._importsFirst.push(moduleName);
+        this._firstImports = function(moduleName) {
+            this.moduleProps._firstImports.push(moduleName);
         };
 
-        this._loadsFirst = function(moduleName) {
-            this.moduleProps._loadsFirst.push(moduleName);
+        this._firstLoads = function(moduleName) {
+            this.moduleProps._firstLoads.push(moduleName);
         };
         
         this.isCalled = function(moduleName) {
@@ -41,12 +41,12 @@ App.Module = {
 
         this.hasDefinition = function(moduleDefinition) {
 
-            var allImports = this._doImport(this.moduleProps._importsFirst, this.moduleProps._imports,
-                    this.moduleProps._loads, this.moduleProps._loadsFirst);
+            var allImports = this._doImport(this.moduleProps._firstImports, this.moduleProps._imports,
+                    this.moduleProps._loads, this.moduleProps._firstLoads);
             define(allImports, moduleDefinition);
         };
         
-        this._loadsFirst("rootApp");
+        this._firstLoads("framework/rootApp");
     },
     createNew : function(module) {
         module.prototype = new this.Proto();
@@ -73,9 +73,6 @@ App.NgComponent = {
 
         App.Module.Proto.call(this);
 
-        this._importsFirst("rootApp");
-        this._importsFirst("framework/ngRegistrationHelper");
-
         this.moduleProps._ngDeps = [];
 
         this.dependsOnNg = function(moduleName) {
@@ -84,8 +81,8 @@ App.NgComponent = {
 
         this.hasDefinition = function(componentDefinition) {
 
-            var allImports = this._doImport(this.moduleProps._importsFirst, this.moduleProps._imports,
-                    this.moduleProps._loads, this.moduleProps._loadsFirst);
+            var allImports = this._doImport(this.moduleProps._firstImports, this.moduleProps._imports,
+                    this.moduleProps._loads, this.moduleProps._firstLoads);
             var requireModule = function() {
 
                 var rootApp = Array.prototype.shift.call(arguments);
@@ -96,6 +93,9 @@ App.NgComponent = {
 
             define(allImports, requireModule);
         };
+        
+        this._firstImports("framework/rootApp");
+        this._firstImports("framework/ngRegistrationHelper");
     }
 };
 
