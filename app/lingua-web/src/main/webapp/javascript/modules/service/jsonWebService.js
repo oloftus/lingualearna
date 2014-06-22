@@ -5,7 +5,7 @@ App.Service.createNew(function() {
     this.imports("rootApp");
     this.imports("util/appStates");
 
-    this.importsNg("util/commsPipe");
+    this.loads("util/commsPipe");
 
     this.dependsOnNg("$http");
     this.dependsOnNg("commsPipe");

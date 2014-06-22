@@ -2,9 +2,7 @@ App.Module.createNew(function() {
 
     this.isCalled("abstractController");
     
-    this.imports("rootApp");
-
-    this.hasDefinition(function(rootApp) {
+    this.hasDefinition(function() {
 
         var addNotebookChangedHandler = function(commsPipe, $scope) {
             

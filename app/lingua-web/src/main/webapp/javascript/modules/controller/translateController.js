@@ -2,13 +2,12 @@ App.Controller.createNew(function() {
 
     this.isCalled("translateController");
 
-    this.imports("rootApp");
     this.imports("controller/abstractController");
     this.imports("underscore");
 
-    this.importsNg("util/commsPipe");
-    this.importsNg("service/languageNamesService");
-    this.importsNg("service/translateService");
+    this.loads("util/commsPipe");
+    this.loads("service/languageNamesService");
+    this.loads("service/translateService");
 
     this.dependsOnNg("$scope");
     this.dependsOnNg("translateService");
@@ -17,7 +16,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("$location");
     this.dependsOnNg("$state");
 
-    this.hasDefinition(function(rootApp, abstractController, _) {
+    this.hasDefinition(function(abstractController, _) {
 
         var populateModelFromTranslationRequest = function($scope, translationRequest) {
 

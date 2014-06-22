@@ -2,11 +2,10 @@ App.Factory.createNew(function() {
 
     this.isCalled("messageHandler");
     
-    this.imports("rootApp");
     this.imports("underscore");
     this.imports("jquery");
 
-    this.hasDefinition(function(rootApp, _, $) {
+    this.hasDefinition(function(_, $) {
 
         var ERRORS_FIELD = "errors";
         var FIELD_ERRORS_CLASS = "lingua-field-messages";

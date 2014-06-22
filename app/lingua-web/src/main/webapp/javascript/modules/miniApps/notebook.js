@@ -4,7 +4,8 @@ App.MiniApp.createNew(function() {
     
     this.imports("rootApp");
     this.imports("miniApps/abstractMiniApp");
-    this.imports("controller/notebookController");
+    
+    this.loads("controller/notebookController");
 
     this.hasDefinition(function(rootApp, abstractMiniApp) {
 

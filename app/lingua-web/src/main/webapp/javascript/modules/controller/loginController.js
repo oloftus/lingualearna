@@ -2,17 +2,16 @@ App.Controller.createNew(function() {
 
     this.isCalled("loginController");
 
-    this.imports("rootApp");
     this.imports("controller/abstractController");
 
-    this.importsNg("iframeResizer");
-    this.importsNg("util/commsPipe");
+    this.loads("iframeResizer");
+    this.loads("util/commsPipe");
 
     this.dependsOnNg("$scope");
     this.dependsOnNg("$state");
     this.dependsOnNg("commsPipe");
 
-    this.hasDefinition(function(rootApp, abstractController) {
+    this.hasDefinition(function(abstractController) {
 
         return function($scope, $state, commsPipe) {
 

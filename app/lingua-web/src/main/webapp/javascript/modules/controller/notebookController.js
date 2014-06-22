@@ -2,16 +2,15 @@ App.Controller.createNew(function() {
 
     this.isCalled("notebookController");
     
-    this.imports("rootApp");
     this.imports("controller/abstractMiniAppController");
     this.imports("util/appStates");
     this.imports("underscore");
 
-    this.importsNg("controller/notebookHeaderController");
-    this.importsNg("service/jsonWebService");
-    this.importsNg("service/notebookService");
-    this.importsNg("util/commsPipe");
-    this.importsNg("util/messageHandler");
+    this.loads("controller/notebookHeaderController");
+    this.loads("service/jsonWebService");
+    this.loads("service/notebookService");
+    this.loads("util/commsPipe");
+    this.loads("util/messageHandler");
 
     this.dependsOnNg("$scope");
     this.dependsOnNg("$state");
@@ -21,7 +20,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("messageHandler");
     this.dependsOnNg("commsPipe");
 
-    this.hasDefinition(function(rootApp, abstractMiniAppController, appStates, _) {
+    this.hasDefinition(function(abstractMiniAppController, appStates, _) {
 
         var triggerLogin = function(jsonWebService) {
 

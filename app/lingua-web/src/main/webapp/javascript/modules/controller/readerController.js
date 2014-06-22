@@ -2,17 +2,16 @@ App.Controller.createNew(function() {
 
     this.isCalled("readerController");
 
-    this.imports("rootApp");
     this.imports("controller/abstractMiniAppController");
     this.imports("util/textSelector");
     this.imports("util/appStates");
     this.imports("underscore");
 
-    this.importsNg("controller/readerBarController");
-    this.importsNg("service/jsonWebService");
-    this.importsNg("service/notebookService");
-    this.importsNg("util/messageHandler");
-    this.importsNg("util/commsPipe");
+    this.loads("controller/readerBarController");
+    this.loads("service/jsonWebService");
+    this.loads("service/notebookService");
+    this.loads("util/messageHandler");
+    this.loads("util/commsPipe");
 
     this.dependsOnNg("$scope");
     this.dependsOnNg("$state");
@@ -22,7 +21,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("messageHandler");
     this.dependsOnNg("commsPipe");
 
-    this.hasDefinition(function(rootApp, abstractMiniAppController, textSelector, appStates, _) {
+    this.hasDefinition(function(abstractMiniAppController, textSelector, appStates, _) {
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
 

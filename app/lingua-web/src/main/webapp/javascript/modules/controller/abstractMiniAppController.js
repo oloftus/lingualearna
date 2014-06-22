@@ -2,9 +2,7 @@ App.Module.createNew(function() {
 
     this.isCalled("abstractMiniAppController");
     
-    this.imports("rootApp");
-
-    this.hasDefinition(function(rootApp) {
+    this.hasDefinition(function() {
 
         var DIALOG_TOP_OFFSET = 70;
         

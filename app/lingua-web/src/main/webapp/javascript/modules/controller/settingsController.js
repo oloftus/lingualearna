@@ -2,13 +2,12 @@ App.Controller.createNew(function() {
 
     this.isCalled("settingsController");
     
-    this.imports("rootApp");
     this.imports("controller/abstractController");
     this.imports("underscore");
     
     this.dependsOnNg("$scope");
     
-    this.hasDefinition(function(rootApp, abstractController, _) {
+    this.hasDefinition(function(abstractController, _) {
 
         return function($scope) {
 

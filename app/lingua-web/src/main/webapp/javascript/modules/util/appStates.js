@@ -2,10 +2,9 @@ App.Module.createNew(function() {
 
     this.isCalled("appStates");
     
-    this.imports("rootApp");
     this.imports("underscore");
 
-    this.hasDefinition(function(rootApp, _) {
+    this.hasDefinition(function(_) {
 
         var StateDefinition = function(views, controllers) {
 

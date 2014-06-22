@@ -2,14 +2,13 @@ App.Controller.createNew(function() {
 
     this.isCalled("addNoteController");
     
-    this.imports("rootApp");
     this.imports("controller/abstractController");
     this.imports("underscore");
     
-    this.importsNg("service/languageNamesService");
-    this.importsNg("service/noteService");
-    this.importsNg("util/messageHandler");
-    this.importsNg("util/commsPipe");
+    this.loads("service/languageNamesService");
+    this.loads("service/noteService");
+    this.loads("util/messageHandler");
+    this.loads("util/commsPipe");
     
     this.dependsOnNg("$scope");
     this.dependsOnNg("$location");
@@ -20,7 +19,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("$timeout");
     this.dependsOnNg("$state");
 
-    this.hasDefinition(function(rootApp, abstractController, _) {
+    this.hasDefinition(function(abstractController, _) {
 
         var populateModelFromNote = function($scope, note) {
 
