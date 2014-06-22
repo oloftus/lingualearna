@@ -1,9 +1,23 @@
-(function() {
+App.Controller.createNew(function() {
 
-    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
-            "util/messageHandler", "service/languageNamesService", "service/noteService" ];
+    this.moduleHasName("editNoteController");
 
-    define(imports, function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    this.imports("linguaApp");
+    this.imports("controller/abstractController");
+    this.imports("util/ngRegistrationHelper");
+    this.imports("underscore");
+
+    this.importsNg("util/messageHandler");
+    this.importsNg("service/languageNamesService");
+    this.importsNg("service/noteService");
+
+    this.dependsOnNg("$scope");
+    this.dependsOnNg("noteService");
+    this.dependsOnNg("languageNamesService");
+    this.dependsOnNg("messageHandler");
+    this.dependsOnNg("noteId");
+
+    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
         /*
          * Prevent users overwriting notes because their original content
@@ -35,7 +49,7 @@
             });
         };
 
-        var EditNoteController = function($scope, noteService, languageNamesService, messageHandler, noteId) {
+        return function($scope, noteService, languageNamesService, messageHandler, noteId) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
@@ -67,8 +81,5 @@
                         MessageSeverity.ERROR);
             });
         };
-
-        ngRegistrationHelper(linguaApp).registerController("editNoteController",
-                [ "$scope", "noteService", "languageNamesService", "messageHandler", "noteId", EditNoteController ]);
     });
-})();
+});

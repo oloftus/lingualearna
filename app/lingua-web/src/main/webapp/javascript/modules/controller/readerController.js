@@ -1,33 +1,29 @@
-(function() {
+App.Controller.createNew(function() {
 
-    var componentName = "readerController";
+    this.moduleIsCalled("readerController");
 
-    var imports = [];
-    var ngImports = [];
-    var ngDependencies = [];
+    this.imports("linguaApp");
+    this.imports("controller/abstractMiniAppController");
+    this.imports("util/ngRegistrationHelper");
+    this.imports("util/textSelector");
+    this.imports("util/appStates");
+    this.imports("underscore");
 
-    imports.push("linguaApp");
-    imports.push("controller/abstractMiniAppController");
-    imports.push("util/ngRegistrationHelper");
-    imports.push("util/textSelector");
-    imports.push("util/appStates");
-    imports.push("underscore");
+    this.importsNg("controller/readerBarController");
+    this.importsNg("service/jsonWebService");
+    this.importsNg("service/notebookService");
+    this.importsNg("util/messageHandler");
+    this.importsNg("util/commsPipe");
 
-    ngImports.push("controller/readerBarController");
-    ngImports.push("service/jsonWebService");
-    ngImports.push("service/notebookService");
-    ngImports.push("util/messageHandler");
-    ngImports.push("util/commsPipe");
+    this.dependsOnNg("$scope");
+    this.dependsOnNg("$state");
+    this.dependsOnNg("$timeout");
+    this.dependsOnNg("jsonWebService");
+    this.dependsOnNg("notebookService");
+    this.dependsOnNg("messageHandler");
+    this.dependsOnNg("commsPipe");
 
-    ngDependencies.push("$scope");
-    ngDependencies.push("$state");
-    ngDependencies.push("$timeout");
-    ngDependencies.push("jsonWebService");
-    ngDependencies.push("notebookService");
-    ngDependencies.push("messageHandler");
-    ngDependencies.push("commsPipe");
-
-    define(doImport(imports, ngImports), function(linguaApp, abstractMiniAppController, ngRegistrationHelper, textSelector, appStates, _) {
+    this.hasDefinition(function(linguaApp, abstractMiniAppController, ngRegistrationHelper, textSelector, appStates, _) {
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
 
@@ -58,7 +54,7 @@
             jsonWebService.getCsrfToken();
         };
 
-        var ReaderController = function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,
+        return function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,
                 commsPipe) {
 
             var self = this;
@@ -79,7 +75,5 @@
                 setupClickToTranslate(commsPipe, $state, $scope);
             });
         };
-
-        ngRegistrationHelper(linguaApp).registerController(componentName, ngDependencies, ReaderController);
     });
-})();
+});

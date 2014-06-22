@@ -1,8 +1,8 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [ "linguaApp" ];
-
-    define(imports, function(linguaApp) {
+    this.moduleIsCalled("commonEnums");
+    
+    this.hasDefinition(function() {
 
         HttpMethod = {
             POST : "POST",
@@ -55,4 +55,4 @@
             MANUAL: "Manual"
         };
     });
-})();
+});

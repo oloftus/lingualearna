@@ -1,25 +1,20 @@
-(function() {
+App.Controller.createNew(function() {
 
-    var componentName = "settingsController";
+    this.moduleIsCalled("settingsController");
     
-    var imports = [];
-    var ngDependencies = [];
+    this.imports("linguaApp");
+    this.imports("controller/abstractController");
+    this.imports("util/ngRegistrationHelper");
+    this.imports("underscore");
     
-    imports.push("linguaApp");
-    imports.push("controller/abstractController");
-    imports.push("util/ngRegistrationHelper");
-    imports.push("underscore");
+    this.dependsOnNg("$scope");
     
-    ngDependencies.push("$scope");
-    
-    define(doImport(imports), function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
-        var SettingsController = function($scope) {
+        return function($scope) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
         };
-
-        ngRegistrationHelper(linguaApp).registerController(componentName, ngDependencies, SettingsController);
     });
-})();
+});

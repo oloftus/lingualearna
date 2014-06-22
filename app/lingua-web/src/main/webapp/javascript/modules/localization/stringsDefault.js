@@ -1,10 +1,14 @@
-define([], function() {
+App.Module.createNew(function() {
 
-    LocalStrings = {
-
-        addNoteTitle : "Add Note",
-        editNoteTitle : "Edit note",
-        noteSavedMessage : "Note saved to notebook",
-        genericServerErrorMessage: "A problem occurred that meant your request couldn't be processed"
-    };
+    this.moduleIsCalled("stringsDefault");
+    
+    this.hasDefinition(function() {
+        
+        LocalStrings = {
+            addNoteTitle : "Add Note",
+            editNoteTitle : "Edit note",
+            noteSavedMessage : "Note saved to notebook",
+            genericServerErrorMessage: "A problem occurred that meant your request couldn't be processed"
+        };
+    });
 });

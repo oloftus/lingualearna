@@ -1,8 +1,8 @@
-(function(){
+App.Module.createNew(function() {
+
+    this.moduleIsCalled("textSelector");
     
-    var imports = [ "linguaApp" ];
-    
-    define(imports, function(linguaApp) {
+    this.hasDefinition(function(linguaApp) {
         
         var getSelected = function() {
 
@@ -37,4 +37,4 @@
             clearSelected : clearSelected,
         };
     });
-})();
+});

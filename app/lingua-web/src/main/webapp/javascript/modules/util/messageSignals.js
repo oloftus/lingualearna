@@ -1,8 +1,6 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [ "linguaApp" ];
-
-    define(imports, function(linguaApp) {
+    this.hasDefinition(function() {
 
         Signals = {
             LOGIN_SUCCESS : "login-success",
@@ -10,4 +8,4 @@
             CSRF_RETRIEVED : "csrf-retrieved"
         };
     });
-})();
+});

@@ -1,10 +1,14 @@
-(function() {
+App.Module.createNew(function() {
 
     loadRequireConfig();
 
-    var imports = [ "linguaApp", "miniApps/abstractMiniApp", "controller/readerController" ];
-
-    define(imports, function(linguaApp, abstractMiniApp) {
+    this.moduleIsCalled("readerMiniApp");
+    
+    this.imports("linguaApp");
+    this.imports("miniApps/abstractMiniApp");
+    this.imports("controller/readerController");
+    
+    this.hasDefinition(function(linguaApp, abstractMiniApp) {
 
         _.extend(this, abstractMiniApp);
 
@@ -16,4 +20,4 @@
         this.configure();
         this.boot();
     });
-})();
+});

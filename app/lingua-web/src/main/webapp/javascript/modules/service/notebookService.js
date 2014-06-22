@@ -1,10 +1,18 @@
-(function() {
+App.Service.createNew(function() {
 
-    var imports = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService" ];
+    this.moduleIsCalled("notebookService");
 
-    define(imports, function(linguaApp, ngRegistrationHelper) {
+    this.imports("linguaApp");
+    this.imports("util/ngRegistrationHelper");
 
-        var NotebookService = function(jsonWebService, notesPagesServiceUrl) {
+    this.importsNg("service/jsonWebService");
+
+    this.dependsOnNg("jsonWebService");
+    this.dependsOnNg("notesPagesServiceUrl");
+
+    this.hasDefinition(function(linguaApp, ngRegistrationHelper) {
+
+        return function(jsonWebService, notesPagesServiceUrl) {
 
             var getNotebooksAndPages = function(successCallback, failureCallback) {
 
@@ -16,8 +24,5 @@
                 getNotebooksAndPages : getNotebooksAndPages
             };
         };
-
-        ngRegistrationHelper(linguaApp).registerService("notebookService",
-                [ "jsonWebService", "notesPagesServiceUrl", NotebookService ]);
     });
-})();
+});

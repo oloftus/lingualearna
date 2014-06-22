@@ -1,13 +1,13 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [];
+    this.moduleIsCalled("abstractMiniApp");
     
-    imports.push("ng");
-    imports.push("linguaApp");
-    imports.push("util/appStates");
-    imports.push("underscore");
+    this.imports("ng");
+    this.imports("linguaApp");
+    this.imports("util/appStates");
+    this.imports("underscore");
 
-    define(doImport(imports), function(ng, linguaApp, appStates, _) {
+    this.hasDefinition(function(ng, linguaApp, appStates, _) {
 
         var applyJsOverrides = function() {
             
@@ -47,12 +47,9 @@
             ng.bootstrap(document, [ "linguaAppx" ]);
         };
 
-        var AbstractMiniApp = {
-
+        return {
             configure : configure,
             boot : boot
         };
-
-        return AbstractMiniApp;
     });
-})();
+});

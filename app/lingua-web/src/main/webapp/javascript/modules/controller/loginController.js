@@ -1,11 +1,21 @@
-(function() {
+App.Controller.createNew(function() {
 
-    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "iframeResizer",
-            "util/commsPipe" ];
+    this.moduleIsCalled("loginController");
 
-    define(imports, function(linguaApp, abstractController, ngRegistrationHelper) {
+    this.imports("linguaApp");
+    this.imports("controller/abstractController");
+    this.imports("util/ngRegistrationHelper");
 
-            var LoginController = function($scope, $state, commsPipe) {
+    this.importsNg("iframeResizer");
+    this.importsNg("util/commsPipe");
+
+    this.dependsOnNg("$scope");
+    this.dependsOnNg("$state");
+    this.dependsOnNg("commsPipe");
+
+    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper) {
+
+        return function($scope, $state, commsPipe) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
@@ -21,8 +31,5 @@
                 }
             });
         };
-
-        ngRegistrationHelper(linguaApp).registerController("loginController",
-                [ "$scope", "$state", "commsPipe", LoginController ]);
     });
-})();
+});

@@ -1,10 +1,10 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [];
+    this.moduleIsCalled("abstractMiniAppController");
     
-    imports.push("linguaApp");
+    this.imports("linguaApp");
 
-    define(doImport(imports), function(linguaApp) {
+    this.hasDefinition(function(linguaApp) {
 
         var DIALOG_TOP_OFFSET = 70;
         
@@ -152,7 +152,7 @@
             });
         };
 
-        var AbstractRootController = {
+        return {
             setupSpecialDialogs : setupSpecialDialogs,
             setupDialogs : setupDialogs,
             setupPageMessages : setupPageMessages,
@@ -160,7 +160,5 @@
             setupNotebookEnvironment : setupNotebookEnvironment, 
             subscribeToNoteSubmissions : subscribeToNoteSubmissions
         };
-        
-        return AbstractRootController;
     });
-})();
+});

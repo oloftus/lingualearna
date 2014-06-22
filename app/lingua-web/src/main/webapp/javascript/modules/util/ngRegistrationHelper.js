@@ -1,10 +1,10 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [];
+    this.moduleIsCalled("ngRegistrationHelper");
     
-    imports.push("underscore");
+    this.imports("underscore");
 
-    define(doImport(imports), function(_) {
+    this.hasDefinition(function(_) {
 
         var ComponentType = {
             CONTROLLER : 0,
@@ -39,7 +39,7 @@
             };
         };
 
-        var registrationHelper = function(ngApp) {
+        return function(ngApp) {
 
             return {
                 registerController : registerHelper(ComponentType.CONTROLLER, ngApp),
@@ -47,7 +47,5 @@
                 registerFactory : registerHelper(ComponentType.FACTORY, ngApp)
             };
         };
-
-        return registrationHelper;
     });
-})();
+});

@@ -1,5 +1,18 @@
-define([ "ng", "ui.router", "jquery.ui", "util/commonTypes", "util/commonEnums", "util/messageSignals",
-        "util/messageSubjects", "config/properties", "localization/stringsDefault" ], function(ng) {
+App.Module.createNew(function() {
 
-    return ng.module("linguaAppx", [ "ui.router" ]);
+    this.moduleIsCalled("rootApp");
+
+    this.imports("ng");
+    this.imports("ui.router");
+    this.imports("jquery.ui");
+    this.imports("util/commonTypes");
+    this.imports("util/commonEnums");
+    this.imports("util/messageSignals");
+    this.imports("util/messageSubjects");
+    this.imports("config/properties");
+    this.imports("localization/stringsDefault");
+    
+    this.hasDefinition(function(ng) {
+        return ng.module("linguaAppx", [ "ui.router" ]);
+    });
 });

@@ -1,8 +1,10 @@
-(function() {
+App.Factory.createNew(function() {
 
-    var imports = [ "linguaApp", "util/ngRegistrationHelper", "underscore" ];
+    this.moduleIsCalled("commsPipe");
+    
+    this.imports("underscore");
 
-    define(imports, function(linguaApp, ngRegistrationHelper, _) {
+    this.hasDefinition(function(_) {
 
         var Subscriber = function(callback, subjectAcceptor, messageAcceptor) {
             
@@ -11,7 +13,7 @@
             this.messageAcceptor = messageAcceptor;
         };
         
-        var CommsPipe = function() {
+        return function() {
 
             var subscribers = {};
             var subscribersToAnySender = {};
@@ -96,7 +98,5 @@
                 subscribe : subscribe
             };
         };
-
-        ngRegistrationHelper(linguaApp).registerFactory("commsPipe", [ CommsPipe ]);
     });
-})();
+});

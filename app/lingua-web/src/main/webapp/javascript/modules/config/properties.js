@@ -1,8 +1,10 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [ "linguaApp" ];
+    this.moduleIsCalled("properties");
+    
+    this.imports("linguaApp");
 
-    define(imports, function(linguaApp) {
+    this.hasDefinition(function(linguaApp) {
 
         with (Properties) {
             
@@ -24,4 +26,4 @@
             Properties.dialogDisappearTimeout = 4000; // Milliseconds
         }
     });
-})();
+});

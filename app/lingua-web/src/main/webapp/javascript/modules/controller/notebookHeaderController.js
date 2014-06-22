@@ -1,30 +1,24 @@
-(function() {
+App.Controller.createNew(function() {
 
-    var componentName = "notebookHeaderController";
+    this.moduleIsCalled("notebookHeaderController");
 
-    var imports = [];
-    var ngImports = [];
-    var ngDependencies = [];
+    this.imports("linguaApp");
+    this.imports("controller/abstractController");
+    this.imports("util/ngRegistrationHelper");
+    this.imports("underscore");
 
-    imports.push("linguaApp");
-    imports.push("controller/abstractController");
-    imports.push("util/ngRegistrationHelper");
-    imports.push("underscore");
+    this.importsNg("util/commsPipe");
 
-    ngImports.push("util/commsPipe");
+    this.dependsOnNg("$scope");
+    this.dependsOnNg("commsPipe");
 
-    ngDependencies.push("$scope");
-    ngDependencies.push("commsPipe");
+    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
-    define(doImport(imports, ngImports), function(linguaApp, abstractController, ngRegistrationHelper, _) {
-
-        var NotebookHeaderController = function($scope, commsPipe) {
+        return function($scope, commsPipe) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
             this.addNotebookChangedHandler(commsPipe, $scope);
         };
-
-        ngRegistrationHelper(linguaApp).registerController(componentName, ngDependencies, NotebookHeaderController);
     });
-})();
+});

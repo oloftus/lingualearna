@@ -1,26 +1,22 @@
-(function() {
+App.Service.createNew(function() {
 
-    var componentName = "jsonWebService";
+    this.moduleIsCalled("jsonWebService");
 
-    var imports = [];
-    var ngImports = [];
-    var ngDependencies = [];
+    this.imports("linguaApp");
+    this.imports("util/ngRegistrationHelper");
+    this.imports("util/appStates");
 
-    imports.push("linguaApp");
-    imports.push("util/ngRegistrationHelper");
-    imports.push("util/appStates");
+    this.importsNg("util/commsPipe");
 
-    ngImports.push("util/commsPipe");
+    this.dependsOnNg("$http");
+    this.dependsOnNg("commsPipe");
+    this.dependsOnNg("$state");
 
-    ngDependencies.push("$http");
-    ngDependencies.push("commsPipe");
-    ngDependencies.push("$state");
-
-    define(doImport(imports, ngImports), function(linguaApp, ngRegistrationHelper, appStates) {
+    this.hasDefinition(function(linguaApp, ngRegistrationHelper, appStates) {
 
         var CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
 
-        var JsonWebService = function($http, commsPipe, $state) {
+        return function($http, commsPipe, $state) {
 
             var callIfNotUndefinedOrNull = function(callback, thisArg, args) {
 
@@ -113,7 +109,5 @@
                 getCsrfToken : getCsrfToken
             };
         };
-
-        ngRegistrationHelper(linguaApp).registerService(componentName, ngDependencies, JsonWebService);
     });
-})();
+});

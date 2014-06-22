@@ -1,12 +1,18 @@
-(function() {
+App.Service.createNew(function() {
 
-    var imports = [ "linguaApp", "service/crudService", "util/ngRegistrationHelper", "service/jsonWebService" ];
+    this.moduleIsCalled("noteService");
 
-    define(imports, function(linguaApp, CrudService, ngRegistrationHelper) {
+    this.imports("linguaApp");
+    this.imports("service/crudService");
+    this.imports("util/ngRegistrationHelper");
+    
+    this.importsNg("service/jsonWebService");
 
-        var NoteService = CrudService;
+    this.dependsOnNg("jsonWebService");
+    this.dependsOnNg("noteServiceUrl");
 
-        ngRegistrationHelper(linguaApp).registerService("noteService",
-                [ "jsonWebService", "noteServiceUrl", NoteService ]);
+    this.hasDefinition(function(linguaApp, CrudService, ngRegistrationHelper) {
+
+        return CrudService;
     });
-})();
+});

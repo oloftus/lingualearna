@@ -1,15 +1,19 @@
-(function() {
+App.Controller.createNew(function() {
 
-    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore" ];
+    this.moduleIsCalled("binderController");
 
-    define(imports, function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    this.imports("linguaApp");
+    this.imports("controller/abstractController");
+    this.imports("util/ngRegistrationHelper");
+    this.imports("underscore");
 
-        var BinderController = function($scope) {
+    this.dependsOnNg("$scope");
 
+    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
+
+        return function($scope) {
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
         };
-
-        ngRegistrationHelper(linguaApp).registerController("binderController", [ "$scope", BinderController ]);
     });
-})();
+});

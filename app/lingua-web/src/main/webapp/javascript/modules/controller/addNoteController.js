@@ -1,9 +1,27 @@
-(function() {
+App.Controller.createNew(function() {
 
-    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
-            "service/languageNamesService", "service/noteService", "util/messageHandler", "util/commsPipe" ];
+    this.moduleIsCalled("addNoteController");
+    
+    this.imports("linguaApp");
+    this.imports("controller/abstractController");
+    this.imports("util/ngRegistrationHelper");
+    this.imports("underscore");
+    
+    this.importsNg("service/languageNamesService");
+    this.importsNg("service/noteService");
+    this.importsNg("util/messageHandler");
+    this.importsNg("util/commsPipe");
+    
+    this.dependsOnNg("$scope");
+    this.dependsOnNg("$location");
+    this.dependsOnNg("noteService");
+    this.dependsOnNg("languageNamesService");
+    this.dependsOnNg("messageHandler");
+    this.dependsOnNg("commsPipe");
+    this.dependsOnNg("$timeout");
+    this.dependsOnNg("$state");
 
-    define(imports, function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
         var populateModelFromNote = function($scope, note) {
 
@@ -98,7 +116,7 @@
             }, Signals.CURRENT_NOTEBOOK_CHANGED);
         };
 
-        var AddNoteController = function($scope, $location, noteService, languageNamesService, messageHandler,
+        return function($scope, $location, noteService, languageNamesService, messageHandler,
                 commsPipe, $timeout, $state) {
 
             _.extend(this, abstractController);
@@ -111,10 +129,5 @@
             subscribeToAddNoteRequests(commsPipe, $scope, languageNamesService);
             subscribeToCurrentNotebookChangedEvents($scope, commsPipe);
         };
-
-        ngRegistrationHelper(linguaApp).registerController(
-                "addNoteController",
-                [ "$scope", "$location", "noteService", "languageNamesService", "messageHandler", "commsPipe",
-                        "$timeout", "$state", AddNoteController ]);
     });
-})();
+});

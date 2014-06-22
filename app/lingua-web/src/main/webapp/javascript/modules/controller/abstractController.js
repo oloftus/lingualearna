@@ -1,10 +1,10 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [];
+    this.moduleIsCalled("abstractController");
     
-    imports.push("linguaApp");
+    this.imports("linguaApp");
 
-    define(doImport(imports), function(linguaApp) {
+    this.hasDefinition(function(linguaApp) {
 
         var addNotebookChangedHandler = function(commsPipe, $scope) {
             
@@ -20,11 +20,9 @@
             $scope.model.globalMessages = [];
         };
         
-        var AbstractController = {
+        return {
             addNotebookChangedHandler : addNotebookChangedHandler,
             setupDefaultScope : setupDefaultScope
         };
-        
-        return AbstractController;
     });
-})();
+});

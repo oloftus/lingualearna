@@ -1,10 +1,18 @@
-(function() {
+App.Service.createNew(function() {
 
-    var imports = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService" ];
+    this.moduleIsCalled("translateService");
 
-    define(imports, function(linguaApp, ngRegistrationHelper) {
+    this.imports("linguaApp");
+    this.imports("util/ngRegistrationHelper");
 
-        var TranslateService = function(jsonWebService, translateServiceUrl) {
+    this.importsNg("service/jsonWebService");
+
+    this.dependsOnNg("jsonWebService");
+    this.dependsOnNg("translateServiceUrl");
+
+    this.hasDefinition(function(linguaApp, ngRegistrationHelper) {
+
+        return function(jsonWebService, translateServiceUrl) {
 
             var translate = function(translationRequest, successCallback, failureCallback) {
 
@@ -16,8 +24,5 @@
                 translate : translate
             };
         };
-
-        ngRegistrationHelper(linguaApp).registerService("translateService",
-                [ "jsonWebService", "translateServiceUrl", TranslateService ]);
     });
-})();
+});

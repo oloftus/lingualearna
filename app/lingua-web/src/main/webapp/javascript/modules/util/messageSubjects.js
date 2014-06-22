@@ -1,12 +1,10 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [ "linguaApp" ];
-
-    define(imports, function(linguaApp) {
+    this.hasDefinition(function(linguaApp) {
 
         Subjects = {
             TRANSLATION_REQUEST : "translation-request",
             Note : "note"
         };
     });
-})();
+});

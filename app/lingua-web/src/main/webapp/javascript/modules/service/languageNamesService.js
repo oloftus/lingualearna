@@ -1,10 +1,18 @@
-(function() {
+App.Service.createNew(function() {
 
-    var imports = [ "linguaApp", "util/ngRegistrationHelper", "service/jsonWebService" ];
+    this.moduleIsCalled("languageNamesService");
 
-    define(imports, function(linguaApp, ngRegistrationHelper) {
+    this.imports("linguaApp");
+    this.imports("util/ngRegistrationHelper");
 
-        var LanguageNamesService = function(jsonWebService, languageNamesServiceUrl) {
+    this.importsNg("service/jsonWebService");
+
+    this.dependsOnNg("jsonWebService");
+    this.dependsOnNg("languageNamesServiceUrl");
+
+    this.hasDefinition(function(linguaApp, ngRegistrationHelper) {
+
+        return function(jsonWebService, languageNamesServiceUrl) {
 
             var lookup = function(languageNameRequest, successCallback, failureCallback) {
 
@@ -16,8 +24,5 @@
                 lookup : lookup
             };
         };
-
-        ngRegistrationHelper(linguaApp).registerService("languageNamesService",
-                [ "jsonWebService", "languageNamesServiceUrl", LanguageNamesService ]);
     });
-})();
+});

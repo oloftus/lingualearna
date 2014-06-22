@@ -1,10 +1,14 @@
-(function() {
+App.Module.createNew(function() {
 
     loadRequireConfig();
 
-    var imports = [ "linguaApp", "miniApps/abstractMiniApp", "controller/notebookController" ];
+    this.moduleIsCalled("notebookMiniApp")
+    
+    this.imports("linguaApp");
+    this.imports("miniApps/abstractMiniApp");
+    this.imports("controller/notebookController");
 
-    define(imports, function(linguaApp, abstractMiniApp) {
+    this.hasDefinition(function(linguaApp, abstractMiniApp) {
 
         _.extend(this, abstractMiniApp);
 
@@ -16,4 +20,4 @@
         this.configure();
         this.boot();
     });
-})();
+});

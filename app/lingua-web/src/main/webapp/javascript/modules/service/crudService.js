@@ -1,13 +1,15 @@
-(function(){
+App.Module.createNew(function(){
     
-    var imports = [ "linguaApp" ];
+    this.moduleIsCalled("crudService");
     
-    define(imports, function(linguaApp) {
+    this.imports("linguaApp");
+    
+    this.hasDefinition(function(linguaApp) {
         
         /*
          * The intention to use a reference to CrudService later and let Angular do the DI 
          */
-        var CrudService = function(jsonWebService, serviceUrl) {
+        return function(jsonWebService, serviceUrl) {
             
             var constructInstanceUrl = function(baseUrl, instanceId) {
                 
@@ -45,7 +47,5 @@
                 remove : remove
             };
         };
-        
-        return CrudService;
     });
-})();
+});

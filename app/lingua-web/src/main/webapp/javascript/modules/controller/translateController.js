@@ -1,16 +1,31 @@
-(function() {
+App.Controller.createNew(function() {
 
-    var imports = [ "linguaApp", "controller/abstractController", "util/ngRegistrationHelper", "underscore",
-            "util/commsPipe", "service/languageNamesService", "service/translateService" ];
+    this.moduleIsCalled("translateController");
 
-    define(imports, function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    this.imports("linguaApp");
+    this.imports("controller/abstractController");
+    this.imports("util/ngRegistrationHelper");
+    this.imports("underscore");
+
+    this.importsNg("util/commsPipe");
+    this.importsNg("service/languageNamesService");
+    this.importsNg("service/translateService");
+
+    this.dependsOnNg("$scope");
+    this.dependsOnNg("translateService");
+    this.dependsOnNg("languageNamesService");
+    this.dependsOnNg("commsPipe");
+    this.dependsOnNg("$location");
+    this.dependsOnNg("$state");
+
+    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
 
         var populateModelFromTranslationRequest = function($scope, translationRequest) {
 
             $scope.model.sourceLang = translationRequest.sourceLang;
             $scope.model.targetLang = translationRequest.targetLang;
             $scope.model.query = translationRequest.query;
-            
+
             $scope.model.includedInTest = true;
         };
 
@@ -26,9 +41,9 @@
 
             $scope.func.doTranslate();
         };
-        
+
         var addTranslateButtonHandler = function($scope, translateService) {
-            
+
             $scope.func.doTranslate = function() {
 
                 var translationRequest = new TranslationRequest($scope.model.sourceLang, $scope.model.targetLang,
@@ -41,32 +56,31 @@
                 });
             };
         };
-        
+
         var addAddToNotebookButtonHandler = function($scope, commsPipe, $state, $location) {
-            
+
             $scope.func.doAddToNotebook = function() {
 
                 var additionalNotes = "";
                 var message = new Note($scope.model.targetLang, $scope.model.translations.google,
-                        $scope.model.sourceLang, $scope.model.query, additionalNotes, $location.absUrl(), TranslationSources.GOOGLE,
-                        $scope.model.includedInTest);
+                        $scope.model.sourceLang, $scope.model.query, additionalNotes, $location.absUrl(),
+                        TranslationSources.GOOGLE, $scope.model.includedInTest);
 
                 $state.go(AppStates.ADD_NOTE).then(function() {
                     commsPipe.send(Components.TRANSLATE, Components.ADD_NOTE, Subjects.NOTE, message);
                 });
             };
         };
-        
+
         var subscribeToTranslationRequests = function(commsPipe, $scope, languageNamesService) {
-            
+
             commsPipe.subscribe(Components.ANY, Components.TRANSLATE, function(translationRequest, subject) {
                 populateModelFromTranslationRequest($scope, translationRequest);
                 setLanguagesTitles($scope, languageNamesService);
             }, Subjects.TRANSLATION_REQUEST);
         };
 
-        var TranslateController = function($scope, translateService, languageNamesService, commsPipe, $location,
-                $state) {
+        return function($scope, translateService, languageNamesService, commsPipe, $location, $state) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
@@ -75,8 +89,5 @@
             addAddToNotebookButtonHandler($scope, commsPipe, $state, $location);
             subscribeToTranslationRequests(commsPipe, $scope, languageNamesService);
         };
-
-        ngRegistrationHelper(linguaApp).registerController("translateController",
-                [ "$scope", "translateService", "languageNamesService", "commsPipe", "$location", "$state", TranslateController ]);
     });
-})();
+});

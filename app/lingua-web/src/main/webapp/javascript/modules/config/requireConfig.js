@@ -24,6 +24,18 @@ App.Module = {
         this.imports = function(moduleName) {
             this.moduleProps._imports.push(moduleName);
         };
+        
+        this.moduleIsCalled = function(moduleName) {
+            this.moduleProps._moduleName = moduleName;
+        };
+
+        this.hasDefinition = function(moduleDefinition) {
+            define(this.moduleProps._imports, moduleDefinition);
+        };
+    },
+    createNew : function(module) {
+        module.prototype = new App.Module.Proto();
+        new module();
     }
 };
 
@@ -43,9 +55,63 @@ App.NgComponent = {
             this.moduleProps._ngDeps.push(moduleName);
         };
         
-        this.isCalled = function(componentName) {
-            this.moduleProps._componentName = componentName;
+        this.hasDefinition = function(componentDefinition) {
+            
+            var allImports = doImport(this.moduleProps._importsFirst, this.moduleProps._imports, this.moduleProps._ngImports);
+            var requireModule = function() {
+                
+                var linguaApp = Array.prototype.shift.call(arguments);
+                var ngRegistrationHelper = Array.prototype.shift.call(arguments);
+                var component = componentDefinition.apply(null, arguments);
+                this._registerComponent(linguaApp, ngRegistrationHelper, component);
+            }.bind(this);
+            
+            define(allImports, requireModule);
         };
+    }
+};
+
+App.Factory = {
+    Proto : function() {
+        
+        App.NgComponent.Proto.call(this);
+        
+        this._importsFirst("linguaApp");
+        this._importsFirst("util/ngRegistrationHelper");
+        
+        var _registerComponent = function(linguaApp, ngRegistrationHelper, factory) {
+            ngRegistrationHelper(linguaApp).registerFactory(this.moduleProps._moduleName,
+                    this.moduleProps._ngDeps, factory);
+        };
+        
+        this._registerComponent = _registerComponent.bind(this);
+    },
+    createNew : function(module) {
+
+        module.prototype = new this.Proto();
+        new module();
+    }
+};
+
+App.Service = {
+    Proto : function() {
+        
+        App.NgComponent.Proto.call(this);
+        
+        this._importsFirst("linguaApp");
+        this._importsFirst("util/ngRegistrationHelper");
+        
+        var _registerComponent = function(linguaApp, ngRegistrationHelper, service) {
+            ngRegistrationHelper(linguaApp).registerService(this.moduleProps._moduleName,
+                    this.moduleProps._ngDeps, service);
+        };
+        
+        this._registerComponent = _registerComponent.bind(this);
+    },
+    createNew : function(module) {
+
+        module.prototype = new this.Proto();
+        new module();
     }
 };
 
@@ -57,26 +123,16 @@ App.Controller = {
         this._importsFirst("linguaApp");
         this._importsFirst("util/ngRegistrationHelper");
         
-        this.hasDefinition = function(controllerDefinition) {
-            
-            var allImports = doImport(this.moduleProps._importsFirst, this.moduleProps._imports, this.moduleProps._ngImports);
-            var requireModule = function() {
-                
-                var linguaApp = Array.prototype.shift.call(arguments);
-                var ngRegistrationHelper = Array.prototype.shift.call(arguments);
-                
-                var controller = controllerDefinition.apply(null, arguments);
-                
-                ngRegistrationHelper(linguaApp).registerController(this.moduleProps._componentName,
-                        this.moduleProps._ngDeps, controller);
-            }.bind(this);
-            
-            define(allImports, requireModule);
+        var _registerComponent = function(linguaApp, ngRegistrationHelper, controller) {
+            ngRegistrationHelper(linguaApp).registerController(this.moduleProps._moduleName,
+                    this.moduleProps._ngDeps, controller);
         };
+        
+        this._registerComponent = _registerComponent.bind(this);
     },
     createNew : function(module) {
 
-        module.prototype = new App.Controller.Proto();
+        module.prototype = new this.Proto();
         new module();
     }
 };

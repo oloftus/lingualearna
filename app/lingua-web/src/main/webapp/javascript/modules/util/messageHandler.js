@@ -1,14 +1,17 @@
-(function() {
+App.Factory.createNew(function() {
 
-    var imports = [ "linguaApp", "util/ngRegistrationHelper", "underscore", "jquery" ];
+    this.moduleIsCalled("messageHandler");
+    
+    this.imports("underscore");
+    this.imports("jquery");
 
-    define(imports, function(linguaApp, ngRegistrationHelper, _, $) {
+    this.hasDefinition(function(_, $) {
 
-        var MessageHandler = function() {
-
-            var ERRORS_FIELD = "errors";
-            var FIELD_ERRORS_CLASS = "lingua-field-messages";
-            var ERROR_CLASS = "lingua-error";
+        var ERRORS_FIELD = "errors";
+        var FIELD_ERRORS_CLASS = "lingua-field-messages";
+        var ERROR_CLASS = "lingua-error";
+        
+        return function() {
 
             var getGlobalMessages = function($scope) {
 
@@ -148,7 +151,5 @@
                 clearLocalAndGlobalMessages : clearLocalAndGlobalMessages
             };
         };
-
-        ngRegistrationHelper(linguaApp).registerFactory("messageHandler", [ MessageHandler ]);
     });
-})();
+});

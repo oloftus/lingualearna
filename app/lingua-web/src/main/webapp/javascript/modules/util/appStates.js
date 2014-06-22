@@ -1,11 +1,10 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [];
+    this.moduleIsCalled("appStates");
     
-    imports.push("linguaApp");
-    imports.push("underscore");
+    this.imports("underscore");
 
-    define(doImport(imports), function(linguaApp, _) {
+    this.hasDefinition(function(_) {
 
         var StateDefinition = function(views, controllers) {
 
@@ -188,4 +187,4 @@
             goRelative : goRelative
         };
     });
-})();
+});

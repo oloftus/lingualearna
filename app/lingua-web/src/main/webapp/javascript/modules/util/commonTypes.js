@@ -1,8 +1,8 @@
-(function() {
+App.Module.createNew(function() {
 
-    var imports = [ "linguaApp" ];
-
-    define(imports, function(linguaApp) {
+    this.moduleIsCalled("commonType");
+    
+    this.hasDefinition(function() {
 
         TranslationRequest = function(sourceLang, targetLang, query) {
 
@@ -35,4 +35,4 @@
             this.message = message;
         };
     });
-})();
+});
