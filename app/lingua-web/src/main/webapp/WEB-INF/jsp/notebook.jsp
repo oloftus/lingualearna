@@ -8,7 +8,7 @@
 <title>LinguaLearna - Notebook</title>
 
 <script type="text/javascript">
-    var Properties;
+    var Properties = {};
     
     var csrfSecret = "${_csrf.token}";
     var appEntrypoint = "${pageContext.request.contextPath}/javascript/modules/miniApps/notebook.js";
@@ -20,6 +20,8 @@
 
 <link href="${pageContext.request.contextPath}/resources/css/common.css" rel="stylesheet" type="text/css" />
 <link href="${pageContext.request.contextPath}/resources/css/notebook.css" rel="stylesheet" type="text/css">
+
+<script src="${pageContext.request.contextPath}/javascript/modules/framework/framework.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/lib/require-2.1.11.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/modules/config/requireConfig.js" type="text/javascript"></script>
 </head>

@@ -1,10 +1,10 @@
 App.Module.createNew(function(){
     
-    this.moduleIsCalled("crudService");
+    this.isCalled("crudService");
     
-    this.imports("linguaApp");
+    this.imports("rootApp");
     
-    this.hasDefinition(function(linguaApp) {
+    this.hasDefinition(function(rootApp) {
         
         /*
          * The intention to use a reference to CrudService later and let Angular do the DI 

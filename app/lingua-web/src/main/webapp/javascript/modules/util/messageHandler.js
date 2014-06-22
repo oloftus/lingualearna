@@ -1,6 +1,6 @@
 App.Factory.createNew(function() {
 
-    this.moduleIsCalled("messageHandler");
+    this.isCalled("messageHandler");
     
     this.imports("underscore");
     this.imports("jquery");

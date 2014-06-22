@@ -1,6 +1,6 @@
 App.Module.createNew(function() {
 
-    this.moduleIsCalled("appStates");
+    this.isCalled("appStates");
     
     this.imports("underscore");
 

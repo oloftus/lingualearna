@@ -1,10 +1,9 @@
 App.Controller.createNew(function() {
 
-    this.moduleIsCalled("addNoteController");
+    this.isCalled("addNoteController");
     
-    this.imports("linguaApp");
+    this.imports("rootApp");
     this.imports("controller/abstractController");
-    this.imports("util/ngRegistrationHelper");
     this.imports("underscore");
     
     this.importsNg("service/languageNamesService");
@@ -21,7 +20,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("$timeout");
     this.dependsOnNg("$state");
 
-    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    this.hasDefinition(function(rootApp, abstractController, _) {
 
         var populateModelFromNote = function($scope, note) {
 

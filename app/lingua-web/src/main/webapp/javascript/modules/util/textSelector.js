@@ -1,8 +1,8 @@
 App.Module.createNew(function() {
 
-    this.moduleIsCalled("textSelector");
+    this.isCalled("textSelector");
     
-    this.hasDefinition(function(linguaApp) {
+    this.hasDefinition(function(rootApp) {
         
         var getSelected = function() {
 

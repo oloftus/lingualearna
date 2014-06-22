@@ -1,10 +1,9 @@
 App.Controller.createNew(function() {
 
-    this.moduleIsCalled("loginController");
+    this.isCalled("loginController");
 
-    this.imports("linguaApp");
+    this.imports("rootApp");
     this.imports("controller/abstractController");
-    this.imports("util/ngRegistrationHelper");
 
     this.importsNg("iframeResizer");
     this.importsNg("util/commsPipe");
@@ -13,7 +12,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("$state");
     this.dependsOnNg("commsPipe");
 
-    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper) {
+    this.hasDefinition(function(rootApp, abstractController) {
 
         return function($scope, $state, commsPipe) {
 

@@ -1,6 +1,6 @@
 App.Controller.createNew(function() {
 
-    this.moduleIsCalled("notebookController");
+    this.isCalled("notebookController");
     
     this.imports("controller/abstractMiniAppController");
     this.imports("util/appStates");

@@ -1,10 +1,9 @@
 App.Controller.createNew(function() {
 
-    this.moduleIsCalled("translateController");
+    this.isCalled("translateController");
 
-    this.imports("linguaApp");
+    this.imports("rootApp");
     this.imports("controller/abstractController");
-    this.imports("util/ngRegistrationHelper");
     this.imports("underscore");
 
     this.importsNg("util/commsPipe");
@@ -18,7 +17,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("$location");
     this.dependsOnNg("$state");
 
-    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    this.hasDefinition(function(rootApp, abstractController, _) {
 
         var populateModelFromTranslationRequest = function($scope, translationRequest) {
 

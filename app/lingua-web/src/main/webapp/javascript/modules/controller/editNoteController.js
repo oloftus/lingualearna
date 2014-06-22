@@ -2,9 +2,8 @@ App.Controller.createNew(function() {
 
     this.moduleHasName("editNoteController");
 
-    this.imports("linguaApp");
+    this.imports("rootApp");
     this.imports("controller/abstractController");
-    this.imports("util/ngRegistrationHelper");
     this.imports("underscore");
 
     this.importsNg("util/messageHandler");
@@ -17,7 +16,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("messageHandler");
     this.dependsOnNg("noteId");
 
-    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    this.hasDefinition(function(rootApp, abstractController, _) {
 
         /*
          * Prevent users overwriting notes because their original content

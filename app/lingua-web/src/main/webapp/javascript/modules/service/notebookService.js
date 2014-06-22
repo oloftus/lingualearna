@@ -1,16 +1,14 @@
 App.Service.createNew(function() {
 
-    this.moduleIsCalled("notebookService");
+    this.isCalled("notebookService");
 
-    this.imports("linguaApp");
-    this.imports("util/ngRegistrationHelper");
 
     this.importsNg("service/jsonWebService");
 
     this.dependsOnNg("jsonWebService");
     this.dependsOnNg("notesPagesServiceUrl");
 
-    this.hasDefinition(function(linguaApp, ngRegistrationHelper) {
+    this.hasDefinition(function() {
 
         return function(jsonWebService, notesPagesServiceUrl) {
 

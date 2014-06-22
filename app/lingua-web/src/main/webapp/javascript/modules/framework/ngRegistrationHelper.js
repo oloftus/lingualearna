@@ -1,6 +1,6 @@
 App.Module.createNew(function() {
 
-    this.moduleIsCalled("ngRegistrationHelper");
+    this.isCalled("ngRegistrationHelper");
     
     this.imports("underscore");
 

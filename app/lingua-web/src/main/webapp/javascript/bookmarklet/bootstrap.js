@@ -8,7 +8,8 @@
     var viewRoot = appRoot + "/ngViews";
 
     var cssFiles = [ "/common.css", "/reader.css" ];
-    var scriptFiles = [ libRoot + "/require-2.1.11.js", moduleRoot + "/config/requireConfig.js" ];
+    var scriptFiles = [ moduleRoot + "/framework/framework.js", libRoot + "/require-2.1.11.js",
+            moduleRoot + "/config/requireConfig.js" ];
     var ngIncludeFile = viewRoot + "/readerView.html";
     var readerJsFile = moduleRoot + "/miniApps/reader.js";
 
@@ -18,7 +19,7 @@
     Properties = {};
 
     var scriptsLoadedCounter = 0;
-    
+
     var addCss = function() {
 
         for (var i = 0; i < cssFiles.length; i++) {

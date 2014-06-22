@@ -1,10 +1,9 @@
 App.Controller.createNew(function() {
 
-    this.moduleIsCalled("readerController");
+    this.isCalled("readerController");
 
-    this.imports("linguaApp");
+    this.imports("rootApp");
     this.imports("controller/abstractMiniAppController");
-    this.imports("util/ngRegistrationHelper");
     this.imports("util/textSelector");
     this.imports("util/appStates");
     this.imports("underscore");
@@ -23,7 +22,7 @@ App.Controller.createNew(function() {
     this.dependsOnNg("messageHandler");
     this.dependsOnNg("commsPipe");
 
-    this.hasDefinition(function(linguaApp, abstractMiniAppController, ngRegistrationHelper, textSelector, appStates, _) {
+    this.hasDefinition(function(rootApp, abstractMiniAppController, textSelector, appStates, _) {
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
 

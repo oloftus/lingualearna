@@ -1,6 +1,6 @@
 App.Factory.createNew(function() {
 
-    this.moduleIsCalled("commsPipe");
+    this.isCalled("commsPipe");
     
     this.imports("underscore");
 

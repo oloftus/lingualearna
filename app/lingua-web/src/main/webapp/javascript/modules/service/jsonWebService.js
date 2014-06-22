@@ -1,9 +1,8 @@
 App.Service.createNew(function() {
 
-    this.moduleIsCalled("jsonWebService");
+    this.isCalled("jsonWebService");
 
-    this.imports("linguaApp");
-    this.imports("util/ngRegistrationHelper");
+    this.imports("rootApp");
     this.imports("util/appStates");
 
     this.importsNg("util/commsPipe");
@@ -12,7 +11,7 @@ App.Service.createNew(function() {
     this.dependsOnNg("commsPipe");
     this.dependsOnNg("$state");
 
-    this.hasDefinition(function(linguaApp, ngRegistrationHelper, appStates) {
+    this.hasDefinition(function(rootApp, appStates) {
 
         var CSRF_TOKEN_NAME = "X-CSRF-TOKEN";
 
@@ -33,7 +32,7 @@ App.Service.createNew(function() {
             var getCsrfToken = function() {
 
                 var successCallback = function(data) {
-                    linguaApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
+                    rootApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
                     commsPipe.send(Components.JSON_WEB_SERVICE, Components.ANY, Signals.CSRF_RETRIEVED);
                 };
 

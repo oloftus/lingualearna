@@ -1,16 +1,15 @@
 App.Service.createNew(function() {
 
-    this.moduleIsCalled("translateService");
+    this.isCalled("translateService");
 
-    this.imports("linguaApp");
-    this.imports("util/ngRegistrationHelper");
+    this.imports("rootApp");
 
     this.importsNg("service/jsonWebService");
 
     this.dependsOnNg("jsonWebService");
     this.dependsOnNg("translateServiceUrl");
 
-    this.hasDefinition(function(linguaApp, ngRegistrationHelper) {
+    this.hasDefinition(function(rootApp) {
 
         return function(jsonWebService, translateServiceUrl) {
 

@@ -1,10 +1,10 @@
 App.Module.createNew(function() {
 
-    this.moduleIsCalled("abstractController");
+    this.isCalled("abstractController");
     
-    this.imports("linguaApp");
+    this.imports("rootApp");
 
-    this.hasDefinition(function(linguaApp) {
+    this.hasDefinition(function(rootApp) {
 
         var addNotebookChangedHandler = function(commsPipe, $scope) {
             

@@ -1,18 +1,18 @@
 App.Module.createNew(function() {
 
-    this.moduleIsCalled("rootApp");
+    this.isCalled("rootApp");
 
     this.imports("ng");
     this.imports("ui.router");
     this.imports("jquery.ui");
-    this.imports("util/commonTypes");
-    this.imports("util/commonEnums");
-    this.imports("util/messageSignals");
-    this.imports("util/messageSubjects");
+    this.imports("types/commonTypes");
+    this.imports("types/commonEnums");
+    this.imports("types/messageSignals");
+    this.imports("types/messageSubjects");
     this.imports("config/properties");
     this.imports("localization/stringsDefault");
     
     this.hasDefinition(function(ng) {
-        return ng.module("linguaAppx", [ "ui.router" ]);
+        return ng.module("rootAppx", [ "ui.router" ]);
     });
 });

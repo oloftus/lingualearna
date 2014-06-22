@@ -1,15 +1,14 @@
 App.Controller.createNew(function() {
 
-    this.moduleIsCalled("settingsController");
+    this.isCalled("settingsController");
     
-    this.imports("linguaApp");
+    this.imports("rootApp");
     this.imports("controller/abstractController");
-    this.imports("util/ngRegistrationHelper");
     this.imports("underscore");
     
     this.dependsOnNg("$scope");
     
-    this.hasDefinition(function(linguaApp, abstractController, ngRegistrationHelper, _) {
+    this.hasDefinition(function(rootApp, abstractController, _) {
 
         return function($scope) {
 

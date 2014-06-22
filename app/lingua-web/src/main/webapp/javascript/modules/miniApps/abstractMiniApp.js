@@ -1,13 +1,13 @@
 App.Module.createNew(function() {
 
-    this.moduleIsCalled("abstractMiniApp");
+    this.isCalled("abstractMiniApp");
     
     this.imports("ng");
-    this.imports("linguaApp");
+    this.imports("rootApp");
     this.imports("util/appStates");
     this.imports("underscore");
 
-    this.hasDefinition(function(ng, linguaApp, appStates, _) {
+    this.hasDefinition(function(ng, rootApp, appStates, _) {
 
         var applyJsOverrides = function() {
             
@@ -20,11 +20,11 @@ App.Module.createNew(function() {
         
         var stashProviders = function($controllerProvider, $compileProvider, $filterProvider, $provide, $httpProvider) {
 
-            linguaApp.controllerProvider = $controllerProvider;
-            linguaApp.compileProvider = $compileProvider;
-            linguaApp.filterProvider = $filterProvider;
-            linguaApp.provide = $provide;
-            linguaApp.httpProvider = $httpProvider;
+            rootApp.controllerProvider = $controllerProvider;
+            rootApp.compileProvider = $compileProvider;
+            rootApp.filterProvider = $filterProvider;
+            rootApp.provide = $provide;
+            rootApp.httpProvider = $httpProvider;
         };
         
         var configure = function() {
@@ -38,13 +38,13 @@ App.Module.createNew(function() {
                 appStates.setupStates($stateProvider, $sceDelegateProvider);
             };
 
-            linguaApp.config([ "$stateProvider", "$sceDelegateProvider", "$httpProvider", "$controllerProvider",
+            rootApp.config([ "$stateProvider", "$sceDelegateProvider", "$httpProvider", "$controllerProvider",
                     "$compileProvider", "$filterProvider", "$provide", Configuration ]);
         };
 
         var boot = function() {
             
-            ng.bootstrap(document, [ "linguaAppx" ]);
+            ng.bootstrap(document, [ "rootAppx" ]);
         };
 
         return {
