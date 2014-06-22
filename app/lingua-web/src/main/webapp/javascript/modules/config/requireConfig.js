@@ -1,7 +1,3 @@
-/*
- * Has to be manually loaded as this is configuring RequireJS!
- */
-
 function doImport() {
 
     var imports = [];
@@ -9,7 +5,81 @@ function doImport() {
         imports = imports.concat(arguments[i]);
     }
     return imports;
-}
+};
+
+var App = {};
+
+App.Module = {
+    Proto : function() {
+        
+        this.moduleProps = {};
+        
+        this.moduleProps._importsFirst = [];
+        this.moduleProps._imports = [];
+        
+        this._importsFirst = function(moduleName) {
+            this.moduleProps._importsFirst.push(moduleName);
+        };
+        
+        this.imports = function(moduleName) {
+            this.moduleProps._imports.push(moduleName);
+        };
+    }
+};
+
+App.NgComponent = {
+    Proto : function() {
+        
+        App.Module.Proto.call(this);
+        
+        this.moduleProps._ngImports = [];
+        this.moduleProps._ngDeps = [];
+        
+        this.importsNg = function(moduleName) {
+            this.moduleProps._ngImports.push(moduleName);
+        };
+        
+        this.dependsOnNg = function(moduleName) {
+            this.moduleProps._ngDeps.push(moduleName);
+        };
+        
+        this.isCalled = function(componentName) {
+            this.moduleProps._componentName = componentName;
+        };
+    }
+};
+
+App.Controller = {
+    Proto : function() {
+        
+        App.NgComponent.Proto.call(this);
+        
+        this._importsFirst("linguaApp");
+        this._importsFirst("util/ngRegistrationHelper");
+        
+        this.hasDefinition = function(controllerDefinition) {
+            
+            var allImports = doImport(this.moduleProps._importsFirst, this.moduleProps._imports, this.moduleProps._ngImports);
+            var requireModule = function() {
+                
+                var linguaApp = Array.prototype.shift.call(arguments);
+                var ngRegistrationHelper = Array.prototype.shift.call(arguments);
+                
+                var controller = controllerDefinition.apply(null, arguments);
+                
+                ngRegistrationHelper(linguaApp).registerController(this.moduleProps._componentName,
+                        this.moduleProps._ngDeps, controller);
+            }.bind(this);
+            
+            define(allImports, requireModule);
+        };
+    },
+    createNew : function(module) {
+
+        module.prototype = new App.Controller.Proto();
+        new module();
+    }
+};
 
 function loadRequireConfig() {
 
