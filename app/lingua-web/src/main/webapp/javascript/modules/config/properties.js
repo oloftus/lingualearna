@@ -4,24 +4,21 @@ App.Module.createNew(function() {
     
     this.hasDefinition(function() {
 
-        with (App.Properties) {
-            
-            App.Properties.ngViewsRoot = applicationRoot + "/ngViews";
+        App.Properties.ngViewsRoot = App.Properties.applicationRoot + "/ngViews";
 
-            App.Properties.apiRoot = applicationRoot + "/app/api";
-            App.Properties.pagesRoot = applicationRoot + "/app";
-            
-            App.Properties.translateServiceUrl = apiRoot + "/translate";
-            App.Properties.languageNamesServiceUrl = apiRoot + "/languages/langName";
-            App.Properties.noteServiceUrl = apiRoot + "/note";
-            App.Properties.csrfTokenApiUrl = apiRoot + "/security/csrfToken";
-            App.Properties.notebookServiceUrl = apiRoot + "/notebook";
-            App.Properties.notesPagesServiceUrl = notebookServiceUrl + "/notebooksPages";
-            App.Properties.pingServiceUrl = pagesRoot + "/ping";
-            
-            App.Properties.csrfSecret = csrfSecret;   
-            App.Properties.pageMessagesTimeout = 4000; // Milliseconds
-            App.Properties.dialogDisappearTimeout = 4000; // Milliseconds
-        }
+        App.Properties.apiRoot = App.Properties.applicationRoot + "/app/api";
+        App.Properties.pagesRoot = App.Properties.applicationRoot + "/app";
+        
+        App.Properties.translateServiceUrl = App.Properties.apiRoot + "/translate";
+        App.Properties.languageNamesServiceUrl = App.Properties.apiRoot + "/languages/langName";
+        App.Properties.noteServiceUrl = App.Properties.apiRoot + "/note";
+        App.Properties.csrfTokenApiUrl = App.Properties.apiRoot + "/security/csrfToken";
+        App.Properties.notebookServiceUrl = App.Properties.apiRoot + "/notebook";
+        App.Properties.notesPagesServiceUrl = App.Properties.notebookServiceUrl + "/notebooksPages";
+        App.Properties.pingServiceUrl = App.Properties.pagesRoot + "/ping";
+        
+        App.Properties.csrfSecret = csrfSecret;   
+        App.Properties.pageMessagesTimeout = 4000; // Milliseconds
+        App.Properties.dialogDisappearTimeout = 4000; // Milliseconds
     });
 });

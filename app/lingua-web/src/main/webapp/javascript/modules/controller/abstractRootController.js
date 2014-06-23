@@ -99,7 +99,7 @@ App.Module.createNew(function() {
 
                 if (toState.name.endsWith(AppStates.LOGIN)) {
                     
-                    if ($overlay.length == 0) {
+                    if ($overlay.length === 0) {
                         $dialog.before("<div id='" + OVERLAY_NAME + "'></div>");
                     }
                     $closeButton.hide();

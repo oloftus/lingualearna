@@ -1,7 +1,7 @@
 App.Factory.createNew(function() {
 
     this.isCalled("messageHandler");
-    
+
     this.imports("underscore");
     this.imports("jquery");
 
@@ -10,7 +10,7 @@ App.Factory.createNew(function() {
         var ERRORS_FIELD = "errors";
         var FIELD_ERRORS_CLASS = "lingua-field-messages";
         var ERROR_CLASS = "lingua-error";
-        
+
         return function() {
 
             var getGlobalMessages = function($scope) {
@@ -108,7 +108,7 @@ App.Factory.createNew(function() {
                     var $errorsUl = $("<ul/>").appendTo($errorsRoot);
 
                     _.each(errors, function(errorText) {
-                        $errorsUl.append("<li class='" + ERROR_CLASS + "'>" + errorText + "</li>")
+                        $errorsUl.append("<li class='" + ERROR_CLASS + "'>" + errorText + "</li>");
                     });
 
                     $field.after($errorsRoot);
@@ -133,8 +133,8 @@ App.Factory.createNew(function() {
 
             var handleErrors = function($scope, data, status, headers) {
 
-                if (status === HttpHeaders.BAD_REQUEST && !_.isUndefined(data.fieldErrors)
-                        && !_.isUndefined(data.globalErrors)) {
+                if (status === HttpHeaders.BAD_REQUEST && !_.isUndefined(data.fieldErrors) &&
+                        !_.isUndefined(data.globalErrors)) {
                     handleValidationErrors($scope, data);
                 }
                 else {

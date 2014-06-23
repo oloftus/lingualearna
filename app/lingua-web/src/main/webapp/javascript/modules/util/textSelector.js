@@ -34,7 +34,7 @@ App.Module.createNew(function() {
         
         return {
             getSelected : getSelected,
-            clearSelected : clearSelected,
+            clearSelected : clearSelected
         };
     });
 });

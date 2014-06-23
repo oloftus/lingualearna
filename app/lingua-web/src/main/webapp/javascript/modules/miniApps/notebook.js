@@ -1,6 +1,6 @@
 App.MiniApp.createNew(function() {
 
-    this.isCalled("notebookMiniApp")
+    this.isCalled("notebookMiniApp");
     
     this.imports("framework/rootApp");
     this.imports("miniApps/abstractMiniApp");

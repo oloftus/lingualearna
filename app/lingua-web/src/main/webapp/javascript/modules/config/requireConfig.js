@@ -1,10 +1,7 @@
 App.loadRequireConfig = function() {
 
-    with (App.Properties) {
-
-        App.Properties.applicationRoot = "http://localhost:8080/LinguaWeb";
-        App.Properties.javascriptRoot = applicationRoot + "/javascript/modules";
-    }
+    App.Properties.applicationRoot = "http://localhost:8080/LinguaWeb";
+    App.Properties.javascriptRoot = App.Properties.applicationRoot + "/javascript/modules";
 
     require.config({
         paths : {
