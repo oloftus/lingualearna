@@ -71,12 +71,26 @@ App.MiniApp = {
 App.NgComponent = {
     Proto : function() {
 
+        var ANGULAR_SERVICE_PREFIX = "$";
+        
         App.Module.Proto.call(this);
 
         this.moduleProps._ngDeps = [];
 
-        this.dependsOnNg = function(moduleName) {
+        this.injects = function(modulePath) {
+            
+            var modulePathComponents = modulePath.split("/");
+            var moduleName = modulePathComponents[modulePathComponents.length - 1];
+            
             this.moduleProps._ngDeps.push(moduleName);
+            
+            if (modulePath[0] !== ANGULAR_SERVICE_PREFIX) {
+                this.loads(modulePath);
+            }
+        };
+        
+        this.usesConstant = function(constantName) {
+            this.moduleProps._ngDeps.push(constantName);
         };
 
         this.hasDefinition = function(componentDefinition) {

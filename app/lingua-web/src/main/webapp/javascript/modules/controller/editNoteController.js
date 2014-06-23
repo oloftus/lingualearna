@@ -5,15 +5,12 @@ App.Controller.createNew(function() {
     this.imports("controller/abstractController");
     this.imports("underscore");
 
-    this.loads("util/messageHandler");
-    this.loads("service/languageNamesService");
-    this.loads("service/noteService");
-
-    this.dependsOnNg("$scope");
-    this.dependsOnNg("noteService");
-    this.dependsOnNg("languageNamesService");
-    this.dependsOnNg("messageHandler");
-    this.dependsOnNg("noteId");
+    this.injects("$scope");
+    this.injects("service/noteService");
+    this.injects("service/languageNamesService");
+    this.injects("util/messageHandler");
+    
+    this.usesConstant("noteId");
 
     this.hasDefinition(function(abstractController, _) {
 

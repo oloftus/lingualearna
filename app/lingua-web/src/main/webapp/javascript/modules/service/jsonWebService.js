@@ -5,11 +5,9 @@ App.Service.createNew(function() {
     this.imports("framework/rootApp");
     this.imports("util/appStates");
 
-    this.loads("util/commsPipe");
-
-    this.dependsOnNg("$http");
-    this.dependsOnNg("commsPipe");
-    this.dependsOnNg("$state");
+    this.injects("$http");
+    this.injects("$state");
+    this.injects("util/commsPipe");
 
     this.hasDefinition(function(rootApp, appStates) {
 
@@ -27,7 +25,7 @@ App.Service.createNew(function() {
             return Properties.csrfTokenApiUrl + "/" + Properties.csrfSecret;
         };
         
-        return function($http, commsPipe, $state) {
+        return function($http, $state, commsPipe) {
 
             var goToLogin = function($state, commsPipe, isGetCsrfRequest, completedCallback) {
                 

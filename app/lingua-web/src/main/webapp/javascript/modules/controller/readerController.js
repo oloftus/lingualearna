@@ -8,18 +8,14 @@ App.Controller.createNew(function() {
     this.imports("underscore");
 
     this.loads("controller/readerBarController");
-    this.loads("service/jsonWebService");
-    this.loads("service/notebookService");
-    this.loads("util/messageHandler");
-    this.loads("util/commsPipe");
-
-    this.dependsOnNg("$scope");
-    this.dependsOnNg("$state");
-    this.dependsOnNg("$timeout");
-    this.dependsOnNg("jsonWebService");
-    this.dependsOnNg("notebookService");
-    this.dependsOnNg("messageHandler");
-    this.dependsOnNg("commsPipe");
+    
+    this.injects("$scope");
+    this.injects("$state");
+    this.injects("$timeout");
+    this.injects("service/jsonWebService");
+    this.injects("service/notebookService");
+    this.injects("util/messageHandler");
+    this.injects("util/commsPipe");
 
     this.hasDefinition(function(abstractMiniAppController, textSelector, appStates, _) {
 

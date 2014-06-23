@@ -5,7 +5,7 @@ App.Controller.createNew(function() {
     this.imports("controller/abstractController");
     this.imports("underscore");
 
-    this.dependsOnNg("$scope");
+    this.injects("$scope");
 
     this.hasDefinition(function(abstractController, _) {
 

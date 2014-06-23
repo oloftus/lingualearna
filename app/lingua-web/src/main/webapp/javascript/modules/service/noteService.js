@@ -3,11 +3,10 @@ App.Service.createNew(function() {
     this.isCalled("noteService");
 
     this.imports("service/crudService");
-    
-    this.loads("service/jsonWebService");
 
-    this.dependsOnNg("jsonWebService");
-    this.dependsOnNg("noteServiceUrl");
+    this.injects("service/jsonWebService");
+    
+    this.usesConstant("noteServiceUrl");
 
     this.hasDefinition(function(CrudService) {
 

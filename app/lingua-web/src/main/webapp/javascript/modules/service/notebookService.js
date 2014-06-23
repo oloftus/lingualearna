@@ -2,10 +2,9 @@ App.Service.createNew(function() {
 
     this.isCalled("notebookService");
 
-    this.loads("service/jsonWebService");
-
-    this.dependsOnNg("jsonWebService");
-    this.dependsOnNg("notesPagesServiceUrl");
+    this.injects("service/jsonWebService");
+    
+    this.usesConstant("notesPagesServiceUrl");
 
     this.hasDefinition(function() {
 

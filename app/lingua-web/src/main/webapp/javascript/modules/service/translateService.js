@@ -2,10 +2,9 @@ App.Service.createNew(function() {
 
     this.isCalled("translateService");
 
-    this.loads("service/jsonWebService");
-
-    this.dependsOnNg("jsonWebService");
-    this.dependsOnNg("translateServiceUrl");
+    this.injects("service/jsonWebService");
+    
+    this.usesConstant("translateServiceUrl");
 
     this.hasDefinition(function() {
 

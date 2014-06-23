@@ -5,16 +5,12 @@ App.Controller.createNew(function() {
     this.imports("controller/abstractController");
     this.imports("underscore");
 
-    this.loads("util/commsPipe");
-    this.loads("service/languageNamesService");
-    this.loads("service/translateService");
-
-    this.dependsOnNg("$scope");
-    this.dependsOnNg("translateService");
-    this.dependsOnNg("languageNamesService");
-    this.dependsOnNg("commsPipe");
-    this.dependsOnNg("$location");
-    this.dependsOnNg("$state");
+    this.injects("$scope");
+    this.injects("$location");
+    this.injects("$state");
+    this.injects("service/translateService");
+    this.injects("service/languageNamesService");
+    this.injects("util/commsPipe");
 
     this.hasDefinition(function(abstractController, _) {
 
@@ -78,7 +74,7 @@ App.Controller.createNew(function() {
             }, Subjects.TRANSLATION_REQUEST);
         };
 
-        return function($scope, translateService, languageNamesService, commsPipe, $location, $state) {
+        return function($scope, $location, $state, translateService, languageNamesService, commsPipe) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);

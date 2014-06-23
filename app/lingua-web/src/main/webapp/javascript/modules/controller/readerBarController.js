@@ -5,10 +5,8 @@ App.Controller.createNew(function() {
     this.imports("controller/abstractController");
     this.imports("underscore");
 
-    this.loads("util/commsPipe");
-
-    this.dependsOnNg("$scope");
-    this.dependsOnNg("commsPipe");
+    this.injects("$scope");
+    this.injects("util/commsPipe");
 
     this.hasDefinition(function(abstractController, _) {
 

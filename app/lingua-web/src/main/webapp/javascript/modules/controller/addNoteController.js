@@ -5,19 +5,14 @@ App.Controller.createNew(function() {
     this.imports("controller/abstractController");
     this.imports("underscore");
 
-    this.loads("service/languageNamesService");
-    this.loads("service/noteService");
-    this.loads("util/messageHandler");
-    this.loads("util/commsPipe");
-
-    this.dependsOnNg("$scope");
-    this.dependsOnNg("$location");
-    this.dependsOnNg("noteService");
-    this.dependsOnNg("languageNamesService");
-    this.dependsOnNg("messageHandler");
-    this.dependsOnNg("commsPipe");
-    this.dependsOnNg("$timeout");
-    this.dependsOnNg("$state");
+    this.injects("$scope");
+    this.injects("$location");
+    this.injects("$timeout");
+    this.injects("$state");
+    this.injects("service/noteService");
+    this.injects("service/languageNamesService");
+    this.injects("util/messageHandler");
+    this.injects("util/commsPipe");
 
     this.hasDefinition(function(abstractController, _) {
 
@@ -103,7 +98,7 @@ App.Controller.createNew(function() {
         var subscribeToCurrentNotebookChangedEvents = function($scope, commsPipe) {
 
             var currentNotebookChangedHandler = function() {
-                
+
                 var newPagesContainsOldCurrent = _.some($scope.global.model.currentNotebook.pages, function(newPage) {
                     var oldCurrentPage = $scope.model.page;
                     return newPage.pageId === oldCurrentPage.pageId && newPage.name === oldCurrentPage.name;
@@ -113,13 +108,13 @@ App.Controller.createNew(function() {
                     $scope.model.page = null;
                 }
             };
-            
+
             commsPipe.subscribe(Components.READER, Components.ANY, currentNotebookChangedHandler,
                     Signals.CURRENT_NOTEBOOK_CHANGED);
         };
 
-        return function($scope, $location, noteService, languageNamesService, messageHandler, commsPipe, $timeout,
-                $state) {
+        return function($scope, $location, $timeout, $state, noteService, languageNamesService, messageHandler,
+                commsPipe) {
 
             _.extend(this, abstractController);
             this.setupDefaultScope($scope);
