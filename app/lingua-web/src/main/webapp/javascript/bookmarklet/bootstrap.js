@@ -16,7 +16,8 @@
     var ngIncludeClass = "lingua-ng-include";
     var ngIncludeId = "lingua-reader";
 
-    Properties = {};
+    App = {};
+    App.Properties = {};
 
     var scriptsLoadedCounter = 0;
 

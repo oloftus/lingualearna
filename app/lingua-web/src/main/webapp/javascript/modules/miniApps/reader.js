@@ -9,10 +9,10 @@ App.MiniApp.createNew(function() {
     
     this.hasDefinition(function(rootApp, abstractMiniApp) {
 
-        rootApp.constant("noteServiceUrl", Properties.noteServiceUrl);
-        rootApp.constant("languageNamesServiceUrl", Properties.languageNamesServiceUrl);
-        rootApp.constant("translateServiceUrl", Properties.translateServiceUrl);
-        rootApp.constant("notesPagesServiceUrl", Properties.notesPagesServiceUrl);
+        rootApp.constant("noteServiceUrl", App.Properties.noteServiceUrl);
+        rootApp.constant("languageNamesServiceUrl", App.Properties.languageNamesServiceUrl);
+        rootApp.constant("translateServiceUrl", App.Properties.translateServiceUrl);
+        rootApp.constant("notesPagesServiceUrl", App.Properties.notesPagesServiceUrl);
 
         abstractMiniApp.configure();
         abstractMiniApp.boot();

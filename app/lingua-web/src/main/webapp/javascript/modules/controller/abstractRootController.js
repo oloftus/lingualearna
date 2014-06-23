@@ -131,7 +131,7 @@ App.Module.createNew(function() {
             $scope.global.func = {};
             
             $scope.global.model.pageMessages = [];
-            $scope.global.properties = Properties;
+            $scope.global.properties = App.Properties;
         };
         
         var setupPageMessages = function($scope, messageHandler, $timeout) {
@@ -145,7 +145,7 @@ App.Module.createNew(function() {
                     }
                     pageMessageTimeout = $timeout(function() {
                         messageHandler.clearPageMessages($scope);
-                    }, Properties.pageMessagesTimeout);
+                    }, App.Properties.pageMessagesTimeout);
                 }
             });
         };

@@ -4,24 +4,24 @@ App.Module.createNew(function() {
     
     this.hasDefinition(function() {
 
-        with (Properties) {
+        with (App.Properties) {
             
-            Properties.ngViewsRoot = applicationRoot + "/ngViews";
+            App.Properties.ngViewsRoot = applicationRoot + "/ngViews";
 
-            Properties.apiRoot = applicationRoot + "/app/api";
-            Properties.pagesRoot = applicationRoot + "/app";
+            App.Properties.apiRoot = applicationRoot + "/app/api";
+            App.Properties.pagesRoot = applicationRoot + "/app";
             
-            Properties.translateServiceUrl = apiRoot + "/translate";
-            Properties.languageNamesServiceUrl = apiRoot + "/languages/langName";
-            Properties.noteServiceUrl = apiRoot + "/note";
-            Properties.csrfTokenApiUrl = apiRoot + "/security/csrfToken";
-            Properties.notebookServiceUrl = apiRoot + "/notebook";
-            Properties.notesPagesServiceUrl = notebookServiceUrl + "/notebooksPages";
-            Properties.pingServiceUrl = pagesRoot + "/ping";
+            App.Properties.translateServiceUrl = apiRoot + "/translate";
+            App.Properties.languageNamesServiceUrl = apiRoot + "/languages/langName";
+            App.Properties.noteServiceUrl = apiRoot + "/note";
+            App.Properties.csrfTokenApiUrl = apiRoot + "/security/csrfToken";
+            App.Properties.notebookServiceUrl = apiRoot + "/notebook";
+            App.Properties.notesPagesServiceUrl = notebookServiceUrl + "/notebooksPages";
+            App.Properties.pingServiceUrl = pagesRoot + "/ping";
             
-            Properties.csrfSecret = csrfSecret;   
-            Properties.pageMessagesTimeout = 4000; // Milliseconds
-            Properties.dialogDisappearTimeout = 4000; // Milliseconds
+            App.Properties.csrfSecret = csrfSecret;   
+            App.Properties.pageMessagesTimeout = 4000; // Milliseconds
+            App.Properties.dialogDisappearTimeout = 4000; // Milliseconds
         }
     });
 });

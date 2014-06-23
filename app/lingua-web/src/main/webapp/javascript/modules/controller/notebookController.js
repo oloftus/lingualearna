@@ -20,7 +20,7 @@ App.Controller.createNew(function() {
 
         var triggerLogin = function(jsonWebService) {
 
-            jsonWebService.execute(Properties.pingServiceUrl, HttpMethod.GET);
+            jsonWebService.execute(App.Properties.pingServiceUrl, HttpMethod.GET);
         };
 
         return function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,

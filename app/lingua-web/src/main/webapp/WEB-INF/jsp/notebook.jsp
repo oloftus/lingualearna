@@ -8,7 +8,8 @@
 <title>LinguaLearna - Notebook</title>
 
 <script type="text/javascript">
-    var Properties = {};
+    App = {};
+    App.Properties = {};
     
     var csrfSecret = "${_csrf.token}";
     var appEntrypoint = "${pageContext.request.contextPath}/javascript/modules/miniApps/notebook.js";

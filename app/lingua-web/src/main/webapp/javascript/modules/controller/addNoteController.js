@@ -74,7 +74,7 @@ App.Controller.createNew(function() {
 
                     $timeout(function() {
                         $state.go(AppStates.MAIN);
-                    }, Properties.dialogDisappearTimeout);
+                    }, App.Properties.dialogDisappearTimeout);
 
                 }, function(data, status, headers) {
                     messageHandler.handleErrors($scope, data, status, headers);

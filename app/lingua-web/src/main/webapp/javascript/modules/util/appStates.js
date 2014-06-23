@@ -70,7 +70,7 @@ App.Module.createNew(function() {
         } ];
 
         var additionalViews = [ "/abstractNoteDialogView", "/notebookHeaderView" ];
-        var additionalWhitelistUrls = [ Properties.pagesRoot + "/login" ];
+        var additionalWhitelistUrls = [ App.Properties.pagesRoot + "/login" ];
 
         var whitelist = [];
 
@@ -90,7 +90,7 @@ App.Module.createNew(function() {
                     viewName = constructParentViewName(viewName);
                 }
                 absoluteViews[viewName] = {
-                    templateUrl : Properties.ngViewsRoot + view.viewUrl + VIEW_EXTENSION
+                    templateUrl : App.Properties.ngViewsRoot + view.viewUrl + VIEW_EXTENSION
                 };
             });
 
@@ -100,7 +100,7 @@ App.Module.createNew(function() {
         var constructControllers = function(controllers) {
 
             return _.map(controllers, function(controller) {
-                return Properties.javascriptRoot + controller + JS_EXTENSION;
+                return App.Properties.javascriptRoot + controller + JS_EXTENSION;
             });
         };
 
@@ -118,7 +118,7 @@ App.Module.createNew(function() {
         var addAdditionalViewsToWhitelist = function() {
 
             var additionalViewUrls = _.map(additionalViews, function(view) {
-                return Properties.ngViewsRoot + view + VIEW_EXTENSION;
+                return App.Properties.ngViewsRoot + view + VIEW_EXTENSION;
             });
             whitelist = _.union(whitelist, additionalViewUrls, additionalWhitelistUrls);
         };
@@ -126,7 +126,7 @@ App.Module.createNew(function() {
         var addViewsToWhitelist = function(views) {
 
             _.each(views, function(view) {
-                whitelist.push(Properties.ngViewsRoot + view.viewUrl + VIEW_EXTENSION);
+                whitelist.push(App.Properties.ngViewsRoot + view.viewUrl + VIEW_EXTENSION);
             });
         };
 

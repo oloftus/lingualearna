@@ -1,9 +1,9 @@
 App.loadRequireConfig = function() {
 
-    with (Properties) {
+    with (App.Properties) {
 
-        Properties.applicationRoot = "http://localhost:8080/LinguaWeb";
-        Properties.javascriptRoot = applicationRoot + "/javascript/modules";
+        App.Properties.applicationRoot = "http://localhost:8080/LinguaWeb";
+        App.Properties.javascriptRoot = applicationRoot + "/javascript/modules";
     }
 
     require.config({
@@ -32,6 +32,6 @@ App.loadRequireConfig = function() {
                 deps : [ "jquery" ]
             }
         },
-        baseUrl : Properties.javascriptRoot
+        baseUrl : App.Properties.javascriptRoot
     });
 };

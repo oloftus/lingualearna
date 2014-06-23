@@ -22,7 +22,7 @@ App.Service.createNew(function() {
         
         var getCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
             
-            return Properties.csrfTokenApiUrl + "/" + Properties.csrfSecret;
+            return App.Properties.csrfTokenApiUrl + "/" + App.Properties.csrfSecret;
         };
         
         return function($http, $state, commsPipe) {
