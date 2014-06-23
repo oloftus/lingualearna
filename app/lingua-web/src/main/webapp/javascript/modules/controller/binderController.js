@@ -2,15 +2,13 @@ App.Controller.createNew(function() {
 
     this.isCalled("binderController");
 
-    this.imports("controller/abstractController");
-    this.imports("underscore");
-
     this.injects("$scope");
+    
+    this.extends("controller/abstractController");
 
-    this.hasDefinition(function(abstractController, _) {
+    this.hasDefinition(function() {
 
         return function($scope) {
-            _.extend(this, abstractController);
             this.setupDefaultScope($scope);
         };
     });

@@ -2,7 +2,6 @@ App.Controller.createNew(function() {
 
     this.isCalled("readerController");
 
-    this.imports("controller/abstractMiniAppController");
     this.imports("util/textSelector");
     this.imports("util/appStates");
     this.imports("underscore");
@@ -17,7 +16,9 @@ App.Controller.createNew(function() {
     this.injects("util/messageHandler");
     this.injects("util/commsPipe");
 
-    this.hasDefinition(function(abstractMiniAppController, textSelector, appStates, _) {
+    this.extends("controller/abstractRootController");
+
+    this.hasDefinition(function(textSelector, appStates, _) {
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
 
@@ -53,7 +54,6 @@ App.Controller.createNew(function() {
 
             var self = this;
 
-            _.extend(this, abstractMiniAppController);
             self.setupGlobalScope($scope, $state);
             appStates.setMainState(AppStates.READER_MAIN);
 

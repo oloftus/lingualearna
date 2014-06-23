@@ -74,6 +74,9 @@ App.NgComponent = {
         var ANGULAR_SERVICE_PREFIX = "$";
         
         App.Module.Proto.call(this);
+        
+        this._firstImports("framework/rootApp");
+        this._firstImports("framework/ngRegistrationHelper");
 
         this.moduleProps._ngDeps = [];
 
@@ -92,24 +95,30 @@ App.NgComponent = {
         this.usesConstant = function(constantName) {
             this.moduleProps._ngDeps.push(constantName);
         };
+        
+        this.extends = function(moduleName) {
+            
+            this._isExtension = true;
+            this._firstImports(moduleName);
+        };
 
         this.hasDefinition = function(componentDefinition) {
 
             var allImports = this._doImport(this.moduleProps._firstImports, this.moduleProps._imports,
                     this.moduleProps._loads, this.moduleProps._firstLoads);
+            
             var requireModule = function() {
 
                 var rootApp = Array.prototype.shift.call(arguments);
                 var ngRegistrationHelper = Array.prototype.shift.call(arguments);
+                var superObj = this._isExtension ? Array.prototype.shift.call(arguments) : null;
                 var component = componentDefinition.apply(null, arguments);
+                component.prototype = superObj;
                 this._registerComponent(rootApp, ngRegistrationHelper, component);
-            }.bind(this);
+            };
 
-            define(allImports, requireModule);
+            define(allImports, requireModule.bind(this));
         };
-        
-        this._firstImports("framework/rootApp");
-        this._firstImports("framework/ngRegistrationHelper");
     }
 };
 

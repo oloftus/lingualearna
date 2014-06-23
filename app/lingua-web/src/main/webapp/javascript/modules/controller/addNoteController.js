@@ -2,7 +2,6 @@ App.Controller.createNew(function() {
 
     this.isCalled("addNoteController");
 
-    this.imports("controller/abstractController");
     this.imports("underscore");
 
     this.injects("$scope");
@@ -14,7 +13,9 @@ App.Controller.createNew(function() {
     this.injects("util/messageHandler");
     this.injects("util/commsPipe");
 
-    this.hasDefinition(function(abstractController, _) {
+    this.extends("controller/abstractController");
+    
+    this.hasDefinition(function( _) {
 
         var populateModelFromNote = function($scope, note) {
 
@@ -116,9 +117,7 @@ App.Controller.createNew(function() {
         return function($scope, $location, $timeout, $state, noteService, languageNamesService, messageHandler,
                 commsPipe) {
 
-            _.extend(this, abstractController);
             this.setupDefaultScope($scope);
-
             populateModel($scope, $location);
             setLanguageTitles($scope, languageNamesService);
             setDialogTitle($scope);

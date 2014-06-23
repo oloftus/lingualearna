@@ -2,9 +2,6 @@ App.Controller.createNew(function() {
 
     this.isCalled("translateController");
 
-    this.imports("controller/abstractController");
-    this.imports("underscore");
-
     this.injects("$scope");
     this.injects("$location");
     this.injects("$state");
@@ -12,7 +9,9 @@ App.Controller.createNew(function() {
     this.injects("service/languageNamesService");
     this.injects("util/commsPipe");
 
-    this.hasDefinition(function(abstractController, _) {
+    this.extends("controller/abstractController");
+
+    this.hasDefinition(function() {
 
         var populateModelFromTranslationRequest = function($scope, translationRequest) {
 
@@ -76,7 +75,6 @@ App.Controller.createNew(function() {
 
         return function($scope, $location, $state, translateService, languageNamesService, commsPipe) {
 
-            _.extend(this, abstractController);
             this.setupDefaultScope($scope);
 
             addTranslateButtonHandler($scope, translateService);

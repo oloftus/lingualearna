@@ -2,9 +2,7 @@ App.Controller.createNew(function() {
 
     this.isCalled("notebookController");
     
-    this.imports("controller/abstractMiniAppController");
     this.imports("util/appStates");
-    this.imports("underscore");
 
     this.loads("controller/notebookHeaderController");
 
@@ -16,7 +14,9 @@ App.Controller.createNew(function() {
     this.injects("util/messageHandler");
     this.injects("util/commsPipe");
 
-    this.hasDefinition(function(abstractMiniAppController, appStates, _) {
+    this.extends("controller/abstractRootController");
+
+    this.hasDefinition(function(appStates) {
 
         var triggerLogin = function(jsonWebService) {
 
@@ -26,7 +26,6 @@ App.Controller.createNew(function() {
         return function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,
                 commsPipe) {
 
-            _.extend(this, abstractMiniAppController);
             this.setupGlobalScope($scope);
             appStates.setMainState(AppStates.NOTEBOOK_MAIN);
 

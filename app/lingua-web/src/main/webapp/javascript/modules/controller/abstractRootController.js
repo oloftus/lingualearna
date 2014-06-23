@@ -1,6 +1,6 @@
 App.Module.createNew(function() {
 
-    this.isCalled("abstractMiniAppController");
+    this.isCalled("abstractRootController");
     
     this.hasDefinition(function() {
 
