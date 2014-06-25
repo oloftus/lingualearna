@@ -54,6 +54,28 @@ class GlobalControllerExceptionHandler {
     }
 
     /**
+     * Handles bean validation violations on controller models
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    public ConstraintViolations handleControllerModelConstraintViolations(HttpServletRequest request,
+            MethodArgumentNotValidException exception) {
+
+        ConstraintViolations response = new ConstraintViolations();
+        BindingResult errors = exception.getBindingResult();
+
+        for (FieldError error : errors.getFieldErrors()) {
+            response.addFieldError(error.getField(), error.getDefaultMessage());
+        }
+        for (ObjectError error : errors.getGlobalErrors()) {
+            response.addGlobalError(error.getDefaultMessage());
+        }
+
+        return response;
+    }
+
+    /**
      * Handles bean validation violations on entities
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -87,22 +109,21 @@ class GlobalControllerExceptionHandler {
     }
 
     /**
-     * Handles bean validation violations on controller models
+     * Handles custom validation exception
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(ValidationException.class)
     @ResponseBody
-    public ConstraintViolations handleControllerModelConstraintViolations(HttpServletRequest request,
-            MethodArgumentNotValidException exception) {
+    public ConstraintViolations handleValidationExceptions(HttpServletRequest request,
+            ValidationException exception) {
 
         ConstraintViolations response = new ConstraintViolations();
-        BindingResult errors = exception.getBindingResult();
 
-        for (FieldError error : errors.getFieldErrors()) {
-            response.addFieldError(error.getField(), error.getDefaultMessage());
+        for (ValidationException.FieldError error : exception.getFieldErrors()) {
+            response.addFieldError(error.getFieldName(), error.getErrorMessage());
         }
-        for (ObjectError error : errors.getGlobalErrors()) {
-            response.addGlobalError(error.getDefaultMessage());
+        for (String error : exception.getGlobalErrors()) {
+            response.addGlobalError(error);
         }
 
         return response;
