@@ -2,6 +2,8 @@ App.Controller.createNew(function() {
 
     this.isCalled("addNotebookController");
 
+    this.imports("underscore");
+
     this.loads("localization/stringsDefault");
 
     this.injects("$scope");
@@ -11,7 +13,7 @@ App.Controller.createNew(function() {
 
     this.extends("controller/abstractController");
 
-    this.hasDefinition(function() {
+    this.hasDefinition(function(_) {
 
         var setupScope = function($scope) {
 

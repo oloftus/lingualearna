@@ -4,6 +4,7 @@ App.Controller.createNew(function() {
 
     this.imports("util/textSelector");
     this.imports("util/appStates");
+    this.imports("util/dialogs");
     this.imports("underscore");
 
     this.loads("controller/readerBarController");
@@ -18,7 +19,7 @@ App.Controller.createNew(function() {
 
     this.extends("controller/abstractRootController");
 
-    this.hasDefinition(function(textSelector, appStates, _) {
+    this.hasDefinition(function(textSelector, appStates, dialogs, _) {
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
 
@@ -52,22 +53,15 @@ App.Controller.createNew(function() {
         return function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,
                 commsPipe) {
 
-            var self = this;
-
-            self.setupGlobalScope($scope, $state);
+            this.setupGlobalScope($scope, $state);
             appStates.setMainState(AppStates.READER_MAIN);
-
-            $state.go(AppStates.MAIN).then(function() {
-                
-                self.setupPageMessages($scope, messageHandler, $timeout);
-                self.setupDialogs($scope);
-                self.setupSpecialDialogs($scope);
-                self.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
-                self.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
-                
-                getCsrfAndTriggerLogin(jsonWebService, $scope);
-                setupClickToTranslate(commsPipe, $state, $scope);
-            });
+            dialogs.setupDialogs($scope);
+            getCsrfAndTriggerLogin(jsonWebService, $scope);
+            this.setupPageMessages($scope, messageHandler, $timeout);
+            this.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
+            this.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
+            setupClickToTranslate(commsPipe, $state, $scope);
+            $state.go(AppStates.MAIN);
         };
     });
 });

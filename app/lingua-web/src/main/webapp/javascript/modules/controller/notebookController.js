@@ -3,6 +3,7 @@ App.Controller.createNew(function() {
     this.isCalled("notebookController");
     
     this.imports("util/appStates");
+    this.imports("util/dialogs");
 
     this.loads("controller/notebookHeaderController");
 
@@ -16,7 +17,7 @@ App.Controller.createNew(function() {
 
     this.extends("controller/abstractRootController");
 
-    this.hasDefinition(function(appStates) {
+    this.hasDefinition(function(appStates, dialogs) {
         
         var triggerLogin = function(jsonWebService) {
 
@@ -27,17 +28,14 @@ App.Controller.createNew(function() {
                 commsPipe) {
 
             this.setupGlobalScope($scope);
+            jsonWebService.setCsrfToken(App.Properties.csrfToken);
             appStates.setMainState(AppStates.NOTEBOOK_MAIN);
-
+            dialogs.setupDialogs($scope);
+            this.setupPageMessages($scope, messageHandler, $timeout);
+            this.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
             $state.go(AppStates.MAIN).then(function() {
-                
-                jsonWebService.setCsrfToken(App.Properties.csrfToken);
-                this.setupPageMessages($scope, messageHandler, $timeout);
-                this.setupDialogs($scope);
-                this.setupSpecialDialogs($scope);
-                this.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
-                this.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
                 triggerLogin(jsonWebService, $scope);
+                this.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
             }.bind(this));
         };
     });
