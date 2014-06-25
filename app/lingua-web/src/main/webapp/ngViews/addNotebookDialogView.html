@@ -1,0 +1,45 @@
+<div ng-controller="addNotebookController">
+    <div class="lingua-component" id="lingua-add-notebook-dialog">
+        <div class="lingua-dialog-header">
+            <h2>Create new notebook</h2>
+        </div>
+        <div class="lingua-dialog-content lingua-form">
+            <div id="lingua-global-messages" ng-if="model.globalMessages.length != 0">
+                <ul>
+                    <li ng-class="{'lingua-error': message.type == 'ERROR', 'lingua-info': message.type == 'INFO'}"
+                        ng-repeat="message in model.globalMessages">{{message.text}}</li>
+                </ul>
+            </div>
+            <div class="row">
+                <h3>
+                    <label for="lingua-notebook-name">Notebook title</label>
+                </h3>
+                <input type="text" id="lingua-notebook-name" ng-model="model.notebookName" data-fieldname="name" />
+            </div>
+            <div class="column">
+                <h3>
+                    <label for="lingua-local-lang">Your preferred language</label>
+                </h3>
+                <select ng-model="model.localLang"
+                    ng-options="language.langNameTitle for language in model.supportedLanguages track by language.langCode"
+                    data-fieldname="localLang">
+                    <option value="">Please select a language</option>
+                </select>
+            </div>
+            <div class="column">
+                <h3>
+                    <label for="lingua-foreign-lang">Foreign language</label>
+                </h3>
+                <select ng-model="model.foreignLang"
+                    ng-options="language.langNameTitle for language in model.supportedLanguages track by language.langCode"
+                    data-fieldname="foreignLang">
+                    <option value="">Please select a language</option>
+                </select>
+            </div>
+            <div class="lingua-dialog-footer">
+                <button class="lingua-action-button-icon lingua-save-button" ng-click="func.doCreateNotebook()">Create
+                    notebook</button>
+            </div>
+        </div>
+    </div>
+</div>

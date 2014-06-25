@@ -26,6 +26,14 @@ App.TypesDef.createNew(function() {
         this.pageId = pageId;
         this.noteId = noteId;
     };
+    
+    Notebook = function(name, foreignLang, localLang, notebookId) {
+
+         this.name = name;
+         this.foreignLang = foreignLang;
+         this.localLang = localLang;
+         this.notebookId = notebookId;
+    };
 
     IllegalArgumentException = function(message) {
         this.message = message;

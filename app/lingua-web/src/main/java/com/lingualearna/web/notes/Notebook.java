@@ -2,6 +2,7 @@ package com.lingualearna.web.notes;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,26 +12,39 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lingualearna.web.notes.validator.FieldsNotEqual;
 import com.lingualearna.web.security.User;
 
+@FieldsNotEqual({ "foreignLang", "localLang" })
+@NamedQueries({
+        @NamedQuery(name = Notebook.COUNT_NOTEBOOKS_NAME_QUERY, query = "SELECT count(n) FROM Notebook n WHERE n.name = :notebookName"),
+        @NamedQuery(name = Notebook.FIND_ALL_QUERY, query = "SELECT n FROM Notebook n WHERE n.owner.userId = :user")
+})
 @Entity
 @Table(name = "notebooks")
-@NamedQuery(name = "Notebook.findAllByUser", query = "SELECT n FROM Notebook n WHERE n.owner.userId = :user")
 public class Notebook implements Serializable {
 
     private static final long serialVersionUID = 5569311441731774188L;
 
+    public static final String COUNT_NOTEBOOKS_NAME_QUERY = "Notebook.countNotebooksName";
+    public static final String FIND_ALL_QUERY = "Notebook.findAllByUser";
+    public static final String NOTEBOOK_NAME_QUERY_PARAM = "notebookName";
+    public static final String USER_QUERY_PARAM = "user";
+
     private int notebookId;
-    private String foreignLang;
-    private String localLang;
+    private Locale foreignLang;
+    private Locale localLang;
     private String name;
     private User owner;
     private List<Page> pages;
@@ -43,18 +57,21 @@ public class Notebook implements Serializable {
         return page;
     }
 
+    @NotNull
     @Column(name = "foreign_lang")
-    public String getForeignLang() {
+    public Locale getForeignLang() {
 
         return this.foreignLang;
     }
 
+    @NotNull
     @Column(name = "local_lang")
-    public String getLocalLang() {
+    public Locale getLocalLang() {
 
         return this.localLang;
     }
 
+    @NotBlank
     @Length(max = 45)
     public String getName() {
 
@@ -86,7 +103,7 @@ public class Notebook implements Serializable {
     @Transient
     public String getUrl() {
 
-        return ""; // TODO
+        return "";
     }
 
     public Page removePage(Page page) {
@@ -97,12 +114,12 @@ public class Notebook implements Serializable {
         return page;
     }
 
-    public void setForeignLang(String foreignLang) {
+    public void setForeignLang(Locale foreignLang) {
 
         this.foreignLang = foreignLang;
     }
 
-    public void setLocalLang(String localLang) {
+    public void setLocalLang(Locale localLang) {
 
         this.localLang = localLang;
     }

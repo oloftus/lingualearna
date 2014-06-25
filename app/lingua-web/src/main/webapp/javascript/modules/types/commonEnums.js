@@ -33,7 +33,8 @@ App.TypesDef.createNew(function() {
         ADD_NOTE : "ADD_NOTE",
         TRANSLATE : "TRANSLATE",
         LOGIN : "LOGIN",
-        SETTINGS : "SETTINGS"
+        SETTINGS : "SETTINGS",
+        ADD_NOTEBOOK : "ADD_NOTEBOOK"
     };
     
     Components = {

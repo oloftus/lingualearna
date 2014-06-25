@@ -67,6 +67,14 @@ App.Module.createNew(function() {
             } ],
             controllers : [ "/controller/settingsController" ],
             parentStates : [ AppStates.NOTEBOOK_MAIN ]
+        }, {
+            stateName : AppStates.ADD_NOTEBOOK,
+            views : [ {
+                viewName : Views.MODAL_DIALOG,
+                viewUrl : "/addNotebookDialogView"
+            } ],
+            controllers : [ "/controller/addNotebookController" ],
+            parentStates : [ AppStates.NOTEBOOK_MAIN ]
         } ];
 
         var additionalViews = [ "/abstractNoteDialogView", "/notebookHeaderView" ];

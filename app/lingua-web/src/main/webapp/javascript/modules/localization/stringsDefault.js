@@ -4,6 +4,8 @@ App.TypesDef.createNew(function() {
         addNoteTitle : "Add Note",
         editNoteTitle : "Edit note",
         noteSavedMessage : "Note saved to notebook",
-        genericServerErrorMessage: "A problem occurred that meant your request couldn't be processed"
+        notebookCreatedMessage : "Notebook created",
+        genericServerErrorMessage : "A problem occurred that meant your request couldn't be processed",
+        doCompleteFields : "Please complete the fields"
     };
 });

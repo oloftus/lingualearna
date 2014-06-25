@@ -2,11 +2,7 @@ package com.lingualearna.web.service;
 
 import static com.lingualearna.web.security.SecuredConfigAttributes.ALLOW_OWNER;
 
-import java.util.Set;
-
 import javax.transaction.Transactional;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,17 +16,17 @@ import com.lingualearna.web.security.User;
 
 @Service
 @Transactional
-public class NoteService {
+public class NoteService extends AbstractService {
 
     @Autowired
     private GenericDao dao;
 
     @Autowired
-    private Validator validator;
+    Validator validator;
 
     public void createNote(Note note) {
 
-        validateNote(note);
+        validateEntity(note);
         dao.persist(note);
         setLastUsed(note);
     }
@@ -46,6 +42,12 @@ public class NoteService {
         }
 
         return found;
+    }
+
+    @Override
+    protected Validator getValidator() {
+
+        return validator;
     }
 
     @OwnedObjectType(Note.class)
@@ -77,17 +79,9 @@ public class NoteService {
     @Secured(ALLOW_OWNER)
     public Note updateNote(Note note) {
 
-        validateNote(note);
+        validateEntity(note);
         Note mergedNote = dao.merge(note);
         setLastUsed(mergedNote);
         return mergedNote;
-    }
-
-    private void validateNote(Note note) {
-
-        Set<ConstraintViolation<Note>> violations = validator.validate(note);
-        if (violations.size() > 0) {
-            throw new ConstraintViolationException(violations);
-        }
     }
 }
