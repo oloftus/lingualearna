@@ -11,7 +11,7 @@
     App = {};
     App.Properties = {};
 
-    var csrfSecret = "${_csrf.token}";
+    var csrfToken = "${_csrf.token}";
     var appEntrypoint = "${pageContext.request.contextPath}/javascript/modules/miniApps/notebook.js";
 
     setTimeout(function() {

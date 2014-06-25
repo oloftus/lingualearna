@@ -20,9 +20,14 @@ App.Service.createNew(function() {
             }
         };
         
-        var getCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
+        var acquireCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
             
             return App.Properties.csrfTokenApiUrl + "/" + App.Properties.csrfSecret;
+        };
+        
+        var setCsrfToken = function(csrfToken) {
+            
+            rootApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = csrfToken;
         };
         
         return function($http, $state, commsPipe) {
@@ -32,15 +37,20 @@ App.Service.createNew(function() {
                 var onLoginCallback = function() {
                     
                     if (isGetCsrfRequest) {
-                        getCsrfToken();
+                        acquireCsrfToken();
                     }
                     else {
-                        var onCsrfRetrievedCallback = function() {
+                        var retryOriginalRequest = function() {
                             callIfNotUndefinedOrNull(completedCallback, this);
                         };
                         
-                        commsPipe.subscribe(Components.JSON_WEB_SERVICE, Components.ANY, onCsrfRetrievedCallback,
-                                Signals.CSRF_RETRIEVED);
+                        if (App.Properties.csrfToken) {
+                            retryOriginalRequest();
+                        }
+                        else {
+                            commsPipe.subscribe(Components.JSON_WEB_SERVICE, Components.ANY, retryOriginalRequest,
+                                    Signals.CSRF_RETRIEVED);
+                        }
                     }
                     
                     $state.go(AppStates.MAIN);
@@ -50,11 +60,11 @@ App.Service.createNew(function() {
                 appStates.goRelative($state, AppStates.LOGIN);
             };
             
-            var getCsrfToken = function() {
+            var acquireCsrfToken = function() {
 
-                var csrfTokenApiUrl = getCsrfTokenApiUrl();
+                var csrfTokenApiUrl = acquireCsrfTokenApiUrl();
                 var successCallback = function(data) {
-                    rootApp.httpProvider.defaults.headers.common[CSRF_TOKEN_NAME] = data;
+                    setCsrfToken(data);
                     commsPipe.send(Components.JSON_WEB_SERVICE, Components.ANY, Signals.CSRF_RETRIEVED);
                 };
 
@@ -72,7 +82,7 @@ App.Service.createNew(function() {
                 var errorHandler = function(data, status, headers, config) {
 
                     if (status === HttpHeaders.FORBIDDEN) {
-                        var isGetCsrfRequest = serviceUrl === getCsrfTokenApiUrl();
+                        var isGetCsrfRequest = serviceUrl === acquireCsrfTokenApiUrl();
                         var reExecute = null;
                         if (retryOnAuthChallenge) {
                             reExecute = function() {
@@ -99,7 +109,8 @@ App.Service.createNew(function() {
 
             return {
                 execute : execute,
-                getCsrfToken : getCsrfToken
+                acquireCsrfToken : acquireCsrfToken,
+                setCsrfToken : setCsrfToken
             };
         };
     });

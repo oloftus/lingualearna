@@ -18,7 +18,6 @@ App.Module.createNew(function() {
         App.Properties.notesPagesServiceUrl = App.Properties.notebookServiceUrl + "/notebooksPages";
         App.Properties.pingServiceUrl = App.Properties.pagesRoot + "/ping";
         
-        App.Properties.csrfSecret = csrfSecret;   
         App.Properties.pageMessagesTimeout = 4000; // Milliseconds
         App.Properties.dialogDisappearTimeout = 4000; // Milliseconds
     });

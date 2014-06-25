@@ -9,6 +9,8 @@ App.MiniApp.createNew(function() {
     
     this.hasDefinition(function(rootApp, abstractMiniApp) {
 
+        App.Properties.csrfSecret = csrfSecret;
+        
         rootApp.constant("noteServiceUrl", App.Properties.noteServiceUrl);
         rootApp.constant("languageNamesServiceUrl", App.Properties.languageNamesServiceUrl);
         rootApp.constant("supportedLanguagesServiceUrl", App.Properties.supportedLanguagesServiceUrl);

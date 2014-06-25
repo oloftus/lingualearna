@@ -17,7 +17,7 @@ App.Controller.createNew(function() {
     this.extends("controller/abstractRootController");
 
     this.hasDefinition(function(appStates) {
-
+        
         var triggerLogin = function(jsonWebService) {
 
             jsonWebService.execute(App.Properties.pingServiceUrl, HttpMethod.GET);
@@ -30,6 +30,8 @@ App.Controller.createNew(function() {
             appStates.setMainState(AppStates.NOTEBOOK_MAIN);
 
             $state.go(AppStates.MAIN).then(function() {
+                
+                jsonWebService.setCsrfToken(App.Properties.csrfToken);
                 this.setupPageMessages($scope, messageHandler, $timeout);
                 this.setupDialogs($scope);
                 this.setupSpecialDialogs($scope);

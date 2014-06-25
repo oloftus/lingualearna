@@ -46,7 +46,7 @@ App.Controller.createNew(function() {
 
         var getCsrfAndTriggerLogin = function(jsonWebService) {
 
-            jsonWebService.getCsrfToken();
+            jsonWebService.acquireCsrfToken();
         };
 
         return function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,
