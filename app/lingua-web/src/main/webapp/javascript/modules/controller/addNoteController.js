@@ -9,13 +9,13 @@ App.Controller.createNew(function() {
     this.injects("$timeout");
     this.injects("$state");
     this.injects("service/noteService");
-    this.injects("service/languageNamesService");
+    this.injects("service/languageService");
     this.injects("util/messageHandler");
     this.injects("util/commsPipe");
 
     this.extends("controller/abstractController");
     
-    this.hasDefinition(function( _) {
+    this.hasDefinition(function(_) {
 
         var populateModelFromNote = function($scope, note) {
 
@@ -29,13 +29,13 @@ App.Controller.createNew(function() {
             $scope.model.includedInTest = note.includedInTest;
         };
 
-        var setLanguageTitles = function($scope, languageNamesService) {
+        var setLanguageTitles = function($scope, languageService) {
 
-            languageNamesService.lookup(new LanguageNameRequest($scope.model.foreignLang), function(data) {
+            languageService.lookupLangName(new LanguageNameRequest($scope.model.foreignLang), function(data) {
                 $scope.model.foreignLangName = data.langName;
             });
 
-            languageNamesService.lookup(new LanguageNameRequest($scope.model.localLang), function(data) {
+            languageService.lookupLangName(new LanguageNameRequest($scope.model.localLang), function(data) {
                 $scope.model.localLangName = data.langName;
             });
         };
@@ -45,11 +45,11 @@ App.Controller.createNew(function() {
             $scope.model.operationTitle = LocalStrings.addNoteTitle;
         };
 
-        var subscribeToAddNoteRequests = function(commsPipe, $scope, languageNamesService) {
+        var subscribeToAddNoteRequests = function(commsPipe, $scope, languageService) {
 
             commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, function(note, subject) {
                 populateModelFromNote($scope, note);
-                setLanguageTitles($scope, languageNamesService);
+                setLanguageTitles($scope, languageService);
             }, Subjects.NOTE);
         };
 
@@ -114,15 +114,15 @@ App.Controller.createNew(function() {
                     Signals.CURRENT_NOTEBOOK_CHANGED);
         };
 
-        return function($scope, $location, $timeout, $state, noteService, languageNamesService, messageHandler,
+        return function($scope, $location, $timeout, $state, noteService, languageService, messageHandler,
                 commsPipe) {
 
             this.setupDefaultScope($scope);
             populateModel($scope, $location);
-            setLanguageTitles($scope, languageNamesService);
+            setLanguageTitles($scope, languageService);
             setDialogTitle($scope);
             addSubmitButtonHandler(commsPipe, $scope, noteService, messageHandler, $timeout, $state);
-            subscribeToAddNoteRequests(commsPipe, $scope, languageNamesService);
+            subscribeToAddNoteRequests(commsPipe, $scope, languageService);
             subscribeToCurrentNotebookChangedEvents($scope, commsPipe);
         };
     });

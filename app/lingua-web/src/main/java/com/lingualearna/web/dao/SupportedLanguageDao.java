@@ -9,7 +9,7 @@ import com.lingualearna.web.service.LanguageService;
 import com.lingualearna.web.translation.SupportedLanguage;
 
 @Component
-public class SupportedLanguagesDao extends AbstractDao {
+public class SupportedLanguageDao extends AbstractDao {
 
     @Autowired
     private LanguageService languageService;

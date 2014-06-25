@@ -7,7 +7,7 @@ App.Controller.createNew(function() {
     this.loads("localization/stringsDefault");
 
     this.injects("$scope");
-    this.injects("service/languageNamesService");
+    this.injects("service/languageService");
     this.injects("service/notebookService");
     this.injects("util/messageHandler");
 
@@ -22,9 +22,9 @@ App.Controller.createNew(function() {
             $scope.model.notebookName = null;
         };
 
-        var setupLanguageDropdowns = function($scope, languageNamesService, messageHandler) {
+        var setupLanguageDropdowns = function($scope, languageService, messageHandler) {
 
-            languageNamesService.getSupportedLanguages(function(data) {
+            languageService.getSupportedLanguages(function(data) {
                 $scope.model.supportedLanguages = data;
             }, function(data, status, headers, config) {
                 messageHandler.handleErrors($scope, data, status, headers);
@@ -48,11 +48,11 @@ App.Controller.createNew(function() {
             };
         };
 
-        return function($scope, languageNamesService, notebookService, messageHandler) {
+        return function($scope, languageService, notebookService, messageHandler) {
 
             this.setupDefaultScope($scope);
             setupScope($scope);
-            setupLanguageDropdowns($scope, languageNamesService, messageHandler);
+            setupLanguageDropdowns($scope, languageService, messageHandler);
             addSubmitButtonHandler($scope, notebookService, messageHandler);
         };
     });

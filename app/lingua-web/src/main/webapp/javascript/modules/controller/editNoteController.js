@@ -4,7 +4,7 @@ App.Controller.createNew(function() {
 
     this.injects("$scope");
     this.injects("service/noteService");
-    this.injects("service/languageNamesService");
+    this.injects("service/languageService");
     this.injects("util/messageHandler");
     
     this.usesConstant("noteId");
@@ -32,18 +32,18 @@ App.Controller.createNew(function() {
             model.sourceUrl = result.sourceUrl;
         };
 
-        var loadLanguageNames = function(languageNamesService, model) {
+        var loadLanguageNames = function(languageService, model) {
 
-            languageNamesService.lookup(new LanguageNameRequest(model.foreignLang), function(data) {
+            languageService.lookupLangName(new LanguageNameRequest(model.foreignLang), function(data) {
                 model.foreignLangName = data.langName;
             });
 
-            languageNamesService.lookup(new LanguageNameRequest(model.localLang), function(data) {
+            languageService.lookupLangName(new LanguageNameRequest(model.localLang), function(data) {
                 model.localLangName = data.langName;
             });
         };
 
-        return function($scope, noteService, languageNamesService, messageHandler, noteId) {
+        return function($scope, noteService, languageService, messageHandler, noteId) {
 
             this.setupDefaultScope($scope);
 
@@ -66,7 +66,7 @@ App.Controller.createNew(function() {
             noteService.retrieve($scope.model.noteId, function(data) {
 
                 loadResultIntoModel($scope.model, data);
-                loadLanguageNames(languageNamesService, $scope.model);
+                loadLanguageNames(languageService, $scope.model);
             }, function() {
 
                 disableSave($scope);

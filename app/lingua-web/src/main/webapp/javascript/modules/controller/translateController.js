@@ -6,7 +6,7 @@ App.Controller.createNew(function() {
     this.injects("$location");
     this.injects("$state");
     this.injects("service/translateService");
-    this.injects("service/languageNamesService");
+    this.injects("service/languageService");
     this.injects("util/commsPipe");
 
     this.extends("controller/abstractController");
@@ -22,13 +22,13 @@ App.Controller.createNew(function() {
             $scope.model.includedInTest = true;
         };
 
-        var setLanguagesTitles = function($scope, languageNamesService) {
+        var setLanguagesTitles = function($scope, languageService) {
 
-            languageNamesService.lookup(new LanguageNameRequest($scope.model.sourceLang), function(data) {
+            languageService.lookupLangName(new LanguageNameRequest($scope.model.sourceLang), function(data) {
                 $scope.model.sourceLangName = data.langName;
             });
 
-            languageNamesService.lookup(new LanguageNameRequest($scope.model.targetLang), function(data) {
+            languageService.lookupLangName(new LanguageNameRequest($scope.model.targetLang), function(data) {
                 $scope.model.targetLangName = data.langName;
             });
 
@@ -65,21 +65,21 @@ App.Controller.createNew(function() {
             };
         };
 
-        var subscribeToTranslationRequests = function(commsPipe, $scope, languageNamesService) {
+        var subscribeToTranslationRequests = function(commsPipe, $scope, languageService) {
 
             commsPipe.subscribe(Components.ANY, Components.TRANSLATE, function(translationRequest, subject) {
                 populateModelFromTranslationRequest($scope, translationRequest);
-                setLanguagesTitles($scope, languageNamesService);
+                setLanguagesTitles($scope, languageService);
             }, Subjects.TRANSLATION_REQUEST);
         };
 
-        return function($scope, $location, $state, translateService, languageNamesService, commsPipe) {
+        return function($scope, $location, $state, translateService, languageService, commsPipe) {
 
             this.setupDefaultScope($scope);
 
             addTranslateButtonHandler($scope, translateService);
             addAddToNotebookButtonHandler($scope, commsPipe, $state, $location);
-            subscribeToTranslationRequests(commsPipe, $scope, languageNamesService);
+            subscribeToTranslationRequests(commsPipe, $scope, languageService);
         };
     });
 });
