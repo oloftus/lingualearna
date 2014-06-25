@@ -60,6 +60,11 @@ body {
 }
 
 .lingua-component textarea,.lingua-component input[type="text"] {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.lingua-component textarea,.lingua-component input[type="text"], .lingua-component select {
     margin: 0;
     outline: none;
     border: none;
@@ -67,12 +72,11 @@ body {
     font: inherit;
     padding: 7px 9px;
     color: gray;
-    box-sizing: border-box;
-    width: 100%;
 }
 
-.lingua-component textarea {
+.lingua-component textarea, .lingua-component .lingua-form input[type="text"], .lingua-component .lingua-form select {
     border: 14px solid white !important;
+    width: 100%;
 }
 
 .lingua-dialog,.lingua-static-dialog,.lingua-draggable-dialog {
@@ -121,7 +125,6 @@ body {
 .lingua-dialog-footer {
     display: flex;
     justify-content: flex-end;
-    border-top: 1px solid #888888;
 }
 
 .lingua-controls {
@@ -253,8 +256,8 @@ body {
     width: 100%;
 }
 
-.lingua-dialog-content>div.mid-content-row {
-    border-top: 1px solid #888888;
+.lingua-dialog-content>div.column, .lingua-dialog-content>div.row {
+    border-bottom: 1px solid #888888;
 }
 
 .lingua-dialog-content>div.column {

@@ -10,10 +10,10 @@
 <script type="text/javascript">
     App = {};
     App.Properties = {};
-    
+
     var csrfSecret = "${_csrf.token}";
     var appEntrypoint = "${pageContext.request.contextPath}/javascript/modules/miniApps/notebook.js";
-    
+
     setTimeout(function() {
         require([ appEntrypoint ]);
     }, 100);
@@ -26,6 +26,7 @@
 <script src="${pageContext.request.contextPath}/javascript/lib/require-2.1.11.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/javascript/modules/config/requireConfig.js" type="text/javascript"></script>
 </head>
+
 <body>
 
     <div id="page-container" class="lingua-component" ng-controller="notebookController">

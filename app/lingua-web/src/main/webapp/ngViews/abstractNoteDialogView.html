@@ -13,7 +13,7 @@
                 Save to notebook</button>
         </div>
     </div>
-    <div class="lingua-dialog-content">
+    <div class="lingua-dialog-content lingua-form">
         <div id="lingua-global-messages" ng-if="model.globalMessages.length != 0">
             <ul>
                 <li ng-class="{'lingua-error': message.type == 'ERROR', 'lingua-info': message.type == 'INFO'}" ng-repeat="message in model.globalMessages">{{message.text}}</li>
@@ -31,13 +31,13 @@
             </h3>
             <textarea id="lingua-foreign-note" ng-model="model.foreignNote" data-fieldname="foreignNote"></textarea>
         </div>
-        <div class="mid-content-row">
+        <div class="row">
             <h3>
                 <label for="lingua-additional-note">Additional Notes</label>
             </h3>
             <textarea id="lingua-additional-note" ng-model="model.additionalNotes" data-fieldname="additionalNotes"></textarea>
         </div>
-        <div class="mid-content-row">
+        <div class="row">
             <p class="lingua-source-url"><strong>Source:</strong> <a href="{{model.sourceUrl}}" data-fieldname="sourceUrl">{{model.sourceUrl}}</a></p>
         </div>
     </div>

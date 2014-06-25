@@ -37,7 +37,6 @@
 #tabs-pane>.inner {
     width: 200px;
     height: 100%; padding : 20px;
-    position: relative;
     padding: 20px;
 }
 
