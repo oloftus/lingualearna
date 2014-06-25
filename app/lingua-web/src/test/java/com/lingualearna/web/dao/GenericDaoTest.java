@@ -20,7 +20,6 @@ public class GenericDaoTest {
 
     private static final Class<Object> DAO_GENERIC_TYPE = Object.class;
     private static final int INVALID_ID = 2;
-    private static final int OBJ_ID = 1;
     private static final int VALID_ID = 1;
 
     private boolean deleteSuccess;

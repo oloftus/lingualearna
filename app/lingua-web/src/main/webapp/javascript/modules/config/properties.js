@@ -11,6 +11,7 @@ App.Module.createNew(function() {
         
         App.Properties.translateServiceUrl = App.Properties.apiRoot + "/translate";
         App.Properties.languageNamesServiceUrl = App.Properties.apiRoot + "/languages/langName";
+        App.Properties.supportedLanguagesServiceUrl = App.Properties.apiRoot + "/languages/supported";
         App.Properties.noteServiceUrl = App.Properties.apiRoot + "/note";
         App.Properties.csrfTokenApiUrl = App.Properties.apiRoot + "/security/csrfToken";
         App.Properties.notebookServiceUrl = App.Properties.apiRoot + "/notebook";

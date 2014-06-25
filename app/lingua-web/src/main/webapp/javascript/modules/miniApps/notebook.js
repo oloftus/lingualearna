@@ -11,8 +11,10 @@ App.MiniApp.createNew(function() {
 
         rootApp.constant("noteServiceUrl", App.Properties.noteServiceUrl);
         rootApp.constant("languageNamesServiceUrl", App.Properties.languageNamesServiceUrl);
+        rootApp.constant("supportedLanguagesServiceUrl", App.Properties.supportedLanguagesServiceUrl);
         rootApp.constant("translateServiceUrl", App.Properties.translateServiceUrl);
         rootApp.constant("notesPagesServiceUrl", App.Properties.notesPagesServiceUrl);
+        rootApp.constant("notebookServiceUrl", App.Properties.notebookServiceUrl);
 
         abstractMiniApp.configure();
         abstractMiniApp.boot();

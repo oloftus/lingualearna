@@ -4,15 +4,12 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public abstract class AbstractDao {
-
-    private static final Logger LOG = LoggerFactory.getLogger(GenericDao.class);
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -56,6 +53,46 @@ public abstract class AbstractDao {
 
         List<T> results = query.getResultList();
         return results;
+    }
+
+    @SafeVarargs
+    protected final <T> T doQueryWithParams(String namedQueryName, Class<T> clazz,
+            Pair<String, ? extends Object>... params) {
+
+        List<T> results = doQueryAsListWithParams(namedQueryName, clazz, params);
+
+        if (results.size() == 0) {
+            return null;
+        }
+
+        return results.get(0);
+
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> List<T> doUntypedQueryAsListWithParams(String namedQueryName,
+            Pair<String, ? extends Object>... params) {
+
+        Query query = entityManager.createNamedQuery(namedQueryName);
+
+        for (Pair<String, ? extends Object> param : params) {
+            query.setParameter(param.getLeft(), param.getRight());
+        }
+
+        List<T> results = query.getResultList();
+        return results;
+    }
+
+    @SafeVarargs
+    protected final <T> T doUntypedQueryWithParams(String namedQueryName, Pair<String, ? extends Object>... params) {
+
+        List<T> results = doUntypedQueryAsListWithParams(namedQueryName, params);
+
+        if (results.size() == 0) {
+            return null;
+        }
+
+        return results.get(0);
     }
 
     public <T> T find(Class<T> entityType, int id) {

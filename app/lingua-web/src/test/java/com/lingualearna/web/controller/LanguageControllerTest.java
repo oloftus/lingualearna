@@ -41,7 +41,7 @@ public class LanguageControllerTest extends MockitoUnitTestBase {
     @Before
     public void setup() throws Exception {
 
-        when(languageNamesService.lookupLocalizedLangNameAsTitle(SOURCE_LANG)).thenReturn(SOURCE_LANG_NAME);
+        when(languageNamesService.lookupLocalizedLangNameWithTranslationAsTitle(SOURCE_LANG)).thenReturn(SOURCE_LANG_NAME);
     }
 
     @Test

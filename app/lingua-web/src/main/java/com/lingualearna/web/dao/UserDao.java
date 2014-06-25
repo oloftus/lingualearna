@@ -2,9 +2,7 @@ package com.lingualearna.web.dao;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
-
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 
 import com.lingualearna.web.security.User;
@@ -17,22 +15,11 @@ public class UserDao extends AbstractDao {
      */
     public User findByUsername(String username) {
 
-        TypedQuery<User> query = getEntityManager().createNamedQuery("User.findByUsername", User.class);
-        query.setParameter("username", username);
-        User result = null;
-
-        try {
-            result = query.getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
-
-        return result;
+        return doQueryWithParams(User.FIND_BY_USERNAME_QUERY, User.class, Pair.of(User.USERNAME_QUERY_PARAM, username));
     }
 
     public List<User> getAllUsers() {
 
-        return doQueryAsList("User.findAll", User.class);
+        return doQueryAsList(User.FIND_ALL_QUERY, User.class);
     }
 }

@@ -54,11 +54,11 @@ public class LanguageServiceTest {
 
     private void whenICallLookupLocalizedLangNameAsTitleThenIExpectTheCorrectLanguageNameAndFormat() {
 
-        assertEquals(EN_LANG_NAME, languageNamesService.lookupLocalizedLangNameAsTitle(EN_LANG_CODE));
+        assertEquals(EN_LANG_NAME, languageNamesService.lookupLocalizedLangNameWithTranslationAsTitle(EN_LANG_CODE));
         assertEquals(DE_LANG_NAME_FOREIGN + " (" + DE_LANG_NAME_LOCAL + ")",
-                languageNamesService.lookupLocalizedLangNameAsTitle(DE_LANG_CODE));
+                languageNamesService.lookupLocalizedLangNameWithTranslationAsTitle(DE_LANG_CODE));
         assertEquals(FR_LANG_NAME_FOREIGN_CAPS + " (" + FR_LANG_NAME_LOCAL + ")",
-                languageNamesService.lookupLocalizedLangNameAsTitle(FR_LANG_CODE));
+                languageNamesService.lookupLocalizedLangNameWithTranslationAsTitle(FR_LANG_CODE));
     }
 
     private void whenICallLookupLocalizedLangNameThenIExpectTheCorrectLanguageName() {

@@ -22,12 +22,16 @@ import com.lingualearna.web.notes.Page;
 @Entity
 @Table(name = "users")
 @NamedQueries({
-        @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+        @NamedQuery(name = User.FIND_ALL_QUERY, query = "SELECT u FROM User u"),
+        @NamedQuery(name = User.FIND_BY_USERNAME_QUERY, query = "SELECT u FROM User u WHERE u.username = :username")
 })
 public class User implements Serializable {
 
     private static final long serialVersionUID = -9112339745471679923L;
+
+    public static final String FIND_ALL_QUERY = "User.findAll";
+    public static final String FIND_BY_USERNAME_QUERY = "User.findByUsername";
+    public static final String USERNAME_QUERY_PARAM = "username";
 
     private int userId;
     private String username;
