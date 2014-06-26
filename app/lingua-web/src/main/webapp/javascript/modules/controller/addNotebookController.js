@@ -7,6 +7,8 @@ App.Controller.createNew(function() {
     this.loads("localization/stringsDefault");
 
     this.injects("$scope");
+    this.injects("$timeout");
+    this.injects("$state");
     this.injects("service/languageService");
     this.injects("service/notebookService");
     this.injects("util/messageHandler");
@@ -31,7 +33,7 @@ App.Controller.createNew(function() {
             });
         };
         
-        var addSubmitButtonHandler = function($scope, notebookService, messageHandler) {
+        var addSubmitButtonHandler = function($scope, $timeout, $state, notebookService, messageHandler) {
             
             $scope.func.doCreateNotebook = function() {
                 
@@ -39,21 +41,31 @@ App.Controller.createNew(function() {
                 var localLang = !_.isNull($scope.model.localLang) ? $scope.model.localLang.langCode : null;
                 var notebook = new Notebook($scope.model.notebookName, foreignLang, localLang);
                 
-                notebookService.create(notebook, function(data) {
+                var successHandler = function(data) {
+                    
                     messageHandler.addFreshGlobalMessage($scope, LocalStrings.notebookCreatedMessage,
                             MessageSeverity.INFO);
-                }, function(data, status, headers, config) {
+                    
+                    $timeout(function() {
+                        $state.go(AppStates.MAIN);
+                    }, App.Properties.dialogDisappearTimeout);
+                };
+                
+                var errorHandler = function(data, status, headers, config) {
+                    
                     messageHandler.handleErrors($scope, data, status, headers);
-                });
+                };
+                
+                notebookService.create(notebook, successHandler, errorHandler);
             };
         };
 
-        return function($scope, languageService, notebookService, messageHandler) {
+        return function($scope, $timeout, $state, languageService, notebookService, messageHandler) {
 
             this.setupDefaultScope($scope);
             setupScope($scope);
             setupLanguageDropdowns($scope, languageService, messageHandler);
-            addSubmitButtonHandler($scope, notebookService, messageHandler);
+            addSubmitButtonHandler($scope, $timeout, $state, notebookService, messageHandler);
         };
     });
 });
