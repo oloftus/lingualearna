@@ -19,9 +19,14 @@ App.Controller.createNew(function() {
 
     this.hasDefinition(function(appStates, dialogs) {
         
-        var triggerLogin = function(jsonWebService) {
+        var triggerLogin = function(jsonWebService, commsPipe) {
 
             jsonWebService.execute(App.Properties.pingServiceUrl, HttpMethod.GET);
+            
+            var onLoginCallback = function() {
+                location.reload();
+            };
+            commsPipe.subscribe(Components.LOGIN, Components.ANY, onLoginCallback, Signals.LOGIN_SUCCESS);
         };
 
         return function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,
@@ -34,7 +39,7 @@ App.Controller.createNew(function() {
             this.setupPageMessages($scope, messageHandler, $timeout);
             this.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
             $state.go(AppStates.MAIN).then(function() {
-                triggerLogin(jsonWebService, $scope);
+                triggerLogin(jsonWebService, commsPipe);
                 this.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
             }.bind(this));
         };

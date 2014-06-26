@@ -68,7 +68,7 @@ public class AddHeadersFilterTest {
     }
 
     @Test
-    public void testFilterSetupsUpHeadersCorrectly() throws Exception {
+    public void testFilterSetsUpHeadersCorrectly() throws Exception {
 
         givenACorrectWebXml();
         whenICallTheFilter();

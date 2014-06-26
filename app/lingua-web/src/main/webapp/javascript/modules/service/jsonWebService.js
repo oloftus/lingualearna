@@ -20,7 +20,7 @@ App.Service.createNew(function() {
             }
         };
         
-        var acquireCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
+        var buildCsrfTokenApiUrl = function(apiUrl, csrfSecret) {
             
             return App.Properties.csrfTokenApiUrl + "/" + App.Properties.csrfSecret;
         };
@@ -62,7 +62,7 @@ App.Service.createNew(function() {
             
             var acquireCsrfToken = function() {
 
-                var csrfTokenApiUrl = acquireCsrfTokenApiUrl();
+                var csrfTokenApiUrl = buildCsrfTokenApiUrl();
                 var successCallback = function(data) {
                     setCsrfToken(data);
                     commsPipe.send(Components.JSON_WEB_SERVICE, Components.ANY, Signals.CSRF_RETRIEVED);
@@ -82,7 +82,7 @@ App.Service.createNew(function() {
                 var errorHandler = function(data, status, headers, config) {
 
                     if (status === HttpHeaders.FORBIDDEN) {
-                        var isGetCsrfRequest = serviceUrl === acquireCsrfTokenApiUrl();
+                        var isGetCsrfRequest = serviceUrl === buildCsrfTokenApiUrl();
                         var reExecute = null;
                         if (retryOnAuthChallenge) {
                             reExecute = function() {
