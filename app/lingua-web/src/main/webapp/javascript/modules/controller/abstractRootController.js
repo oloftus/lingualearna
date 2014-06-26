@@ -2,17 +2,33 @@ App.Module.createNew(function() {
 
     this.isCalled("abstractRootController");
     
-    this.hasDefinition(function() {
+    this.imports("underscore");
+    
+    this.hasDefinition(function(_) {
 
+        var doCleanup = function($scope) {
+            
+            _.each($scope.global.cleanupActions, function(action) {
+                action();
+            });
+            $scope.global.cleanupActions = [];
+        };
+        
         var setupGlobalScope = function($scope) {
             
             $scope.global = {};
             $scope.global.model = {};
             $scope.global.func = {};
-            
+
             $scope.global.model.pageMessages = [];
             $scope.global.properties = App.Properties;
+
+            $scope.global.cleanupActions = [];
+            $scope.global.doCleanup = function() {
+                doCleanup($scope);
+            };
         };
+        
         
         var setupPageMessages = function($scope, messageHandler, $timeout) {
             

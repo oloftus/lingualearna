@@ -67,19 +67,24 @@ App.Controller.createNew(function() {
 
         var subscribeToTranslationRequests = function(commsPipe, $scope, languageService) {
 
-            commsPipe.subscribe(Components.ANY, Components.TRANSLATE, function(translationRequest, subject) {
+            var subscriberId = commsPipe.subscribe(Components.ANY, Components.TRANSLATE, function(translationRequest, subject) {
                 populateModelFromTranslationRequest($scope, translationRequest);
                 setLanguagesTitles($scope, languageService);
             }, Subjects.TRANSLATION_REQUEST);
+            
+            return subscriberId;
         };
 
         return function($scope, $location, $state, translateService, languageService, commsPipe) {
 
             this.setupDefaultScope($scope);
-
             addTranslateButtonHandler($scope, translateService);
             addAddToNotebookButtonHandler($scope, commsPipe, $state, $location);
-            subscribeToTranslationRequests(commsPipe, $scope, languageService);
+            
+            var subscriberId = subscribeToTranslationRequests(commsPipe, $scope, languageService);
+            this.addCleanupStep($scope, function() {
+                commsPipe.unsubscribe(subscriberId);
+            });
         };
     });
 });

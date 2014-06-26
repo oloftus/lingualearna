@@ -18,9 +18,15 @@ App.Module.createNew(function() {
             $scope.model.globalMessages = [];
         };
         
+        var addCleanupStep = function($scope, func) {
+            
+            $scope.global.cleanupActions.push(func);
+        };
+        
         return {
             addNotebookChangedHandler : addNotebookChangedHandler,
-            setupDefaultScope : setupDefaultScope
+            setupDefaultScope : setupDefaultScope,
+            addCleanupStep : addCleanupStep
         };
     });
 });
