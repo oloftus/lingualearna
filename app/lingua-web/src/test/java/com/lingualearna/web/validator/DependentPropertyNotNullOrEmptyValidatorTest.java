@@ -163,10 +163,6 @@ public class DependentPropertyNotNullOrEmptyValidatorTest {
     private void thenTheErrorObjectIsCorrectlySetup() {
 
         verify(nodeBuilderCustomizableContext).addConstraintViolation();
-
-        // verify(context).buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-        // .addPropertyNode(DEPENDENT_PROPERTY_NAME)
-        // .addConstraintViolation();
     }
 
     private void thenTheObjectPassesValidation() {

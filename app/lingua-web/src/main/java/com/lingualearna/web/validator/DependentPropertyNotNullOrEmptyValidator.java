@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder;
+import javax.validation.ConstraintValidatorContext.ConstraintViolationBuilder.NodeBuilderCustomizableContext;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
@@ -21,9 +23,10 @@ public class DependentPropertyNotNullOrEmptyValidator implements
 
     private void addViolation(ConstraintValidatorContext context) {
 
-        context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())
-                .addPropertyNode(propertyName)
-                .addConstraintViolation();
+        String messageTemplate = context.getDefaultConstraintMessageTemplate();
+        ConstraintViolationBuilder violationBuilder = context.buildConstraintViolationWithTemplate(messageTemplate);
+        NodeBuilderCustomizableContext nbcc = violationBuilder.addPropertyNode(propertyName);
+        nbcc.addConstraintViolation();
     }
 
     @Override
@@ -53,13 +56,13 @@ public class DependentPropertyNotNullOrEmptyValidator implements
     }
 
     private boolean propertyIsSetButDependentIsNotSet(Object object) throws IllegalAccessException,
-            InvocationTargetException,
-            NoSuchMethodException {
+            InvocationTargetException, NoSuchMethodException {
 
-        return (BeanUtils.getProperty(object, propertyName) != null &&
-                !BeanUtils.getProperty(object, propertyName).trim().isEmpty())
-                &&
-                (BeanUtils.getProperty(object, dependentPropertyName) == null ||
-                BeanUtils.getProperty(object, dependentPropertyName).trim().isEmpty());
+        boolean propertyNotNullOrEmpty = BeanUtils.getProperty(object, propertyName) != null &&
+                !BeanUtils.getProperty(object, propertyName).trim().isEmpty();
+        boolean dependentPropertyNullOrEmpty = BeanUtils.getProperty(object, dependentPropertyName) == null ||
+                BeanUtils.getProperty(object, dependentPropertyName).trim().isEmpty();
+
+        return propertyNotNullOrEmpty && dependentPropertyNullOrEmpty;
     }
 }
