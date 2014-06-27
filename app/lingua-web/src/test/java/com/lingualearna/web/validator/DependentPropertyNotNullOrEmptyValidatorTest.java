@@ -18,8 +18,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.lingualearna.web.validator.DependentPropertyNotNullOrEmpty;
-import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidator;
 import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentBlank;
 import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentNull;
 import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.TypeUnderValidation;
