@@ -23,9 +23,17 @@ App.Module.createNew(function() {
             $scope.global.cleanupActions.push(func);
         };
         
+        var setupCleanup = function($scope, $rootScope) {
+            
+            $rootScope.$on("$stateChangeSuccess", function() {
+                $scope.global.doCleanup();
+            });
+        };
+        
         return {
             addNotebookChangedHandler : addNotebookChangedHandler,
             setupDefaultScope : setupDefaultScope,
+            setupCleanup : setupCleanup,
             addCleanupStep : addCleanupStep
         };
     });

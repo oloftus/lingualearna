@@ -5,6 +5,7 @@ App.Controller.createNew(function() {
     this.imports("underscore");
 
     this.injects("$scope");
+    this.injects("$rootScope");
     this.injects("$location");
     this.injects("$timeout");
     this.injects("$state");
@@ -47,10 +48,12 @@ App.Controller.createNew(function() {
 
         var subscribeToAddNoteRequests = function(commsPipe, $scope, languageService) {
 
-            commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, function(note, subject) {
+            var subscriberId = commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, function(note, subject) {
                 populateModelFromNote($scope, note);
                 setLanguageTitles($scope, languageService);
             }, Subjects.NOTE);
+            
+            return subscriberId;
         };
 
         var addSubmitButtonHandler = function(commsPipe, $scope, noteService, messageHandler, $timeout, $state) {
@@ -110,20 +113,29 @@ App.Controller.createNew(function() {
                 }
             };
 
-            commsPipe.subscribe(Components.READER, Components.ANY, currentNotebookChangedHandler,
+            var subscriberId = commsPipe.subscribe(Components.READER, Components.ANY, currentNotebookChangedHandler,
                     Signals.CURRENT_NOTEBOOK_CHANGED);
+            
+            return subscriberId;
         };
 
-        return function($scope, $location, $timeout, $state, noteService, languageService, messageHandler,
+        return function($scope, $rootScope, $location, $timeout, $state, noteService, languageService, messageHandler,
                 commsPipe) {
 
             this.setupDefaultScope($scope);
+            this.setupCleanup($scope, $rootScope);
             populateModel($scope, $location);
             setLanguageTitles($scope, languageService);
             setDialogTitle($scope);
             addSubmitButtonHandler(commsPipe, $scope, noteService, messageHandler, $timeout, $state);
-            subscribeToAddNoteRequests(commsPipe, $scope, languageService);
-            subscribeToCurrentNotebookChangedEvents($scope, commsPipe);
+
+            var notebookChangedSubscriberId = subscribeToCurrentNotebookChangedEvents($scope, commsPipe);
+            var addNoteSubscriberId = subscribeToAddNoteRequests(commsPipe, $scope, languageService);
+            
+            this.addCleanupStep($scope, function() {
+                commsPipe.unsubscribe(notebookChangedSubscriberId);
+                commsPipe.unsubscribe(addNoteSubscriberId);
+            });
         };
     });
 });

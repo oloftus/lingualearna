@@ -3,6 +3,7 @@ App.Controller.createNew(function() {
     this.isCalled("translateController");
 
     this.injects("$scope");
+    this.injects("$rootScope");
     this.injects("$location");
     this.injects("$state");
     this.injects("service/translateService");
@@ -75,9 +76,10 @@ App.Controller.createNew(function() {
             return subscriberId;
         };
 
-        return function($scope, $location, $state, translateService, languageService, commsPipe) {
+        return function($scope, $rootScope, $location, $state, translateService, languageService, commsPipe) {
 
             this.setupDefaultScope($scope);
+            this.setupCleanup($scope, $rootScope);
             addTranslateButtonHandler($scope, translateService);
             addAddToNotebookButtonHandler($scope, commsPipe, $state, $location);
             
