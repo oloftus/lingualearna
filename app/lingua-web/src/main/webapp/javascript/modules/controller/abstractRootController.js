@@ -14,7 +14,7 @@ App.Module.createNew(function() {
             $scope.global.cleanupActions = [];
         };
         
-        var setupGlobalScope = function($scope) {
+        var setupGlobalScope = function($scope, $rootScope) {
             
             $scope.global = {};
             $scope.global.model = {};
@@ -28,7 +28,6 @@ App.Module.createNew(function() {
                 doCleanup($scope);
             };
         };
-        
         
         var setupPageMessages = function($scope, messageHandler, $timeout) {
             

@@ -5,7 +5,7 @@ App.MiniApp.createNew(function() {
     this.imports("framework/rootApp");
     this.imports("miniApps/abstractMiniApp");
     
-    this.loads("controller/readerController");
+    this.loads("controller/readerRootController");
     
     this.hasDefinition(function(rootApp, abstractMiniApp) {
 

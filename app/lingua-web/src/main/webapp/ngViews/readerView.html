@@ -1,4 +1,4 @@
-<div ng-controller="readerController">
+<div ng-controller="readerRootController">
     <div ng-controller="readerBarController">
     
         <div id="lingua-page-messages" ng-if="global.model.pageMessages.length != 0">
@@ -22,7 +22,7 @@
         </header>
 
         <div class="lingua-draggable-dialog" id="lingua-main-dialog">
-            <button class="lingua-icon-button lingua-dialog-close" id="lingua-dialog-close-main" ng-click="global.doCleanup()" ui-sref="READER_MAIN">Close</button>
+            <button class="lingua-icon-button lingua-dialog-close" id="lingua-dialog-close-main" ui-sref="READER_MAIN">Close</button>
             <div class="lingua-dialog-view" ui-view="MODAL_DIALOG"></div>
         </div>
     </div>

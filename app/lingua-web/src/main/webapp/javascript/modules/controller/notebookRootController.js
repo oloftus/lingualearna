@@ -1,6 +1,6 @@
 App.Controller.createNew(function() {
 
-    this.isCalled("notebookController");
+    this.isCalled("notebookRootController");
     
     this.imports("util/appStates");
     this.imports("util/dialogs");

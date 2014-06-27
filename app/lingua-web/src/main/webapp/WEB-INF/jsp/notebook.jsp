@@ -29,7 +29,7 @@
 
 <body>
 
-    <div id="page-container" class="lingua-component" ng-controller="notebookController">
+    <div id="page-container" class="lingua-component" ng-controller="notebookRootController">
         <div class="lingua-draggable-dialog" id="lingua-main-dialog">
             <button class="lingua-icon-button lingua-dialog-close" id="lingua-dialog-close-main" ui-sref="NOTEBOOK_MAIN">Close</button>
             <div class="lingua-dialog-view" ui-view="MODAL_DIALOG"></div>

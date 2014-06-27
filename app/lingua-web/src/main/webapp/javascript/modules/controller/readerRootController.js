@@ -1,6 +1,6 @@
 App.Controller.createNew(function() {
 
-    this.isCalled("readerController");
+    this.isCalled("readerRootController");
 
     this.imports("util/textSelector");
     this.imports("util/appStates");
