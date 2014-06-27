@@ -1,4 +1,4 @@
-package com.lingualearna.web.notes.validator;
+package com.lingualearna.web.validator;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -15,10 +15,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.lingualearna.web.notes.validator.MinimumOnePropertyNotEmptyValidatorTestHelpers.AllFieldsNotNull;
-import com.lingualearna.web.notes.validator.MinimumOnePropertyNotEmptyValidatorTestHelpers.AllFieldsNull;
-import com.lingualearna.web.notes.validator.MinimumOnePropertyNotEmptyValidatorTestHelpers.OneFieldNotNull;
-import com.lingualearna.web.notes.validator.MinimumOnePropertyNotEmptyValidatorTestHelpers.TypeUnderValidation;
+import com.lingualearna.web.validator.MinimumOnePropertyNotEmpty;
+import com.lingualearna.web.validator.MinimumOnePropertyNotEmptyValidator;
+import com.lingualearna.web.validator.MinimumOnePropertyNotEmptyValidatorTestHelpers.AllFieldsNotNull;
+import com.lingualearna.web.validator.MinimumOnePropertyNotEmptyValidatorTestHelpers.AllFieldsNull;
+import com.lingualearna.web.validator.MinimumOnePropertyNotEmptyValidatorTestHelpers.OneFieldNotNull;
+import com.lingualearna.web.validator.MinimumOnePropertyNotEmptyValidatorTestHelpers.TypeUnderValidation;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MinimumOnePropertyNotEmptyValidatorTest {

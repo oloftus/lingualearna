@@ -1,4 +1,4 @@
-package com.lingualearna.web.notes.validator;
+package com.lingualearna.web.validator;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,15 +18,15 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmpty;
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmptyValidator;
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentBlank;
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentNull;
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.TypeUnderValidation;
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyBlankDependentNull;
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyNotNullDependentNotNull;
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyNullDependentNotNull;
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyNullDependentNull;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmpty;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidator;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentBlank;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.InvalidPropertyNotNullDependentNull;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.TypeUnderValidation;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyBlankDependentNull;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyNotNullDependentNotNull;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyNullDependentNotNull;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmptyValidatorTestHelpers.ValidPropertyNullDependentNull;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DependentPropertyNotNullOrEmptyValidatorTest {

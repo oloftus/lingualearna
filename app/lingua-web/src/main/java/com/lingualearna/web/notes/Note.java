@@ -18,10 +18,10 @@ import javax.persistence.Transient;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
-import com.lingualearna.web.notes.validator.DependentPropertyNotNullOrEmpty;
-import com.lingualearna.web.notes.validator.MinimumOnePropertyNotEmpty;
 import com.lingualearna.web.security.HasOwner;
 import com.lingualearna.web.security.User;
+import com.lingualearna.web.validator.DependentPropertyNotNullOrEmpty;
+import com.lingualearna.web.validator.MinimumOnePropertyNotEmpty;
 
 @DependentPropertyNotNullOrEmpty.Properties({
         @DependentPropertyNotNullOrEmpty(propertyName = "foreignNote", dependentPropertyName = "foreignLang"),

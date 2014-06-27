@@ -1,4 +1,4 @@
-package com.lingualearna.web.notes.validator;
+package com.lingualearna.web.validator;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;

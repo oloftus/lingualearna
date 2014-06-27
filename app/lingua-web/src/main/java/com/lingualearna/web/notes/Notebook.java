@@ -23,8 +23,8 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lingualearna.web.notes.validator.FieldsNotEqual;
 import com.lingualearna.web.security.User;
+import com.lingualearna.web.validator.FieldsNotEqual;
 
 @FieldsNotEqual({ "foreignLang", "localLang" })
 @NamedQueries({
