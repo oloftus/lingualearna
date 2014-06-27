@@ -119,7 +119,7 @@ class GlobalControllerExceptionHandler {
 
         ConstraintViolations response = new ConstraintViolations();
 
-        for (com.lingualearna.web.controller.exceptions.FieldError error : exception.getFieldErrors()) {
+        for (FieldValidationError error : exception.getFieldErrors()) {
             response.addFieldError(error.getFieldName(), error.getErrorMessage());
         }
         for (String error : exception.getGlobalErrors()) {

@@ -1,11 +1,11 @@
 package com.lingualearna.web.controller.exceptions;
 
-public class FieldError {
+public class FieldValidationError {
 
     private String fieldName;
     private String errorMessage;
 
-    public FieldError(String fieldName, String errorMessage) {
+    public FieldValidationError(String fieldName, String errorMessage) {
 
         this.fieldName = fieldName;
         this.errorMessage = errorMessage;
@@ -23,7 +23,7 @@ public class FieldError {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        FieldError other = (FieldError) obj;
+        FieldValidationError other = (FieldValidationError) obj;
         if (errorMessage == null) {
             if (other.errorMessage != null) {
                 return false;

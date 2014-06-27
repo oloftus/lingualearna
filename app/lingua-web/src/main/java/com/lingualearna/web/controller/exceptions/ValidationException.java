@@ -8,7 +8,7 @@ public class ValidationException extends Exception {
     private static final long serialVersionUID = -4621894928119661025L;
 
     private List<String> globalErrors;
-    private List<FieldError> fieldErrors;
+    private List<FieldValidationError> fieldErrors;
 
     public ValidationException() {
 
@@ -18,7 +18,7 @@ public class ValidationException extends Exception {
 
     public void addFieldError(String fieldName, String errorMessage) {
 
-        FieldError error = new FieldError(fieldName, errorMessage);
+        FieldValidationError error = new FieldValidationError(fieldName, errorMessage);
         fieldErrors.add(error);
     }
 
@@ -27,7 +27,7 @@ public class ValidationException extends Exception {
         globalErrors.add(errorMessage);
     }
 
-    public List<FieldError> getFieldErrors() {
+    public List<FieldValidationError> getFieldErrors() {
 
         return fieldErrors;
     }

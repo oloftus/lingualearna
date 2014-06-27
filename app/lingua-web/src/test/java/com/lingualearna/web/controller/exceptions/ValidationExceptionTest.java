@@ -16,7 +16,7 @@ public class ValidationExceptionTest {
     private static final String ERROR_MESSAGE_1 = "errorMessage1";
     private static final String ERROR_MESSAGE_2 = "errorMessage2";
 
-    private ArrayList<FieldError> fieldErrors;
+    private ArrayList<FieldValidationError> fieldErrors;
     private ArrayList<String> globalErrors = Lists.newArrayList(ERROR_MESSAGE_1, ERROR_MESSAGE_2);
 
     private ValidationException validationException;
@@ -31,8 +31,8 @@ public class ValidationExceptionTest {
 
     private void setupFieldErrors() {
 
-        FieldError fieldError1 = new FieldError(FIELD_NAME_1, ERROR_MESSAGE_1);
-        FieldError fieldError2 = new FieldError(FIELD_NAME_2, ERROR_MESSAGE_2);
+        FieldValidationError fieldError1 = new FieldValidationError(FIELD_NAME_1, ERROR_MESSAGE_1);
+        FieldValidationError fieldError2 = new FieldValidationError(FIELD_NAME_2, ERROR_MESSAGE_2);
         fieldErrors = Lists.newArrayList(fieldError1, fieldError2);
     }
 
