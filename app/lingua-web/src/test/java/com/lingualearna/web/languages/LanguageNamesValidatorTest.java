@@ -38,6 +38,7 @@ public class LanguageNamesValidatorTest {
         when(languageService.getAllSupportedLanguages()).thenReturn(Lists.newArrayList(supportedLanguage));
     }
 
+    @Test
     public void testValidateLanguageNamesAcceptsSupportedLanguages() throws ValidationException {
 
         validator.validateLanguageNames(SUPPORTED_LANGUAGE.getLanguage());

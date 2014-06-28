@@ -33,7 +33,7 @@ public class LanguageNamesValidator {
 
         for (String languageCode : languageCodes) {
             for (SupportedLanguage supportedLanguage : supportedLanguages) {
-                if (languageCode.equals(supportedLanguage.getLangCode())) {
+                if (languageCode.equals(supportedLanguage.getLangCode().getLanguage())) {
                     validity.put(languageCode, true);
                     break;
                 }
