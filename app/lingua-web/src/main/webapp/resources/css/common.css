@@ -64,7 +64,7 @@ body {
     width: 100%;
 }
 
-.lingua-component textarea,.lingua-component input[type="text"], .lingua-component select {
+.lingua-component textarea,.lingua-component input[type="text"],.lingua-component select {
     margin: 0;
     outline: none;
     border: none;
@@ -74,7 +74,7 @@ body {
     color: gray;
 }
 
-.lingua-component textarea, .lingua-component .lingua-form input[type="text"], .lingua-component .lingua-form select {
+.lingua-component textarea,.lingua-component .lingua-form input[type="text"],.lingua-component .lingua-form select {
     border: 14px solid white !important;
     width: 100%;
 }
@@ -188,7 +188,7 @@ body {
     background-image: url(../images/pencil.svg);
 }
 
-#lingua-save-entry-button, .lingua-save-button {
+#lingua-save-entry-button,.lingua-save-button {
     background-image: url(../images/document.svg);
 }
 
@@ -256,7 +256,7 @@ body {
     width: 100%;
 }
 
-.lingua-dialog-content>div.column, .lingua-dialog-content>div.row {
+.lingua-dialog-content>div.column,.lingua-dialog-content>div.row,.lingua-padded-content,.lingua-content-border {
     border-bottom: 1px solid #888888;
 }
 

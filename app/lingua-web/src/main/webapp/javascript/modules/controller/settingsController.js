@@ -6,7 +6,7 @@ App.Controller.createNew(function() {
     
     this.injects("$scope");
     
-    this.hasDefinition(function() {
+    this.hasDefinition(function(abstractController) {
 
         return function($scope) {
 

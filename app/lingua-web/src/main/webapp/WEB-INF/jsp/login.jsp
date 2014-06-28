@@ -56,7 +56,7 @@
             <div class="lingua-dialog-header">
                 <h2>Login</h2>
             </div>
-            <div class="lingua-dialog-content">
+            <div class="lingua-dialog-content lingua-content-border">
                 <c:if test="${!empty param['loginFailed']}">
                     <div id="lingua-global-messages">
                         <ul>
