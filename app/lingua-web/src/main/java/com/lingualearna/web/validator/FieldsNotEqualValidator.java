@@ -11,7 +11,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.lingualearna.web.util.ConfigurationException;
+import com.lingualearna.web.exception.ConfigurationException;
 
 /**
  * Does not consider blank values to be equal to one another.

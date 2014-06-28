@@ -2,7 +2,7 @@ package com.lingualearna.web.translation;
 
 import java.util.Locale;
 
-import com.lingualearna.web.util.ApplicationException;
+import com.lingualearna.web.exception.ApplicationException;
 
 public interface TranslationProvider {
 

@@ -22,10 +22,10 @@ import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.Translate.Translations.List;
 import com.google.api.services.translate.TranslateRequestInitializer;
 import com.google.common.collect.Lists;
+import com.lingualearna.web.exception.ApplicationException;
 import com.lingualearna.web.translation.SingleTranslationResult;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProvider;
-import com.lingualearna.web.util.ApplicationException;
 import com.lingualearna.web.util.locale.LocalizationService;
 
 @Service

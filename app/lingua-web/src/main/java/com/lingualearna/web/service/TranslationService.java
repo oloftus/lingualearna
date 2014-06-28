@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.lingualearna.web.exception.ApplicationException;
 import com.lingualearna.web.translation.SingleTranslationResult;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProvider;
 import com.lingualearna.web.translation.TranslationProviderName;
-import com.lingualearna.web.util.ApplicationException;
 
 @Service
 public class TranslationService {

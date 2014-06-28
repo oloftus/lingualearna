@@ -1,4 +1,4 @@
-package com.lingualearna.web.util;
+package com.lingualearna.web.exception;
 
 public class ConfigurationException extends RuntimeException {
 

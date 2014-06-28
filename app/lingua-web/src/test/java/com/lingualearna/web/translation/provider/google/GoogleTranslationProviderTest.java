@@ -30,6 +30,7 @@ import com.google.api.services.translate.Translate;
 import com.google.api.services.translate.Translate.Translations.List;
 import com.google.api.services.translate.TranslateRequestInitializer;
 import com.google.common.collect.Lists;
+import com.lingualearna.web.exception.ApplicationException;
 import com.lingualearna.web.testutil.AnswerWithSelf;
 import com.lingualearna.web.testutil.MockitoUnitTestBase;
 import com.lingualearna.web.translation.SingleTranslationResult;
@@ -38,7 +39,6 @@ import com.lingualearna.web.translation.provider.google.GoogleTranslateBuilderWr
 import com.lingualearna.web.translation.provider.google.GoogleTranslateLibraryWrapper;
 import com.lingualearna.web.translation.provider.google.GoogleTranslationProvider;
 import com.lingualearna.web.translation.provider.google.WrappedGoogleJsonResponseException;
-import com.lingualearna.web.util.ApplicationException;
 import com.lingualearna.web.util.locale.LocalizationService;
 
 @RunWith(MockitoJUnitRunner.class)

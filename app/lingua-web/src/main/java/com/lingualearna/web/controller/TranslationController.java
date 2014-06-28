@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lingualearna.web.controller.model.TranslationRequest;
 import com.lingualearna.web.controller.model.TranslationResponse;
+import com.lingualearna.web.exception.ApplicationException;
 import com.lingualearna.web.service.TranslationService;
 import com.lingualearna.web.translation.TranslationException;
 import com.lingualearna.web.translation.TranslationProviderName;
-import com.lingualearna.web.util.ApplicationException;
 
 @Controller
 @RequestMapping("/api")
