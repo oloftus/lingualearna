@@ -1,7 +1,7 @@
 App.Module.createNew(function() {
 
     this.isCalled("appStates");
-    
+
     this.imports("underscore");
 
     this.hasDefinition(function(_) {
@@ -43,7 +43,8 @@ App.Module.createNew(function() {
                 viewName : Views.MODAL_DIALOG,
                 viewUrl : "/addNoteDialogView"
             } ],
-            controllers : [ "/controller/addNoteController" ]
+            controllers : [ "/controller/addNoteController" ],
+            parentStates : [ AppStates.READER_MAIN, AppStates.NOTEBOOK_MAIN ]
         }, {
             stateName : AppStates.TRANSLATE,
             views : [ {
@@ -77,7 +78,8 @@ App.Module.createNew(function() {
             parentStates : [ AppStates.NOTEBOOK_MAIN ]
         } ];
 
-        var additionalViews = [ "/abstractNoteDialogView", "/notebookHeaderView" ];
+        var additionalViews = [ "/pageMessagesView", "/globalMessagesView", "/abstractNoteDialogView",
+                "/notebookHeaderView" ];
         var additionalWhitelistUrls = [ App.Properties.pagesRoot + "/login" ];
 
         var whitelist = [];
@@ -141,7 +143,7 @@ App.Module.createNew(function() {
         var constructNestedStateName = function() {
 
             var stateName = [];
-            
+
             _.each(arguments, function(argument) {
                 stateName.push(argument);
             });
@@ -183,9 +185,9 @@ App.Module.createNew(function() {
 
             AppStates.MAIN = stateName;
         };
-        
+
         var goRelative = function($state, stateName) {
-            
+
             $state.go("." + stateName);
         };
 

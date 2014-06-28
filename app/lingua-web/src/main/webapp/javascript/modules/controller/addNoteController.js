@@ -86,13 +86,22 @@ App.Controller.createNew(function() {
                 });
             };
         };
+        
+        var getSourceUrl = function($location) {
+            
+            // Current URL starts with app root
+            var sourceUrl = null;
+            if ($location.absUrl().indexOf(App.Properties.applicationRoot) === -1) {
+                sourceUrl = $location.absUrl();
+            }
+        };
 
         var populateModel = function($scope, $location) {
 
             $scope.model.page = $scope.global.model.currentPage;
             $scope.model.foreignLang = $scope.global.model.currentNotebook.foreignLang;
             $scope.model.localLang = $scope.global.model.currentNotebook.localLang;
-            $scope.model.sourceUrl = $location.absUrl();
+            $scope.model.sourceUrl = getSourceUrl($location);
             $scope.model.translationSource = TranslationSources.MANUAL;
             $scope.model.includedInTest = true;
 

@@ -1,18 +1,14 @@
 <div ng-controller="readerRootController">
     <div ng-controller="readerBarController">
     
-        <div id="lingua-page-messages" ng-if="global.model.pageMessages.length != 0">
-            <ul>
-                <li ng-class="{'lingua-error': message.type == 'ERROR', 'lingua-info': message.type == 'INFO'}" ng-repeat="message in global.model.pageMessages">{{message.text}}</li>
-            </ul>
-        </div>
+        <div ng-include="global.properties.ngViewsRoot + '/pageMessagesView.html'" class="lingua-ng-include"></div>
         
         <header class="lingua-component" id="lingua-reader-bar">
             <div class="lingua-align-left">
                 <h1>LinguaLearna.com</h1>
             </div>
             <div class="lingua-align-centre">
-                <button class="lingua-action-button lingua-action-button-icon" id="lingua-add-note-button" ui-sref="ADD_NOTE">Add note</button>
+                <button class="lingua-action-button lingua-action-button-icon" id="lingua-add-note-button" ui-sref="READER_MAIN.ADD_NOTE">Add note</button>
             </div>
             <div class="lingua-align-right">
                 <select ng-model="global.model.currentNotebook" ng-options="notebook.name for notebook in global.model.notebooks track by notebook.notebookId"

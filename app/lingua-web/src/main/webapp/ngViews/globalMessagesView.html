@@ -1,0 +1,6 @@
+<div id="lingua-global-messages" ng-if="model.globalMessages.length != 0">
+    <ul>
+        <li ng-class="{'lingua-error': message.type == 'ERROR', 'lingua-info': message.type == 'INFO'}"
+            ng-repeat="message in model.globalMessages">{{message.text}}</li>
+    </ul>
+</div>
