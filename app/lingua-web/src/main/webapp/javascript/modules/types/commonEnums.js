@@ -51,4 +51,9 @@ App.TypesDef.createNew(function() {
         GOOGLE: "Google",
         MANUAL: "Manual"
     };
+    
+    Caches = {
+        SUPPORTED_LANGUAGES : "SUPPORTED_LANGUAGES",
+        LANGUAGE_NAMES : "LANGUAGE_NAMES"
+    };
 });

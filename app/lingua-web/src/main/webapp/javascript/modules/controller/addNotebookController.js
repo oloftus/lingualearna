@@ -25,8 +25,8 @@ App.Controller.createNew(function() {
 
         var setupLanguageDropdowns = function($scope, languageService, messageHandler) {
 
-            languageService.getSupportedLanguages(function(data) {
-                $scope.model.supportedLanguages = data;
+            languageService.getSupportedLanguages(function(supportedLanguages) {
+                $scope.model.supportedLanguages = supportedLanguages;
             }, function(data, status, headers, config) {
                 messageHandler.handleErrors($scope, data, status, headers);
             });

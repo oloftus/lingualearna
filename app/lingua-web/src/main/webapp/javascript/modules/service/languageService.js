@@ -3,26 +3,62 @@ App.Service.createNew(function() {
     this.isCalled("languageService");
 
     this.injects("service/jsonWebService");
-    
+    this.injects("util/appCache");
+
     this.usesConstant("languageNamesServiceUrl");
     this.usesConstant("supportedLanguagesServiceUrl");
 
     this.hasDefinition(function() {
 
-        return function(jsonWebService, languageNamesServiceUrl, supportedLanguagesServiceUrl) {
+        var SUPPORED_LANGUAGES_KEY = "languages";
 
-            var lookupLangName = function(languageNameRequest, successCallback, failureCallback) {
+        return function(jsonWebService, appCache, languageNamesServiceUrl, supportedLanguagesServiceUrl) {
 
-                jsonWebService.execute(languageNamesServiceUrl, HttpMethod.POST, languageNameRequest, successCallback,
-                        failureCallback);
+            var construct = function() {
+
+                appCache.create(Caches.LANGUAGE_NAMES);
+                appCache.create(Caches.SUPPORTED_LANGUAGES);
             };
-            
+
+            var lookupLangName = function(langCode, successCallback, failureCallback) {
+
+                var cachedLanguageName = appCache.lookup(Caches.LANGUAGE_NAMES, langCode);
+
+                if (!_.isUndefined(cachedLanguageName)) {
+                    successCallback(cachedLanguageName);
+                }
+                else {
+                    var wrappedSuccessCallback = function(data) {
+                        var langName = data.langName;
+                        appCache.put(Caches.LANGUAGE_NAMES, langCode, langName);
+                        successCallback(langName);
+                    };
+
+                    var languageNameRequest = new LanguageNameRequest(langCode);
+                    jsonWebService.execute(languageNamesServiceUrl, HttpMethod.POST, languageNameRequest,
+                            wrappedSuccessCallback, failureCallback);
+                }
+            };
+
             var getSupportedLanguages = function(successCallback, failureCallback) {
-                
-                jsonWebService.execute(supportedLanguagesServiceUrl, HttpMethod.GET, null, successCallback,
-                        failureCallback);
+
+                var cachedSupportedLanguages = appCache.lookup(Caches.SUPPORTED_LANGUAGES, SUPPORED_LANGUAGES_KEY);
+
+                if (!_.isUndefined(cachedSupportedLanguages)) {
+                    successCallback(cachedSupportedLanguages);
+                }
+                else {
+                    var wrappedSuccessCallback = function(supportedLanguages) {
+                        appCache.put(Caches.SUPPORTED_LANGUAGES, SUPPORED_LANGUAGES_KEY, supportedLanguages);
+                        successCallback(supportedLanguages);
+                    };
+
+                    jsonWebService.execute(supportedLanguagesServiceUrl, HttpMethod.GET, null, wrappedSuccessCallback,
+                            failureCallback);
+                }
             };
 
+            construct();
             return {
                 lookupLangName : lookupLangName,
                 getSupportedLanguages : getSupportedLanguages

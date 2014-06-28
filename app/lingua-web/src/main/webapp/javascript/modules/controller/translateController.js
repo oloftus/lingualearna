@@ -25,12 +25,12 @@ App.Controller.createNew(function() {
 
         var setLanguagesTitles = function($scope, languageService) {
 
-            languageService.lookupLangName(new LanguageNameRequest($scope.model.sourceLang), function(data) {
-                $scope.model.sourceLangName = data.langName;
+            languageService.lookupLangName($scope.model.sourceLang, function(langName) {
+                $scope.model.sourceLangName = langName;
             });
 
-            languageService.lookupLangName(new LanguageNameRequest($scope.model.targetLang), function(data) {
-                $scope.model.targetLangName = data.langName;
+            languageService.lookupLangName($scope.model.targetLang, function(langName) {
+                $scope.model.targetLangName = langName;
             });
 
             $scope.func.doTranslate();

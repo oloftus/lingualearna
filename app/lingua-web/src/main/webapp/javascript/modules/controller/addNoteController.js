@@ -31,12 +31,12 @@ App.Controller.createNew(function() {
 
         var setLanguageTitles = function($scope, languageService) {
 
-            languageService.lookupLangName(new LanguageNameRequest($scope.model.foreignLang), function(data) {
-                $scope.model.foreignLangName = data.langName;
+            languageService.lookupLangName($scope.model.foreignLang, function(langName) {
+                $scope.model.foreignLangName = langName;
             });
 
-            languageService.lookupLangName(new LanguageNameRequest($scope.model.localLang), function(data) {
-                $scope.model.localLangName = data.langName;
+            languageService.lookupLangName($scope.model.localLang, function(langName) {
+                $scope.model.localLangName = langName;
             });
         };
 

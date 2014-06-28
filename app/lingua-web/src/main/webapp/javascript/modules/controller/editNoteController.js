@@ -34,12 +34,12 @@ App.Controller.createNew(function() {
 
         var loadLanguageNames = function(languageService, model) {
 
-            languageService.lookupLangName(new LanguageNameRequest(model.foreignLang), function(data) {
-                model.foreignLangName = data.langName;
+            languageService.lookupLangName(model.foreignLang, function(langName) {
+                model.foreignLangName = langName;
             });
 
-            languageService.lookupLangName(new LanguageNameRequest(model.localLang), function(data) {
-                model.localLangName = data.langName;
+            languageService.lookupLangName(model.localLang, function(langName) {
+                model.localLangName = langName;
             });
         };
 
