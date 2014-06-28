@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lingualearna.web.controller.model.LanguageNameRequest;
 import com.lingualearna.web.controller.model.LanguageNameResponse;
-import com.lingualearna.web.dao.SupportedLanguageDao;
 import com.lingualearna.web.service.LanguageService;
 import com.lingualearna.web.translation.SupportedLanguage;
 
@@ -20,23 +19,20 @@ import com.lingualearna.web.translation.SupportedLanguage;
 public class LanguageController {
 
     @Autowired
-    private LanguageService languageNamesService;
-
-    @Autowired
-    private SupportedLanguageDao supportedLanguagesDao;
+    private LanguageService languageService;
 
     @RequestMapping(value = "/supported", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public List<SupportedLanguage> lookupLangName() {
 
-        return supportedLanguagesDao.getAllSupportedLanguages();
+        return languageService.getAllSupportedLanguages();
     }
 
     @RequestMapping(value = "/langName", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     @ResponseBody
     public LanguageNameResponse lookupLangName(@RequestBody LanguageNameRequest request) {
 
-        String langName = languageNamesService.lookupLocalizedLangNameWithTranslationAsTitle(request.getLangCode());
+        String langName = languageService.lookupLocalizedLangNameWithTranslationAsTitle(request.getLangCode());
 
         LanguageNameResponse response = new LanguageNameResponse();
         response.setLangCode(request.getLangCode());

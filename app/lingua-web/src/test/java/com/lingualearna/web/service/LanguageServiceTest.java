@@ -1,6 +1,7 @@
 package com.lingualearna.web.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Locale;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.lingualearna.web.dao.SupportedLanguageDao;
 import com.lingualearna.web.util.locale.LocalizationService;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,14 +32,24 @@ public class LanguageServiceTest {
     @Mock
     private LocalizationService localizationService;
 
+    @Mock
+    private SupportedLanguageDao supportedLanguagesDao;
+
     @InjectMocks
-    private LanguageService languageNamesService = new LanguageService();
+    private LanguageService languageService = new LanguageService();
 
     @Before
     public void setup() {
 
         Locale enLocale = Locale.forLanguageTag(EN_LANG_CODE);
         when(localizationService.getUserLocale()).thenReturn(enLocale);
+    }
+
+    @Test
+    public void testGetAllSupportedLanguagesDelegatesToDao() {
+
+        whenICallGetAllSupportedLanguages();
+        thenTheCallIsDelegatedToTheDao();
     }
 
     @Test
@@ -52,19 +64,29 @@ public class LanguageServiceTest {
         whenICallLookupLocalizedLangNameAsTitleThenIExpectTheCorrectLanguageNameAndFormat();
     }
 
+    private void thenTheCallIsDelegatedToTheDao() {
+
+        verify(supportedLanguagesDao).getAllSupportedLanguages();
+    }
+
+    private void whenICallGetAllSupportedLanguages() {
+
+        languageService.getAllSupportedLanguages();
+    }
+
     private void whenICallLookupLocalizedLangNameAsTitleThenIExpectTheCorrectLanguageNameAndFormat() {
 
-        assertEquals(EN_LANG_NAME, languageNamesService.lookupLocalizedLangNameWithTranslationAsTitle(EN_LANG_CODE));
+        assertEquals(EN_LANG_NAME, languageService.lookupLocalizedLangNameWithTranslationAsTitle(EN_LANG_CODE));
         assertEquals(DE_LANG_NAME_FOREIGN + " (" + DE_LANG_NAME_LOCAL + ")",
-                languageNamesService.lookupLocalizedLangNameWithTranslationAsTitle(DE_LANG_CODE));
+                languageService.lookupLocalizedLangNameWithTranslationAsTitle(DE_LANG_CODE));
         assertEquals(FR_LANG_NAME_FOREIGN_CAPS + " (" + FR_LANG_NAME_LOCAL + ")",
-                languageNamesService.lookupLocalizedLangNameWithTranslationAsTitle(FR_LANG_CODE));
+                languageService.lookupLocalizedLangNameWithTranslationAsTitle(FR_LANG_CODE));
     }
 
     private void whenICallLookupLocalizedLangNameThenIExpectTheCorrectLanguageName() {
 
-        assertEquals(EN_LANG_NAME, languageNamesService.lookupLocalizedLangName(EN_LANG_CODE));
-        assertEquals(DE_LANG_NAME_FOREIGN, languageNamesService.lookupLocalizedLangName(DE_LANG_CODE));
-        assertEquals(FR_LANG_NAME_FOREIGN, languageNamesService.lookupLocalizedLangName(FR_LANG_CODE));
+        assertEquals(EN_LANG_NAME, languageService.lookupLocalizedLangName(EN_LANG_CODE));
+        assertEquals(DE_LANG_NAME_FOREIGN, languageService.lookupLocalizedLangName(DE_LANG_CODE));
+        assertEquals(FR_LANG_NAME_FOREIGN, languageService.lookupLocalizedLangName(FR_LANG_CODE));
     }
 }
