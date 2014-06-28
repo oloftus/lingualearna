@@ -94,12 +94,6 @@ App.NgComponent = {
             this.moduleProps._ngDeps.push(constantName);
         };
         
-        this.extends = function(moduleName) {
-            
-            this._isExtension = true;
-            this._firstImports(moduleName);
-        };
-
         this.hasDefinition = function(componentDefinition) {
 
             var allImports = this._doImport(this.moduleProps._firstImports, this.moduleProps._imports,
@@ -109,9 +103,7 @@ App.NgComponent = {
 
                 var rootApp = Array.prototype.shift.call(arguments);
                 var ngRegistrationHelper = Array.prototype.shift.call(arguments);
-                var superObj = this._isExtension ? Array.prototype.shift.call(arguments) : null;
                 var component = componentDefinition.apply(null, arguments);
-                component.prototype = superObj;
                 this._registerComponent(rootApp, ngRegistrationHelper, component);
             };
 

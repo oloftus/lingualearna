@@ -2,6 +2,8 @@ App.Controller.createNew(function() {
 
     this.moduleHasName("editNoteController");
 
+    this.imports("controller/abstractController");
+    
     this.injects("$scope");
     this.injects("service/noteService");
     this.injects("service/languageService");
@@ -9,9 +11,7 @@ App.Controller.createNew(function() {
     
     this.usesConstant("noteId");
 
-    this.extends("controller/abstractController");
-
-    this.hasDefinition(function() {
+    this.hasDefinition(function(abstractController) {
 
         /*
          * Prevent users overwriting notes because their original content
@@ -45,7 +45,7 @@ App.Controller.createNew(function() {
 
         return function($scope, noteService, languageService, messageHandler, noteId) {
 
-            this.setupDefaultScope($scope);
+            abstractController.setupDefaultScope($scope);
 
             $scope.model.noteId = noteId;
             $scope.model.operationTitle = localStrings.editNoteTitle;

@@ -2,6 +2,7 @@ App.Controller.createNew(function() {
 
     this.isCalled("readerRootController");
 
+    this.imports("controller/abstractRootController");
     this.imports("util/textSelector");
     this.imports("util/appStates");
     this.imports("util/dialogs");
@@ -17,9 +18,7 @@ App.Controller.createNew(function() {
     this.injects("util/messageHandler");
     this.injects("util/commsPipe");
 
-    this.extends("controller/abstractRootController");
-
-    this.hasDefinition(function(textSelector, appStates, dialogs, _) {
+    this.hasDefinition(function(abstractRootController, textSelector, appStates, dialogs, _) {
 
         var mouseupHandler = function(commsPipe, $state, $scope) {
 
@@ -53,13 +52,13 @@ App.Controller.createNew(function() {
         return function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,
                 commsPipe) {
 
-            this.setupGlobalScope($scope, $state);
+            abstractRootController.setupGlobalScope($scope, $state);
             appStates.setMainState(AppStates.READER_MAIN);
             dialogs.setupDialogs($scope);
             getCsrfAndTriggerLogin(jsonWebService, $scope);
-            this.setupPageMessages($scope, messageHandler, $timeout);
-            this.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
-            this.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
+            abstractRootController.setupPageMessages($scope, messageHandler, $timeout);
+            abstractRootController.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
+            abstractRootController.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
             setupClickToTranslate(commsPipe, $state, $scope);
             $state.go(AppStates.MAIN);
         };

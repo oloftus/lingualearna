@@ -2,19 +2,19 @@ App.Controller.createNew(function() {
 
     this.isCalled("loginController");
 
+    this.imports("controller/abstractController");
+    
     this.loads("iframeResizer");
 
     this.injects("$scope");
     this.injects("$state");
     this.injects("util/commsPipe");
 
-    this.extends("controller/abstractController");
-
-    this.hasDefinition(function() {
+    this.hasDefinition(function(abstractController) {
 
         return function($scope, $state, commsPipe) {
 
-            this.setupDefaultScope($scope);
+            abstractController.setupDefaultScope($scope);
 
             iFrameResize({
                 enablePublicMethods : true,

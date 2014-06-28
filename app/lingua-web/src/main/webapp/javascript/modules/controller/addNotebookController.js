@@ -2,6 +2,7 @@ App.Controller.createNew(function() {
 
     this.isCalled("addNotebookController");
 
+    this.imports("controller/abstractController");
     this.imports("underscore");
 
     this.loads("localization/stringsDefault");
@@ -13,9 +14,7 @@ App.Controller.createNew(function() {
     this.injects("service/notebookService");
     this.injects("util/messageHandler");
 
-    this.extends("controller/abstractController");
-
-    this.hasDefinition(function(_) {
+    this.hasDefinition(function(abstractController, _) {
 
         var setupScope = function($scope) {
 
@@ -62,7 +61,7 @@ App.Controller.createNew(function() {
 
         return function($scope, $timeout, $state, languageService, notebookService, messageHandler) {
 
-            this.setupDefaultScope($scope);
+            abstractController.setupDefaultScope($scope);
             setupScope($scope);
             setupLanguageDropdowns($scope, languageService, messageHandler);
             addSubmitButtonHandler($scope, $timeout, $state, notebookService, messageHandler);

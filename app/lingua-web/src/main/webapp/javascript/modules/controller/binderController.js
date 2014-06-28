@@ -1,15 +1,15 @@
 App.Controller.createNew(function() {
 
     this.isCalled("binderController");
+    
+    this.imports("controller/abstractController");
 
     this.injects("$scope");
-    
-    this.extends("controller/abstractController");
 
-    this.hasDefinition(function() {
+    this.hasDefinition(function(abstractController) {
 
         return function($scope) {
-            this.setupDefaultScope($scope);
+            abstractController.setupDefaultScope($scope);
         };
     });
 });

@@ -2,6 +2,7 @@ App.Controller.createNew(function() {
 
     this.isCalled("addNoteController");
 
+    this.imports("controller/abstractController");
     this.imports("underscore");
 
     this.injects("$scope");
@@ -14,9 +15,7 @@ App.Controller.createNew(function() {
     this.injects("util/messageHandler");
     this.injects("util/commsPipe");
 
-    this.extends("controller/abstractController");
-    
-    this.hasDefinition(function(_) {
+    this.hasDefinition(function(abstractController, _) {
 
         var populateModelFromNote = function($scope, note) {
 
@@ -48,12 +47,15 @@ App.Controller.createNew(function() {
 
         var subscribeToAddNoteRequests = function(commsPipe, $scope, languageService) {
 
-            var subscriberId = commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, function(note, subject) {
+            var addNoteHandler = function(note, subject) {
                 populateModelFromNote($scope, note);
                 setLanguageTitles($scope, languageService);
-            }, Subjects.NOTE);
-            
-            return subscriberId;
+            };
+
+            var subscriberId = commsPipe.subscribe(Components.ANY, Components.ADD_NOTE, addNoteHandler, Subjects.NOTE);
+            abstractController.addCleanupStep($scope, function() {
+                commsPipe.unsubscribe(subscriberId);
+            });
         };
 
         var addSubmitButtonHandler = function(commsPipe, $scope, noteService, messageHandler, $timeout, $state) {
@@ -115,27 +117,23 @@ App.Controller.createNew(function() {
 
             var subscriberId = commsPipe.subscribe(Components.READER, Components.ANY, currentNotebookChangedHandler,
                     Signals.CURRENT_NOTEBOOK_CHANGED);
-            
-            return subscriberId;
+            abstractController.addCleanupStep($scope, function() {
+                commsPipe.unsubscribe(subscriberId);
+            });
+
         };
 
         return function($scope, $rootScope, $location, $timeout, $state, noteService, languageService, messageHandler,
                 commsPipe) {
 
-            this.setupDefaultScope($scope);
-            this.setupCleanup($scope, $rootScope);
+            abstractController.setupDefaultScope($scope);
+            abstractController.setupCleanup($scope, $rootScope);
             populateModel($scope, $location);
             setLanguageTitles($scope, languageService);
             setDialogTitle($scope);
             addSubmitButtonHandler(commsPipe, $scope, noteService, messageHandler, $timeout, $state);
-
-            var notebookChangedSubscriberId = subscribeToCurrentNotebookChangedEvents($scope, commsPipe);
-            var addNoteSubscriberId = subscribeToAddNoteRequests(commsPipe, $scope, languageService);
-            
-            this.addCleanupStep($scope, function() {
-                commsPipe.unsubscribe(notebookChangedSubscriberId);
-                commsPipe.unsubscribe(addNoteSubscriberId);
-            });
+            subscribeToCurrentNotebookChangedEvents($scope, commsPipe);
+            subscribeToAddNoteRequests(commsPipe, $scope, languageService);
         };
     });
 });

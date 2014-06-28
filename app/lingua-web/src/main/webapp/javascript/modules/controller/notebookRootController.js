@@ -2,6 +2,7 @@ App.Controller.createNew(function() {
 
     this.isCalled("notebookRootController");
     
+    this.imports("controller/abstractRootController");
     this.imports("util/appStates");
     this.imports("util/dialogs");
 
@@ -15,9 +16,7 @@ App.Controller.createNew(function() {
     this.injects("util/messageHandler");
     this.injects("util/commsPipe");
 
-    this.extends("controller/abstractRootController");
-
-    this.hasDefinition(function(appStates, dialogs) {
+    this.hasDefinition(function(abstractRootController, appStates, dialogs) {
         
         var triggerLogin = function(jsonWebService, commsPipe) {
 
@@ -32,16 +31,16 @@ App.Controller.createNew(function() {
         return function($scope, $state, $timeout, jsonWebService, notebookService, messageHandler,
                 commsPipe) {
 
-            this.setupGlobalScope($scope);
+            abstractRootController.setupGlobalScope($scope);
             jsonWebService.setCsrfToken(App.Properties.csrfToken);
             appStates.setMainState(AppStates.NOTEBOOK_MAIN);
             dialogs.setupDialogs($scope);
-            this.setupPageMessages($scope, messageHandler, $timeout);
-            this.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
+            abstractRootController.setupPageMessages($scope, messageHandler, $timeout);
+            abstractRootController.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
             $state.go(AppStates.MAIN).then(function() {
                 triggerLogin(jsonWebService, commsPipe);
-                this.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
-            }.bind(this));
+                abstractRootController.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
+            });
         };
     });
 });

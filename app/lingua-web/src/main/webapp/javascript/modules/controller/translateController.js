@@ -2,6 +2,8 @@ App.Controller.createNew(function() {
 
     this.isCalled("translateController");
 
+    this.imports("controller/abstractController");
+    
     this.injects("$scope");
     this.injects("$rootScope");
     this.injects("$location");
@@ -10,9 +12,7 @@ App.Controller.createNew(function() {
     this.injects("service/languageService");
     this.injects("util/commsPipe");
 
-    this.extends("controller/abstractController");
-
-    this.hasDefinition(function() {
+    this.hasDefinition(function(abstractController) {
 
         var populateModelFromTranslationRequest = function($scope, translationRequest) {
 
@@ -73,20 +73,18 @@ App.Controller.createNew(function() {
                 setLanguagesTitles($scope, languageService);
             }, Subjects.TRANSLATION_REQUEST);
             
-            return subscriberId;
+            abstractController.addCleanupStep($scope, function() {
+                commsPipe.unsubscribe(subscriberId);
+            });
         };
 
         return function($scope, $rootScope, $location, $state, translateService, languageService, commsPipe) {
 
-            this.setupDefaultScope($scope);
-            this.setupCleanup($scope, $rootScope);
+            abstractController.setupDefaultScope($scope);
+            abstractController.setupCleanup($scope, $rootScope);
             addTranslateButtonHandler($scope, translateService);
             addAddToNotebookButtonHandler($scope, commsPipe, $state, $location);
-            
-            var subscriberId = subscribeToTranslationRequests(commsPipe, $scope, languageService);
-            this.addCleanupStep($scope, function() {
-                commsPipe.unsubscribe(subscriberId);
-            });
+            subscribeToTranslationRequests(commsPipe, $scope, languageService);
         };
     });
 });
