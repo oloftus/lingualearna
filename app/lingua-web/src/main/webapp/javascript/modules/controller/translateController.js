@@ -3,6 +3,7 @@ App.Controller.createNew(function() {
     this.isCalled("translateController");
 
     this.imports("controller/abstractController");
+    this.imports("util/appStates");
     
     this.injects("$scope");
     this.injects("$rootScope");
@@ -12,7 +13,7 @@ App.Controller.createNew(function() {
     this.injects("service/languageService");
     this.injects("util/commsPipe");
 
-    this.hasDefinition(function(abstractController) {
+    this.hasDefinition(function(abstractController, appStates) {
 
         var populateModelFromTranslationRequest = function($scope, translationRequest) {
 
@@ -60,7 +61,7 @@ App.Controller.createNew(function() {
                         $scope.model.sourceLang, $scope.model.query, additionalNotes, $location.absUrl(),
                         TranslationSources.GOOGLE, $scope.model.includedInTest);
 
-                $state.go(AppStates.ADD_NOTE).then(function() {
+                appStates.goRelative($state, AppStates.ADD_NOTE, AppStates.READER_MAIN).then(function() {
                     commsPipe.send(Components.TRANSLATE, Components.ADD_NOTE, Subjects.NOTE, message);
                 });
             };

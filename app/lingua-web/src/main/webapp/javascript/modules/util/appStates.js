@@ -186,11 +186,14 @@ App.Module.createNew(function() {
             AppStates.MAIN = stateName;
         };
 
-        var goRelative = function($state, stateName) {
+        var goRelative = function($state, stateName, relativeToState) {
 
-            $state.go("." + stateName);
+            if (_.isUndefined(relativeToState)) {
+                relativeToState = "";
+            }
+            return $state.go(relativeToState + "." + stateName);
         };
-
+        
         return {
             setupStates : setupStates,
             setMainState : setMainState,
