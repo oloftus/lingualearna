@@ -32,9 +32,11 @@ import com.lingualearna.web.util.locale.LocalizationService;
 @Qualifier("GoogleTranslate")
 public class GoogleTranslationProvider implements TranslationProvider {
 
-    private static final String BLANK = "";
     private static final Logger LOG = LoggerFactory.getLogger(GoogleTranslationProvider.class);
+
+    private static final String LANGUAGE_UNSUPPORTED_ERROR_KEY = "translation.languageUnsupported";
     private static final String API_URL_REGEX = "(^https?://[^/]*)(/.*$)";
+    private static final String BLANK = "";
 
     @Value("${translation.service.google.appName}")
     private String applicationName;
@@ -98,7 +100,7 @@ public class GoogleTranslationProvider implements TranslationProvider {
                 catch (WrappedGoogleJsonResponseException e) {
                     if (e.getStatusCode() == HttpStatus.SC_BAD_REQUEST) {
                         String localizedMessage = localizationService
-                                .lookupLocalizedString("translation.languageUnsupported");
+                                .lookupLocalizedString(LANGUAGE_UNSUPPORTED_ERROR_KEY);
                         throw new TranslationException(localizedMessage, e);
                     }
                     else {

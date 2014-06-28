@@ -22,6 +22,7 @@ import com.lingualearna.web.util.locale.LocalizationService;
 @Service
 public class NotebookService extends AbstractService {
 
+    private static final String DUPLICATE_NOTEBOOK_ERROR_KEY = "notebook.duplicateNotebook";
     private static final String NOTEBOOK_NAME_FIELD = "name";
 
     @Autowired
@@ -38,7 +39,7 @@ public class NotebookService extends AbstractService {
         if (dao.getCountOfNotebooksWithName(notebook.getName()) != 0) {
             ValidationException exception = new ValidationException();
             exception.addFieldError(NOTEBOOK_NAME_FIELD,
-                    localizationService.lookupLocalizedString("notebook.duplicateNotebook"));
+                    localizationService.lookupLocalizedString(DUPLICATE_NOTEBOOK_ERROR_KEY));
             throw exception;
         }
     }
