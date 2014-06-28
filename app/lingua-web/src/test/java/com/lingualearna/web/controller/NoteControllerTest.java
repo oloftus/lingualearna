@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.lingualearna.web.controller.exceptions.ResourceNotFoundException;
+import com.lingualearna.web.controller.exceptions.ValidationException;
 import com.lingualearna.web.controller.model.NoteModel;
 import com.lingualearna.web.controller.modelmappers.BeanUtilsControllerModelMapper;
 import com.lingualearna.web.notes.Note;
@@ -82,7 +83,7 @@ public class NoteControllerTest {
     }
 
     @Test
-    public void testCreateNoteFunctions() {
+    public void testCreateNoteFunctions() throws ValidationException {
 
         whenICallCreateNote();
         thenTheNoteIsCreated();
@@ -120,7 +121,7 @@ public class NoteControllerTest {
     }
 
     @Test
-    public void testUpdateNoteFunctions() {
+    public void testUpdateNoteFunctions() throws ValidationException {
 
         givenRetrieveNoteServiceFunctions();
         whenICallUpdateNoteWithAValidNoteId();
@@ -129,7 +130,7 @@ public class NoteControllerTest {
     }
 
     @Test(expected = ResourceNotFoundException.class)
-    public void testUpdateNoteThrowsExceptionOnNonExistentNote() {
+    public void testUpdateNoteThrowsExceptionOnNonExistentNote() throws ValidationException {
 
         givenRetrieveNoteServiceFunctions();
         whenICallUpdateNoteWithAnInvalidNoteId();
@@ -158,7 +159,7 @@ public class NoteControllerTest {
         assertEquals(PAGE_ID, expectedNoteModel.getPageId());
     }
 
-    private void thenTheNoteIsCreated() {
+    private void thenTheNoteIsCreated() throws ValidationException {
 
         theModelIsMappedToTheEntityIgnoringId();
         verify(notesService).createNote(noteEntity);
@@ -169,13 +170,13 @@ public class NoteControllerTest {
         verify(notesService).deleteNote(VALID_NOTE_ID);
     }
 
-    private void thenTheNoteIsUpdated() {
+    private void thenTheNoteIsUpdated() throws ValidationException {
 
         theModelIsMappedToTheEntityIgnoringIdAndSourceUrl();
         verify(notesService).updateNote(noteEntity);
     }
 
-    private void whenICallCreateNote() {
+    private void whenICallCreateNote() throws ValidationException {
 
         actualNoteModel = notesController.createNote(incomingNote);
     }
@@ -200,12 +201,12 @@ public class NoteControllerTest {
         actualNoteModel = notesController.retrieveNote(VALID_NOTE_ID);
     }
 
-    private void whenICallUpdateNoteWithAnInvalidNoteId() {
+    private void whenICallUpdateNoteWithAnInvalidNoteId() throws ValidationException {
 
         actualNoteModel = notesController.updateNote(INVALID_NOTE_ID, incomingNote);
     }
 
-    private void whenICallUpdateNoteWithAValidNoteId() {
+    private void whenICallUpdateNoteWithAValidNoteId() throws ValidationException {
 
         actualNoteModel = notesController.updateNote(VALID_NOTE_ID, incomingNote);
     }

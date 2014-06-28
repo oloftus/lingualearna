@@ -1,11 +1,17 @@
 package com.lingualearna.web.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.anyVararg;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -19,7 +25,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.lingualearna.web.controller.exceptions.ValidationException;
 import com.lingualearna.web.dao.GenericDao;
+import com.lingualearna.web.languages.LanguageNamesValidator;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.notes.Notebook;
 import com.lingualearna.web.notes.Page;
@@ -28,6 +36,8 @@ import com.lingualearna.web.security.User;
 @RunWith(MockitoJUnitRunner.class)
 public class NoteServiceTest {
 
+    private static final Locale FOREIGN_LANG = Locale.forLanguageTag("en");
+    private static final Locale LOCAL_LANG = Locale.forLanguageTag("fr");
     private static final int NOTE_ID = 1;
     private static final int PAGE_ID = 2;
     private static final int NOTEBOOK_ID = 3;
@@ -56,6 +66,9 @@ public class NoteServiceTest {
     @Mock
     private Note expectedNote;
 
+    @Mock
+    private LanguageNamesValidator langNamesValidator;
+
     private Note returnedNote;
     private boolean deletedSuccess;
 
@@ -68,23 +81,28 @@ public class NoteServiceTest {
         verify(dao).merge(owner);
     }
 
-    private void andTheNoteIsPersisted() {
+    private void andTheLastUsedIsNotUpdated() {
 
-        verify(dao).persist(passedInNote);
+        verify(owner, never()).setLastUsed(page);
     }
 
-    private void andTheNoteIsUpdated() {
+    @Before
+    public void setup() {
 
-        assertEquals(expectedNote, returnedNote);
+        setupNotes();
+        setupNotesDao();
+        setupLastUsedEntryFor(passedInNote);
+        setupLastUsedEntryFor(expectedNote);
     }
 
-    private void givenLastUsedIsSetup() {
+    private void setupInvalidNote() {
 
-        givenThereIsALastUsedEntryFor(passedInNote);
-        givenThereIsALastUsedEntryFor(expectedNote);
+        Set<ConstraintViolation<Note>> violations = new HashSet<>();
+        violations.add(violation);
+        when(validator.validate(passedInNote)).thenReturn(violations);
     }
 
-    private void givenThereIsALastUsedEntryFor(Note note) {
+    private void setupLastUsedEntryFor(Note note) {
 
         when(page.getPageId()).thenReturn(PAGE_ID);
         when(page.getNotebook()).thenReturn(notebook);
@@ -94,23 +112,12 @@ public class NoteServiceTest {
         when(note.getPage()).thenReturn(page);
     }
 
-    private void givenValidationFails() {
-
-        Set<ConstraintViolation<Note>> violations = new HashSet<>();
-        violations.add(violation);
-        when(validator.validate(passedInNote)).thenReturn(violations);
-    }
-
-    @Before
-    public void setup() {
-
-        setupNotes();
-        setupNotesDao();
-    }
-
     private void setupNotes() {
 
         when(passedInNote.getNoteId()).thenReturn(NOTE_ID);
+        when(passedInNote.getForeignLang()).thenReturn(FOREIGN_LANG);
+        when(passedInNote.getLocalLang()).thenReturn(LOCAL_LANG);
+
         when(expectedNote.getNoteId()).thenReturn(NOTE_ID);
     }
 
@@ -121,49 +128,91 @@ public class NoteServiceTest {
         when(dao.delete(Note.class, NOTE_ID)).thenReturn(true);
     }
 
-    @Test
-    public void testCreateNoteFunctions() {
+    private void setupNoteWithInvalidLanguages() throws ValidationException {
 
-        givenLastUsedIsSetup();
+        doThrow(new ValidationException()).when(langNamesValidator).validateLanguageNames((String) anyVararg());
+    }
+
+    @Test
+    public void testCreateNoteAcceptsValidNote() throws ValidationException {
+
         whenICallCreateNote();
-        thenTheNoteIsValidated();
-        andTheNoteIsPersisted();
+        thenTheNoteIsPersisted();
         andLastUsedIsUpdated();
+    }
+
+    @Test(expected = ValidationException.class)
+    public void testCreateNoteRejectsInvalidLanguages() throws ValidationException {
+
+        whenICallCreateNoteWithANoteWithInvalidLanguagesThenAnExceptionIsThrown();
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testCreateNoteRejectsInValidNote() throws ValidationException {
+
+        whenICallCreateNoteWithAnInvalidNoteThenAnExceptionIsThrown();
     }
 
     @Test
     public void testDeleteNoteFunctions() {
 
-        givenLastUsedIsSetup();
         whenICallDeleteNote();
         thenTheNoteIsDeleted();
         andLastUsedIsUpdated();
     }
 
     @Test
+    public void testDeleteNoteFunctionsForNonExistentNotes() throws ValidationException {
+
+        whenICallDeleteNoteWithANonExistentNote();
+        thenTheDeletedResponseIsFalse();
+        andTheLastUsedIsNotUpdated();
+    }
+
+    @Test
     public void testRetrieveNoteFunctions() {
 
-        givenLastUsedIsSetup();
         whenICallRetrieveNote();
         thenTheNoteIsRetrieved();
         andLastUsedIsUpdated();
     }
 
     @Test
-    public void testUpdateNoteFunctions() {
+    public void testRetrieveNoteFunctionsForNonExistentNotes() throws ValidationException {
 
-        givenLastUsedIsSetup();
+        whenICallRetrieveNoteWithANonExistentNote();
+        thenNothingIsReturned();
+        andTheLastUsedIsNotUpdated();
+    }
+
+    @Test
+    public void testUpdateNoteAcceptsValidNote() throws ValidationException {
+
         whenICallUpdateNote();
-        thenTheNoteIsValidated();
-        andTheNoteIsUpdated();
+        thenTheNoteIsUpdated();
         andLastUsedIsUpdated();
     }
 
-    @Test(expected = ConstraintViolationException.class)
-    public void testValidationErrorsCauseException() {
+    @Test(expected = ValidationException.class)
+    public void testUpdateNoteRejectsInvalidLanguages() throws ValidationException {
 
-        givenValidationFails();
-        whenANoteIsValidatedTheCorrectExceptionIsThrown();
+        whenICallUpdateNoteWithANoteWithInvalidLanguagesThenAnExceptionIsThrown();
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testUpdateNoteRejectsInValidNote() throws ValidationException {
+
+        whenICallUpdateNoteWithAnInvalidNoteThenAnExceptionIsThrown();
+    }
+
+    private void thenNothingIsReturned() {
+
+        assertNull(returnedNote);
+    }
+
+    private void thenTheDeletedResponseIsFalse() {
+
+        assertFalse(deletedSuccess);
     }
 
     private void thenTheNoteIsDeleted() {
@@ -171,24 +220,36 @@ public class NoteServiceTest {
         assertTrue(deletedSuccess);
     }
 
+    private void thenTheNoteIsPersisted() {
+
+        verify(dao).persist(passedInNote);
+    }
+
     private void thenTheNoteIsRetrieved() {
 
         assertEquals(expectedNote, returnedNote);
     }
 
-    private void thenTheNoteIsValidated() {
+    private void thenTheNoteIsUpdated() {
 
-        verify(validator).validate(passedInNote);
+        assertEquals(expectedNote, returnedNote);
     }
 
-    private void whenANoteIsValidatedTheCorrectExceptionIsThrown() {
+    private void whenICallCreateNote() throws ValidationException {
 
+        notesService.createNote(passedInNote);
+    }
+
+    private void whenICallCreateNoteWithAnInvalidNoteThenAnExceptionIsThrown() throws ValidationException {
+
+        setupInvalidNote();
         whenICallCreateNote();
     }
 
-    private void whenICallCreateNote() {
+    private void whenICallCreateNoteWithANoteWithInvalidLanguagesThenAnExceptionIsThrown() throws ValidationException {
 
-        notesService.createNote(passedInNote);
+        setupNoteWithInvalidLanguages();
+        whenICallCreateNote();
     }
 
     private void whenICallDeleteNote() {
@@ -196,13 +257,37 @@ public class NoteServiceTest {
         deletedSuccess = notesService.deleteNote(NOTE_ID);
     }
 
+    private void whenICallDeleteNoteWithANonExistentNote() throws ValidationException {
+
+        when(dao.delete(Note.class, NOTE_ID)).thenReturn(false);
+        whenICallDeleteNote();
+    }
+
     private void whenICallRetrieveNote() {
 
         returnedNote = notesService.retrieveNote(NOTE_ID);
     }
 
-    private void whenICallUpdateNote() {
+    private void whenICallRetrieveNoteWithANonExistentNote() throws ValidationException {
+
+        when(dao.find(Note.class, NOTE_ID)).thenReturn(null);
+        whenICallRetrieveNote();
+    }
+
+    private void whenICallUpdateNote() throws ValidationException {
 
         returnedNote = notesService.updateNote(passedInNote);
+    }
+
+    private void whenICallUpdateNoteWithAnInvalidNoteThenAnExceptionIsThrown() throws ValidationException {
+
+        setupInvalidNote();
+        whenICallUpdateNote();
+    }
+
+    private void whenICallUpdateNoteWithANoteWithInvalidLanguagesThenAnExceptionIsThrown() throws ValidationException {
+
+        setupNoteWithInvalidLanguages();
+        whenICallUpdateNote();
     }
 }

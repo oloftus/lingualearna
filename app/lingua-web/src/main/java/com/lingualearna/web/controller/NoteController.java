@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lingualearna.web.controller.exceptions.ResourceNotFoundException;
+import com.lingualearna.web.controller.exceptions.ValidationException;
 import com.lingualearna.web.controller.model.NoteModel;
 import com.lingualearna.web.controller.modelmappers.ControllerModelMapper;
 import com.lingualearna.web.notes.Note;
@@ -36,7 +37,7 @@ public class NoteController {
 
     @RequestMapping(value = "", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     @ResponseBody
-    public NoteModel createNote(@RequestBody @Valid NoteModel incomingNote) {
+    public NoteModel createNote(@RequestBody @Valid NoteModel incomingNote) throws ValidationException {
 
         Page page = notebookService.getPageById(incomingNote.getPageId());
 
@@ -80,7 +81,8 @@ public class NoteController {
 
     @RequestMapping(value = "/{noteId}", produces = "application/json", consumes = "application/json", method = RequestMethod.PUT)
     @ResponseBody
-    public NoteModel updateNote(@PathVariable int noteId, @RequestBody NoteModel incomingNote) {
+    public NoteModel updateNote(@PathVariable int noteId, @RequestBody NoteModel incomingNote)
+            throws ValidationException {
 
         Note noteEntity = notesService.retrieveNote(noteId);
         if (noteEntity == null) {

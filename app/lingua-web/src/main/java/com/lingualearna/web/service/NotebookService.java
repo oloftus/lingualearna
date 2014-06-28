@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.lingualearna.web.controller.exceptions.ValidationException;
 import com.lingualearna.web.dao.NotebookDao;
+import com.lingualearna.web.languages.LanguageNamesValidator;
 import com.lingualearna.web.notes.Notebook;
 import com.lingualearna.web.notes.Page;
 import com.lingualearna.web.security.OwnedObjectType;
@@ -32,6 +33,12 @@ public class NotebookService extends AbstractService {
     private LocalizationService localizationService;
 
     @Autowired
+    private LanguageService languageService;
+
+    @Autowired
+    private LanguageNamesValidator langNamesValidator;
+
+    @Autowired
     private Validator validator;
 
     private void assertHasUniqueName(Notebook notebook) throws ValidationException {
@@ -47,6 +54,7 @@ public class NotebookService extends AbstractService {
     public void createNotebook(Notebook notebook) throws ValidationException {
 
         validateEntity(notebook);
+        validateLanguageNames(notebook);
         assertHasUniqueName(notebook);
         dao.persist(notebook);
     }
@@ -67,5 +75,12 @@ public class NotebookService extends AbstractService {
     protected Validator getValidator() {
 
         return validator;
+    }
+
+    private void validateLanguageNames(Notebook notebook) throws ValidationException {
+
+        String foreignLang = notebook.getForeignLang().getLanguage();
+        String localLang = notebook.getLocalLang().getLanguage();
+        langNamesValidator.validateLanguageNames(foreignLang, localLang);
     }
 }

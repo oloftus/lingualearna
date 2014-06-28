@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
+import com.lingualearna.web.controller.exceptions.ValidationException;
 import com.lingualearna.web.dao.GenericDao;
+import com.lingualearna.web.languages.LanguageNamesValidator;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.security.OwnedObjectType;
 import com.lingualearna.web.security.User;
@@ -24,9 +26,13 @@ public class NoteService extends AbstractService {
     @Autowired
     Validator validator;
 
-    public void createNote(Note note) {
+    @Autowired
+    private LanguageNamesValidator langNamesValidator;
+
+    public void createNote(Note note) throws ValidationException {
 
         validateEntity(note);
+        validateLanguageNames(note);
         dao.persist(note);
         setLastUsed(note);
     }
@@ -77,11 +83,19 @@ public class NoteService extends AbstractService {
     }
 
     @Secured(ALLOW_OWNER)
-    public Note updateNote(Note note) {
+    public Note updateNote(Note note) throws ValidationException {
 
         validateEntity(note);
+        validateLanguageNames(note);
         Note mergedNote = dao.merge(note);
         setLastUsed(mergedNote);
         return mergedNote;
+    }
+
+    void validateLanguageNames(Note note) throws ValidationException {
+
+        String foreignLang = note.getForeignLang().getLanguage();
+        String localLang = note.getLocalLang().getLanguage();
+        langNamesValidator.validateLanguageNames(foreignLang, localLang);
     }
 }
