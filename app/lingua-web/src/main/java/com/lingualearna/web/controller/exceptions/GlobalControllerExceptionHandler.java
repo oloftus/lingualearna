@@ -3,6 +3,8 @@ package com.lingualearna.web.controller.exceptions;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -119,8 +121,11 @@ class GlobalControllerExceptionHandler {
 
         ConstraintViolations response = new ConstraintViolations();
 
-        for (FieldValidationError error : exception.getFieldErrors()) {
-            response.addFieldError(error.getFieldName(), error.getErrorMessage());
+        Map<String, List<String>> fieldErrors = exception.getFieldErrors();
+        for (String fieldName : fieldErrors.keySet()) {
+            for (String error : fieldErrors.get(fieldName)) {
+                response.addFieldError(fieldName, error);
+            }
         }
         for (String error : exception.getGlobalErrors()) {
             response.addGlobalError(error);

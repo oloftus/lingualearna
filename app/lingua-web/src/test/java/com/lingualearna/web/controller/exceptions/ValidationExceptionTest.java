@@ -3,6 +3,9 @@ package com.lingualearna.web.controller.exceptions;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +19,7 @@ public class ValidationExceptionTest {
     private static final String ERROR_MESSAGE_1 = "errorMessage1";
     private static final String ERROR_MESSAGE_2 = "errorMessage2";
 
-    private ArrayList<FieldValidationError> fieldErrors;
+    private Map<String, List<String>> fieldErrors = new HashMap<>();
     private ArrayList<String> globalErrors = Lists.newArrayList(ERROR_MESSAGE_1, ERROR_MESSAGE_2);
 
     private ValidationException validationException;
@@ -31,9 +34,8 @@ public class ValidationExceptionTest {
 
     private void setupFieldErrors() {
 
-        FieldValidationError fieldError1 = new FieldValidationError(FIELD_NAME_1, ERROR_MESSAGE_1);
-        FieldValidationError fieldError2 = new FieldValidationError(FIELD_NAME_2, ERROR_MESSAGE_2);
-        fieldErrors = Lists.newArrayList(fieldError1, fieldError2);
+        fieldErrors.put(FIELD_NAME_1, Lists.newArrayList(ERROR_MESSAGE_1));
+        fieldErrors.put(FIELD_NAME_2, Lists.newArrayList(ERROR_MESSAGE_2));
     }
 
     @Test

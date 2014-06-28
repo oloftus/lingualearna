@@ -1,6 +1,7 @@
 package com.lingualearna.web.controller.exceptions;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -25,7 +26,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.lingualearna.web.controller.model.ConstraintViolations;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -125,9 +125,10 @@ public class GlobalControllerExceptionHandlerTest {
 
     private void givenTheValidationExceptionIsSetup() {
 
-        FieldValidationError fieldError1 = new FieldValidationError(FIELD_NAME_1, ERROR_MESSAGE_1);
-        FieldValidationError fieldError2 = new FieldValidationError(FIELD_NAME_2, ERROR_MESSAGE_2);
-        ArrayList<FieldValidationError> fieldErrors = Lists.newArrayList(fieldError1, fieldError2);
+        HashMap<String, List<String>> fieldErrors = new HashMap<String, List<String>>();
+        fieldErrors.put(FIELD_NAME_1, Lists.newArrayList(ERROR_MESSAGE_1));
+        fieldErrors.put(FIELD_NAME_2, Lists.newArrayList(ERROR_MESSAGE_2));
+
         ArrayList<String> globalErrors = Lists.newArrayList(ERROR_MESSAGE_3, ERROR_MESSAGE_4);
 
         when(ve.getFieldErrors()).thenReturn(fieldErrors);
@@ -160,7 +161,7 @@ public class GlobalControllerExceptionHandlerTest {
 
     private void thenTheControllerModelViolationsAreCorrectlyHandled() {
 
-        HashMap<String, List<String>> expectedFieldErrors = Maps.newHashMap();
+        HashMap<String, List<String>> expectedFieldErrors = new HashMap<>();
         expectedFieldErrors.put(FIELD_NAME_1, Lists.newArrayList(ERROR_MESSAGE_1));
 
         List<String> expectedGlobalErrors = Lists.newArrayList(ERROR_MESSAGE_2);
@@ -172,18 +173,19 @@ public class GlobalControllerExceptionHandlerTest {
 
     private void thenTheEntityViolationsAreDeduplicatedAndReturned() {
 
-        HashMap<String, List<String>> expectedFieldErrors = Maps.newHashMap();
+        HashMap<String, List<String>> expectedFieldErrors = new HashMap<>();
         expectedFieldErrors.put(FIELD_NAME_1, Lists.newArrayList(FIELD_ERROR_MESSAGE));
 
-        List<String> expectedGlobalErrors = Lists.newArrayList(ERROR_MESSAGE_1, ERROR_MESSAGE_2);
-
+        List<String> actualGlobalErrors = returnedViolations.getGlobalErrors();
+        assertEquals(2, actualGlobalErrors.size());
+        assertTrue(actualGlobalErrors.contains(ERROR_MESSAGE_1));
+        assertTrue(actualGlobalErrors.contains(ERROR_MESSAGE_2));
         assertEquals(expectedFieldErrors, returnedViolations.getFieldErrors());
-        assertEquals(expectedGlobalErrors, returnedViolations.getGlobalErrors());
     }
 
     private void thenTheValidationErrorsAreCorrectlyHandled() {
 
-        HashMap<String, List<String>> expectedFieldErrors = Maps.newHashMap();
+        HashMap<String, List<String>> expectedFieldErrors = new HashMap<>();
         expectedFieldErrors.put(FIELD_NAME_1, Lists.newArrayList(ERROR_MESSAGE_1));
         expectedFieldErrors.put(FIELD_NAME_2, Lists.newArrayList(ERROR_MESSAGE_2));
 
