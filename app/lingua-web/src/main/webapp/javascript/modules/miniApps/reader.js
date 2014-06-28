@@ -17,6 +17,7 @@ App.MiniApp.createNew(function() {
         rootApp.constant("translateServiceUrl", App.Properties.translateServiceUrl);
         rootApp.constant("notesPagesServiceUrl", App.Properties.notesPagesServiceUrl);
         rootApp.constant("notebookServiceUrl", App.Properties.notebookServiceUrl);
+        rootApp.constant("notesByPageServiceUrl", App.Properties.notesByPageServiceUrl);
 
         abstractMiniApp.configure();
         abstractMiniApp.boot();

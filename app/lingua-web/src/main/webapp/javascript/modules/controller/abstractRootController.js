@@ -78,7 +78,7 @@ App.Module.createNew(function() {
 
             commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, function() {
                 setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
-            }, Signals.NoteSubmittedSuccess);
+            }, Signals.NOTE_SUBMITTED_SUCCESS);
         };
         
         return {

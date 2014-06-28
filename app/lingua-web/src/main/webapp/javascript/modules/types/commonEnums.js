@@ -44,7 +44,9 @@ App.TypesDef.createNew(function() {
         ADD_NOTE : "ADD_NOTE",
         LOGIN : "LOGIN",
         PAGE : "PAGE",
-        JSON_WEB_SERVICE : "JSON_WEB_SERVICE"
+        JSON_WEB_SERVICE : "JSON_WEB_SERVICE",
+        NOTEBOOK : "NOTEBOOK",
+        BINDER : "BINDER"
     };
     
     TranslationSources = {

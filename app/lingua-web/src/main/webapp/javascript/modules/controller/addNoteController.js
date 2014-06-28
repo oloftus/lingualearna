@@ -75,7 +75,7 @@ App.Controller.createNew(function() {
                 noteService.create(note, function(data) {
 
                     messageHandler.addFreshGlobalMessage($scope, LocalStrings.noteSavedMessage, MessageSeverity.INFO);
-                    commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.NoteSubmittedSuccess);
+                    commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.NOTE_SUBMITTED_SUCCESS);
 
                     $timeout(function() {
                         $state.go(AppStates.MAIN);
@@ -86,10 +86,9 @@ App.Controller.createNew(function() {
                 });
             };
         };
-        
+
         var getSourceUrl = function($location) {
-            
-            // Current URL starts with app root
+
             var sourceUrl = null;
             if ($location.absUrl().indexOf(App.Properties.applicationRoot) === -1) {
                 sourceUrl = $location.absUrl();
@@ -112,24 +111,13 @@ App.Controller.createNew(function() {
 
         var subscribeToCurrentNotebookChangedEvents = function($scope, commsPipe) {
 
-            var currentNotebookChangedHandler = function() {
-
-                var newPagesContainsOldCurrent = _.some($scope.global.model.currentNotebook.pages, function(newPage) {
-                    var oldCurrentPage = $scope.model.page;
-                    return newPage.pageId === oldCurrentPage.pageId && newPage.name === oldCurrentPage.name;
-                });
-
-                if (!newPagesContainsOldCurrent) {
-                    $scope.model.page = null;
-                }
-            };
-
-            var subscriberId = commsPipe.subscribe(Components.READER, Components.ANY, currentNotebookChangedHandler,
-                    Signals.CURRENT_NOTEBOOK_CHANGED);
+            var subscriberId = commsPipe.subscribe(Components.READER, Components.ANY, function() {
+                $scope.model.page = null;
+            }, Signals.CURRENT_NOTEBOOK_CHANGED);
+            
             abstractController.addCleanupStep($scope, function() {
                 commsPipe.unsubscribe(subscriberId);
             });
-
         };
 
         return function($scope, $rootScope, $location, $timeout, $state, noteService, languageService, messageHandler,

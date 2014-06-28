@@ -12,8 +12,10 @@ App.Module.createNew(function() {
         App.Properties.pingServiceUrl = App.Properties.pagesRoot + "/ping";
         
         App.Properties.translateServiceUrl = App.Properties.apiRoot + "/translate";
-        App.Properties.noteServiceUrl = App.Properties.apiRoot + "/note";
         App.Properties.csrfTokenApiUrl = App.Properties.apiRoot + "/security/csrfToken";
+
+        App.Properties.noteServiceUrl = App.Properties.apiRoot + "/note";
+        App.Properties.notesByPageServiceUrl = App.Properties.apiRoot + "/page/{pageId}/notes";
         
         App.Properties.languageServiceUrl = App.Properties.apiRoot + "/languages";
         App.Properties.languageNamesServiceUrl = App.Properties.languageServiceUrl + "/langName";

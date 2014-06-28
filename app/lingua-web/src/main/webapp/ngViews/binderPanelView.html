@@ -1,9 +1,12 @@
 <div ng-controller="binderController" id="binder-controller-wrapper">
     <header id="notebook-header">
         <div class="inner">
-            <h2 id="notebook-title">Spanish &amp; English <span class="title-sub-info">(Spanish &#8660; English)</span></h2>
+            <h2 id="notebook-title">
+                Spanish &amp; English <span class="title-sub-info">(Spanish &#8660; English)</span>
+            </h2>
             <div id="notebook-tools">
-                <button class="lingua-action-button-icon" id="new-entry-button" ui-sref="NOTEBOOK_MAIN.ADD_NOTE">Add entry</button>
+                <button class="lingua-action-button-icon" id="new-entry-button" ui-sref="NOTEBOOK_MAIN.ADD_NOTE">Add
+                    entry</button>
                 <button class="lingua-action-button-icon" id="start-test-button">Knowledge test</button>
                 <input type="text" value="Search/lookup" id="notebook-search" />
             </div>
@@ -12,16 +15,24 @@
     <div id="notebook-container">
         <div class="inner">
             <div id="notebook-pane">
-                <div id="notebook-content">Notebook</div>
+                <div id="notebook-content">
+                    <ul id="notes-list">
+                        <li ng-repeat="note in global.model.currentPage.notes" class="note-entry">
+                            <span class="note-local-note">{{note.localNote}}</span>
+                            <span class="note-foreign-local-spacer">&mdash;</span>
+                            <span class="note-foreign-note">{{note.foreignNote}}</span>
+                            <span class="note-additional-notes">{{note.additionalNotes}}</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div id="tabs-pane">
                 <div class="inner">
-                    <button class="lingua-action-button-icon" id="new-page-button">New page</button>
+                    <button class="lingua-action-button-icon" id="new-page-button" UI-SREF="NOTEBOOK_MAIN.ADD_PAGE">New page</button>
                     <ul id="notebook-tabs">
-                        <li><a href="#">Verbs</a></li>
-                        <li class="selected"><a href="#">Tricky vocab</a></li>
-                        <li><a href="#">Grammar things</a></li>
-                        <li><a href="#">Expressions</a></li>
+                        <li ng-repeat="page in global.model.currentNotebook.pages" class="note-entry" ng-class="{'selected': page.pageId === global.model.currentPage.pageId}">
+                            <a ng-click="func.changeCurrentPage(page.pageId)">{{page.name}}</a>
+                        </li>
                     </ul>
                     <footer id="main-footer">
                         <div id="copyright">Copyright LinguaLearna Ltd</div>

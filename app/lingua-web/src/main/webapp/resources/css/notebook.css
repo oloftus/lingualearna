@@ -1,4 +1,4 @@
-#lingua-main-view, #binder-controller-wrapper {
+#lingua-main-view,#binder-controller-wrapper {
     height: 100%;
     width: 100%;
     display: table;
@@ -36,7 +36,8 @@
 
 #tabs-pane>.inner {
     width: 200px;
-    height: 100%; padding : 20px;
+    height: 100%;
+    padding: 20px;
     padding: 20px;
 }
 
@@ -56,6 +57,25 @@
     min-width: 700px;
     min-height: 800px;
     height: 100%;
+}
+
+ul#notes-list {
+    margin: 0;
+    padding: 0;
+}
+
+.note-entry {
+    list-style-type: none;
+    margin-bottom: 15px;
+}
+
+.note-foreign-local-spacer {
+    color: #dddddd;
+    padding:0 10px;
+}
+
+.note-additional-notes {
+    display: block;
 }
 
 #main-header>.inner,#notebook-header>.inner {
