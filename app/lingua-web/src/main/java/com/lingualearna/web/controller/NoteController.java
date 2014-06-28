@@ -1,5 +1,8 @@
 package com.lingualearna.web.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +23,11 @@ import com.lingualearna.web.service.NoteService;
 import com.lingualearna.web.service.NotebookService;
 
 @Controller
-@RequestMapping("/api/note")
+@RequestMapping("/api")
 public class NoteController {
 
+    private static final String NOTE_NOT_FOUND = "Note not found";
+    private static final String PAGE_NOT_FOUND = "Page not found";
     private static final String NOTE_ID_FIELD = "noteId";
     private static final String SOURCE_URL_FIELD = "sourceUrl";
 
@@ -35,7 +40,7 @@ public class NoteController {
     @Autowired
     private ControllerModelMapper<NoteModel, Note> notesMapper;
 
-    @RequestMapping(value = "", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+    @RequestMapping(value = "/note", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
     @ResponseBody
     public NoteModel createNote(@RequestBody @Valid NoteModel incomingNote) throws ValidationException {
 
@@ -53,23 +58,23 @@ public class NoteController {
         return noteModel;
     }
 
-    @RequestMapping(value = "/{noteId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/note/{noteId}", method = RequestMethod.DELETE)
     @ResponseBody
     public void deleteNote(@PathVariable int noteId) {
 
         boolean found = notesService.deleteNote(noteId);
         if (!found) {
-            throw new ResourceNotFoundException();
+            throw new ResourceNotFoundException(NOTE_NOT_FOUND);
         }
     }
 
-    @RequestMapping(value = "/{noteId}", produces = "application/json", method = RequestMethod.GET)
+    @RequestMapping(value = "/note/{noteId}", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public NoteModel retrieveNote(@PathVariable int noteId) {
 
         Note noteEntity = notesService.retrieveNote(noteId);
         if (noteEntity == null) {
-            throw new ResourceNotFoundException();
+            throw new ResourceNotFoundException(NOTE_NOT_FOUND);
         }
 
         NoteModel noteModel = new NoteModel();
@@ -79,14 +84,34 @@ public class NoteController {
         return noteModel;
     }
 
-    @RequestMapping(value = "/{noteId}", produces = "application/json", consumes = "application/json", method = RequestMethod.PUT)
+    @RequestMapping(value = "/page/{pageId}/notes", produces = "application/json", method = RequestMethod.GET)
+    @ResponseBody
+    public List<NoteModel> retrieveNotesByPage(@PathVariable int pageId) {
+
+        List<Note> notes = notesService.retrieveNotesByPage(pageId);
+        if (notes.size() == 0) {
+            throw new ResourceNotFoundException(PAGE_NOT_FOUND);
+        }
+
+        List<NoteModel> noteModels = new ArrayList<>();
+        for (Note note : notes) {
+            NoteModel noteModel = new NoteModel();
+            notesMapper.copyPropertiesFromEntity(note, noteModel);
+            noteModel.setPageId(note.getPage().getPageId());
+            noteModels.add(noteModel);
+        }
+
+        return noteModels;
+    }
+
+    @RequestMapping(value = "/note/{noteId}", produces = "application/json", consumes = "application/json", method = RequestMethod.PUT)
     @ResponseBody
     public NoteModel updateNote(@PathVariable int noteId, @RequestBody NoteModel incomingNote)
             throws ValidationException {
 
         Note noteEntity = notesService.retrieveNote(noteId);
         if (noteEntity == null) {
-            throw new ResourceNotFoundException();
+            throw new ResourceNotFoundException(NOTE_NOT_FOUND);
         }
 
         Page page = notebookService.getPageById(incomingNote.getPageId());

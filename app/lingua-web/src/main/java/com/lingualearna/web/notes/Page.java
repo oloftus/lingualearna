@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,7 +56,7 @@ public class Page implements Serializable, HasOwner {
     }
 
     @JsonIgnore
-    @OneToMany(mappedBy = "page")
+    @OneToMany(mappedBy = "page", fetch = FetchType.LAZY)
     public List<Note> getNotes() {
 
         return this.notes;
