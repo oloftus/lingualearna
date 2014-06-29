@@ -7,17 +7,18 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,24 +27,26 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.google.common.collect.Lists;
 import com.lingualearna.web.controller.exceptions.ValidationException;
 import com.lingualearna.web.dao.NotebookDao;
 import com.lingualearna.web.languages.LanguageNamesValidator;
 import com.lingualearna.web.notes.Notebook;
+import com.lingualearna.web.notes.Page;
+import com.lingualearna.web.security.User;
 import com.lingualearna.web.util.locale.LocalizationService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NotebookServiceTest {
 
+    private static final int CURRENT_MAX_POSITION = 1;
     private static final Locale FOREIGN_LANG = Locale.forLanguageTag("en");
     private static final Locale LOCAL_LANG = Locale.forLanguageTag("fr");
     private static final String DUPLICATE_NOTEBOOK_ERROR_KEY = "notebook.duplicateNotebook";
     private static final String DUPLICATE_NOTEBOOK_ERROR_MSG = "nonUniqueName";
     private static final String NOTEBOOK_NAME = "notebook";
-    private static final String NOTEBOOK_NAME_FIELD = "name";
     private static final int USER_ID = 1;
     private static final int PAGE_ID = 2;
+    private static final int NOTEBOOK_ID = 3;
 
     @Mock
     private NotebookDao dao;
@@ -58,22 +61,50 @@ public class NotebookServiceTest {
     private Validator validator;
 
     @Mock
-    private ConstraintViolation<Notebook> violation;
+    private ConstraintViolation<Notebook> notebookViolation;
+
+    @Mock
+    private ConstraintViolation<Page> pageViolation;
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     private Notebook notebook;
 
-    private Set<ConstraintViolation<Notebook>> violations = new HashSet<>();
+    @Mock(answer = Answers.RETURNS_DEEP_STUBS)
+    private Page page;
+
+    @Mock
+    private User user;
+
+    private Set<ConstraintViolation<Notebook>> notebookviolations = new HashSet<>();
+    private Set<ConstraintViolation<Page>> pageViolations = new HashSet<>();
     private ConstraintViolationException violationException;
-    private ValidationException validationException;
 
     @InjectMocks
     private NotebookService service;
 
+    private void andThePageIsPersisted() {
+
+        verify(dao).persist(page);
+    }
+
+    @SuppressWarnings("unchecked")
+    private void givenThereAreNoExistingPages() {
+
+        when(dao.doUntypedQueryAsListWithParams(any(String.class), (Pair<String, ? extends Object>[]) anyVararg()))
+                .thenReturn(Collections.emptyList());
+    }
+
+    @SuppressWarnings("unchecked")
+    private void givenThereIsAnExistingPage() {
+
+        List<Object> resultsList = new ArrayList<>();
+        resultsList.add(CURRENT_MAX_POSITION);
+        when(dao.doUntypedQueryAsListWithParams(any(String.class), (Pair<String, ? extends Object>[]) anyVararg()))
+                .thenReturn(resultsList);
+    }
+
     @Before
     public void setup() {
-
-        violations.add(violation);
 
         when(localizationService.lookupLocalizedString(DUPLICATE_NOTEBOOK_ERROR_KEY)).thenReturn(
                 DUPLICATE_NOTEBOOK_ERROR_MSG);
@@ -81,16 +112,20 @@ public class NotebookServiceTest {
         when(notebook.getName()).thenReturn(NOTEBOOK_NAME);
         when(notebook.getForeignLang()).thenReturn(FOREIGN_LANG);
         when(notebook.getLocalLang()).thenReturn(LOCAL_LANG);
-    }
 
-    private void setupExistingNotebook() {
-
-        when(dao.getCountOfNotebooksWithName(NOTEBOOK_NAME)).thenReturn((long) 1);
+        when(page.getNotebook().getOwner()).thenReturn(user);
     }
 
     private void setupInvalidNotebook() {
 
-        when(validator.validate(any(Notebook.class))).thenReturn(violations);
+        notebookviolations.add(notebookViolation);
+        when(validator.validate(any(Notebook.class))).thenReturn(notebookviolations);
+    }
+
+    private void setupInvalidPage() {
+
+        pageViolations.add(pageViolation);
+        when(validator.validate(any(Page.class))).thenReturn(pageViolations);
     }
 
     private void setupNotebookWithInvalidLanguages() throws ValidationException {
@@ -119,10 +154,27 @@ public class NotebookServiceTest {
     }
 
     @Test
-    public void testCreateNotebookRejectsNotebookWithDupliateName() throws ValidationException {
+    public void testCreatePageCorrectlySetsFirstPagePosition() throws ValidationException {
 
-        whenICallCreateNotebookWithANotebookOfDuplicateName();
-        thenThrownExceptionContainsDuplicateNotebookMessage();
+        givenThereAreNoExistingPages();
+        whenICallCreatePage();
+        thenThePagePositionIsSetToOne();
+    }
+
+    @Test
+    public void testCreatePageFunctionsForAValidPage() throws ValidationException {
+
+        givenThereIsAnExistingPage();
+        whenICallCreatePage();
+        thenThePagePositionIsSet();
+        andThePageIsPersisted();
+    }
+
+    @Test
+    public void testCreatePageRejectsAnValidPage() throws ValidationException {
+
+        whenICallCreatePageWithAnInvalidPage();
+        thenTheExceptionThrownContainsInvalidPageMessage();
     }
 
     @Test
@@ -130,6 +182,13 @@ public class NotebookServiceTest {
 
         whenICallGetAllNotebooksByUser();
         thenTheServiceDelegatesGetAllNotebooksByUserToTheDao();
+    }
+
+    @Test
+    public void testGetNotebookByIdDelegatesToDao() {
+
+        whenICallGetNotebookById();
+        thenTheServiceDelegatesGetNotebookByIdToTheDao();
     }
 
     @Test
@@ -141,7 +200,12 @@ public class NotebookServiceTest {
 
     private void thenTheExceptionThrownContainsInvalidNotebookMessage() {
 
-        assertEquals(violations, violationException.getConstraintViolations());
+        assertEquals(notebookviolations, violationException.getConstraintViolations());
+    }
+
+    private void thenTheExceptionThrownContainsInvalidPageMessage() {
+
+        assertEquals(pageViolations, violationException.getConstraintViolations());
     }
 
     private void thenTheNotebookGetsPersisted() {
@@ -149,23 +213,29 @@ public class NotebookServiceTest {
         verify(dao).persist(notebook);
     }
 
+    private void thenThePagePositionIsSet() {
+
+        verify(page).setPosition(CURRENT_MAX_POSITION + 1);
+    }
+
+    private void thenThePagePositionIsSetToOne() {
+
+        verify(page).setPosition(1);
+    }
+
     private void thenTheServiceDelegatesGetAllNotebooksByUserToTheDao() {
 
         verify(dao).getAllNotebooksByUser(USER_ID);
     }
 
+    private void thenTheServiceDelegatesGetNotebookByIdToTheDao() {
+
+        verify(dao).find(Notebook.class, NOTEBOOK_ID);
+    }
+
     private void thenTheServiceDelegatesGetPageByIdToTheDao() {
 
         verify(dao).getPageById(PAGE_ID);
-    }
-
-    private void thenThrownExceptionContainsDuplicateNotebookMessage() {
-
-        Map<String, List<String>> fieldErrors = new HashMap<>();
-        fieldErrors.put(NOTEBOOK_NAME_FIELD, Lists.newArrayList(DUPLICATE_NOTEBOOK_ERROR_MSG));
-
-        assertEquals(fieldErrors, validationException.getFieldErrors());
-        assertEquals(Lists.newArrayList(), validationException.getGlobalErrors());
     }
 
     private void whenICallCreateNotebook() throws ValidationException {
@@ -185,18 +255,6 @@ public class NotebookServiceTest {
         }
     }
 
-    private void whenICallCreateNotebookWithANotebookOfDuplicateName() {
-
-        setupExistingNotebook();
-
-        try {
-            whenICallCreateNotebook();
-        }
-        catch (ValidationException e) {
-            validationException = e;
-        }
-    }
-
     private void whenICallCreateNotebookWithANotebookWithInvalidLanguagesThenAnExceptionIsThrown()
             throws ValidationException {
 
@@ -204,9 +262,31 @@ public class NotebookServiceTest {
         whenICallCreateNotebook();
     }
 
+    private void whenICallCreatePage() throws ValidationException {
+
+        service.createPage(page);
+    }
+
+    private void whenICallCreatePageWithAnInvalidPage() throws ValidationException {
+
+        setupInvalidPage();
+
+        try {
+            whenICallCreatePage();
+        }
+        catch (ConstraintViolationException e) {
+            violationException = e;
+        }
+    }
+
     private void whenICallGetAllNotebooksByUser() {
 
         service.getAllNotebooksByUser(USER_ID);
+    }
+
+    private void whenICallGetNotebookById() {
+
+        service.getNotebookById(NOTEBOOK_ID);
     }
 
     private void whenICallGetPageById() {

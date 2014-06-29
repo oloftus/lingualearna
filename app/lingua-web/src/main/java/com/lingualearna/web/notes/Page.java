@@ -11,30 +11,39 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lingualearna.web.security.HasOwner;
 import com.lingualearna.web.validator.Unique;
 
-@NamedQuery(name = Page.COUNT_PAGES_BY_NAME_QUERY, query = "SELECT count(n) FROM Page n WHERE n.name = :pageName")
+@NamedQueries({
+        @NamedQuery(name = Page.COUNT_PAGES_BY_NAME_QUERY, query = "SELECT count(n) FROM Page n WHERE n.name = :pageName"),
+        @NamedQuery(name = Page.MAX_PAGES_QUERY, query = "SELECT max(p.position) FROM Page p WHERE p.notebook.owner = :user")
+})
 @Entity
 @Table(name = "pages")
 public class Page implements Serializable, HasOwner {
 
     private static final long serialVersionUID = 674115054477001746L;
 
+    public static final String PAGE_ID_FIELD = "pageId";
+    public static final String POSITION_FIELD = "position";
     public static final String COUNT_PAGES_BY_NAME_QUERY = "Page.countPagesName";
     public static final String COUNT_PAGES_BY_NAME_QUERY_PARAM = "pageName";
+    public static final String MAX_PAGES_QUERY = "Page.maxPages";
+    public static final String MAX_PAGES_QUERY_PARAM = "user";
 
     private int pageId;
     private String name;
-    private Integer position;
+    private int position;
     private Notebook notebook;
     private List<Note> notes;
 
@@ -46,6 +55,7 @@ public class Page implements Serializable, HasOwner {
         return note;
     }
 
+    @NotBlank
     @Length(max = 45)
     @Column(name = "name")
     @Unique(namedQuery = COUNT_PAGES_BY_NAME_QUERY, valueParamName = COUNT_PAGES_BY_NAME_QUERY_PARAM,
@@ -87,7 +97,7 @@ public class Page implements Serializable, HasOwner {
     }
 
     @Column(name = "position")
-    public Integer getPosition() {
+    public int getPosition() {
 
         return this.position;
     }
@@ -126,7 +136,7 @@ public class Page implements Serializable, HasOwner {
         this.pageId = pageId;
     }
 
-    public void setPosition(Integer position) {
+    public void setPosition(int position) {
 
         this.position = position;
     }

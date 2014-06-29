@@ -7,6 +7,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,12 @@ import com.lingualearna.web.languages.LanguageNamesValidator;
 import com.lingualearna.web.notes.Notebook;
 import com.lingualearna.web.notes.Page;
 import com.lingualearna.web.security.OwnedObjectType;
+import com.lingualearna.web.security.User;
 import com.lingualearna.web.util.locale.LocalizationService;
 
 @Transactional
 @Service
 public class NotebookService extends AbstractService {
-
-    private static final String DUPLICATE_NOTEBOOK_ERROR_KEY = "notebook.duplicateNotebook";
-    private static final String NOTEBOOK_NAME_FIELD = "name";
 
     @Autowired
     private NotebookDao dao;
@@ -41,27 +40,38 @@ public class NotebookService extends AbstractService {
     @Autowired
     private Validator validator;
 
-    private void assertHasUniqueName(Notebook notebook) throws ValidationException {
-
-        if (dao.getCountOfNotebooksWithName(notebook.getName()) != 0) {
-            ValidationException exception = new ValidationException();
-            exception.addFieldError(NOTEBOOK_NAME_FIELD,
-                    localizationService.lookupLocalizedString(DUPLICATE_NOTEBOOK_ERROR_KEY));
-            throw exception;
-        }
-    }
-
     public void createNotebook(Notebook notebook) throws ValidationException {
 
         validateEntity(notebook);
         validateLanguageNames(notebook);
-        assertHasUniqueName(notebook);
         dao.persist(notebook);
+    }
+
+    public void createPage(Page page) throws ValidationException {
+
+        validateEntity(page);
+
+        User user = page.getNotebook().getOwner();
+        Integer currentMaxPosition = dao.doUntypedQueryWithParams(Page.MAX_PAGES_QUERY,
+                Pair.of(Page.MAX_PAGES_QUERY_PARAM, user));
+        if (currentMaxPosition == null) {
+            currentMaxPosition = 0;
+        }
+        page.setPosition(currentMaxPosition + 1);
+
+        dao.persist(page);
     }
 
     public List<Notebook> getAllNotebooksByUser(int userId) {
 
         return dao.getAllNotebooksByUser(userId);
+    }
+
+    @OwnedObjectType(Notebook.class)
+    @Secured({ ALLOW_OWNER })
+    public Notebook getNotebookById(int notebookId) {
+
+        return dao.find(Notebook.class, notebookId);
     }
 
     @OwnedObjectType(Page.class)

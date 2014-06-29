@@ -34,6 +34,9 @@ public class Note implements Serializable, HasOwner {
 
     private static final long serialVersionUID = -1700378910934447911L;
 
+    public static final String NOTE_ID_FIELD = "noteId";
+    public static final String SOURCE_URL_FIELD = "sourceUrl";
+
     private Integer noteId;
     private String additionalNotes;
     private Locale foreignLang;

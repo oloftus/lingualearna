@@ -11,6 +11,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -25,6 +26,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.common.collect.Lists;
 import com.lingualearna.web.controller.exceptions.ValidationException;
 import com.lingualearna.web.dao.GenericDao;
 import com.lingualearna.web.languages.LanguageNamesValidator;
@@ -55,6 +57,9 @@ public class NoteServiceTest {
     private Page page;
 
     @Mock
+    private Note note;
+
+    @Mock
     private GenericDao dao;
 
     @Mock
@@ -69,11 +74,14 @@ public class NoteServiceTest {
     @Mock
     private LanguageNamesValidator langNamesValidator;
 
+    private List<Note> expectedNotes;
+
     private Note returnedNote;
     private boolean deletedSuccess;
 
     @InjectMocks
     private NoteService notesService = new NoteService();
+    private List<Note> actualNotes;
 
     private void andLastUsedIsUpdated() {
 
@@ -86,9 +94,20 @@ public class NoteServiceTest {
         verify(owner, never()).setLastUsed(page);
     }
 
+    private void givenThePageDoesNotExist() {
+
+        when(dao.find(Page.class, PAGE_ID)).thenReturn(null);
+    }
+
+    private void givenThePageExists() {
+
+        when(dao.find(Page.class, PAGE_ID)).thenReturn(page);
+    }
+
     @Before
     public void setup() {
 
+        setupPage();
         setupNotes();
         setupNotesDao();
         setupLastUsedEntryFor(passedInNote);
@@ -131,6 +150,12 @@ public class NoteServiceTest {
     private void setupNoteWithInvalidLanguages() throws ValidationException {
 
         doThrow(new ValidationException()).when(langNamesValidator).validateLanguageNames((String) anyVararg());
+    }
+
+    private void setupPage() {
+
+        expectedNotes = Lists.newArrayList(note);
+        when(page.getNotes()).thenReturn(expectedNotes);
     }
 
     @Test
@@ -186,6 +211,22 @@ public class NoteServiceTest {
     }
 
     @Test
+    public void testRetrieveNotesByPageFunctions() {
+
+        givenThePageExists();
+        whenICallRetrieveNotesByPage();
+        thenTheNotesAreReturned();
+    }
+
+    @Test
+    public void testRetrieveNotesByPageFunctionsForNonExistentNotes() {
+
+        givenThePageDoesNotExist();
+        whenICallRetrieveNotesByPage();
+        thenAnEmptyListIsReturned();
+    }
+
+    @Test
     public void testUpdateNoteAcceptsValidNote() throws ValidationException {
 
         whenICallUpdateNote();
@@ -203,6 +244,11 @@ public class NoteServiceTest {
     public void testUpdateNoteRejectsInValidNote() throws ValidationException {
 
         whenICallUpdateNoteWithAnInvalidNoteThenAnExceptionIsThrown();
+    }
+
+    private void thenAnEmptyListIsReturned() {
+
+        assertEquals(0, actualNotes.size());
     }
 
     private void thenNothingIsReturned() {
@@ -233,6 +279,11 @@ public class NoteServiceTest {
     private void thenTheNoteIsUpdated() {
 
         assertEquals(expectedNote, returnedNote);
+    }
+
+    private void thenTheNotesAreReturned() {
+
+        assertEquals(expectedNotes, actualNotes);
     }
 
     private void whenICallCreateNote() throws ValidationException {
@@ -266,6 +317,11 @@ public class NoteServiceTest {
     private void whenICallRetrieveNote() {
 
         returnedNote = notesService.retrieveNote(NOTE_ID);
+    }
+
+    private void whenICallRetrieveNotesByPage() {
+
+        actualNotes = notesService.retrieveNotesByPage(PAGE_ID);
     }
 
     private void whenICallRetrieveNoteWithANonExistentNote() throws ValidationException {

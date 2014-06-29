@@ -13,7 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.lingualearna.web.controller.exceptions.ValidationException;
+import com.lingualearna.web.controller.model.PageModel;
+import com.lingualearna.web.controller.modelmappers.ControllerModelMapper;
 import com.lingualearna.web.notes.Notebook;
+import com.lingualearna.web.notes.Page;
 import com.lingualearna.web.security.User;
 import com.lingualearna.web.service.NotebookService;
 import com.lingualearna.web.service.UserService;
@@ -23,12 +26,16 @@ import com.lingualearna.web.service.UserService;
 public class NotebookController extends AbstractController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     private NotebookService notebookService;
 
-    @RequestMapping(value = "", produces = "application/json", consumes = "application/json", method = RequestMethod.POST)
+    @Autowired
+    private ControllerModelMapper<PageModel, Page> pagesMapper;
+
+    @RequestMapping(value = "", produces = "application/json", consumes = "application/json",
+            method = RequestMethod.POST)
     @ResponseBody
     public Notebook createNotebook(Authentication authentication, @RequestBody @Valid Notebook notebook)
             throws ValidationException {
@@ -37,6 +44,25 @@ public class NotebookController extends AbstractController {
         notebook.setOwner(currentUser);
         notebookService.createNotebook(notebook);
         return notebook;
+    }
+
+    @RequestMapping(value = "/page", produces = "application/json", consumes = "application/json",
+            method = RequestMethod.POST)
+    @ResponseBody
+    public PageModel createPage(Authentication authentication, @RequestBody @Valid PageModel incomingPage)
+            throws ValidationException {
+
+        Notebook notebook = notebookService.getNotebookById(incomingPage.getNotebookId());
+        Page pageEntity = new Page();
+        pagesMapper.copyPropertiesFromModel(incomingPage, pageEntity, Page.PAGE_ID_FIELD, Page.POSITION_FIELD);
+        pageEntity.setNotebook(notebook);
+        notebookService.createPage(pageEntity);
+
+        PageModel outgoingPage = new PageModel();
+        pagesMapper.copyPropertiesFromEntity(pageEntity, outgoingPage);
+        outgoingPage.setNotebookId(pageEntity.getNotebook().getNotebookId());
+
+        return outgoingPage;
     }
 
     @RequestMapping(value = "/notebooksPages", produces = "application/json", method = RequestMethod.GET)

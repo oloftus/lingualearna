@@ -28,8 +28,6 @@ public class NoteController {
 
     private static final String NOTE_NOT_FOUND = "Note not found";
     private static final String PAGE_NOT_FOUND = "Page not found";
-    private static final String NOTE_ID_FIELD = "noteId";
-    private static final String SOURCE_URL_FIELD = "sourceUrl";
 
     @Autowired
     private NoteService notesService;
@@ -47,7 +45,7 @@ public class NoteController {
         Page page = notebookService.getPageById(incomingNote.getPageId());
 
         Note noteEntity = new Note();
-        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, NOTE_ID_FIELD);
+        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, Note.NOTE_ID_FIELD);
         noteEntity.setPage(page);
         notesService.createNote(noteEntity);
 
@@ -116,7 +114,7 @@ public class NoteController {
 
         Page page = notebookService.getPageById(incomingNote.getPageId());
 
-        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, NOTE_ID_FIELD, SOURCE_URL_FIELD);
+        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, Note.NOTE_ID_FIELD, Note.SOURCE_URL_FIELD);
         noteEntity.setPage(page);
         notesService.updateNote(noteEntity);
 

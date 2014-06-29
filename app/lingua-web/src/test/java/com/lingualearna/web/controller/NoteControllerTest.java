@@ -27,8 +27,6 @@ import com.lingualearna.web.service.NotebookService;
 public class NoteControllerTest {
 
     private static final int INVALID_NOTE_ID = 0;
-    private static final String NOTE_ID_FIELD_NAME = "noteId";
-    private static final String SOURCE_URL_FIELD_NAME = "sourceUrl";
     private static final int VALID_NOTE_ID = 1;
     private static final int PAGE_ID = 2;
 
@@ -62,6 +60,25 @@ public class NoteControllerTest {
     private NoteModel actualNoteModel;
     private NoteModel expectedNoteModel;
 
+    private void andTheCorrectNoteIsReturned() {
+
+        verify(notesMapper).copyPropertiesFromEntity(eq(noteEntity), noteModelArg.capture());
+        expectedNoteModel = noteModelArg.getValue();
+
+        assertEquals(expectedNoteModel, actualNoteModel);
+        assertEquals(PAGE_ID, expectedNoteModel.getPageId());
+    }
+
+    private void andTheNoteIsCreated() throws ValidationException {
+
+        verify(notesService).createNote(noteEntity);
+    }
+
+    private void andTheNoteIsUpdated() throws ValidationException {
+
+        verify(notesService).updateNote(noteEntity);
+    }
+
     private void givenDeleteNoteServiceFunctions() {
 
         when(notesService.deleteNote(VALID_NOTE_ID)).thenReturn(true);
@@ -86,8 +103,9 @@ public class NoteControllerTest {
     public void testCreateNoteFunctions() throws ValidationException {
 
         whenICallCreateNote();
-        thenTheNoteIsCreated();
-        thenTheCorrectNoteIsReturned();
+        thenTheModelIsMappedToTheEntityIgnoringId();
+        andTheNoteIsCreated();
+        andTheCorrectNoteIsReturned();
     }
 
     @Test
@@ -110,7 +128,7 @@ public class NoteControllerTest {
 
         givenRetrieveNoteServiceFunctions();
         whenICallRetrieveNoteWithAValidNoteId();
-        thenTheCorrectNoteIsReturned();
+        andTheCorrectNoteIsReturned();
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -125,8 +143,9 @@ public class NoteControllerTest {
 
         givenRetrieveNoteServiceFunctions();
         whenICallUpdateNoteWithAValidNoteId();
-        thenTheNoteIsUpdated();
-        thenTheCorrectNoteIsReturned();
+        thenTheModelIsMappedToTheEntityIgnoringIdAndSourceUrl();
+        andTheNoteIsUpdated();
+        andTheCorrectNoteIsReturned();
     }
 
     @Test(expected = ResourceNotFoundException.class)
@@ -136,44 +155,24 @@ public class NoteControllerTest {
         whenICallUpdateNoteWithAnInvalidNoteId();
     }
 
-    private void theModelIsMappedToTheEntityIgnoringId() {
+    private void thenTheModelIsMappedToTheEntityIgnoringId() {
 
-        verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(NOTE_ID_FIELD_NAME));
-        noteEntity = noteArg.getValue();
-    }
-
-    private void theModelIsMappedToTheEntityIgnoringIdAndSourceUrl() {
-
-        verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(NOTE_ID_FIELD_NAME),
-                eq(SOURCE_URL_FIELD_NAME));
+        verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(Note.NOTE_ID_FIELD));
         noteEntity = noteArg.getValue();
         assertEquals(page, noteEntity.getPage());
     }
 
-    private void thenTheCorrectNoteIsReturned() {
+    private void thenTheModelIsMappedToTheEntityIgnoringIdAndSourceUrl() {
 
-        verify(notesMapper).copyPropertiesFromEntity(eq(noteEntity), noteModelArg.capture());
-        expectedNoteModel = noteModelArg.getValue();
-
-        assertEquals(expectedNoteModel, actualNoteModel);
-        assertEquals(PAGE_ID, expectedNoteModel.getPageId());
-    }
-
-    private void thenTheNoteIsCreated() throws ValidationException {
-
-        theModelIsMappedToTheEntityIgnoringId();
-        verify(notesService).createNote(noteEntity);
+        verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(Note.NOTE_ID_FIELD),
+                eq(Note.SOURCE_URL_FIELD));
+        noteEntity = noteArg.getValue();
+        assertEquals(page, noteEntity.getPage());
     }
 
     private void thenTheNoteIsDeleted() {
 
         verify(notesService).deleteNote(VALID_NOTE_ID);
-    }
-
-    private void thenTheNoteIsUpdated() throws ValidationException {
-
-        theModelIsMappedToTheEntityIgnoringIdAndSourceUrl();
-        verify(notesService).updateNote(noteEntity);
     }
 
     private void whenICallCreateNote() throws ValidationException {
