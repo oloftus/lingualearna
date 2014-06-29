@@ -3,7 +3,6 @@ package com.lingualearna.web.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -11,28 +10,25 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class AbstractDao {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     /**
      * @return Whether the object to delete actually exists
      */
     public <T> boolean delete(Class<T> entityType, int id) {
 
-        T retrievedObj = entityManager.find(entityType, id);
+        T retrievedObj = getEntityManager().find(entityType, id);
         if (retrievedObj == null) {
             return false;
         }
 
-        entityManager.remove(retrievedObj);
-        entityManager.flush();
+        getEntityManager().remove(retrievedObj);
+        getEntityManager().flush();
 
         return true;
     }
 
     protected <T> List<T> doQueryAsList(String queryStr, Class<T> clazz) {
 
-        TypedQuery<T> query = entityManager.createNamedQuery(queryStr, clazz);
+        TypedQuery<T> query = getEntityManager().createNamedQuery(queryStr, clazz);
         List<T> results = query.getResultList();
         return results;
     }
@@ -45,7 +41,7 @@ public abstract class AbstractDao {
     protected final <T> List<T> doQueryAsListWithParams(String namedQueryName, Class<T> clazz,
             Pair<String, ? extends Object>... params) {
 
-        TypedQuery<T> query = entityManager.createNamedQuery(namedQueryName, clazz);
+        TypedQuery<T> query = getEntityManager().createNamedQuery(namedQueryName, clazz);
 
         for (Pair<String, ? extends Object> param : params) {
             query.setParameter(param.getLeft(), param.getRight());
@@ -73,7 +69,7 @@ public abstract class AbstractDao {
     protected <T> List<T> doUntypedQueryAsListWithParams(String namedQueryName,
             Pair<String, ? extends Object>... params) {
 
-        Query query = entityManager.createNamedQuery(namedQueryName);
+        Query query = getEntityManager().createNamedQuery(namedQueryName);
 
         for (Pair<String, ? extends Object> param : params) {
             query.setParameter(param.getLeft(), param.getRight());
@@ -97,18 +93,15 @@ public abstract class AbstractDao {
 
     public <T> T find(Class<T> entityType, int id) {
 
-        return entityManager.find(entityType, id);
+        return getEntityManager().find(entityType, id);
     }
 
-    protected EntityManager getEntityManager() {
-
-        return entityManager;
-    }
+    protected abstract EntityManager getEntityManager();
 
     public <T> T merge(T obj) {
 
-        T updatedObj = entityManager.merge(obj);
-        entityManager.flush();
+        T updatedObj = getEntityManager().merge(obj);
+        getEntityManager().flush();
         return updatedObj;
     }
 
@@ -117,7 +110,7 @@ public abstract class AbstractDao {
      */
     public <T> void persist(T obj) {
 
-        entityManager.persist(obj);
-        entityManager.flush();
+        getEntityManager().persist(obj);
+        getEntityManager().flush();
     }
 }

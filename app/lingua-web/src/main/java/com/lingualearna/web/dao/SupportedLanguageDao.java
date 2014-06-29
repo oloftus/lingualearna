@@ -2,6 +2,9 @@ package com.lingualearna.web.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +13,9 @@ import com.lingualearna.web.translation.SupportedLanguage;
 
 @Component
 public class SupportedLanguageDao extends AbstractDao {
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
     private LanguageService languageService;
@@ -23,5 +29,11 @@ public class SupportedLanguageDao extends AbstractDao {
         }
 
         return results;
+    }
+
+    @Override
+    protected EntityManager getEntityManager() {
+
+        return entityManager;
     }
 }
