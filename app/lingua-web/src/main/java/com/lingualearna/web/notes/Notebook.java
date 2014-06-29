@@ -23,23 +23,26 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lingualearna.web.security.HasOwner;
 import com.lingualearna.web.security.User;
 import com.lingualearna.web.validator.FieldsNotEqual;
+import com.lingualearna.web.validator.Unique;
 
-@FieldsNotEqual({ "foreignLang", "localLang" })
+@FieldsNotEqual(propertyNames = { "foreignLang", "localLang" },
+        message = "{org.lingualearna.web.validationMessages.foreignLocalLangsEqual}")
 @NamedQueries({
-        @NamedQuery(name = Notebook.COUNT_NOTEBOOKS_NAME_QUERY, query = "SELECT count(n) FROM Notebook n WHERE n.name = :notebookName"),
+        @NamedQuery(name = Notebook.COUNT_NOTEBOOKS_BY_NAME_QUERY, query = "SELECT count(n) FROM Notebook n WHERE n.name = :notebookName"),
         @NamedQuery(name = Notebook.FIND_ALL_QUERY, query = "SELECT n FROM Notebook n WHERE n.owner.userId = :user")
 })
 @Entity
 @Table(name = "notebooks")
-public class Notebook implements Serializable {
+public class Notebook implements Serializable, HasOwner {
 
     private static final long serialVersionUID = 5569311441731774188L;
 
-    public static final String COUNT_NOTEBOOKS_NAME_QUERY = "Notebook.countNotebooksName";
     public static final String FIND_ALL_QUERY = "Notebook.findAllByUser";
-    public static final String NOTEBOOK_NAME_QUERY_PARAM = "notebookName";
+    public static final String COUNT_NOTEBOOKS_BY_NAME_QUERY = "Notebook.countNotebooksName";
+    public static final String COUNT_PAGES_BY_NAME_QUERY_PARAM = "notebookName";
     public static final String USER_QUERY_PARAM = "user";
 
     private int notebookId;
@@ -73,6 +76,8 @@ public class Notebook implements Serializable {
 
     @NotBlank
     @Length(max = 45)
+    @Unique(namedQuery = COUNT_NOTEBOOKS_BY_NAME_QUERY, valueParamName = COUNT_PAGES_BY_NAME_QUERY_PARAM,
+            message = "{org.lingualearna.web.validationMessages.duplicateNotebook}")
     public String getName() {
 
         return this.name;
@@ -92,6 +97,14 @@ public class Notebook implements Serializable {
     public User getOwner() {
 
         return this.owner;
+    }
+
+    @JsonIgnore
+    @Transient
+    @Override
+    public String getOwnerUsername() {
+
+        return getOwner().getUsername();
     }
 
     @OneToMany(mappedBy = "notebook", fetch = FetchType.EAGER)

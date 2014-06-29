@@ -68,11 +68,9 @@ public class OwnerBasedVoter implements AccessDecisionVoter<MethodInvocation> {
         Object ownedObjectOrId = methodInvocation.getArguments()[OWNED_OBJECT_OR_ID_POSITION];
 
         if (ownedObjectOrId instanceof HasOwner) {
-
             return isOwnerOfObject(ownedObjectOrId, userDetails);
         }
         else if (ownedObjectOrId instanceof Integer) {
-
             return isOwnerOfObjectId(ownedObjectOrId, userDetails, methodInvocation);
         }
 

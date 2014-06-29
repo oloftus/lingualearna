@@ -14,6 +14,7 @@ import com.lingualearna.web.exception.ConfigurationException;
 public class MinimumOnePropertyNotEmptyValidator implements ConstraintValidator<MinimumOnePropertyNotEmpty, Object> {
 
     private static final Logger LOG = LoggerFactory.getLogger(MinimumOnePropertyNotEmptyValidator.class);
+
     private static final String BLANK = "";
 
     private String[] propertyNames;

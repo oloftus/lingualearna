@@ -49,7 +49,7 @@ public class FieldsNotEqualValidatorTest {
             }
 
             @Override
-            public String[] value() {
+            public String[] propertyNames() {
 
                 return new String[] { PROPERTY_1, PROPERTY_2 };
             }

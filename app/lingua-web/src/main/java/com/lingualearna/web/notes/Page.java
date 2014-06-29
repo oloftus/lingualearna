@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -19,12 +20,17 @@ import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lingualearna.web.security.HasOwner;
+import com.lingualearna.web.validator.Unique;
 
+@NamedQuery(name = Page.COUNT_PAGES_BY_NAME_QUERY, query = "SELECT count(n) FROM Page n WHERE n.name = :pageName")
 @Entity
 @Table(name = "pages")
 public class Page implements Serializable, HasOwner {
 
     private static final long serialVersionUID = 674115054477001746L;
+
+    public static final String COUNT_PAGES_BY_NAME_QUERY = "Page.countPagesName";
+    public static final String COUNT_PAGES_BY_NAME_QUERY_PARAM = "pageName";
 
     private int pageId;
     private String name;
@@ -42,6 +48,8 @@ public class Page implements Serializable, HasOwner {
 
     @Length(max = 45)
     @Column(name = "name")
+    @Unique(namedQuery = COUNT_PAGES_BY_NAME_QUERY, valueParamName = COUNT_PAGES_BY_NAME_QUERY_PARAM,
+            message = "{org.lingualearna.web.validationMessages.duplicatePage}")
     public String getName() {
 
         return this.name;

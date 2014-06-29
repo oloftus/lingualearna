@@ -8,5 +8,6 @@
 		<class>com.lingualearna.web.security.User</class>
 		<class>com.lingualearna.web.notes.Notebook</class>
 		<class>com.lingualearna.web.notes.Page</class>
+		<validation-mode>NONE</validation-mode>
 	</persistence-unit>
 </persistence>

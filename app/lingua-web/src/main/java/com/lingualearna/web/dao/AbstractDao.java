@@ -26,7 +26,7 @@ public abstract class AbstractDao {
         return true;
     }
 
-    protected <T> List<T> doQueryAsList(String queryStr, Class<T> clazz) {
+    public <T> List<T> doQueryAsList(String queryStr, Class<T> clazz) {
 
         TypedQuery<T> query = getEntityManager().createNamedQuery(queryStr, clazz);
         List<T> results = query.getResultList();
@@ -38,7 +38,7 @@ public abstract class AbstractDao {
      *            (Name, Value) pairs of query parameters
      */
     @SafeVarargs
-    protected final <T> List<T> doQueryAsListWithParams(String namedQueryName, Class<T> clazz,
+    public final <T> List<T> doQueryAsListWithParams(String namedQueryName, Class<T> clazz,
             Pair<String, ? extends Object>... params) {
 
         TypedQuery<T> query = getEntityManager().createNamedQuery(namedQueryName, clazz);
@@ -52,7 +52,7 @@ public abstract class AbstractDao {
     }
 
     @SafeVarargs
-    protected final <T> T doQueryWithParams(String namedQueryName, Class<T> clazz,
+    public final <T> T doQueryWithParams(String namedQueryName, Class<T> clazz,
             Pair<String, ? extends Object>... params) {
 
         List<T> results = doQueryAsListWithParams(namedQueryName, clazz, params);
@@ -66,7 +66,7 @@ public abstract class AbstractDao {
     }
 
     @SuppressWarnings("unchecked")
-    protected <T> List<T> doUntypedQueryAsListWithParams(String namedQueryName,
+    public <T> List<T> doUntypedQueryAsListWithParams(String namedQueryName,
             Pair<String, ? extends Object>... params) {
 
         Query query = getEntityManager().createNamedQuery(namedQueryName);
@@ -80,7 +80,7 @@ public abstract class AbstractDao {
     }
 
     @SafeVarargs
-    protected final <T> T doUntypedQueryWithParams(String namedQueryName, Pair<String, ? extends Object>... params) {
+    public final <T> T doUntypedQueryWithParams(String namedQueryName, Pair<String, ? extends Object>... params) {
 
         List<T> results = doUntypedQueryAsListWithParams(namedQueryName, params);
 

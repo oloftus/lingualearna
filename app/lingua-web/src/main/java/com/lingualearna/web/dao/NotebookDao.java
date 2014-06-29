@@ -25,8 +25,8 @@ public class NotebookDao extends AbstractDao {
 
     public long getCountOfNotebooksWithName(String name) {
 
-        return doUntypedQueryWithParams(Notebook.COUNT_NOTEBOOKS_NAME_QUERY,
-                Pair.of(Notebook.NOTEBOOK_NAME_QUERY_PARAM, name));
+        return doUntypedQueryWithParams(Notebook.COUNT_NOTEBOOKS_BY_NAME_QUERY,
+                Pair.of(Notebook.COUNT_PAGES_BY_NAME_QUERY_PARAM, name));
     }
 
     @Override

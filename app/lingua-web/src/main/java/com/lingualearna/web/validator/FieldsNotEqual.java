@@ -26,5 +26,5 @@ public @interface FieldsNotEqual {
 
     Class<? extends Payload>[] payload() default {};
 
-    String[] value();
+    String[] propertyNames();
 }

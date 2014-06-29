@@ -25,7 +25,7 @@ public class FieldsNotEqualValidator implements ConstraintValidator<FieldsNotEqu
     @Override
     public void initialize(FieldsNotEqual constraintAnnotation) {
 
-        propertyNames = constraintAnnotation.value();
+        propertyNames = constraintAnnotation.propertyNames();
     }
 
     @Override
