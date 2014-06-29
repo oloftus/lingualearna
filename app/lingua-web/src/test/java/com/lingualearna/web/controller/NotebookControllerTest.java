@@ -63,7 +63,7 @@ public class NotebookControllerTest {
 
         verify(pagesMapper).copyPropertiesFromEntity(eq(pageEntity), pageModelArg.capture());
         pageModel = pageModelArg.getValue();
-        assertEquals((Integer) NOTEBOOK_ID, pageModel.getNotebookId());
+        assertEquals(NOTEBOOK_ID, pageModel.getNotebookId());
         assertEquals(pageModel, returnedPageModel);
     }
 
