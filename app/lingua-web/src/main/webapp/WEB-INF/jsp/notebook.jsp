@@ -30,6 +30,7 @@
 <body>
 
     <div id="page-container" class="lingua-component" ng-controller="notebookRootController">
+        <div ng-include="global.properties.ngViewsRoot + '/pageMessagesView.html'" class="lingua-ng-include"></div>
         <div class="lingua-draggable-dialog" id="lingua-main-dialog">
             <button class="lingua-icon-button lingua-dialog-close" id="lingua-dialog-close-main" ui-sref="NOTEBOOK_MAIN">Close</button>
             <div class="lingua-dialog-view" ui-view="MODAL_DIALOG"></div>

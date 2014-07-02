@@ -23,6 +23,7 @@ App.Module.createNew(function() {
         
         App.Properties.notebookServiceUrl = App.Properties.apiRoot + "/notebook";
         App.Properties.notesPagesServiceUrl = App.Properties.notebookServiceUrl + "/notebooksPages";
+        App.Properties.pageServiceUrl = App.Properties.notebookServiceUrl + "/page";
         
         App.Properties.pageMessagesTimeout = 4000; // Milliseconds
         App.Properties.dialogDisappearTimeout = 4000; // Milliseconds

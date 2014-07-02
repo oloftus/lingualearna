@@ -18,6 +18,7 @@ App.MiniApp.createNew(function() {
         rootApp.constant("notesPagesServiceUrl", App.Properties.notesPagesServiceUrl);
         rootApp.constant("notebookServiceUrl", App.Properties.notebookServiceUrl);
         rootApp.constant("notesByPageServiceUrl", App.Properties.notesByPageServiceUrl);
+        rootApp.constant("pageServiceUrl", App.Properties.pageServiceUrl);
 
         abstractMiniApp.configure();
         abstractMiniApp.boot();

@@ -5,7 +5,7 @@
                 Spanish &amp; English <span class="title-sub-info">(Spanish &#8660; English)</span>
             </h2>
             <div id="notebook-tools">
-                <button class="lingua-action-button-icon" id="new-entry-button" ui-sref="NOTEBOOK_MAIN.ADD_NOTE">Add
+                <button class="lingua-action-button-icon" id="new-entry-button" ui-sref=".ADD_NOTE">Add
                     entry</button>
                 <button class="lingua-action-button-icon" id="start-test-button">Knowledge test</button>
                 <input type="text" value="Search/lookup" id="notebook-search" />
@@ -28,7 +28,7 @@
             </div>
             <div id="tabs-pane">
                 <div class="inner">
-                    <button class="lingua-action-button-icon" id="new-page-button" UI-SREF="NOTEBOOK_MAIN.ADD_PAGE">New page</button>
+                    <button class="lingua-action-button-icon" id="new-page-button" UI-SREF=".ADD_PAGE">New page</button>
                     <ul id="notebook-tabs">
                         <li ng-repeat="page in global.model.currentNotebook.pages" class="note-entry" ng-class="{'selected': page.pageId === global.model.currentPage.pageId}">
                             <a ng-click="func.changeCurrentPage(page.pageId)">{{page.name}}</a>

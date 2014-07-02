@@ -5,6 +5,7 @@ App.TypesDef.createNew(function() {
         editNoteTitle : "Edit note",
         noteSavedMessage : "Note saved to notebook",
         notebookCreatedMessage : "Notebook created",
+        pageCreatedMessage : "Page created",
         genericServerErrorMessage : "A problem occurred that meant your request couldn't be processed",
         doCompleteFields : "Please complete the fields"
     };

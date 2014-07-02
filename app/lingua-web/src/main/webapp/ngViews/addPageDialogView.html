@@ -1,0 +1,20 @@
+<div ng-controller="addPageController">
+    <div class="lingua-component" id="lingua-add-page-dialog">
+        <div class="lingua-dialog-header">
+            <h2>Add new page to notebook '{{global.model.currentNotebook.name}}'</h2>
+        </div>
+        <div class="lingua-dialog-content lingua-form">
+            <div ng-include="global.properties.ngViewsRoot + '/globalMessagesView.html'" class="lingua-ng-include"></div>
+            <div class="row">
+                <h3>
+                    <label for="lingua-page-name">Page title</label>
+                </h3>
+                <input type="text" id="lingua-page-name" ng-model="model.pageName" data-fieldname="name" />
+            </div>
+            <div class="lingua-dialog-footer">
+                <button class="lingua-action-button-icon lingua-save-button" ng-click="func.doCreatePage()">Add
+                    page</button>
+            </div>
+        </div>
+    </div>
+</div>

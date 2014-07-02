@@ -8,12 +8,14 @@ App.Service.createNew(function() {
     
     this.usesConstant("notesPagesServiceUrl");
     this.usesConstant("notebookServiceUrl");
+    this.usesConstant("pageServiceUrl");
 
     this.hasDefinition(function(CrudService) {
 
-        return function(jsonWebService, notesPagesServiceUrl, notebookServiceUrl) {
+        return function(jsonWebService, notesPagesServiceUrl, notebookServiceUrl, pageServiceUrl) {
 
-            var crudService = new CrudService(jsonWebService, notebookServiceUrl);
+            var notebookCrudService = new CrudService(jsonWebService, notebookServiceUrl);
+            var pageCrudService = new CrudService(jsonWebService, pageServiceUrl);
             
             var getNotebooksAndPages = function(successCallback, failureCallback) {
 
@@ -23,10 +25,14 @@ App.Service.createNew(function() {
 
             return {
                 getNotebooksAndPages : getNotebooksAndPages,
-                create : crudService.create,
-                retrieve : crudService.retrieve,
-                update : crudService.update,
-                remove : crudService.remove
+                create : notebookCrudService.create,
+                retrieve : notebookCrudService.retrieve,
+                update : notebookCrudService.update,
+                remove : notebookCrudService.remove,
+                createPage : pageCrudService.create,
+                retrievePage : pageCrudService.retrieve,
+                updatePage : pageCrudService.update,
+                removePage : pageCrudService.remove
             };
         };
     });
