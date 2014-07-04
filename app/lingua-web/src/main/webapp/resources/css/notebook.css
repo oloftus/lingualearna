@@ -51,7 +51,7 @@
 }
 
 #notebook-content {
-    padding: 20px 20px 20px 130px;
+    padding: 13px 13px 13px 123px;
     background: url(../images/margin-line.png) repeat-y 110px;
     height: 100%;
     min-width: 700px;
@@ -62,20 +62,110 @@
 ul#notes-list {
     margin: 0;
     padding: 0;
+    width: 60%;
+    min-width: inherit;
 }
 
-.note-entry {
+#notes-list .row {
     list-style-type: none;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
-.note-foreign-local-spacer {
-    color: #dddddd;
-    padding:0 10px;
+#notes-list .entry {
+    position: relative;
+    padding: 0 2px 2px;
+    display: inline-block;
+    padding: 0 2px 2px;
 }
 
-.note-additional-notes {
+#notes-list .entry:hover {
+    border: solid #eeeeee;
+    border-width: 0 2px 2px;
+    background-color: white;
+    padding: 0;
+    box-shadow: 0 0 3px #fafafa;
+}
+
+#notes-list .star {
+    position: absolute;
+    margin: 3px 0 0 -58px;
+    width: 20px;
+    height: 20px;
+    background-size: 20px 20px;
+    background: url(../images/star.svg);
+    width: 20px;
+}
+
+#notes-list .handle {
+    height: 6px;
+}
+
+#notes-list .entry:hover ul.toolbar {
     display: block;
+}
+
+#notes-list ul.toolbar {
+    /* display: none; */
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    right: -50px;
+    width: 50px;
+}
+
+#notes-list .toolbar li {
+    list-style-type: none;
+    float: left;
+}
+
+#notes-list .toolbar a {
+    display: block;
+    width: 25px;
+    height: 25px;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    background-size: 20px 20px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+#notes-list .toolbar .edit a {
+    background-image: url(../images/pencil.svg);
+}
+
+#notes-list .toolbar .delete a {
+    background-image: url(../images/trash.svg);
+}
+
+#notes-list .toolbar .context a {
+    background-image: url(../images/document-text.svg);
+}
+
+#notes-list .toolbar .test a {
+    background-image: url(../images/input-checked.svg);
+}
+
+#notes-list .entry:hover .handle {
+    background-color: #eeeeee;
+}
+
+#notes-list .note-content {
+    padding: 7px;
+}
+
+#notes-list .foreign-note,#notes-list .local-note {
+    display: inline-block;
+}
+
+#notes-list .additional-notes {
+    margin-top: 5px;
+}
+
+#notes-list .local-note:after {
+    padding: 0 15px;
+    content: "\2014";
+    color: #dddddd;
 }
 
 #main-header>.inner,#notebook-header>.inner {

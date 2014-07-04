@@ -87,7 +87,7 @@ App.Module.createNew(function() {
         } ];
 
         var additionalViews = [ "/pageMessagesView", "/globalMessagesView", "/abstractNoteDialogView",
-                "/notebookHeaderView" ];
+                "/notebookHeaderView", "/noteView" ];
         var additionalWhitelistUrls = [ App.Properties.pagesRoot + "/login" ];
 
         var whitelist = [];

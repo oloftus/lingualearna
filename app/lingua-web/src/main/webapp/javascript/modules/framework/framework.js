@@ -112,6 +112,25 @@ App.NgComponent = {
     }
 };
 
+App.Directive = {
+    Proto : function() {
+
+        App.NgComponent.Proto.call(this);
+        
+        var _registerComponent = function(rootApp, ngRegistrationHelper, directive) {
+            ngRegistrationHelper(rootApp).registerDirective(this.moduleProps._moduleName, this.moduleProps._ngDeps,
+                    directive);
+        };
+
+        this._registerComponent = _registerComponent.bind(this);
+    },
+    createNew : function(module) {
+
+        module.prototype = new this.Proto();
+        new module();
+    }
+};
+
 App.Factory = {
     Proto : function() {
 

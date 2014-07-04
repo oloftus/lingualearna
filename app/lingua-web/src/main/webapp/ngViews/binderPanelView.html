@@ -15,14 +15,9 @@
     <div id="notebook-container">
         <div class="inner">
             <div id="notebook-pane">
-                <div id="notebook-content">
+                <div id="notebook-content" ng-controller="noteListController">
                     <ul id="notes-list">
-                        <li ng-repeat="note in global.model.currentPage.notes" class="note-entry">
-                            <span class="note-local-note">{{note.localNote}}</span>
-                            <span class="note-foreign-local-spacer">&mdash;</span>
-                            <span class="note-foreign-note">{{note.foreignNote}}</span>
-                            <span class="note-additional-notes">{{note.additionalNotes}}</span>
-                        </li>
+                        <lingua-note notey="note" ng-repeat="notex in global.model.currentPage.notes"></lingua-note>
                     </ul>
                 </div>
             </div>
@@ -30,7 +25,7 @@
                 <div class="inner">
                     <button class="lingua-action-button-icon" id="new-page-button" UI-SREF=".ADD_PAGE">New page</button>
                     <ul id="notebook-tabs">
-                        <li ng-repeat="page in global.model.currentNotebook.pages" class="note-entry" ng-class="{'selected': page.pageId === global.model.currentPage.pageId}">
+                        <li ng-repeat="page in global.model.currentNotebook.pages" ng-class="{'selected': page.pageId === global.model.currentPage.pageId}">
                             <a ng-click="func.changeCurrentPage(page.pageId)">{{page.name}}</a>
                         </li>
                     </ul>

@@ -7,44 +7,54 @@ App.Module.createNew(function() {
     this.hasDefinition(function(_) {
 
         var ComponentType = {
-            CONTROLLER : 0,
-            SERVICE : 1,
-            FACTORY : 2
+            CONTROLLER : "CONTROLLER",
+            SERVICE : "SERVICE",
+            DIRECTIVE : "DIRECTIVE",
+            FACTORY : "FACTORY"
         };
 
-        registerHelper = function(componentType, ngApp) {
-
-            var registerFunc;
-
-            switch (componentType) {
-                case ComponentType.CONTROLLER:
-                    registerFunc = _.isUndefined(ngApp.controllerProvider) ? ngApp.controller
-                            : ngApp.controllerProvider.register;
-                    break;
-                case ComponentType.SERVICE:
-                    registerFunc = _.isUndefined(ngApp.provide) ? ngApp.service : ngApp.provide.service;
-                    break;
-                case ComponentType.FACTORY:
-                    registerFunc = _.isUndefined(ngApp.provide) ? ngApp.factory : ngApp.provide.factory;
-                    break;
-            }
-
-            return function(componentName, dependencies, component) {
-
-                if (!_.isUndefined(component)) {
-                    dependencies.push(component);
+        var RegisterFuncFactory = function(ngApp) {
+            
+            this.getFunction = function(componentType) {
+                
+                var registerFunc;
+                
+                switch (componentType) {
+                    case ComponentType.CONTROLLER:
+                        registerFunc = _.isUndefined(ngApp.controllerProvider) ? ngApp.controller
+                                : ngApp.controllerProvider.register;
+                        break;
+                    case ComponentType.SERVICE:
+                        registerFunc = _.isUndefined(ngApp.provide) ? ngApp.service : ngApp.provide.service;
+                        break;
+                    case ComponentType.FACTORY:
+                        registerFunc = _.isUndefined(ngApp.provide) ? ngApp.factory : ngApp.provide.factory;
+                        break;
+                    case ComponentType.DIRECTIVE:
+                        registerFunc = _.isUndefined(ngApp.compileProvider) ? ngApp.directive : ngApp.compileProvider.directive;
+                        break;
                 }
-
-                registerFunc(componentName, dependencies);
+                
+                return function(componentName, dependencies, component) {
+                    
+                    if (!_.isUndefined(component)) {
+                        dependencies.push(component);
+                    }
+                    
+                    registerFunc(componentName, dependencies);
+                };
             };
         };
 
         return function(ngApp) {
 
+            var factory = new RegisterFuncFactory(ngApp);
+            
             return {
-                registerController : registerHelper(ComponentType.CONTROLLER, ngApp),
-                registerService : registerHelper(ComponentType.SERVICE, ngApp),
-                registerFactory : registerHelper(ComponentType.FACTORY, ngApp)
+                registerController : factory.getFunction(ComponentType.CONTROLLER),
+                registerService : factory.getFunction(ComponentType.SERVICE),
+                registerFactory : factory.getFunction(ComponentType.FACTORY),
+                registerDirective : factory.getFunction(ComponentType.DIRECTIVE)
             };
         };
     });
