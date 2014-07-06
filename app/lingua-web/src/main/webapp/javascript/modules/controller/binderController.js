@@ -48,7 +48,7 @@ App.Controller.createNew(function() {
 
             commsPipe.subscribe(Components.NOTEBOOK, Components.ANY, reloadNotes, Signals.APP_LOADED);
             commsPipe.subscribe(Components.BINDER, Components.ANY, reloadNotes, Signals.CURRENT_PAGE_CHANGED);
-            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, reloadNotes, Signals.NOTE_SUBMITTED_SUCCESS);
+            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, reloadNotes, Signals.NOTE_SAVED_SUCCESS);
         };
 
         var setupCurrentNotebookChangeHandler = function($scope, commsPipe) {

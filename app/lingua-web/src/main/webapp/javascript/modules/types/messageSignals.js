@@ -5,7 +5,7 @@ App.TypesDef.createNew(function() {
         CURRENT_NOTEBOOK_CHANGED : "current-notebook-changed",
         CSRF_RETRIEVED : "csrf-retrieved",
         APP_LOADED : "app-loaded",
-        NOTE_SUBMITTED_SUCCESS : "note-submitted-success",
+        NOTE_SAVED_SUCCESS : "note-saved-success",
         CURRENT_PAGE_CHANGED : "current-page-changed"
     };
 });

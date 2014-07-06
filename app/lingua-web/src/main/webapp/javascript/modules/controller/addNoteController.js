@@ -75,7 +75,7 @@ App.Controller.createNew(function() {
                 noteService.create(note, function(data) {
 
                     messageHandler.addFreshGlobalMessage($scope, LocalStrings.noteSavedMessage, MessageSeverity.INFO);
-                    commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.NOTE_SUBMITTED_SUCCESS);
+                    commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.NOTE_SAVED_SUCCESS);
 
                     $timeout(function() {
                         $state.go(AppStates.MAIN);
