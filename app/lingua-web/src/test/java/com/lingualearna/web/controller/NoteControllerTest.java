@@ -103,7 +103,7 @@ public class NoteControllerTest {
     public void testCreateNoteFunctions() throws ValidationException {
 
         whenICallCreateNote();
-        thenTheModelIsMappedToTheEntityIgnoringId();
+        thenTheModelIsMappedToTheEntityIgnoringIdAndPosition();
         andTheNoteIsCreated();
         andTheCorrectNoteIsReturned();
     }
@@ -143,7 +143,7 @@ public class NoteControllerTest {
 
         givenRetrieveNoteServiceFunctions();
         whenICallUpdateNoteWithAValidNoteId();
-        thenTheModelIsMappedToTheEntityIgnoringIdAndSourceUrl();
+        thenTheModelIsMappedToTheEntityIgnoringIdSourceUrlAndPosition();
         andTheNoteIsUpdated();
         andTheCorrectNoteIsReturned();
     }
@@ -155,17 +155,18 @@ public class NoteControllerTest {
         whenICallUpdateNoteWithAnInvalidNoteId();
     }
 
-    private void thenTheModelIsMappedToTheEntityIgnoringId() {
+    private void thenTheModelIsMappedToTheEntityIgnoringIdAndPosition() {
 
-        verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(Note.NOTE_ID_FIELD));
+        verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(Note.NOTE_ID_FIELD),
+                eq(Note.POSITION_FIELD));
         noteEntity = noteArg.getValue();
         assertEquals(page, noteEntity.getPage());
     }
 
-    private void thenTheModelIsMappedToTheEntityIgnoringIdAndSourceUrl() {
+    private void thenTheModelIsMappedToTheEntityIgnoringIdSourceUrlAndPosition() {
 
         verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(Note.NOTE_ID_FIELD),
-                eq(Note.SOURCE_URL_FIELD));
+                eq(Note.SOURCE_URL_FIELD), eq(Note.POSITION_FIELD));
         noteEntity = noteArg.getValue();
         assertEquals(page, noteEntity.getPage());
     }

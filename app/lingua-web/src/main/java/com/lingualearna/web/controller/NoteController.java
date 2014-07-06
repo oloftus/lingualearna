@@ -45,7 +45,7 @@ public class NoteController {
         Page page = notebookService.getPageById(incomingNote.getPageId());
 
         Note noteEntity = new Note();
-        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, Note.NOTE_ID_FIELD);
+        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, Note.NOTE_ID_FIELD, Note.POSITION_FIELD);
         noteEntity.setPage(page);
         notesService.createNote(noteEntity);
 
@@ -114,7 +114,8 @@ public class NoteController {
 
         Page page = notebookService.getPageById(incomingNote.getPageId());
 
-        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, Note.NOTE_ID_FIELD, Note.SOURCE_URL_FIELD);
+        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, Note.NOTE_ID_FIELD, Note.SOURCE_URL_FIELD,
+                Note.POSITION_FIELD);
         noteEntity.setPage(page);
         notesService.updateNote(noteEntity);
 

@@ -11,6 +11,7 @@ public class NoteModel implements Serializable {
 
     private static final long serialVersionUID = 6666949136391165628L;
 
+    private int pageId;
     private String additionalNotes;
     private Locale foreignLang;
     private String foreignNote;
@@ -18,8 +19,8 @@ public class NoteModel implements Serializable {
     private String localNote;
     private Integer noteId;
     private String sourceUrl;
+    private Integer position;
     private TranslationSource translationSource;
-    private int pageId;
     private boolean includedInTest;
     private boolean starred;
 
@@ -57,6 +58,11 @@ public class NoteModel implements Serializable {
     public int getPageId() {
 
         return pageId;
+    }
+
+    public Integer getPosition() {
+
+        return position;
     }
 
     public String getSourceUrl() {
@@ -117,6 +123,11 @@ public class NoteModel implements Serializable {
     public void setPageId(int pageId) {
 
         this.pageId = pageId;
+    }
+
+    public void setPosition(Integer position) {
+
+        this.position = position;
     }
 
     public void setSourceUrl(String sourceUrl) {

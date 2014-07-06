@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -28,12 +29,17 @@ import com.lingualearna.web.validator.MinimumOnePropertyNotEmpty;
         @DependentPropertyNotNullOrEmpty(propertyName = "localNote", dependentPropertyName = "localLang")
 })
 @MinimumOnePropertyNotEmpty(propertyNames = { "additionalNotes", "foreignNote", "localNote" })
+@NamedQuery(name = Note.GET_NOTES_BY_PAGE_QUERY, query = "SELECT n FROM Note n WHERE n.page.pageId = :pageId ORDER BY n.position")
 @Entity
 @Table(name = "notes")
 public class Note implements Serializable, HasOwner {
 
     private static final long serialVersionUID = -1700378910934447911L;
 
+    public static final String GET_NOTES_BY_PAGE_QUERY = "Note.getNotesByPage";
+    public static final String GET_NOTES_BY_PAGE_PAGE_ID_PARAM = "pageId";
+
+    public static final String POSITION_FIELD = "position";
     public static final String NOTE_ID_FIELD = "noteId";
     public static final String SOURCE_URL_FIELD = "sourceUrl";
 
@@ -44,6 +50,7 @@ public class Note implements Serializable, HasOwner {
     private Locale localLang;
     private String localNote;
     private String sourceUrl;
+    private Integer position;
     private TranslationSource translationSource;
     private Page page;
     private boolean includedInTest;
@@ -108,6 +115,12 @@ public class Note implements Serializable, HasOwner {
     public Page getPage() {
 
         return page;
+    }
+
+    @Column(name = "position")
+    public Integer getPosition() {
+
+        return position;
     }
 
     @URL
@@ -175,6 +188,11 @@ public class Note implements Serializable, HasOwner {
     public void setPage(Page page) {
 
         this.page = page;
+    }
+
+    public void setPosition(Integer position) {
+
+        this.position = position;
     }
 
     public void setSourceUrl(String sourceUrl) {
