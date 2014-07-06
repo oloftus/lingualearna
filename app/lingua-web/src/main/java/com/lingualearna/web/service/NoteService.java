@@ -2,6 +2,7 @@ package com.lingualearna.web.service;
 
 import static com.lingualearna.web.security.SecuredConfigAttributes.ALLOW_OWNER;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -12,7 +13,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import com.lingualearna.web.controller.exceptions.ValidationException;
-import com.lingualearna.web.dao.NoteDao;
+import com.lingualearna.web.dao.GenericDao;
 import com.lingualearna.web.languages.LanguageNamesValidator;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.notes.Page;
@@ -24,7 +25,7 @@ import com.lingualearna.web.security.User;
 public class NoteService extends AbstractService {
 
     @Autowired
-    private NoteDao dao;
+    private GenericDao dao;
 
     @Autowired
     Validator validator;
@@ -76,7 +77,13 @@ public class NoteService extends AbstractService {
     @Secured(ALLOW_OWNER)
     public List<Note> retrieveNotesByPage(int pageId) {
 
-        return dao.getNotesByPage(pageId);
+        Page page = dao.find(Page.class, pageId);
+
+        if (page != null) {
+            return page.getNotes();
+        }
+
+        return Collections.emptyList();
     }
 
     private void setLastUsed(int noteId) {
