@@ -21,6 +21,7 @@ public class NoteModel implements Serializable {
     private TranslationSource translationSource;
     private int pageId;
     private boolean includedInTest;
+    private boolean starred;
 
     public String getAdditionalNotes() {
 
@@ -73,6 +74,11 @@ public class NoteModel implements Serializable {
         return includedInTest;
     }
 
+    public boolean isStarred() {
+
+        return starred;
+    }
+
     public void setAdditionalNotes(String additionalNotes) {
 
         this.additionalNotes = additionalNotes;
@@ -116,6 +122,11 @@ public class NoteModel implements Serializable {
     public void setSourceUrl(String sourceUrl) {
 
         this.sourceUrl = sourceUrl;
+    }
+
+    public void setStarred(boolean starred) {
+
+        this.starred = starred;
     }
 
     public void setTranslationSource(TranslationSource translationSource) {

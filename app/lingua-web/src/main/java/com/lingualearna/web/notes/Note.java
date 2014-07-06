@@ -47,6 +47,7 @@ public class Note implements Serializable, HasOwner {
     private TranslationSource translationSource;
     private Page page;
     private boolean includedInTest;
+    private boolean starred;
 
     @Length(max = 2000)
     @Column(name = "additional_notes")
@@ -130,6 +131,12 @@ public class Note implements Serializable, HasOwner {
         return includedInTest;
     }
 
+    @Column(name = "starred")
+    public boolean isStarred() {
+
+        return starred;
+    }
+
     public void setAdditionalNotes(String additionalNotes) {
 
         this.additionalNotes = additionalNotes;
@@ -173,6 +180,11 @@ public class Note implements Serializable, HasOwner {
     public void setSourceUrl(String sourceUrl) {
 
         this.sourceUrl = sourceUrl;
+    }
+
+    public void setStarred(boolean starred) {
+
+        this.starred = starred;
     }
 
     public void setTranslationSource(TranslationSource translationSource) {

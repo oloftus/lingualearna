@@ -13,7 +13,7 @@ App.TypesDef.createNew(function() {
     };
 
     Note = function(foreignLang, foreignNote, localLang, localNote, additionalNotes, sourceUrl, translationSource,
-            includedInTest, pageId, noteId) {
+            includedInTest, starred, pageId, noteId) {
 
         this.foreignLang = foreignLang;
         this.foreignNote = foreignNote;
@@ -23,6 +23,7 @@ App.TypesDef.createNew(function() {
         this.sourceUrl = sourceUrl;
         this.translationSource = translationSource;
         this.includedInTest = includedInTest;
+        this.starred = starred;
         this.pageId = pageId;
         this.noteId = noteId;
     };

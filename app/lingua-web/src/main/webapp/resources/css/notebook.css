@@ -92,8 +92,19 @@ ul#notes-list {
     width: 20px;
     height: 20px;
     background-size: 20px 20px;
-    background: url(../images/star.svg);
     width: 20px;
+}
+
+#notes-list .star.starred, #notes-list .star.starred:hover {
+    background: url(../images/star.svg) !important;
+}
+
+#notes-list .entry:hover .star {
+    background: url(../images/star-outline.svg);
+}
+
+#notes-list .toolbar .test.included a {
+    background-image: url(../images/input-checked.svg);
 }
 
 #notes-list .handle {
@@ -105,12 +116,13 @@ ul#notes-list {
 }
 
 #notes-list ul.toolbar {
-    /* display: none; */
+    display: none;
     margin: 0;
     padding: 0;
     position: absolute;
     right: -50px;
     width: 50px;
+    top:0;
 }
 
 #notes-list .toolbar li {
@@ -143,7 +155,7 @@ ul#notes-list {
 }
 
 #notes-list .toolbar .test a {
-    background-image: url(../images/input-checked.svg);
+    background-image: url(../images/input-not-checked.svg);
 }
 
 #notes-list .entry:hover .handle {

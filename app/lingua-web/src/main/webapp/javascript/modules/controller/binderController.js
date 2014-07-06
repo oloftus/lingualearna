@@ -29,9 +29,11 @@ App.Controller.createNew(function() {
 
             $scope.func.changeCurrentPage = function(pageId) {
 
-                var newCurrentPage = _.findWhere($scope.global.model.currentNotebook.pages, {
+                var searchCriteria = {
                     pageId : pageId
-                });
+                };
+
+                var newCurrentPage = _.findWhere($scope.global.model.currentNotebook.pages, searchCriteria);
                 $scope.global.model.currentPage = newCurrentPage;
 
                 commsPipe.send(Components.BINDER, Components.ANY, Signals.CURRENT_PAGE_CHANGED);

@@ -17,7 +17,7 @@
             <div id="notebook-pane">
                 <div id="notebook-content" ng-controller="noteListController">
                     <ul id="notes-list">
-                        <lingua-note notey="note" ng-repeat="notex in global.model.currentPage.notes"></lingua-note>
+                        <lingua-note note="note" func="func" ng-repeat="note in global.model.currentPage.notes"></lingua-note>
                     </ul>
                 </div>
             </div>

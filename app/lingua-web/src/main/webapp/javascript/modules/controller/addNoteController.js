@@ -67,10 +67,10 @@ App.Controller.createNew(function() {
                 if (!_.isNull($scope.model.page)) {
                     pageId = $scope.model.page.pageId;
                 }
-
+                
                 var note = new Note($scope.model.foreignLang, $scope.model.foreignNote, $scope.model.localLang,
                         $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl,
-                        $scope.model.translationSource, $scope.model.includedInTest, pageId, noteId);
+                        $scope.model.translationSource, $scope.model.includedInTest, $scope.model.starred, pageId, noteId);
 
                 noteService.create(note, function(data) {
 
@@ -103,6 +103,7 @@ App.Controller.createNew(function() {
             $scope.model.sourceUrl = getSourceUrl($location);
             $scope.model.translationSource = TranslationSources.MANUAL;
             $scope.model.includedInTest = true;
+            $scope.model.starred = false;
 
             $scope.model.foreignNote = null;
             $scope.model.localNote = null;

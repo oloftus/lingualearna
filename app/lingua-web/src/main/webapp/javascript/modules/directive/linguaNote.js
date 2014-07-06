@@ -9,11 +9,13 @@ App.Directive.createNew(function() {
         return function() {
             
             return {
-            restrict: "E",
-            scope: {
-                note: "=note"
-            },
-            templateUrl: App.Properties.ngViewsRoot + "/noteView" + VIEW_EXTENSION
+                restrict: "E",
+                scope: {
+                    note: "=",
+                    func : "="
+                },
+                replace: true,
+                templateUrl: App.Properties.ngViewsRoot + "/noteView" + VIEW_EXTENSION
             };
         }; 
     });
