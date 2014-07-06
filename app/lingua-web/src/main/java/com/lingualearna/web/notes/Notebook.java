@@ -15,6 +15,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -107,6 +108,7 @@ public class Notebook implements Serializable, HasOwner {
         return getOwner().getUsername();
     }
 
+    @OrderBy("position")
     @OneToMany(mappedBy = "notebook", fetch = FetchType.EAGER)
     public List<Page> getPages() {
 

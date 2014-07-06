@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -74,6 +75,7 @@ public class Page implements Serializable, HasOwner {
     }
 
     @JsonIgnore
+    @OrderBy("position")
     @OneToMany(mappedBy = "page", fetch = FetchType.LAZY)
     public List<Note> getNotes() {
 
