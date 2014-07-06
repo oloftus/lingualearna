@@ -48,7 +48,18 @@ App.Controller.createNew(function() {
 
             commsPipe.subscribe(Components.NOTEBOOK, Components.ANY, reloadNotes, Signals.APP_LOADED);
             commsPipe.subscribe(Components.BINDER, Components.ANY, reloadNotes, Signals.CURRENT_PAGE_CHANGED);
-            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, reloadNotes, Signals.NOTE_SAVED_SUCCESS);
+        };
+        
+        var setupNoteAddedListener = function($scope, commsPipe) {
+            
+            var appendNote = function(note) {
+                
+                if (note.pageId === $scope.global.model.currentPage.pageId) {
+                    $scope.global.model.currentPage.notes.push(note);
+                }
+            };
+            
+            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, appendNote, Signals.NOTE_SAVED_SUCCESS);
         };
 
         var setupCurrentNotebookChangeHandler = function($scope, commsPipe) {
@@ -63,13 +74,25 @@ App.Controller.createNew(function() {
             commsPipe.subscribe(Components.ANY, Components.ANY, currentNotebookChangedHandler,
                     Signals.CURRENT_NOTEBOOK_CHANGED);
         };
+        
+        var setupPageAddedListener = function($scope, commsPipe) {
+            
+            var pageAddedHandler = function(page) {
+                
+                $scope.global.model.currentNotebook.pages.push(page);
+            };
+            
+            commsPipe.subscribe(Components.ADD_PAGE, Components.ANY, pageAddedHandler, Components.PAGE_SAVED_SUCCESS);
+        };
 
         return function($scope, noteService, messageHandler, commsPipe) {
 
             abstractController.setupDefaultScope($scope);
             setupPageTabClickHandler($scope, commsPipe);
             setupNotesReloadConditions($scope, noteService, messageHandler, commsPipe);
+            setupNoteAddedListener($scope, commsPipe);
             setupCurrentNotebookChangeHandler($scope, commsPipe);
+            setupPageAddedListener($scope, commsPipe);
         };
     });
 });

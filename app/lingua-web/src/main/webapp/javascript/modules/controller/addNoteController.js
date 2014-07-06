@@ -72,18 +72,22 @@ App.Controller.createNew(function() {
                         $scope.model.localNote, $scope.model.additionalNotes, $scope.model.sourceUrl,
                         $scope.model.translationSource, $scope.model.includedInTest, $scope.model.starred, pageId, noteId);
 
-                noteService.create(note, function(data) {
+                var successHandler = function(data) {
 
                     messageHandler.addFreshGlobalMessage($scope, LocalStrings.noteSavedMessage, MessageSeverity.INFO);
-                    commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.NOTE_SAVED_SUCCESS);
+                    commsPipe.send(Components.ADD_NOTE, Components.ANY, Signals.NOTE_SAVED_SUCCESS, data);
 
                     $timeout(function() {
                         $state.go(AppStates.MAIN);
                     }, App.Properties.dialogDisappearTimeout);
 
-                }, function(data, status, headers) {
+                };
+                
+                var errorHandler = function(data, status, headers) {
                     messageHandler.handleErrors($scope, data, status, headers);
-                });
+                };
+                
+                noteService.create(note, successHandler, errorHandler);
             };
         };
 

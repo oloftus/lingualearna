@@ -47,7 +47,8 @@ App.TypesDef.createNew(function() {
         PAGE : "PAGE",
         JSON_WEB_SERVICE : "JSON_WEB_SERVICE",
         NOTEBOOK : "NOTEBOOK",
-        BINDER : "BINDER"
+        BINDER : "BINDER",
+        ADD_PAGE : "ADD_PAGE"
     };
     
     TranslationSources = {

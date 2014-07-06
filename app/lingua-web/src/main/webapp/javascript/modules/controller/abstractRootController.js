@@ -47,7 +47,7 @@ App.Module.createNew(function() {
 
         var setupNotebookEnvironment = function($scope, notebookService, commsPipe, messageHandler) {
 
-            notebookService.getNotebooksAndPages(function(notebooks) {
+            var successHandler = function(notebooks) {
 
                 $scope.global.model.notebooks = notebooks;
 
@@ -68,10 +68,14 @@ App.Module.createNew(function() {
 
                 commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
 
-            }, function() {
+            };
+            
+            var failureHandler = function() {
                 messageHandler.addFreshPageMessage($scope, LocalStrings.genericServerErrorMessage,
                         MessageSeverity.ERROR);
-            });
+            };
+            
+            notebookService.getNotebooksAndPages(successHandler, failureHandler);
         };
         
         var subscribeToNoteSubmissions = function(commsPipe, $scope, notebookService, messageHandler) {

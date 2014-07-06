@@ -6,6 +6,7 @@ App.TypesDef.createNew(function() {
         CSRF_RETRIEVED : "csrf-retrieved",
         APP_LOADED : "app-loaded",
         NOTE_SAVED_SUCCESS : "note-saved-success",
-        CURRENT_PAGE_CHANGED : "current-page-changed"
+        CURRENT_PAGE_CHANGED : "current-page-changed",
+        PAGE_SAVED_SUCCESS : "page-saved-success"
     };
 });
