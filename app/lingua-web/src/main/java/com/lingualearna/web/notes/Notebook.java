@@ -85,7 +85,7 @@ public class Notebook implements Serializable, HasOwner {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "notebook_id")
     public int getNotebookId() {
 

@@ -10,6 +10,17 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public abstract class AbstractDao {
 
+    @SuppressWarnings("unchecked")
+    private Query createQueryWithParams(String namedQueryName, Pair<String, ? extends Object>... params) {
+
+        Query query = getEntityManager().createNamedQuery(namedQueryName);
+
+        for (Pair<String, ? extends Object> param : params) {
+            query.setParameter(param.getLeft(), param.getRight());
+        }
+        return query;
+    }
+
     /**
      * @return Whether the object to delete actually exists
      */
@@ -24,6 +35,13 @@ public abstract class AbstractDao {
         getEntityManager().flush();
 
         return true;
+    }
+
+    @SafeVarargs
+    public final void doExecuteUpdateWithParams(String namedQueryName, Pair<String, ? extends Object>... params) {
+
+        Query query = createQueryWithParams(namedQueryName, params);
+        query.executeUpdate();
     }
 
     public <T> List<T> doQueryAsList(String queryStr, Class<T> clazz) {
@@ -69,11 +87,7 @@ public abstract class AbstractDao {
     public <T> List<T> doUntypedQueryAsListWithParams(String namedQueryName,
             Pair<String, ? extends Object>... params) {
 
-        Query query = getEntityManager().createNamedQuery(namedQueryName);
-
-        for (Pair<String, ? extends Object> param : params) {
-            query.setParameter(param.getLeft(), param.getRight());
-        }
+        Query query = createQueryWithParams(namedQueryName, params);
 
         List<T> results = query.getResultList();
         return results;

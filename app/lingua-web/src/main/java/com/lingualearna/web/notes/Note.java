@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -28,11 +30,23 @@ import com.lingualearna.web.validator.MinimumOnePropertyNotEmpty;
         @DependentPropertyNotNullOrEmpty(propertyName = "localNote", dependentPropertyName = "localLang")
 })
 @MinimumOnePropertyNotEmpty(propertyNames = { "additionalNotes", "foreignNote", "localNote" })
+@NamedQueries({
+        @NamedQuery(name = Note.INCREMENT_NOTE_POSITIONS_QUERY, query = "UPDATE Note n SET n.position = n.position + 1 WHERE :newPosition <= n.position AND n.position < :oldPosition AND n.page = :page"),
+        @NamedQuery(name = Note.DECREMENT_NOTE_POSITIONS_QUERY, query = "UPDATE Note n SET n.position = n.position - 1 WHERE :oldPosition <= n.position AND n.position <= :newPosition AND n.page = :page"),
+        @NamedQuery(name = Note.MAX_POSITION_QUERY, query = "SELECT max(n.position) FROM Note n WHERE n.page = :page")
+})
 @Entity
 @Table(name = "notes")
 public class Note implements Serializable, HasOwner {
 
     private static final long serialVersionUID = -1700378910934447911L;
+
+    public static final String INCREMENT_NOTE_POSITIONS_QUERY = "Note.incrementNotePositionsQuery";
+    public static final String DECREMENT_NOTE_POSITIONS_QUERY = "Note.decrementNotePositionsQuery";
+    public static final String MAX_POSITION_QUERY = "Note.maxPosition";
+    public static final String NOTE_POSITIONS_OLD_POSITION_PARAM = "oldPosition";
+    public static final String NOTE_POSITIONS_NEW_POSITION_PARAM = "newPosition";
+    public static final String NOTE_POSITIONS_PAGE_PARAM = "page";
 
     public static final String POSITION_FIELD = "position";
     public static final String NOTE_ID_FIELD = "noteId";
@@ -85,7 +99,7 @@ public class Note implements Serializable, HasOwner {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "note_id")
     public Integer getNoteId() {
 

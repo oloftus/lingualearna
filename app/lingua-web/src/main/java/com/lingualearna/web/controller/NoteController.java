@@ -112,12 +112,18 @@ public class NoteController {
             throw new ResourceNotFoundException(NOTE_NOT_FOUND);
         }
 
-        Page page = notebookService.getPageById(incomingNote.getPageId());
+        int oldPosition = noteEntity.getPosition();
 
-        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, Note.NOTE_ID_FIELD, Note.SOURCE_URL_FIELD,
-                Note.POSITION_FIELD);
+        Page page = notebookService.getPageById(incomingNote.getPageId());
+        notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, Note.NOTE_ID_FIELD, Note.SOURCE_URL_FIELD);
         noteEntity.setPage(page);
-        notesService.updateNote(noteEntity);
+
+        if (oldPosition != noteEntity.getPosition()) {
+            notesService.updateNoteWithPosition(noteEntity, oldPosition);
+        }
+        else {
+            notesService.updateNote(noteEntity);
+        }
 
         NoteModel noteModel = new NoteModel();
         notesMapper.copyPropertiesFromEntity(noteEntity, noteModel);

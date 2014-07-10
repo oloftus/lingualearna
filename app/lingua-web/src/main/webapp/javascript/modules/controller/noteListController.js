@@ -15,14 +15,56 @@ App.Controller.createNew(function() {
         var NOTEBOOK_CONTAINER = "#notebook-content";
         var NOTES_LIST = "#notes-list";
         var NOTE_HANDLE = ".handle";
+        
+        var convertZeroBasedIndexToOneBased = function(value) {
+            
+            return value + 1;
+        };
+        
+        var updateNotePosition = function($scope, noteService, messageHandler, noteId, newPosition) {
+            
+            var searchCriteria = {
+                noteId : noteId
+            };
+            var note = _.findWhere($scope.global.model.currentPage.notes, searchCriteria);
+            
+            var oldPosition = note.position;
+            newPosition = convertZeroBasedIndexToOneBased(newPosition);
+            
+            _.each($scope.global.model.currentPage.notes, function(note) {
+                if (oldPosition < newPosition) {
+                    if (oldPosition <= note.position && note.position <= newPosition) {
+                        note.position--;
+                    }
+                }
+                else {
+                    if (newPosition <= note.position && note.position < oldPosition) {
+                        note.position++;
+                    }
+                }
+            });
 
-        var makeListSortable = function() {
+            note.position = newPosition;
+            
+            var failureHandler = function(data, status, headers, config) {
+                
+                $scope.func.loadNotesIntoPage();
+                messageHandler.addFreshPageMessage($scope, LocalStrings.inlineNoteRearrangeError, MessageSeverity.ERROR);
+            };
+            
+            updateNote(note, $scope, noteService, failureHandler);
+        };
+
+        var makeListSortable = function($scope, noteService, messageHandler) {
 
             $(NOTES_LIST).sortable({
                 axis : "y",
                 containment : NOTEBOOK_CONTAINER,
                 cursor : "move",
                 handle : NOTE_HANDLE,
+                stop : function(event, ui) {
+                    updateNotePosition($scope, noteService, messageHandler, $(ui.item).data().noteid, ui.item.index());
+                }
             });
         };
 
@@ -91,7 +133,7 @@ App.Controller.createNew(function() {
 
         return function($scope, noteService, messageHandler) {
 
-            makeListSortable();
+            makeListSortable($scope, noteService, messageHandler);
             setupClickHandlers($scope, noteService, messageHandler);
         };
     });

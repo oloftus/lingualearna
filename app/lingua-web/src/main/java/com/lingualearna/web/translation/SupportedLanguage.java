@@ -5,6 +5,8 @@ import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -25,6 +27,7 @@ public class SupportedLanguage implements Serializable {
     private LanguageService languageService;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "language_code")
     private Locale langCode;
 

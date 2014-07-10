@@ -8,12 +8,13 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import com.lingualearna.web.controller.exceptions.ValidationException;
-import com.lingualearna.web.dao.GenericDao;
+import com.lingualearna.web.dao.NoteDao;
 import com.lingualearna.web.languages.LanguageNamesValidator;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.notes.Page;
@@ -25,7 +26,7 @@ import com.lingualearna.web.security.User;
 public class NoteService extends AbstractService {
 
     @Autowired
-    private GenericDao dao;
+    private NoteDao dao;
 
     @Autowired
     Validator validator;
@@ -37,6 +38,7 @@ public class NoteService extends AbstractService {
 
         validateEntity(note);
         validateLanguageNames(note);
+        setNotePosition(note);
         dao.persist(note);
         setLastUsed(note);
     }
@@ -99,6 +101,16 @@ public class NoteService extends AbstractService {
         dao.merge(owner);
     }
 
+    private void setNotePosition(Note note) {
+
+        Integer currentMaxPosition = dao.doUntypedQueryWithParams(Note.MAX_POSITION_QUERY,
+                Pair.of(Note.NOTE_POSITIONS_PAGE_PARAM, note.getPage()));
+        if (currentMaxPosition == null) {
+            currentMaxPosition = 0;
+        }
+        note.setPosition(currentMaxPosition + 1);
+    }
+
     @Secured(ALLOW_OWNER)
     public Note updateNote(Note note) throws ValidationException {
 
@@ -107,6 +119,21 @@ public class NoteService extends AbstractService {
         Note mergedNote = dao.merge(note);
         setLastUsed(mergedNote);
         return mergedNote;
+    }
+
+    @Secured(ALLOW_OWNER)
+    public Note updateNoteWithPosition(Note note, int oldPosition) throws ValidationException {
+
+        Integer newPosition = note.getPosition();
+        if (oldPosition < newPosition) {
+            dao.decrementPagePositionsInInterval(note.getPage(), oldPosition, newPosition);
+        }
+        else {
+            dao.incrementPagePositionsInInterval(note.getPage(), oldPosition, newPosition);
+        }
+
+        Note updatedNote = updateNote(note);
+        return updatedNote;
     }
 
     void validateLanguageNames(Note note) throws ValidationException {

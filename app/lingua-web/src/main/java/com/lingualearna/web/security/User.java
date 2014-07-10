@@ -61,13 +61,14 @@ public class User implements Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     public int getUserId() {
 
         return this.userId;
     }
 
+    // TODO: Re-enable constraint
     // @Email
     @Column(name = "email_address")
     public String getUsername() {
@@ -75,6 +76,7 @@ public class User implements Serializable {
         return this.username;
     }
 
+    @Column(name = "enabled")
     public boolean isEnabled() {
 
         return this.enabled;
