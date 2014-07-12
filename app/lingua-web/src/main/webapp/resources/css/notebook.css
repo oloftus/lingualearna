@@ -95,7 +95,7 @@ ul#notes-list {
     width: 20px;
 }
 
-#notes-list .star.starred, #notes-list .star.starred:hover {
+#notes-list .star.starred,#notes-list .star.starred:hover {
     background: url(../images/star.svg) !important;
 }
 
@@ -122,7 +122,7 @@ ul#notes-list {
     position: absolute;
     right: -50px;
     width: 50px;
-    top:0;
+    top: 0;
 }
 
 #notes-list .toolbar li {
@@ -272,6 +272,7 @@ a {
 }
 
 #notebook-tabs li {
+    position: relative;
     list-style-type: none;
     margin-bottom: 4px;
     background-color: white;
@@ -283,6 +284,18 @@ a {
     border: solid #888888;
     border-width: 1px 1px 1px 0;
     border-radius: 0 5px 5px 0;
+}
+
+#notebook-tabs .handle {
+    position: absolute;
+    right: 0;
+    width: 10px;
+    background-color: #eeeeee;
+    height: 100%;
+    box-sizing: border-box;
+    border-radius: 0 5px 5px 0;
+    border: solid #888888;
+    border-width: 1px 1px 1px 0;
 }
 
 #notebook-tabs a:hover,#notebook-tabs .selected a {

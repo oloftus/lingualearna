@@ -6,7 +6,7 @@ App.Controller.createNew(function() {
     this.imports("underscore");
 
     this.loads("controller/noteListController");
-    this.loads("directive/linguaPage");
+    this.loads("controller/pageListController");
 
     this.injects("$scope");
     this.injects("service/noteService");
