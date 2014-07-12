@@ -27,8 +27,6 @@ SET search_path = 'lingua';
 -- Objects
 -- --------------------------------------
 
-CREATE TYPE translation_source AS ENUM('Manual','Google');
-
 CREATE TABLE supported_languages
 (
   language_code VARCHAR(5) PRIMARY KEY
@@ -78,12 +76,13 @@ CREATE TABLE notes
   local_note VARCHAR(2000),
   additional_notes VARCHAR(2000),
   source_url VARCHAR(2000) ,
-  translation_source translation_source NOT NULL,
+  translation_source VARCHAR(10) NOT NULL,
   page INT NOT NULL,
   include_test BOOLEAN NOT NULL DEFAULT true,
   starred BOOLEAN NOT NULL DEFAULT false,
   position INT NOT NULL,
-  UNIQUE (page, position) DEFERRABLE INITIALLY DEFERRED
+  UNIQUE (page, position) DEFERRABLE INITIALLY DEFERRED,
+  CHECK(translation_source in ('Manual','Google'))
 );
 
 
@@ -146,6 +145,8 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notes TO lingua_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE users TO lingua_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE pages TO lingua_role;
 GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE notebooks TO lingua_role;
+
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA lingua TO lingua_role;
 
 
 -- --------------------------------------
