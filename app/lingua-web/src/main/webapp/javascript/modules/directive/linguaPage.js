@@ -1,6 +1,6 @@
 App.Directive.createNew(function() {
 
-    this.isCalled("linguaNote");
+    this.isCalled("linguaPage");
     
     this.hasDefinition(function() {
         
@@ -11,11 +11,12 @@ App.Directive.createNew(function() {
             return {
                 restrict: "E",
                 scope: {
-                    note: "=",
-                    func : "="
+                    page: "=",
+                    func : "=",
+                    global : "="
                 },
                 replace: true,
-                templateUrl: App.Properties.ngViewsRoot + "/noteDirectiveView" + VIEW_EXTENSION
+                templateUrl: App.Properties.ngViewsRoot + "/pageDirectiveView" + VIEW_EXTENSION
             };
         }; 
     });
