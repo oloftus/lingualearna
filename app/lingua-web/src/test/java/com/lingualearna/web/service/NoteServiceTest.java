@@ -219,11 +219,11 @@ public class NoteServiceTest {
     }
 
     @Test
-    public void testRetrieveNotesByPageFunctionsForNonExistentNotes() {
+    public void testRetrieveNotesByPageFunctionsForNonExistentPage() {
 
         givenThePageDoesNotExist();
         whenICallRetrieveNotesByPage();
-        thenAnEmptyListIsReturned();
+        thenNullIsReturned();
     }
 
     @Test
@@ -246,14 +246,14 @@ public class NoteServiceTest {
         whenICallUpdateNoteWithAnInvalidNoteThenAnExceptionIsThrown();
     }
 
-    private void thenAnEmptyListIsReturned() {
-
-        assertEquals(0, actualNotes.size());
-    }
-
     private void thenNothingIsReturned() {
 
         assertNull(returnedNote);
+    }
+
+    private void thenNullIsReturned() {
+
+        assertNull(actualNotes);
     }
 
     private void thenTheDeletedResponseIsFalse() {

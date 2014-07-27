@@ -1,6 +1,7 @@
 package com.lingualearna.web.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -86,8 +87,12 @@ public class NoteController {
     public List<NoteModel> retrieveNotesByPage(@PathVariable int pageId) {
 
         List<Note> notes = notesService.retrieveNotesByPage(pageId);
-        if (notes.size() == 0) {
+
+        if (notes == null) {
             throw new ResourceNotFoundException(NotebookController.PAGE_NOT_FOUND);
+        }
+        else if (notes.size() == 0) {
+            return Collections.emptyList();
         }
 
         List<NoteModel> noteModels = new ArrayList<>();

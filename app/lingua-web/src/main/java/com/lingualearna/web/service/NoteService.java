@@ -2,7 +2,6 @@ package com.lingualearna.web.service;
 
 import static com.lingualearna.web.security.SecuredConfigAttributes.ALLOW_OWNER;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -85,7 +84,7 @@ public class NoteService extends AbstractService {
             return page.getNotes();
         }
 
-        return Collections.emptyList();
+        return null;
     }
 
     private void setLastUsed(int noteId) {
