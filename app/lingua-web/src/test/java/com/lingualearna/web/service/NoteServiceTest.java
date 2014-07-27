@@ -10,6 +10,8 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +21,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,6 +46,11 @@ public class NoteServiceTest {
     private static final int NOTE_ID = 1;
     private static final int PAGE_ID = 2;
     private static final int NOTEBOOK_ID = 3;
+    private static final int POSITION_1 = 1;
+    private static final int POSITION_2 = 2;
+    private static final int POSITION_3 = 3;
+    private static final int CURRENT_MAX_POSITION = 1;
+    private static final int INITIAL_NOTE_POSITION = 1;
 
     @Mock
     private Validator validator;
@@ -55,9 +63,6 @@ public class NoteServiceTest {
 
     @Mock
     private Page page;
-
-    @Mock
-    private Note note;
 
     @Mock
     private NoteDao dao;
@@ -78,10 +83,10 @@ public class NoteServiceTest {
 
     private Note returnedNote;
     private boolean deletedSuccess;
+    private List<Note> actualNotes;
 
     @InjectMocks
-    private NoteService notesService = new NoteService();
-    private List<Note> actualNotes;
+    private NoteService noteService = new NoteService();
 
     private void andLastUsedIsUpdated() {
 
@@ -94,6 +99,21 @@ public class NoteServiceTest {
         verify(owner, never()).setLastUsed(page);
     }
 
+    private void givenTheDaoIsSetup() {
+
+        when(dao.doUntypedQueryWithParams(Note.MAX_POSITION_QUERY, Pair.of(Note.PAGE_PARAM, page))).thenReturn(null);
+    }
+
+    private void givenTheNotesPositionHasDecreased() {
+
+        when(passedInNote.getPosition()).thenReturn(POSITION_1);
+    }
+
+    private void givenTheNotesPositionHasIncreased() {
+
+        when(passedInNote.getPosition()).thenReturn(POSITION_3);
+    }
+
     private void givenThePageDoesNotExist() {
 
         when(dao.find(Page.class, PAGE_ID)).thenReturn(null);
@@ -102,6 +122,20 @@ public class NoteServiceTest {
     private void givenThePageExists() {
 
         when(dao.find(Page.class, PAGE_ID)).thenReturn(page);
+    }
+
+    private void givenThereIsAnExistingNote() {
+
+        ArrayList<Object> maxPositionResults = new ArrayList<>();
+        maxPositionResults.add(CURRENT_MAX_POSITION);
+        when(dao.doUntypedQueryAsListWithParams(Note.MAX_POSITION_QUERY, Pair.of(Note.PAGE_PARAM, page))).thenReturn(
+                maxPositionResults);
+    }
+
+    private void givenThereIsNoExistingNote() {
+
+        when(dao.doUntypedQueryAsListWithParams(Note.MAX_POSITION_QUERY, Pair.of(Note.PAGE_PARAM, page))).thenReturn(
+                Collections.emptyList());
     }
 
     @Before
@@ -154,14 +188,16 @@ public class NoteServiceTest {
 
     private void setupPage() {
 
-        expectedNotes = Lists.newArrayList(note);
+        expectedNotes = Lists.newArrayList(expectedNote);
         when(page.getNotes()).thenReturn(expectedNotes);
     }
 
     @Test
     public void testCreateNoteAcceptsValidNote() throws ValidationException {
 
+        givenThereIsAnExistingNote();
         whenICallCreateNote();
+        thenTheNotePositionIsSetToCurrentPlusOne();
         thenTheNoteIsPersisted();
         andLastUsedIsUpdated();
     }
@@ -176,6 +212,16 @@ public class NoteServiceTest {
     public void testCreateNoteRejectsInValidNote() throws ValidationException {
 
         whenICallCreateNoteWithAnInvalidNoteThenAnExceptionIsThrown();
+    }
+
+    @Test
+    public void testCreateNoteSetsPositionToOneForInitialPage() throws ValidationException {
+
+        givenThereIsNoExistingNote();
+        whenICallCreateNote();
+        thenTheNotePositionIsSetToOne();
+        thenTheNoteIsPersisted();
+        andLastUsedIsUpdated();
     }
 
     @Test
@@ -246,6 +292,36 @@ public class NoteServiceTest {
         whenICallUpdateNoteWithAnInvalidNoteThenAnExceptionIsThrown();
     }
 
+    @Test
+    public void testUpdateNoteWithPositionDecrementsCorrectly() throws ValidationException {
+
+        givenTheNotesPositionHasIncreased();
+        whenICallUpdateNoteWithPosition();
+        thenNotesInTheIntervalHaveTheirPositionsDecremented();
+        thenTheNoteIsUpdated();
+        andLastUsedIsUpdated();
+    }
+
+    @Test
+    public void testUpdateNoteWithPositionIncrementsCorrectly() throws ValidationException {
+
+        givenTheNotesPositionHasDecreased();
+        whenICallUpdateNoteWithPosition();
+        thenNotesInTheIntervalHaveTheirPositionsIncremented();
+        thenTheNoteIsUpdated();
+        andLastUsedIsUpdated();
+    }
+
+    private void thenNotesInTheIntervalHaveTheirPositionsDecremented() {
+
+        verify(dao).decrementNotePositionsInInterval(page, POSITION_2, POSITION_3);
+    }
+
+    private void thenNotesInTheIntervalHaveTheirPositionsIncremented() {
+
+        verify(dao).incrementNotePositionsInInterval(page, POSITION_2, POSITION_1);
+    }
+
     private void thenNothingIsReturned() {
 
         assertNull(returnedNote);
@@ -281,6 +357,16 @@ public class NoteServiceTest {
         assertEquals(expectedNote, returnedNote);
     }
 
+    private void thenTheNotePositionIsSetToCurrentPlusOne() {
+
+        verify(passedInNote).setPosition(CURRENT_MAX_POSITION + 1);
+    }
+
+    private void thenTheNotePositionIsSetToOne() {
+
+        verify(passedInNote).setPosition(INITIAL_NOTE_POSITION);
+    }
+
     private void thenTheNotesAreReturned() {
 
         assertEquals(expectedNotes, actualNotes);
@@ -288,7 +374,7 @@ public class NoteServiceTest {
 
     private void whenICallCreateNote() throws ValidationException {
 
-        notesService.createNote(passedInNote);
+        noteService.createNote(passedInNote);
     }
 
     private void whenICallCreateNoteWithAnInvalidNoteThenAnExceptionIsThrown() throws ValidationException {
@@ -305,7 +391,7 @@ public class NoteServiceTest {
 
     private void whenICallDeleteNote() {
 
-        deletedSuccess = notesService.deleteNote(NOTE_ID);
+        deletedSuccess = noteService.deleteNote(NOTE_ID);
     }
 
     private void whenICallDeleteNoteWithANonExistentNote() throws ValidationException {
@@ -316,12 +402,12 @@ public class NoteServiceTest {
 
     private void whenICallRetrieveNote() {
 
-        returnedNote = notesService.retrieveNote(NOTE_ID);
+        returnedNote = noteService.retrieveNote(NOTE_ID);
     }
 
     private void whenICallRetrieveNotesByPage() {
 
-        actualNotes = notesService.retrieveNotesByPage(PAGE_ID);
+        actualNotes = noteService.retrieveNotesByPage(PAGE_ID);
     }
 
     private void whenICallRetrieveNoteWithANonExistentNote() throws ValidationException {
@@ -332,7 +418,7 @@ public class NoteServiceTest {
 
     private void whenICallUpdateNote() throws ValidationException {
 
-        returnedNote = notesService.updateNote(passedInNote);
+        returnedNote = noteService.updateNote(passedInNote);
     }
 
     private void whenICallUpdateNoteWithAnInvalidNoteThenAnExceptionIsThrown() throws ValidationException {
@@ -345,5 +431,10 @@ public class NoteServiceTest {
 
         setupNoteWithInvalidLanguages();
         whenICallUpdateNote();
+    }
+
+    private void whenICallUpdateNoteWithPosition() throws ValidationException {
+
+        returnedNote = noteService.updateNoteWithPosition(passedInNote, POSITION_2);
     }
 }
