@@ -46,8 +46,7 @@ public class Note implements Serializable, HasOwner {
     public static final String MAX_POSITION_QUERY = "Note.maxPosition";
     public static final String NOTE_POSITIONS_OLD_POSITION_PARAM = "oldPosition";
     public static final String NOTE_POSITIONS_NEW_POSITION_PARAM = "newPosition";
-    public static final String NOTE_POSITIONS_PAGE_PARAM = "page";
-
+    public static final String PAGE_PARAM = "page";
     public static final String POSITION_FIELD = "position";
     public static final String NOTE_ID_FIELD = "noteId";
     public static final String SOURCE_URL_FIELD = "sourceUrl";

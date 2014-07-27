@@ -12,5 +12,6 @@ App.TypesDef.createNew(function() {
         inlineNoteStarredError : "There was a problem starring your note. Please try again later.",
         inlineNoteIncludedInTestError : "There was a problem including/excluding your note from tests. Please try again later.",
         inlineNoteRearrangeError : "There was a problem rearranging your notes. Please try again later.",
+        inlinePageRearrangeError : "There was a problem rearranging your pages. Please try again later."
     };
 });

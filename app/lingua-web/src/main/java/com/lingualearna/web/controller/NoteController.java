@@ -27,7 +27,6 @@ import com.lingualearna.web.service.NotebookService;
 public class NoteController {
 
     private static final String NOTE_NOT_FOUND = "Note not found";
-    private static final String PAGE_NOT_FOUND = "Page not found";
 
     @Autowired
     private NoteService notesService;
@@ -88,7 +87,7 @@ public class NoteController {
 
         List<Note> notes = notesService.retrieveNotesByPage(pageId);
         if (notes.size() == 0) {
-            throw new ResourceNotFoundException(PAGE_NOT_FOUND);
+            throw new ResourceNotFoundException(NotebookController.PAGE_NOT_FOUND);
         }
 
         List<NoteModel> noteModels = new ArrayList<>();

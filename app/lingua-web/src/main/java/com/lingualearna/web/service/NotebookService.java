@@ -50,15 +50,7 @@ public class NotebookService extends AbstractService {
     public void createPage(Page page) throws ValidationException {
 
         validateEntity(page);
-
-        User user = page.getNotebook().getOwner();
-        Integer currentMaxPosition = dao.doUntypedQueryWithParams(Page.MAX_PAGES_QUERY,
-                Pair.of(Page.USER_PARAM, user));
-        if (currentMaxPosition == null) {
-            currentMaxPosition = 0;
-        }
-        page.setPosition(currentMaxPosition + 1);
-
+        setPagePosition(page);
         dao.persist(page);
     }
 
@@ -85,6 +77,39 @@ public class NotebookService extends AbstractService {
     protected Validator getValidator() {
 
         return validator;
+    }
+
+    private void setPagePosition(Page page) {
+
+        User user = page.getNotebook().getOwner();
+        Integer currentMaxPosition = dao.doUntypedQueryWithParams(Page.MAX_POSITION_QUERY,
+                Pair.of(Page.MAX_POSITION_QUERY, user));
+        if (currentMaxPosition == null) {
+            currentMaxPosition = 0;
+        }
+        page.setPosition(currentMaxPosition + 1);
+    }
+
+    @Secured(ALLOW_OWNER)
+    public Page updatePage(Page page) {
+
+        validateEntity(page);
+        Page mergedPage = dao.merge(page);
+        return mergedPage;
+    }
+
+    @Secured(ALLOW_OWNER)
+    public Page updatePageWithPosition(Page page, int oldPosition) {
+
+        Integer newPosition = page.getPosition();
+        if (oldPosition < newPosition) {
+            dao.decrementPagePositionsInInterval(page.getNotebook(), oldPosition, newPosition);
+        }
+        else {
+            dao.incrementPagePositionsInInterval(page.getNotebook(), oldPosition, newPosition);
+        }
+
+        return updatePage(page);
     }
 
     private void validateLanguageNames(Notebook notebook) throws ValidationException {

@@ -23,13 +23,17 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lingualearna.web.security.HasOwner;
+import com.lingualearna.web.security.User;
 import com.lingualearna.web.validator.UniqueWithinContext;
 
 @UniqueWithinContext(namedQuery = Page.COUNT_PAGES_BY_NAME_QUERY, uniqueParam = Page.PAGE_NAME_PARAM, uniqueProperty = "name",
-        contextParam = Page.NOTEBOOK_PARAM, contextProperty = "notebook", message = "{org.lingualearna.web.validationMessages.duplicatePage}")
+        contextParam = Page.NOTEBOOK_PARAM, contextProperty = "notebook", ownIdParam = Page.OWN_ID_PARAM, ownIdProperty = "pageId",
+        message = "{org.lingualearna.web.validationMessages.duplicatePage}")
 @NamedQueries({
-        @NamedQuery(name = Page.COUNT_PAGES_BY_NAME_QUERY, query = "SELECT count(p) FROM Page p WHERE p.name = :pageName AND p.notebook = :notebook"),
-        @NamedQuery(name = Page.MAX_PAGES_QUERY, query = "SELECT max(p.position) FROM Page p WHERE p.notebook.owner = :user")
+        @NamedQuery(name = Page.INCREMENT_PAGE_POSITIONS_QUERY, query = "UPDATE Page p SET p.position = p.position + 1 WHERE :newPosition <= p.position AND p.position < :oldPosition AND p.notebook = :notebook"),
+        @NamedQuery(name = Page.DECREMENT_PAGE_POSITIONS_QUERY, query = "UPDATE Page p SET p.position = p.position - 1 WHERE :oldPosition <= p.position AND p.position <= :newPosition AND p.notebook = :notebook"),
+        @NamedQuery(name = Page.COUNT_PAGES_BY_NAME_QUERY, query = "SELECT count(p) FROM Page p WHERE p.name = :pageName AND p.notebook = :notebook AND p.pageId <> :ownId"),
+        @NamedQuery(name = Page.MAX_POSITION_QUERY, query = "SELECT max(p.position) FROM Page p WHERE p.notebook.owner = :user")
 })
 @Entity
 @Table(name = "pages")
@@ -37,13 +41,18 @@ public class Page implements Serializable, HasOwner {
 
     private static final long serialVersionUID = 674115054477001746L;
 
-    public static final String PAGE_ID_FIELD = "pageId";
-    public static final String POSITION_FIELD = "position";
     public static final String COUNT_PAGES_BY_NAME_QUERY = "Page.countPagesName";
+    public static final String MAX_POSITION_QUERY = "Page.maxPosition";
+    public static final String INCREMENT_PAGE_POSITIONS_QUERY = "Page.incrementNotePositionsQuery";
+    public static final String DECREMENT_PAGE_POSITIONS_QUERY = "Page.decrementNotePositionsQuery";
+    public static final String PAGE_POSITIONS_OLD_POSITION_PARAM = "oldPosition";
+    public static final String PAGE_POSITIONS_NEW_POSITION_PARAM = "newPosition";
     public static final String PAGE_NAME_PARAM = "pageName";
-    public static final String MAX_PAGES_QUERY = "Page.maxPages";
     public static final String USER_PARAM = "user";
     public static final String NOTEBOOK_PARAM = "notebook";
+    public static final String OWN_ID_PARAM = "ownId";
+    public static final String PAGE_ID_FIELD = "pageId";
+    public static final String POSITION_FIELD = "position";
 
     private int pageId;
     private String name;
@@ -75,6 +84,12 @@ public class Page implements Serializable, HasOwner {
         return this.notebook;
     }
 
+    @Transient
+    public int getNotebookId() {
+
+        return getNotebook().getNotebookId();
+    }
+
     @JsonIgnore
     @OrderBy("position")
     @OneToMany(mappedBy = "page", fetch = FetchType.LAZY)
@@ -85,10 +100,17 @@ public class Page implements Serializable, HasOwner {
 
     @JsonIgnore
     @Transient
+    public User getOwner() {
+
+        return getNotebook().getOwner();
+    }
+
+    @JsonIgnore
+    @Transient
     @Override
     public String getOwnerUsername() {
 
-        return getNotebook().getOwner().getUsername();
+        return getOwner().getUsername();
     }
 
     @Id

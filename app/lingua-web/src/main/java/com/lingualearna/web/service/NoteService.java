@@ -104,7 +104,7 @@ public class NoteService extends AbstractService {
     private void setNotePosition(Note note) {
 
         Integer currentMaxPosition = dao.doUntypedQueryWithParams(Note.MAX_POSITION_QUERY,
-                Pair.of(Note.NOTE_POSITIONS_PAGE_PARAM, note.getPage()));
+                Pair.of(Note.PAGE_PARAM, note.getPage()));
         if (currentMaxPosition == null) {
             currentMaxPosition = 0;
         }
@@ -126,10 +126,10 @@ public class NoteService extends AbstractService {
 
         Integer newPosition = note.getPosition();
         if (oldPosition < newPosition) {
-            dao.decrementPagePositionsInInterval(note.getPage(), oldPosition, newPosition);
+            dao.decrementNotePositionsInInterval(note.getPage(), oldPosition, newPosition);
         }
         else {
-            dao.incrementPagePositionsInInterval(note.getPage(), oldPosition, newPosition);
+            dao.incrementNotePositionsInInterval(note.getPage(), oldPosition, newPosition);
         }
 
         Note updatedNote = updateNote(note);

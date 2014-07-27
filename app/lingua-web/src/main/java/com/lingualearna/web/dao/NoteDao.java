@@ -15,7 +15,7 @@ public class NoteDao extends AbstractDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public void decrementPagePositionsInInterval(Page page, int oldPosition, int newPosition) {
+    public void decrementNotePositionsInInterval(Page page, int oldPosition, int newPosition) {
 
         doIncrementDecrementQuery(Note.DECREMENT_NOTE_POSITIONS_QUERY, page, oldPosition, newPosition);
     }
@@ -23,7 +23,7 @@ public class NoteDao extends AbstractDao {
     private void doIncrementDecrementQuery(String namedQuery, Page page, int oldPosition, int newPosition) {
 
         doExecuteUpdateWithParams(namedQuery,
-                Pair.of(Note.NOTE_POSITIONS_PAGE_PARAM, page),
+                Pair.of(Note.PAGE_PARAM, page),
                 Pair.of(Note.NOTE_POSITIONS_OLD_POSITION_PARAM, oldPosition),
                 Pair.of(Note.NOTE_POSITIONS_NEW_POSITION_PARAM, newPosition));
     }
@@ -34,7 +34,7 @@ public class NoteDao extends AbstractDao {
         return entityManager;
     }
 
-    public void incrementPagePositionsInInterval(Page page, int oldPosition, int newPosition) {
+    public void incrementNotePositionsInInterval(Page page, int oldPosition, int newPosition) {
 
         doIncrementDecrementQuery(Note.INCREMENT_NOTE_POSITIONS_QUERY, page, oldPosition, newPosition);
     }

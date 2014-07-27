@@ -30,11 +30,12 @@ import com.lingualearna.web.validator.FieldsNotEqual;
 import com.lingualearna.web.validator.UniqueWithinContext;
 
 @UniqueWithinContext(namedQuery = Notebook.COUNT_NOTEBOOKS_BY_NAME_QUERY, uniqueParam = Notebook.NOTEBOOK_NAME_PARAM, uniqueProperty = "name",
-        contextParam = Notebook.OWNER_PARAM, contextProperty = "owner", message = "{org.lingualearna.web.validationMessages.duplicateNotebook}")
+        contextParam = Notebook.OWNER_PARAM, contextProperty = "owner", ownIdParam = Page.OWN_ID_PARAM, ownIdProperty = "notebookId",
+        message = "{org.lingualearna.web.validationMessages.duplicateNotebook}")
 @FieldsNotEqual(propertyNames = { "foreignLang", "localLang" },
         message = "{org.lingualearna.web.validationMessages.foreignLocalLangsEqual}")
 @NamedQueries({
-        @NamedQuery(name = Notebook.COUNT_NOTEBOOKS_BY_NAME_QUERY, query = "SELECT count(n) FROM Notebook n WHERE n.name = :notebookName AND n.owner = :owner"),
+        @NamedQuery(name = Notebook.COUNT_NOTEBOOKS_BY_NAME_QUERY, query = "SELECT count(n) FROM Notebook n WHERE n.name = :notebookName AND n.owner = :owner AND n.notebookId <> :ownId"),
         @NamedQuery(name = Notebook.FIND_ALL_QUERY, query = "SELECT n FROM Notebook n WHERE n.owner.userId = :user")
 })
 @Entity
@@ -48,6 +49,7 @@ public class Notebook implements Serializable, HasOwner {
     public static final String NOTEBOOK_NAME_PARAM = "notebookName";
     public static final String USER_PARAM = "user";
     public static final String OWNER_PARAM = "owner";
+    public static final String OWN_ID_PARAM = "ownId";
 
     private int notebookId;
     private Locale foreignLang;

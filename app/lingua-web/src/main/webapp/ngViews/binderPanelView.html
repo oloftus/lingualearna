@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div id="tabs-pane">
-                <div class="inner">
+                <div class="inner" ng-controller="pageListController">
                     <button class="lingua-action-button-icon" id="new-page-button" UI-SREF=".ADD_PAGE">New page</button>
                     <ul id="notebook-tabs">
                         <lingua-page global="global" page="page" func="func" ng-repeat="page in global.model.currentNotebook.pages"></lingua-page> 
