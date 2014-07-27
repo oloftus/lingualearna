@@ -23,6 +23,10 @@ public @interface UniqueWithinContext {
 
     String namedQuery();
 
+    String ownIdParam();
+
+    String ownIdProperty();
+
     Class<? extends Payload>[] payload() default {};
 
     String uniqueParam();

@@ -25,6 +25,8 @@ public class UniqueWithinContextValidator implements ConstraintValidator<UniqueW
     private String contextProperty;
     private String uniqueParam;
     private String uniqueProperty;
+    private String ownIdParam;
+    private String ownIdProperty;
 
     @Autowired
     private GenericDao dao;
@@ -50,6 +52,8 @@ public class UniqueWithinContextValidator implements ConstraintValidator<UniqueW
         contextProperty = constraintAnnotation.contextProperty();
         uniqueParam = constraintAnnotation.uniqueParam();
         uniqueProperty = constraintAnnotation.uniqueProperty();
+        ownIdParam = constraintAnnotation.ownIdParam();
+        ownIdProperty = constraintAnnotation.ownIdProperty();
     }
 
     @Override
@@ -57,9 +61,10 @@ public class UniqueWithinContextValidator implements ConstraintValidator<UniqueW
 
         Object contextPropertyValue = getPropertyValue(value, contextProperty);
         Object uniquePropertyValue = getPropertyValue(value, uniqueProperty);
+        Object ownIdPropertyValue = getPropertyValue(value, ownIdProperty);
 
         long count = dao.doUntypedQueryWithParams(namedQuery, Pair.of(uniqueParam, uniquePropertyValue),
-                Pair.of(contextParam, contextPropertyValue));
+                Pair.of(contextParam, contextPropertyValue), Pair.of(ownIdParam, ownIdPropertyValue));
         return count == 0;
     }
 }

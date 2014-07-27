@@ -31,12 +31,19 @@ public class UniqueWithinContextValidatorTest {
             return "contextProperty";
         }
 
+        public String getOwnIdProperty() {
+
+            return "ownIdProperty";
+        }
+
         public String getUniqueProperty() {
 
             return "uniqueProperty";
         }
     }
 
+    private static final String OWN_ID_PARAM = "ownIdParam";
+    private static final String OWN_ID_PROPERTY = "ownIdProperty";
     private static final String CONTEXT_PARAM = "contextParam";
     private static final String CONTEXT_PROPERTY = "contextProperty";
     private static final String UNIQUE_PARAM = "uniquePrarm";
@@ -82,6 +89,18 @@ public class UniqueWithinContextValidatorTest {
             public String namedQuery() {
 
                 return NAMED_QUERY;
+            }
+
+            @Override
+            public String ownIdParam() {
+
+                return OWN_ID_PARAM;
+            }
+
+            @Override
+            public String ownIdProperty() {
+
+                return OWN_ID_PROPERTY;
             }
 
             @Override
@@ -138,7 +157,8 @@ public class UniqueWithinContextValidatorTest {
         List<Object> resultsList = new ArrayList<>();
         resultsList.add(existingObjectCount);
         when(dao.doUntypedQueryAsListWithParams(NAMED_QUERY, Pair.of(UNIQUE_PARAM, UNIQUE_PROPERTY),
-                Pair.of(CONTEXT_PARAM, CONTEXT_PROPERTY))).thenReturn(resultsList);
+                Pair.of(CONTEXT_PARAM, CONTEXT_PROPERTY), Pair.of(OWN_ID_PARAM, OWN_ID_PROPERTY)))
+                .thenReturn(resultsList);
     }
 
     @Test
