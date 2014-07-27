@@ -53,7 +53,7 @@ public class NotebookService extends AbstractService {
 
         User user = page.getNotebook().getOwner();
         Integer currentMaxPosition = dao.doUntypedQueryWithParams(Page.MAX_PAGES_QUERY,
-                Pair.of(Page.MAX_PAGES_QUERY_PARAM, user));
+                Pair.of(Page.USER_PARAM, user));
         if (currentMaxPosition == null) {
             currentMaxPosition = 0;
         }

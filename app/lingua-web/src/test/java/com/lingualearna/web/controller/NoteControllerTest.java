@@ -143,7 +143,7 @@ public class NoteControllerTest {
 
         givenRetrieveNoteServiceFunctions();
         whenICallUpdateNoteWithAValidNoteId();
-        thenTheModelIsMappedToTheEntityIgnoringIdSourceUrlAndPosition();
+        thenTheModelIsMappedToTheEntityIgnoringIdSourceUrl();
         andTheNoteIsUpdated();
         andTheCorrectNoteIsReturned();
     }
@@ -163,10 +163,10 @@ public class NoteControllerTest {
         assertEquals(page, noteEntity.getPage());
     }
 
-    private void thenTheModelIsMappedToTheEntityIgnoringIdSourceUrlAndPosition() {
+    private void thenTheModelIsMappedToTheEntityIgnoringIdSourceUrl() {
 
         verify(notesMapper).copyPropertiesFromModel(eq(incomingNote), noteArg.capture(), eq(Note.NOTE_ID_FIELD),
-                eq(Note.SOURCE_URL_FIELD), eq(Note.POSITION_FIELD));
+                eq(Note.SOURCE_URL_FIELD));
         noteEntity = noteArg.getValue();
         assertEquals(page, noteEntity.getPage());
     }

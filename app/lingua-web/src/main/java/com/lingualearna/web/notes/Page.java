@@ -23,10 +23,12 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lingualearna.web.security.HasOwner;
-import com.lingualearna.web.validator.Unique;
+import com.lingualearna.web.validator.UniqueWithinContext;
 
+@UniqueWithinContext(namedQuery = Page.COUNT_PAGES_BY_NAME_QUERY, uniqueParam = Page.PAGE_NAME_PARAM, uniqueProperty = "name",
+        contextParam = Page.NOTEBOOK_PARAM, contextProperty = "notebook", message = "{org.lingualearna.web.validationMessages.duplicatePage}")
 @NamedQueries({
-        @NamedQuery(name = Page.COUNT_PAGES_BY_NAME_QUERY, query = "SELECT count(n) FROM Page n WHERE n.name = :pageName"),
+        @NamedQuery(name = Page.COUNT_PAGES_BY_NAME_QUERY, query = "SELECT count(p) FROM Page p WHERE p.name = :pageName AND p.notebook = :notebook"),
         @NamedQuery(name = Page.MAX_PAGES_QUERY, query = "SELECT max(p.position) FROM Page p WHERE p.notebook.owner = :user")
 })
 @Entity
@@ -38,9 +40,10 @@ public class Page implements Serializable, HasOwner {
     public static final String PAGE_ID_FIELD = "pageId";
     public static final String POSITION_FIELD = "position";
     public static final String COUNT_PAGES_BY_NAME_QUERY = "Page.countPagesName";
-    public static final String COUNT_PAGES_BY_NAME_QUERY_PARAM = "pageName";
+    public static final String PAGE_NAME_PARAM = "pageName";
     public static final String MAX_PAGES_QUERY = "Page.maxPages";
-    public static final String MAX_PAGES_QUERY_PARAM = "user";
+    public static final String USER_PARAM = "user";
+    public static final String NOTEBOOK_PARAM = "notebook";
 
     private int pageId;
     private String name;
@@ -59,8 +62,6 @@ public class Page implements Serializable, HasOwner {
     @NotBlank
     @Length(max = 45)
     @Column(name = "name")
-    @Unique(namedQuery = COUNT_PAGES_BY_NAME_QUERY, valueParamName = COUNT_PAGES_BY_NAME_QUERY_PARAM,
-            message = "{org.lingualearna.web.validationMessages.duplicatePage}")
     public String getName() {
 
         return this.name;
@@ -91,7 +92,7 @@ public class Page implements Serializable, HasOwner {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "page_id")
     public int getPageId() {
 

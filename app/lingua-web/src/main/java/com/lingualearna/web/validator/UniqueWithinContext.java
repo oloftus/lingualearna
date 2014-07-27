@@ -8,10 +8,14 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-@Target({ java.lang.annotation.ElementType.METHOD })
+@Target({ java.lang.annotation.ElementType.TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = UniqueValidator.class)
-public @interface Unique {
+@Constraint(validatedBy = UniqueWithinContextValidator.class)
+public @interface UniqueWithinContext {
+
+    String contextParam();
+
+    String contextProperty();
 
     Class<?>[] groups() default {};
 
@@ -21,5 +25,7 @@ public @interface Unique {
 
     Class<? extends Payload>[] payload() default {};
 
-    String valueParamName();
+    String uniqueParam();
+
+    String uniqueProperty();
 }

@@ -28,7 +28,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.Lists;
 import com.lingualearna.web.controller.exceptions.ValidationException;
-import com.lingualearna.web.dao.GenericDao;
+import com.lingualearna.web.dao.NoteDao;
 import com.lingualearna.web.languages.LanguageNamesValidator;
 import com.lingualearna.web.notes.Note;
 import com.lingualearna.web.notes.Notebook;
@@ -60,7 +60,7 @@ public class NoteServiceTest {
     private Note note;
 
     @Mock
-    private GenericDao dao;
+    private NoteDao dao;
 
     @Mock
     private Notebook notebook;
