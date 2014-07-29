@@ -28,10 +28,10 @@ App.Controller.createNew(function() {
 
         var setupPageTabClickHandler = function($scope, commsPipe) {
 
-            $scope.func.changeCurrentPage = function(pageId) {
+            $scope.func.changeCurrentPage = function(page) {
 
                 var searchCriteria = {
-                    pageId : pageId
+                    pageId : page.pageId
                 };
 
                 var newCurrentPage = _.findWhere($scope.global.model.currentNotebook.pages, searchCriteria);

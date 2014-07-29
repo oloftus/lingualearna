@@ -9,7 +9,7 @@ App.Directive.createNew(function() {
         return function() {
             
             return {
-                restrict: "E",
+                restrict: "E", // Match only element names
                 scope: {
                     note: "=",
                     func : "="

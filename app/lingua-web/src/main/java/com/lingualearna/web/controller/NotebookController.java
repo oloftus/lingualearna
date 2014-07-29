@@ -44,7 +44,7 @@ public class NotebookController extends AbstractController {
     public Notebook createNotebook(Authentication authentication, @RequestBody @Valid Notebook notebook)
             throws ValidationException {
 
-        User currentUser = getCurrentUser(userService, authentication);
+        User currentUser = getCurrentUser(authentication);
         notebook.setOwner(currentUser);
         notebookService.createNotebook(notebook);
         return notebook;
@@ -73,9 +73,15 @@ public class NotebookController extends AbstractController {
     @ResponseBody
     public List<Notebook> getNotebooks(Authentication authentication) {
 
-        User currentUser = getCurrentUser(userService, authentication);
+        User currentUser = getCurrentUser(authentication);
         List<Notebook> notebooks = notebookService.getAllNotebooksByUser(currentUser.getUserId());
         return notebooks;
+    }
+
+    @Override
+    protected UserService getUserService() {
+
+        return userService;
     }
 
     @RequestMapping(value = "/page/{pageId}", produces = "application/json", consumes = "application/json",

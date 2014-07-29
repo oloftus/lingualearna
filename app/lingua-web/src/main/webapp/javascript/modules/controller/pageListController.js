@@ -3,6 +3,7 @@ App.Controller.createNew(function() {
     this.isCalled("pageListController");
 
     this.imports("jquery");
+    this.imports("util/sortableListHelper");
 
     this.loads("directive/linguaPage");
 
@@ -10,81 +11,94 @@ App.Controller.createNew(function() {
     this.injects("service/notebookService");
     this.injects("util/messageHandler");
 
-    this.hasDefinition(function($) {
+    this.hasDefinition(function($, sortableListHelper) {
 
         var TABS_CONTAINER = "#tabs-pane .inner";
         var TABS_LIST = "#notebook-tabs";
         var TAB_HANDLE = ".handle";
-        
-        var convertZeroBasedIndexToOneBased = function(value) {
-            
-            return value + 1;
-        };
-        
-        var updatePagePosition = function($scope, notebookService, messageHandler, pageId, newPosition) {
-            
+        var Y_AXIS = "y";
+        var MOVE_CURSOR = "move";
+
+        var findPageByPageId = function($scope, pageId) {
+
             var searchCriteria = {
                 pageId : pageId
             };
             var page = _.findWhere($scope.global.model.currentNotebook.pages, searchCriteria);
-            
-            var oldPosition = page.position;
-            newPosition = convertZeroBasedIndexToOneBased(newPosition);
-            
-            _.each($scope.global.model.currentNotebook.pages, function(page) {
-                if (oldPosition < newPosition) {
-                    if (oldPosition <= page.position && page.position <= newPosition) {
-                        page.position--;
-                    }
-                }
-                else {
-                    if (newPosition <= page.position && page.position < oldPosition) {
-                        page.position++;
-                    }
-                }
-            });
 
-            page.position = newPosition;
-            
-            var failureHandler = function(data, status, headers, config) {
-                
-                $scope.func.loadNotesIntoPage(); // TODO: Find page equivalent
-                messageHandler.addFreshPageMessage($scope, LocalStrings.inlinePageRearrangeError, MessageSeverity.ERROR);
-            };
-            
-            updatePage(page, $scope, notebookService, failureHandler);
+            return page;
         };
 
-        var updatePage = function(page, $scope, notebookService, failureHandler) {
+        var getPageModelFromPage = function(page) {
 
             var pageModel = new Page();
-            for (var key in pageModel) {
+            _.each(pageModel, function(value, key) {
                 pageModel[key] = page[key];
-            }
-            
-            var successHandler = function(updatedModel) {
+            });
 
-                for (var key in updatedModel) {
-                    page[key] = updatedModel[key];
-                }
-            };
-            
-            notebookService.updatePage(pageModel.pageId, pageModel, successHandler, failureHandler);
+            return pageModel;
         };
-        
+
+        var getDragStopHandler = function($scope, notebookService, messageHandler) {
+
+            return function(event, ui) {
+
+                var pageId = $(ui.item).data().pageid;
+                var newPosition = ui.item.index();
+
+                updatePagePosition($scope, notebookService, messageHandler, pageId, newPosition);
+            };
+        };
+
+        var getUpdatePageSuccessHandler = function(page) {
+
+            return function(updatedModel) {
+
+                _.each(updatedModel, function(key) {
+                    page[key] = updatedModel[key];
+                });
+            };
+        };
+
+        var getUpdatePageFailureHandler = function($scope, messageHandler) {
+
+            return function(data, status, headers, config) {
+
+                $scope.func.loadNotesIntoPage();
+                messageHandler
+                        .addFreshPageMessage($scope, LocalStrings.inlinePageRearrangeError, MessageSeverity.ERROR);
+            };
+        };
+
+        var updatePage = function(page, $scope, notebookService, messageHandler) {
+
+            var pageModel = getPageModelFromPage(page);
+            var successHandler = getUpdatePageSuccessHandler(page);
+            var failureHandler = getUpdatePageFailureHandler($scope, messageHandler);
+
+            notebookService.updatePage(page.pageId, pageModel, successHandler, failureHandler);
+        };
+
+        var updatePagePosition = function($scope, notebookService, messageHandler, pageId, newPosition) {
+
+            var page = findPageByPageId($scope, pageId);
+            sortableListHelper.updateNotePositionsInInterim(page, $scope.global.model.currentNotebook.pages,
+                    newPosition);
+            updatePage(page, $scope, notebookService, messageHandler);
+        };
+
         var makeListSortable = function($scope, notebookService, messageHandler) {
 
+            var dragStopHandler = getDragStopHandler($scope, notebookService, messageHandler);
+
             $(TABS_LIST).sortable({
-                axis : "y",
+                axis : Y_AXIS,
                 containment : TABS_CONTAINER,
-                cursor : "move",
+                cursor : MOVE_CURSOR,
                 handle : TAB_HANDLE,
-                stop : function(event, ui) {
-                    updatePagePosition($scope, notebookService, messageHandler, $(ui.item).data().pageid, ui.item.index());
-                }
+                stop : dragStopHandler
             });
         };
-
 
         return function($scope, notebookService, messageHandler) {
 
