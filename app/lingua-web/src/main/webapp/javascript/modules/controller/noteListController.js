@@ -39,17 +39,17 @@ App.Controller.createNew(function() {
             return noteModel;
         };
 
-        var getUpdatePageFailureHandler = function($scope, messageHandler) {
+        var getUpdateNoteFailureHandler = function($scope, messageHandler, note, oldPosition) {
 
             return function(data, status, headers, config) {
 
-                $scope.func.loadNotesIntoPage();
+                sortableListHelper.rejigPositions(note, $scope.global.model.currentPage.notes, oldPosition);
                 messageHandler
                         .addFreshPageMessage($scope, LocalStrings.inlineNoteRearrangeError, MessageSeverity.ERROR);
             };
         };
 
-        var getUpdatePageSuccessHandler = function(note) {
+        var getUpdateNoteSuccessHandler = function(note) {
 
             return function(updatedModel) {
 
@@ -59,11 +59,10 @@ App.Controller.createNew(function() {
             };
         };
 
-        var updateNote = function(note, $scope, noteService, messageHandler) {
+        var updateNote = function(note, $scope, noteService, failureHandler) {
 
             var noteModel = getNoteModelFromNote(note);
-            var successHandler = getUpdatePageSuccessHandler(note);
-            var failureHandler = getUpdatePageFailureHandler($scope, messageHandler);
+            var successHandler = getUpdateNoteSuccessHandler(note);
 
             noteService.update(note.noteId, noteModel, successHandler, failureHandler);
         };
@@ -71,8 +70,11 @@ App.Controller.createNew(function() {
         var updateNotePosition = function($scope, noteService, messageHandler, noteId, newPosition) {
 
             var note = findNoteByNoteId($scope, noteId);
-            sortableListHelper.updateNotePositionsInInterim(note, $scope.global.model.currentPage.notes, newPosition);
-            updateNote(note, $scope, noteService, messageHandler);
+            var oldPosition = sortableListHelper.convertOneBasedIndexToZeroBased(note.position);
+            var failureHandler = getUpdateNoteFailureHandler($scope, messageHandler, note, oldPosition);
+            
+            sortableListHelper.rejigPositions(note, $scope.global.model.currentPage.notes, newPosition);
+            updateNote(note, $scope, noteService, failureHandler);
         };
 
         var getDragStopHandler = function($scope, noteService, messageHandler) {

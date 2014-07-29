@@ -17,7 +17,7 @@
             <div id="notebook-pane">
                 <div id="notebook-content" ng-controller="noteListController">
                     <ul id="notes-list">
-                        <lingua-note note="note" func="func" ng-repeat="note in global.model.currentPage.notes"></lingua-note>
+                        <lingua-note note="note" func="func" ng-repeat="note in global.model.currentPage.notes | orderBy:'position'"></lingua-note>
                     </ul>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                 <div class="inner" ng-controller="pageListController">
                     <button class="lingua-action-button-icon" id="new-page-button" UI-SREF=".ADD_PAGE">New page</button>
                     <ul id="notebook-tabs">
-                        <lingua-page global="global" page="page" func="func" ng-repeat="page in global.model.currentNotebook.pages"></lingua-page> 
+                        <lingua-page global="global" page="page" func="func" ng-repeat="page in global.model.currentNotebook.pages | orderBy:'position'"></lingua-page> 
                     </ul>
                     <footer id="main-footer">
                         <div id="copyright">Copyright LinguaLearna Ltd</div>

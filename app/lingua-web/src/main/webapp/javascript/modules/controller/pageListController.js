@@ -60,21 +60,20 @@ App.Controller.createNew(function() {
             };
         };
 
-        var getUpdatePageFailureHandler = function($scope, messageHandler) {
+        var getUpdatePageFailureHandler = function($scope, messageHandler, page, oldPosition) {
 
             return function(data, status, headers, config) {
 
-                $scope.func.loadNotesIntoPage();
+                sortableListHelper.rejigPositions(page, $scope.global.model.currentNotebook.pages, oldPosition);
                 messageHandler
                         .addFreshPageMessage($scope, LocalStrings.inlinePageRearrangeError, MessageSeverity.ERROR);
             };
         };
 
-        var updatePage = function(page, $scope, notebookService, messageHandler) {
+        var updatePage = function(page, $scope, notebookService, failureHandler) {
 
             var pageModel = getPageModelFromPage(page);
             var successHandler = getUpdatePageSuccessHandler(page);
-            var failureHandler = getUpdatePageFailureHandler($scope, messageHandler);
 
             notebookService.updatePage(page.pageId, pageModel, successHandler, failureHandler);
         };
@@ -82,9 +81,11 @@ App.Controller.createNew(function() {
         var updatePagePosition = function($scope, notebookService, messageHandler, pageId, newPosition) {
 
             var page = findPageByPageId($scope, pageId);
-            sortableListHelper.updateNotePositionsInInterim(page, $scope.global.model.currentNotebook.pages,
-                    newPosition);
-            updatePage(page, $scope, notebookService, messageHandler);
+            var oldPosition = sortableListHelper.convertOneBasedIndexToZeroBased(page.position);
+            var failureHandler = getUpdatePageFailureHandler($scope, messageHandler, page, oldPosition);
+
+            sortableListHelper.rejigPositions(page, $scope.global.model.currentNotebook.pages, newPosition);
+            updatePage(page, $scope, notebookService, failureHandler);
         };
 
         var makeListSortable = function($scope, notebookService, messageHandler) {

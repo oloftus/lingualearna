@@ -4,12 +4,17 @@ App.Module.createNew(function() {
 
     this.hasDefinition(function() {
 
+        var convertOneBasedIndexToZeroBased = function(value) {
+            
+            return value - 1;
+        };
+        
         var convertZeroBasedIndexToOneBased = function(value) {
             
             return value + 1;
         };
         
-        var updateNotePositionsInInterim = function(instance, collection, newPosition) {
+        var rejigPositions = function(instance, collection, newPosition) {
             
             var oldPosition = instance.position;
             newPosition = convertZeroBasedIndexToOneBased(newPosition);
@@ -31,7 +36,8 @@ App.Module.createNew(function() {
         };
 
         return {
-            updateNotePositionsInInterim : updateNotePositionsInInterim
+            rejigPositions : rejigPositions,
+            convertOneBasedIndexToZeroBased : convertOneBasedIndexToZeroBased
         };
     });
 });
