@@ -17,7 +17,7 @@ App.Controller.createNew(function() {
 
         var loadNotesIntoPage = function($scope, noteService, messageHandler, commsPipe) {
 
-            if (!_.isNull($scope.global.model.currentPage)) {
+            if (!$scope.global.model.currentPage) {
                 noteService.getNotesByPage($scope.global.model.currentPage.pageId, function(notes) {
                     $scope.global.model.currentPage.notes = notes;
                 }, function(data, status, headers, config) {

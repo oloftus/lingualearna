@@ -298,6 +298,17 @@ a {
     border-width: 1px 1px 1px 0;
 }
 
+#notebook-tabs .delete {
+    position: absolute;
+    right: 10px;
+    width: 20px;
+    height: 100%;
+    background-image: url(../images/delete.svg);
+    background-position: center;
+    background-size: 20px;
+    background-repeat: no-repeat;
+}
+
 #notebook-tabs a:hover,#notebook-tabs .selected a {
     background-color: #e9e9e9;
 }

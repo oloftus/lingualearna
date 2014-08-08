@@ -100,10 +100,32 @@ App.Controller.createNew(function() {
                 stop : dragStopHandler
             });
         };
+        
+        var setupClickHandlers = function($scope, notebookService, messageHandler) {
+
+            $scope.func.doDelete = function(page) {
+
+                var successHandler = function() {
+
+                    var pages = $scope.global.model.currentNotebook.pages;
+                    var pageIndex = _.indexOf(pages, page);
+                    pages.splice(pageIndex, 1);
+                };
+
+                var failureHandler = function() {
+
+                    messageHandler.addFreshPageMessage($scope, LocalStrings.inlinePageDeleteError,
+                            MessageSeverity.ERROR);
+                };
+
+                notebookService.removePage(page.pageId, successHandler, failureHandler);
+            };
+        };
 
         return function($scope, notebookService, messageHandler) {
 
             makeListSortable($scope, notebookService, messageHandler);
+            setupClickHandlers($scope, notebookService, messageHandler);
         };
     });
 });

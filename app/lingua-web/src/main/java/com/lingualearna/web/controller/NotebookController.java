@@ -69,6 +69,16 @@ public class NotebookController extends AbstractController {
         return outgoingPage;
     }
 
+    @RequestMapping(value = "/page/{pageId}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public void deletePage(@PathVariable int pageId) {
+
+        boolean found = notebookService.deletePage(pageId);
+        if (!found) {
+            throw new ResourceNotFoundException(PAGE_NOT_FOUND);
+        }
+    }
+
     @RequestMapping(value = "/notebooksPages", produces = "application/json", method = RequestMethod.GET)
     @ResponseBody
     public List<Notebook> getNotebooks(Authentication authentication) {

@@ -130,7 +130,13 @@ public class Page implements Serializable, HasOwner {
     @Transient
     public boolean isLastUsed() {
 
-        return getNotebook().getOwner().getLastUsed().getPageId() == getPageId();
+        Page lastUsed = getNotebook().getOwner().getLastUsed();
+
+        if (lastUsed != null) {
+            return lastUsed.getPageId() == getPageId();
+        }
+
+        return false;
     }
 
     public Note removeNote(Note note) {

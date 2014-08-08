@@ -3,8 +3,9 @@ App.Module.createNew(function() {
     this.isCalled("abstractRootController");
     
     this.imports("underscore");
+    this.imports("util/appStates");
     
-    this.hasDefinition(function(_) {
+    this.hasDefinition(function(_, appStates) {
 
         var doCleanup = function($scope) {
             
@@ -45,7 +46,7 @@ App.Module.createNew(function() {
             });
         };
 
-        var setupNotebookEnvironment = function($scope, notebookService, commsPipe, messageHandler) {
+        var setupNotebookEnvironment = function($scope, $state, notebookService, commsPipe, messageHandler) {
 
             var successHandler = function(notebooks) {
 
@@ -66,8 +67,17 @@ App.Module.createNew(function() {
                     return done;
                 });
 
+                if (!$scope.global.model.currentNotebook) {
+                    if (_.size(notebooks) != 0) {
+                        $scope.global.model.currentNotebook = notebooks[0];
+                    }
+                    else {
+                        appStates.goRelative($state, AppStates.ADD_NOTEBOOK, AppStates.NOTEBOOK_MAIN);
+                        return;
+                    }
+                }
+                
                 commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
-
             };
             
             var failureHandler = function() {
@@ -78,10 +88,10 @@ App.Module.createNew(function() {
             notebookService.getNotebooksAndPages(successHandler, failureHandler);
         };
         
-        var subscribeToNoteSubmissions = function(commsPipe, $scope, notebookService, messageHandler) {
+        var subscribeToNoteSubmissions = function(commsPipe, $scope, $state, notebookService, messageHandler) {
 
             commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, function() {
-                setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
+                setupNotebookEnvironment($scope, $state, notebookService, commsPipe, messageHandler);
             }, Signals.NOTE_SAVED_SUCCESS);
         };
         

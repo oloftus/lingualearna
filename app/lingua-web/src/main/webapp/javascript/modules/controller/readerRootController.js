@@ -57,8 +57,8 @@ App.Controller.createNew(function() {
             dialogs.setupDialogs($scope);
             getCsrfAndTriggerLogin(jsonWebService, $scope);
             abstractRootController.setupPageMessages($scope, messageHandler, $timeout);
-            abstractRootController.setupNotebookEnvironment($scope, notebookService, commsPipe, messageHandler);
-            abstractRootController.subscribeToNoteSubmissions(commsPipe, $scope, notebookService, messageHandler);
+            abstractRootController.setupNotebookEnvironment($scope, $state, notebookService, commsPipe, messageHandler);
+            abstractRootController.subscribeToNoteSubmissions(commsPipe, $scope, $state, notebookService, messageHandler);
             setupClickToTranslate(commsPipe, $state, $scope);
             $state.go(AppStates.MAIN);
         };

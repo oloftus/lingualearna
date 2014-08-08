@@ -54,6 +54,13 @@ public class NotebookService extends AbstractService {
         dao.persist(page);
     }
 
+    @OwnedObjectType(Page.class)
+    @Secured(ALLOW_OWNER)
+    public boolean deletePage(int pageId) {
+
+        return dao.delete(Page.class, pageId);
+    }
+
     public List<Notebook> getAllNotebooksByUser(int userId) {
 
         return dao.getAllNotebooksByUser(userId);

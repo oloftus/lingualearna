@@ -104,7 +104,7 @@ CREATE INDEX notes_page_ix ON notes (page);
 ALTER TABLE users ADD CONSTRAINT users_pages_fk
     FOREIGN KEY (last_used)
     REFERENCES pages (page_id)
-    ON DELETE RESTRICT
+    ON DELETE SET NULL
     ON UPDATE CASCADE;
 
 ALTER TABLE users ADD CONSTRAINT users_roles_fk
@@ -128,7 +128,7 @@ ALTER TABLE pages ADD CONSTRAINT pages_notebooks_fk
 ALTER TABLE notes ADD CONSTRAINT notes_pages_fk
     FOREIGN KEY (page)
     REFERENCES pages (page_id)
-    ON DELETE RESTRICT
+    ON DELETE CASCADE
     ON UPDATE CASCADE;
 
 
