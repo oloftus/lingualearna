@@ -45,9 +45,20 @@ App.Module.createNew(function() {
                 }
             });
         };
+        
+        var sendCurrentNotebookChangedSignal = function(commsPipe) {
+            
+            commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
+        };
 
         var setupNotebookEnvironment = function($scope, $state, notebookService, commsPipe, messageHandler) {
 
+            var setCurrentNotebookToNewNotebook = function(notebook) {
+                
+                $scope.global.model.currentNotebook = notebook;
+                sendCurrentNotebookChangedSignal(commsPipe);
+            };
+            
             var successHandler = function(notebooks) {
 
                 $scope.global.model.notebooks = notebooks;
@@ -73,11 +84,12 @@ App.Module.createNew(function() {
                     }
                     else {
                         appStates.goRelative($state, AppStates.ADD_NOTEBOOK, AppStates.NOTEBOOK_MAIN);
+                        commsPipe.subscribe(Components.ADD_NOTEBOOK, Components.ANY, setCurrentNotebookToNewNotebook, Signals.NOTEBOOK_SAVED_SUCCESS);
                         return;
                     }
                 }
                 
-                commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
+                sendCurrentNotebookChangedSignal(commsPipe);
             };
             
             var failureHandler = function() {

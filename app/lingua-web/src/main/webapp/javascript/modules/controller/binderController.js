@@ -17,7 +17,7 @@ App.Controller.createNew(function() {
 
         var loadNotesIntoPage = function($scope, noteService, messageHandler, commsPipe) {
 
-            if (!$scope.global.model.currentPage) {
+            if ($scope.global.model.currentPage) {
                 noteService.getNotesByPage($scope.global.model.currentPage.pageId, function(notes) {
                     $scope.global.model.currentPage.notes = notes;
                 }, function(data, status, headers, config) {
@@ -51,18 +51,6 @@ App.Controller.createNew(function() {
             commsPipe.subscribe(Components.BINDER, Components.ANY, reloadNotes, Signals.CURRENT_PAGE_CHANGED);
         };
         
-        var setupNoteAddedListener = function($scope, commsPipe) {
-            
-            var appendNote = function(note) {
-                
-                if (note.pageId === $scope.global.model.currentPage.pageId) {
-                    $scope.global.model.currentPage.notes.push(note);
-                }
-            };
-            
-            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, appendNote, Signals.NOTE_SAVED_SUCCESS);
-        };
-
         var setupCurrentNotebookChangeHandler = function($scope, commsPipe) {
 
             var currentNotebookChangedHandler = function() {
@@ -76,14 +64,37 @@ App.Controller.createNew(function() {
                     Signals.CURRENT_NOTEBOOK_CHANGED);
         };
         
+        var setupNotebookAddedListener = function($scope, commsPipe) {
+            
+            var appendNotebook = function(notebook) {
+                
+                notebook.pages = [];
+                $scope.global.model.notebooks.push(notebook);
+            };
+            
+            commsPipe.subscribe(Components.ADD_NOTEBOOK, Components.ANY, appendNotebook, Signals.NOTEBOOK_SAVED_SUCCESS);
+        };
+        
+        var setupNoteAddedListener = function($scope, commsPipe) {
+            
+            var appendNote = function(note) {
+                
+                if (note.pageId === $scope.global.model.currentPage.pageId) {
+                    $scope.global.model.currentPage.notes.push(note);
+                }
+            };
+            
+            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, appendNote, Signals.NOTE_SAVED_SUCCESS);
+        };
+        
         var setupPageAddedListener = function($scope, commsPipe) {
             
-            var pageAddedHandler = function(page) {
+            var appendPage = function(page) {
                 
                 $scope.global.model.currentNotebook.pages.push(page);
             };
             
-            commsPipe.subscribe(Components.ADD_PAGE, Components.ANY, pageAddedHandler, Components.PAGE_SAVED_SUCCESS);
+            commsPipe.subscribe(Components.ADD_PAGE, Components.ANY, appendPage, Signals.PAGE_SAVED_SUCCESS);
         };
 
         return function($scope, noteService, messageHandler, commsPipe) {
@@ -91,8 +102,9 @@ App.Controller.createNew(function() {
             abstractController.setupDefaultScope($scope);
             setupPageTabClickHandler($scope, commsPipe);
             setupNotesReloadConditions($scope, noteService, messageHandler, commsPipe);
-            setupNoteAddedListener($scope, commsPipe);
             setupCurrentNotebookChangeHandler($scope, commsPipe);
+            setupNotebookAddedListener($scope, commsPipe);
+            setupNoteAddedListener($scope, commsPipe);
             setupPageAddedListener($scope, commsPipe);
         };
     });

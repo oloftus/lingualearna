@@ -7,6 +7,7 @@ App.TypesDef.createNew(function() {
         APP_LOADED : "app-loaded",
         NOTE_SAVED_SUCCESS : "note-saved-success",
         CURRENT_PAGE_CHANGED : "current-page-changed",
-        PAGE_SAVED_SUCCESS : "page-saved-success"
+        PAGE_SAVED_SUCCESS : "page-saved-success",
+        NOTEBOOK_SAVED_SUCCESS : "notebook-saved-success"
     };
 });

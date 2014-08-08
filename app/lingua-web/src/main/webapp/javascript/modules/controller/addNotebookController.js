@@ -13,6 +13,7 @@ App.Controller.createNew(function() {
     this.injects("service/languageService");
     this.injects("service/notebookService");
     this.injects("util/messageHandler");
+    this.injects("util/commsPipe");
 
     this.hasDefinition(function(abstractController, _) {
 
@@ -32,7 +33,7 @@ App.Controller.createNew(function() {
             });
         };
         
-        var addSubmitButtonHandler = function($scope, $timeout, $state, notebookService, messageHandler) {
+        var addSubmitButtonHandler = function($scope, $timeout, $state, notebookService, messageHandler, commsPipe) {
             
             $scope.func.doCreateNotebook = function() {
                 
@@ -40,10 +41,12 @@ App.Controller.createNew(function() {
                 var localLang = !_.isNull($scope.model.localLang) ? $scope.model.localLang.langCode : null;
                 var notebook = new Notebook($scope.model.notebookName, foreignLang, localLang);
                 
-                var successHandler = function(data) {
+                var successHandler = function(notebook) {
                     
                     messageHandler.addFreshGlobalMessage($scope, LocalStrings.notebookCreatedMessage,
                             MessageSeverity.INFO);
+                    
+                    commsPipe.send(Components.ADD_NOTEBOOK, Components.ANY, Signals.NOTEBOOK_SAVED_SUCCESS, notebook);
                     
                     $timeout(function() {
                         $state.go(AppStates.MAIN);
@@ -59,12 +62,12 @@ App.Controller.createNew(function() {
             };
         };
 
-        return function($scope, $timeout, $state, languageService, notebookService, messageHandler) {
+        return function($scope, $timeout, $state, languageService, notebookService, messageHandler, commsPipe) {
 
             abstractController.setupDefaultScope($scope);
             setupScope($scope);
             setupLanguageDropdowns($scope, languageService, messageHandler);
-            addSubmitButtonHandler($scope, $timeout, $state, notebookService, messageHandler);
+            addSubmitButtonHandler($scope, $timeout, $state, notebookService, messageHandler, commsPipe);
         };
     });
 });

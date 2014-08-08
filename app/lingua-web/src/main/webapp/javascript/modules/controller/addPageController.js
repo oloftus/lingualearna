@@ -32,7 +32,7 @@ App.Controller.createNew(function() {
                     messageHandler.addFreshGlobalMessage($scope, LocalStrings.pageCreatedMessage,
                             MessageSeverity.INFO);
                     
-                    commsPipe.send(Components.ADD_PAGE, Components.ANY, Components.PAGE_SAVED_SUCCESS, page);
+                    commsPipe.send(Components.ADD_PAGE, Components.ANY, Signals.PAGE_SAVED_SUCCESS, page);
                     
                     $timeout(function() {
                         $state.go(AppStates.MAIN);
