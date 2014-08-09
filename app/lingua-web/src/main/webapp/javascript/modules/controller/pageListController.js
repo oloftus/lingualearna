@@ -101,6 +101,39 @@ App.Controller.createNew(function() {
             });
         };
         
+        var setCurrentPageToClosestPage = function($scope, page) {
+            
+            if (!_.isEmpty($scope.global.model.currentNotebook.pages)) {
+                var closestPages = _.filter($scope.global.model.currentNotebook.pages, function(iteratorPage) {
+                    return iteratorPage.position < page.position;
+                });
+                
+                var closestPagesAreBelow = _.isEmpty(closestPages);
+                if (closestPagesAreBelow) {
+                    closestPages = _.filter($scope.global.model.currentNotebook.pages, function(iteratorPage) {
+                        return iteratorPage.position > page.position;
+                    });
+                }
+                    
+                var closestPage;
+                if (closestPagesAreBelow) {
+                    closestPage = _.min(closestPages, function(iteratorPage) {
+                        return iteratorPage.position;
+                    });
+                }
+                else {
+                    closestPage = _.max(closestPages, function(iteratorPage) {
+                        return iteratorPage.position;
+                    });
+                }
+                
+                $scope.global.model.currentPage = closestPage;
+            }
+            else {
+                $scope.global.model.currentPage = null;
+            }
+        };
+        
         var setupClickHandlers = function($scope, notebookService, messageHandler) {
 
             $scope.func.doDelete = function(page) {
@@ -110,6 +143,10 @@ App.Controller.createNew(function() {
                     var pages = $scope.global.model.currentNotebook.pages;
                     var pageIndex = _.indexOf(pages, page);
                     pages.splice(pageIndex, 1);
+                    
+                    if ($scope.global.model.currentPage == page) {
+                        setCurrentPageToClosestPage($scope, page);
+                    }
                 };
 
                 var failureHandler = function() {

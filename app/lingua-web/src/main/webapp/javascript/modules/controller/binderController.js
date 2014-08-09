@@ -68,7 +68,6 @@ App.Controller.createNew(function() {
             
             var appendNotebook = function(notebook) {
                 
-                notebook.pages = [];
                 $scope.global.model.notebooks.push(notebook);
             };
             
@@ -92,6 +91,10 @@ App.Controller.createNew(function() {
             var appendPage = function(page) {
                 
                 $scope.global.model.currentNotebook.pages.push(page);
+                
+                if (!$scope.global.model.currentPage) {
+                    $scope.global.model.currentPage = page;
+                }
             };
             
             commsPipe.subscribe(Components.ADD_PAGE, Components.ANY, appendPage, Signals.PAGE_SAVED_SUCCESS);

@@ -1,5 +1,6 @@
 package com.lingualearna.web.controller;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -47,6 +48,8 @@ public class NotebookController extends AbstractController {
         User currentUser = getCurrentUser(authentication);
         notebook.setOwner(currentUser);
         notebookService.createNotebook(notebook);
+        List<Page> pages = Collections.emptyList();
+        notebook.setPages(pages);
         return notebook;
     }
 
