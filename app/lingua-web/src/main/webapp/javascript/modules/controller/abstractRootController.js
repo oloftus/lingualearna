@@ -46,17 +46,12 @@ App.Module.createNew(function() {
             });
         };
         
-        var sendCurrentNotebookChangedSignal = function(commsPipe) {
-            
-            commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
-        };
-
         var setupNotebookEnvironment = function($scope, $state, notebookService, commsPipe, messageHandler) {
 
             var setCurrentNotebookToNewNotebook = function(notebook) {
                 
                 $scope.global.model.currentNotebook = notebook;
-                sendCurrentNotebookChangedSignal(commsPipe);
+                commsPipe.send(Components.READER, Components.ANY, Signals.CURRENT_NOTEBOOK_CHANGED);
             };
             
             var successHandler = function(notebooks) {
@@ -89,7 +84,7 @@ App.Module.createNew(function() {
                     }
                 }
                 
-                sendCurrentNotebookChangedSignal(commsPipe);
+                commsPipe.send(Components.BINDER, Components.ANY, Signals.CURRENT_PAGE_CHANGED);
             };
             
             var failureHandler = function() {
