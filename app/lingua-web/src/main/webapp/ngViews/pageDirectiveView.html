@@ -1,5 +1,5 @@
 <li data-pageid="{{page.pageId}}" ng-class="{'selected': page.pageId === global.model.currentPage.pageId}">
     <div class="handle"></div>
-    <div class="delete" ng-click="func.doDelete(page)"></div>
+    <div class="delete" ng-click="func.doDeletePage(page)"></div>
     <a ng-click="func.changeCurrentPage(page)">{{page.name}}</a>
 </li>

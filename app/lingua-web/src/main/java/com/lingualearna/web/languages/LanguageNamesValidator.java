@@ -43,7 +43,5 @@ public class LanguageNamesValidator {
         if (validity.containsValue(false)) {
             throw new ValidationException();
         }
-
-        return;
     }
 }

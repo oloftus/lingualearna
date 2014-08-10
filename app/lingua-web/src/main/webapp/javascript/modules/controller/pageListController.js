@@ -136,7 +136,7 @@ App.Controller.createNew(function() {
         
         var setupClickHandlers = function($scope, notebookService, messageHandler) {
 
-            $scope.func.doDelete = function(page) {
+            $scope.func.doDeletePage = function(page) {
 
                 var successHandler = function() {
 

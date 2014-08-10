@@ -131,7 +131,7 @@ App.Controller.createNew(function() {
                 updateNote(note, $scope, noteService, failureHandler);
             };
 
-            $scope.func.doDelete = function(note) {
+            $scope.func.doDeleteNote = function(note) {
 
                 var successHandler = function() {
 
