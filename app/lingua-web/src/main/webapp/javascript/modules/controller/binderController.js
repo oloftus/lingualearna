@@ -47,7 +47,6 @@ App.Controller.createNew(function() {
                 loadNotesIntoPage($scope, noteService, messageHandler, commsPipe);
             };
 
-            commsPipe.subscribe(Components.NOTEBOOK, Components.ANY, reloadNotes, Signals.APP_LOADED);
             commsPipe.subscribe(Components.BINDER, Components.ANY, reloadNotes, Signals.CURRENT_PAGE_CHANGED);
         };
         

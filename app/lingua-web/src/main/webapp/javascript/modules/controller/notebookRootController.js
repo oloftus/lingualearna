@@ -40,11 +40,6 @@ App.Controller.createNew(function() {
             $state.go(AppStates.MAIN).then(function() {
                 triggerLogin(jsonWebService, commsPipe);
                 abstractRootController.setupNotebookEnvironment($scope, $state, notebookService, commsPipe, messageHandler);
-                
-                var notebookChangedSubscriberId = commsPipe.subscribe(Components.READER, Components.ANY, function() {
-                    commsPipe.unsubscribe(notebookChangedSubscriberId);
-                    commsPipe.send(Components.NOTEBOOK, Components.ANY, Signals.APP_LOADED);
-                }, Signals.CURRENT_NOTEBOOK_CHANGED);
             });
         };
     });
