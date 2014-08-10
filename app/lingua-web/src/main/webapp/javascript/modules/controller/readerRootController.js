@@ -58,7 +58,6 @@ App.Controller.createNew(function() {
             getCsrfAndTriggerLogin(jsonWebService, $scope);
             abstractRootController.setupPageMessages($scope, messageHandler, $timeout);
             abstractRootController.setupNotebookEnvironment($scope, $state, notebookService, commsPipe, messageHandler);
-            abstractRootController.subscribeToNoteSubmissions(commsPipe, $scope, $state, notebookService, messageHandler);
             setupClickToTranslate(commsPipe, $state, $scope);
             $state.go(AppStates.MAIN);
         };

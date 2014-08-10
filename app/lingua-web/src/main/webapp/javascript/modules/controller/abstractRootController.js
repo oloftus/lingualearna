@@ -100,18 +100,10 @@ App.Module.createNew(function() {
             notebookService.getNotebooksAndPages(successHandler, failureHandler);
         };
         
-        var subscribeToNoteSubmissions = function(commsPipe, $scope, $state, notebookService, messageHandler) {
-
-            commsPipe.subscribe(Components.ADD_NOTE, Components.ANY, function() {
-                setupNotebookEnvironment($scope, $state, notebookService, commsPipe, messageHandler);
-            }, Signals.NOTE_SAVED_SUCCESS);
-        };
-        
         return {
             setupGlobalScope : setupGlobalScope,
             setupPageMessages : setupPageMessages,
-            setupNotebookEnvironment : setupNotebookEnvironment, 
-            subscribeToNoteSubmissions : subscribeToNoteSubmissions
+            setupNotebookEnvironment : setupNotebookEnvironment
         };
     });
 });

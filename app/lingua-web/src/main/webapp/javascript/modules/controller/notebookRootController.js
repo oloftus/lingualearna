@@ -36,7 +36,6 @@ App.Controller.createNew(function() {
             appStates.setMainState(AppStates.NOTEBOOK_MAIN);
             dialogs.setupDialogs($scope);
             abstractRootController.setupPageMessages($scope, messageHandler, $timeout);
-            abstractRootController.subscribeToNoteSubmissions(commsPipe, $scope, $state, notebookService, messageHandler);
             
             $state.go(AppStates.MAIN).then(function() {
                 triggerLogin(jsonWebService, commsPipe);
