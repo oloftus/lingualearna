@@ -2,13 +2,13 @@
     <header id="notebook-header">
         <div class="inner">
             <h2 id="notebook-title">
-                Spanish &amp; English <span class="title-sub-info">(Spanish &#8660; English)</span>
+            {{global.model.currentNotebook.name}}
+            <span class="title-sub-info">({{global.model.currentNotebook.localLangName}} &#8660; {{global.model.currentNotebook.foreignLangName}})</span>
             </h2>
             <div id="notebook-tools">
                 <button class="lingua-action-button-icon" id="new-entry-button" ui-sref=".ADD_NOTE">Add
                     entry</button>
                 <button class="lingua-action-button-icon" id="start-test-button">Knowledge test</button>
-                <input type="text" value="Search/lookup" id="notebook-search" />
             </div>
         </div>
     </header>

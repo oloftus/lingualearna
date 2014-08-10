@@ -10,6 +10,7 @@ App.Controller.createNew(function() {
 
     this.injects("$scope");
     this.injects("service/noteService");
+    this.injects("service/languageService");
     this.injects("util/messageHandler");
     this.injects("util/commsPipe");
 
@@ -52,10 +53,12 @@ App.Controller.createNew(function() {
         
         var setupCurrentNotebookChangeHandler = function($scope, commsPipe) {
 
-            var currentNotebookChangedHandler = function() {
+            var currentNotebookChangedHandler = function(wasInitialLoad) {
 
-                var currentNotebookPages = $scope.global.model.currentNotebook.pages;
-                $scope.global.model.currentPage = _.size(currentNotebookPages) > 0 ? currentNotebookPages[0] : null;
+                if (!wasInitialLoad) {
+                    var currentNotebookPages = $scope.global.model.currentNotebook.pages;
+                    $scope.global.model.currentPage = _.size(currentNotebookPages) > 0 ? currentNotebookPages[0] : null;
+                }
 
                 commsPipe.send(Components.BINDER, Components.ANY, Signals.CURRENT_PAGE_CHANGED);
             };
@@ -99,7 +102,24 @@ App.Controller.createNew(function() {
             commsPipe.subscribe(Components.ADD_PAGE, Components.ANY, appendPage, Signals.PAGE_SAVED_SUCCESS);
         };
 
-        return function($scope, noteService, messageHandler, commsPipe) {
+        var setupNotebookLanguageTitlesListener = function($scope, languageService, commsPipe) {
+
+            var notebookLanguageTitlesListener = function() {
+                
+                languageService.lookupLangName($scope.global.model.currentNotebook.foreignLang, function(langName) {
+                    $scope.global.model.currentNotebook.foreignLangName = langName;
+                });
+                
+                languageService.lookupLangName($scope.global.model.currentNotebook.localLang, function(langName) {
+                    $scope.global.model.currentNotebook.localLangName = langName;
+                });
+            };
+            
+            commsPipe.subscribe(Components.ANY, Components.ANY, notebookLanguageTitlesListener,
+                    Signals.CURRENT_NOTEBOOK_CHANGED);
+        };
+
+        return function($scope, noteService, languageService, messageHandler, commsPipe) {
 
             abstractController.setupDefaultScope($scope);
             setupPageTabClickHandler($scope, commsPipe);
@@ -108,6 +128,7 @@ App.Controller.createNew(function() {
             setupNotebookAddedListener($scope, commsPipe);
             setupNoteAddedListener($scope, commsPipe);
             setupPageAddedListener($scope, commsPipe);
+            setupNotebookLanguageTitlesListener($scope, languageService, commsPipe);
         };
     });
 });
