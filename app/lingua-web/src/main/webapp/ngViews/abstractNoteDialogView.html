@@ -3,7 +3,7 @@
         <h2>{{model.operationTitle}}</h2>
         <div class="lingua-controls">
             <label for="page-dropdown" class="lingua-control-item">Save to page:</label>
-            <select ng-model="model.page" ng-options="page.name for page in global.model.currentNotebook.pages track by page.pageId"
+            <select ng-model="model.page" ng-options="page.name for page in global.model.currentNotebook.pages | orderBy:'position' track by page.pageId"
                      data-fieldname="pageId" id="page-dropdown">
                 <option value="">Please select a page</option>
             </select>
