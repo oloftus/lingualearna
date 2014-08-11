@@ -46,6 +46,14 @@ App.Module.createNew(function() {
             controllers : [ "/controller/addNoteController" ],
             parentStates : [ AppStates.READER_MAIN, AppStates.NOTEBOOK_MAIN ]
         }, {
+            stateName : AppStates.EDIT_NOTE,
+            views : [ {
+                viewName : Views.MODAL_DIALOG,
+                viewUrl : "/editNoteDialogView"
+            } ],
+            controllers : [ "/controller/editNoteController" ],
+            parentStates : [ AppStates.NOTEBOOK_MAIN ]
+        }, {
             stateName : AppStates.TRANSLATE,
             views : [ {
                 viewName : Views.MODAL_DIALOG,

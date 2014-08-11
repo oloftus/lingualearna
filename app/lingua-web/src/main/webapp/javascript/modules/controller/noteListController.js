@@ -4,14 +4,17 @@ App.Controller.createNew(function() {
 
     this.imports("jquery");
     this.imports("util/sortableListHelper");
+    this.imports("util/appStates");
 
     this.loads("directive/linguaNote");
 
     this.injects("$scope");
+    this.injects("$state");
     this.injects("service/noteService");
     this.injects("util/messageHandler");
+    this.injects("util/commsPipe");
 
-    this.hasDefinition(function($, sortableListHelper) {
+    this.hasDefinition(function($, sortableListHelper, appStates) {
 
         var NOTEBOOK_CONTAINER = "#notebook-content";
         var NOTES_LIST = "#notes-list";
@@ -101,7 +104,7 @@ App.Controller.createNew(function() {
             });
         };
 
-        var setupClickHandlers = function($scope, noteService, messageHandler) {
+        var setupClickHandlers = function($scope, noteService, messageHandler, $state, commsPipe) {
 
             $scope.func.doStar = function(note) {
 
@@ -148,12 +151,19 @@ App.Controller.createNew(function() {
 
                 noteService.remove(note.noteId, successHandler, failureHandler);
             };
+
+            $scope.func.doEditNote = function(note) {
+
+                appStates.goRelative($state, AppStates.EDIT_NOTE, AppStates.NOTEBOOK_MAIN).then(function() {
+                    commsPipe.send(Components.NOTEBOOK, Components.EDIT_NOTE, Subjects.NOTE, note);
+                });
+            };
         };
 
-        return function($scope, noteService, messageHandler) {
+        return function($scope, $state, noteService, messageHandler, commsPipe) {
 
             makeListSortable($scope, noteService, messageHandler);
-            setupClickHandlers($scope, noteService, messageHandler);
+            setupClickHandlers($scope, noteService, messageHandler, $state, commsPipe);
         };
     });
 });

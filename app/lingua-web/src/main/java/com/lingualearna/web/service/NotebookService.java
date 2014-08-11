@@ -50,7 +50,7 @@ public class NotebookService extends AbstractService {
     public void createPage(Page page) throws ValidationException {
 
         validateEntity(page);
-        setPagePosition(page);
+        setPagePositionToBottom(page);
         dao.persist(page);
     }
 
@@ -86,7 +86,7 @@ public class NotebookService extends AbstractService {
         return validator;
     }
 
-    private void setPagePosition(Page page) {
+    private void setPagePositionToBottom(Page page) {
 
         User user = page.getNotebook().getOwner();
         Integer currentMaxPosition = dao.doUntypedQueryWithParams(Page.MAX_POSITION_QUERY,

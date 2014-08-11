@@ -3,7 +3,9 @@
         <div class="handle"></div>
         <a ng-click="func.doStar(note)" class="star" ng-class="{'starred' : note.starred}" title="Star/unstar"></a>
         <ul class="toolbar">
-            <li class="edit"><a title="Edit">Edit</a></li>
+            <li class="edit">
+                <a ng-click="func.doEditNote(note)" title="Edit">Edit</a>
+            </li>
             <li class="delete">
                 <a ng-click="func.doDeleteNote(note)" title="Delete">Delete</a>
             </li>

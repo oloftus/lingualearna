@@ -117,16 +117,17 @@ public class NoteController {
         }
 
         int oldPosition = noteEntity.getPosition();
+        int oldPageId = noteEntity.getPage().getPageId();
 
         Page page = notebookService.getPageById(incomingNote.getPageId());
         notesMapper.copyPropertiesFromModel(incomingNote, noteEntity, Note.NOTE_ID_FIELD, Note.SOURCE_URL_FIELD);
         noteEntity.setPage(page);
 
         if (oldPosition != noteEntity.getPosition()) {
-            notesService.updateNoteWithPosition(noteEntity, oldPosition);
+            notesService.updateNoteWithPosition(noteEntity, oldPosition, oldPageId);
         }
         else {
-            notesService.updateNote(noteEntity);
+            notesService.updateNote(noteEntity, oldPageId);
         }
 
         NoteModel noteModel = new NoteModel();

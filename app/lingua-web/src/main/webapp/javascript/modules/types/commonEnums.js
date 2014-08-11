@@ -31,6 +31,7 @@ App.TypesDef.createNew(function() {
         READER_MAIN : "READER_MAIN",
         NOTEBOOK_MAIN : "NOTEBOOK_MAIN",
         ADD_NOTE : "ADD_NOTE",
+        EDIT_NOTE : "EDIT_NOTE",
         TRANSLATE : "TRANSLATE",
         LOGIN : "LOGIN",
         SETTINGS : "SETTINGS",
@@ -49,7 +50,8 @@ App.TypesDef.createNew(function() {
         NOTEBOOK : "NOTEBOOK",
         BINDER : "BINDER",
         ADD_PAGE : "ADD_PAGE",
-        ADD_NOTEBOOK : "ADD_NOTEBOOK"
+        ADD_NOTEBOOK : "ADD_NOTEBOOK",
+        EDIT_NOTE : "EDIT_NOTE"
     };
     
     TranslationSources = {

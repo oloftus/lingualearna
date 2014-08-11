@@ -37,7 +37,7 @@ public class NoteService extends AbstractService {
 
         validateEntity(note);
         validateLanguageNames(note);
-        setNotePosition(note);
+        setNotePositionToBottom(note);
         dao.persist(note);
         setLastUsed(note);
     }
@@ -59,6 +59,13 @@ public class NoteService extends AbstractService {
     protected Validator getValidator() {
 
         return validator;
+    }
+
+    private void moveNoteToBottomIfPageChanged(Note note, int oldPageId) {
+
+        if (note.getPage().getPageId() != oldPageId) {
+            setNotePositionToBottom(note);
+        }
     }
 
     @OwnedObjectType(Note.class)
@@ -100,7 +107,7 @@ public class NoteService extends AbstractService {
         dao.merge(owner);
     }
 
-    private void setNotePosition(Note note) {
+    private void setNotePositionToBottom(Note note) {
 
         Integer currentMaxPosition = dao.doUntypedQueryWithParams(Note.MAX_POSITION_QUERY,
                 Pair.of(Note.PAGE_PARAM, note.getPage()));
@@ -111,17 +118,18 @@ public class NoteService extends AbstractService {
     }
 
     @Secured(ALLOW_OWNER)
-    public Note updateNote(Note note) throws ValidationException {
+    public Note updateNote(Note note, int oldPageId) throws ValidationException {
 
         validateEntity(note);
         validateLanguageNames(note);
+        moveNoteToBottomIfPageChanged(note, oldPageId);
         Note mergedNote = dao.merge(note);
         setLastUsed(mergedNote);
         return mergedNote;
     }
 
     @Secured(ALLOW_OWNER)
-    public Note updateNoteWithPosition(Note note, int oldPosition) throws ValidationException {
+    public Note updateNoteWithPosition(Note note, int oldPosition, int oldPageId) throws ValidationException {
 
         Integer newPosition = note.getPosition();
         if (oldPosition < newPosition) {
@@ -131,7 +139,7 @@ public class NoteService extends AbstractService {
             dao.incrementNotePositionsInInterval(note.getPage(), oldPosition, newPosition);
         }
 
-        Note updatedNote = updateNote(note);
+        Note updatedNote = updateNote(note, oldPageId);
         return updatedNote;
     }
 
