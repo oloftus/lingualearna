@@ -3,8 +3,9 @@
 rebel.xml
 *.min.js
 build_sensitive.properties
-src/main/webapp/WEB-INF/jsp
-src/main/webapp/dependencies
-src/main/webapp/node_modules
-src/main/webapp/target
 .sass-cache
+.externalToolBuilders
+.settings
+.project
+.classpath
+
