@@ -1,0 +1,9 @@
+<li class="lingua-row">
+    <div class="lingua-entry">
+        <div class="lingua-local-note">{{entry.localNote}}</div>
+        <div class="lingua-foreign-note" ng-class="{'lingua-hidden' : entry.hidden}">
+            <a ng-if="entry.hasSourceContext" ng-click="func.getContext(entry)" class="lingua-getcontext" title="Jog my memory"></a>
+            <span ng-click="func.reveal(entry)">{{entry.foreignNote}}</span>
+        </div>
+    </div>
+</li>

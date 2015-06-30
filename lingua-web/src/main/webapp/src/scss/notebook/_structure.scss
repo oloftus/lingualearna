@@ -1,0 +1,184 @@
+@import "../common/variables";
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background-color: #333333;
+  margin: 0;
+}
+
+.lingua-ng-inc {
+  width: 100%;
+}
+
+#lingua-page-container {
+  height: 100%;
+  overflow: hidden;
+}
+
+#lingua-page-column {
+  margin: 0 auto;
+  position: relative;
+  height: 100%;
+  min-width: 768px; // iPad 2 resolution
+  max-width: 1300px;
+  min-height: 768px;
+  width: 100%;
+  box-shadow: 0 0 150px black;
+  background-color: $page-null-colour;
+  border-top: $stylistic-border-style;
+  display: table;
+  overflow: hidden;
+
+  #lingua-page-header {
+    display: table-row;
+    height: $icon-button-height + 2 * $icon-button-padding;
+
+    .lingua-title-wrapper, #lingua-page-header-tools-wrapper {
+      border-bottom: $lighter-border-style;
+      display: table-cell;
+    }
+
+    .lingua-title-wrapper {
+      padding-left: $page-header-content-offset-left;
+      vertical-align: middle;
+      width: 100%;
+
+      * {
+        vertical-align: middle;
+      }
+    }
+
+    #lingua-page-header-tools {
+      width: 200px;
+    }
+  }
+
+  #lingua-page-content,
+  #lingua-page-content > .lingua-inner,
+  #lingua-binder-container,
+  #lingua-binder-container .lingua-inner {
+    height: 100%;
+  }
+
+  #lingua-page-content,
+  #lingua-binder-container {
+    display: table-row;
+  }
+
+  #lingua-page-content > .lingua-inner,
+  #lingua-binder-container .lingua-inner {
+    display: table;
+    width: 100%;
+  }
+
+  #lingua-notebook-header {
+    position: relative;
+    z-index: 1;
+    border-bottom: $border-style;
+    background: linear-gradient(#fefefe, #eeeeee);
+    box-shadow: 0 0 15px $border-colour;
+
+    display: table;
+    width: 100%;
+
+    #lingua-tabs-side-header {
+      padding: $small-header-padding 0;
+    }
+
+    #lingua-page-side-header,
+    #lingua-tabs-side-header {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    #lingua-page-side-header {
+      width: 100%;
+      padding: 5px $header-padding;
+
+      .lingua-inner {
+        display: table;
+        width: 100%;
+
+        #lingua-page-buttons {
+          display: table-cell;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    #lingua-tabs-side-header {
+      border-left: $highlight-border-style;
+    }
+  }
+
+  #lingua-binder-content-pane,
+  #lingua-binder-pages-pane {
+    display: table-cell;
+    vertical-align: top;
+    height: 100%;
+  }
+
+  #lingua-binder-content-pane {
+    width: 100%;
+    background: url("../images/horizontal-line.png");
+
+    #lingua-binder-content {
+      height: 100%;
+      min-height: 500px;
+      max-height: 100%;
+      position: relative;
+      padding: 30px;
+      padding-left: 123px;
+      background: url("../images/margin-line.png") repeat-y 110px;
+    }
+  }
+
+  #lingua-binder-pages-pane {
+    background-color: $highlight-panel-colour;
+    border-left: $highlight-border-style;
+    position: relative;
+
+    > .lingua-inner {
+      width: $binder-pages-pane-width;
+    }
+
+    #lingua-page-footer {
+      display: none;
+      width: $binder-pages-pane-width;
+      background-color: $highlight-panel-colour;
+    }
+  }
+
+  @-moz-document url-prefix() {
+    #lingua-knowledge-test-content > .lingua-inner > .nano {
+      height: 500px;
+    }
+  }
+
+  #lingua-knowledge-test-content {
+    background: url("../images/horizontal-line.png");
+    display: table-cell;
+    height: 100%;
+
+    > .lingua-inner {
+      padding: 80px 0;
+      background: url("../images/margin-line.png") repeat-y 110px;
+    }
+  }
+
+  #lingua-knowledge-test-list {
+    margin: 0 auto;
+    width: 700px;
+  }
+
+  #lingua-page-footer {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    padding: 10px 0;
+  }
+}

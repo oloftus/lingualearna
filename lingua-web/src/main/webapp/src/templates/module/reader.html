@@ -1,0 +1,22 @@
+<div ng-controller="readerController" id="lingua-reader">
+    <div ng-include="global.properties.templatesRoot + '/other/feedbackButton.html'" class="lingua-ng-inc"></div>
+
+    <div class="lingua-dialog" id="lingua-main-dialog" ui-view="MODAL_DIALOG"></div>
+    <div class="lingua-dialog" id="lingua-login-dialog" ui-view="LOGIN_DIALOG"></div>
+
+    <div ng-include="global.properties.templatesRoot + '/messages/pageMessages.html'" class="lingua-ng-inc"></div>
+
+    <div id="lingua-reader-bar">
+        <div class="lingua-title-wrapper">
+            <a href="@app_root@/app">
+                <img ng-src="{{global.properties.resourcesRoot + '/images/logo.svg'}}" id="lingua-page-logo" alt="LinguaLearna (beta)"/>
+            </a>
+        </div>
+        <div id="lingua-action-buttons-group">
+            <a lg-relative-sref=".ADD_NOTE" id="lingua-new-entry-button">Add entry</a>
+        </div>
+        <div id="lingua-current-notebook-tools">
+            <lg-current-notebook-selector model="global.model" func="global.func" id="lingua-current-notebook-selector"></lg-current-notebook-selector>
+        </div>
+    </div>
+</div>

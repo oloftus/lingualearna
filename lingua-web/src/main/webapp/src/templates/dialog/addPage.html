@@ -1,0 +1,21 @@
+<div class="lingua-inner" ng-controller="addPageController">
+    <div class="lingua-dialog-header">
+        <h2>Add page to notebook</h2>
+        <a class="lingua-dialog-close" lg-relative-sref="^" title="Close"></a>
+    </div>
+    <div ng-include="global.properties.templatesRoot + '/messages/formMessages.html'"
+         class="lingua-ng-inc"></div>
+    <div class="lingua-form">
+        <div class="lingua-row">
+            <h3>
+                <label for="lingua-page-name">Page title</label>
+            </h3>
+            <input type="text" id="lingua-page-name" ng-model="model.pageName" data-fieldname="name"/>
+        </div>
+    </div>
+    <div class="lingua-dialog-footer">
+        <div class="lingua-controls">
+            <a class="lingua-primary-button" ng-click="func.doCreatePage()">Add page</a>
+        </div>
+    </div>
+</div>

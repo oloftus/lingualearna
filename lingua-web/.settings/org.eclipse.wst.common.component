@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="lingua-web">
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/WEB-INF" source-path="/src/main/webapp/WEB-INF"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <wb-resource deploy-path="/dependencies" source-path="/src/main/webapp/dependencies"/>
+        <wb-resource deploy-path="/javascript" source-path="/src/main/webapp/src/javascript"/>
+        <wb-resource deploy-path="/templates" source-path="/src/main/webapp/src/templates"/>
+        <wb-resource deploy-path="/resources/css" source-path="/src/main/webapp/target/resources/css"/>
+        <wb-resource deploy-path="/resources/images" source-path="/src/main/webapp/src/images"/>
+        <wb-resource deploy-path="/js" source-path="/src/main/webapp/target/javascript"/>
+        <property name="context-root" value="LinguaWeb"/>
+        <property name="java-output-path" value="/lingua-web/build/classes"/>
+    </wb-module>
+</project-modules>

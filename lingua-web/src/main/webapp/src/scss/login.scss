@@ -1,0 +1,17 @@
+@import "common/forms";
+@import "common/chrome";
+
+#lingua-login-dialog {
+  position: static;
+  margin: 150px auto;
+}
+
+#lingua-login-help {
+  margin: 0 auto;
+  width: 600px;
+}
+
+p a {
+  color: blue;
+  text-decoration: underline;
+}

@@ -1,0 +1,9 @@
+<div class="lingua-current-notebook-selector-wrapper">
+    <select ng-model="model.currentNotebook"
+            ng-options="notebook.name for notebook in model.notebooks track by notebook.notebookId"
+            ng-change="func.currentNotebookChanged()"></select>
+
+    <div class="lingua-current-notebook-selector-width-wrapper">
+        <span class="lingua-current-notebook-selector-width"></span>
+    </div>
+</div>

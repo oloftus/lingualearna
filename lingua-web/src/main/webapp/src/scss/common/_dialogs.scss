@@ -1,0 +1,111 @@
+@import "variables";
+@import "typicons";
+@import "chrome";
+
+.lingua-mini-dialog, .lingua-dialog {
+  position: absolute;
+  z-index: 2;
+
+  .lingua-dialog-header {
+    text-align: right;
+  }
+
+  h2 {
+    position: absolute;
+    width: 100%;
+    cursor: default;
+  }
+
+  .lingua-dialog-close {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.lingua-mini-dialog {
+  $title-height: 16px;
+  $title-padding: 5px;
+  $content-padding: 10px;
+
+  position: absolute;
+
+  .lingua-inner {
+    background-color: $page-null-colour;
+    box-shadow: 0 0 5px $border-colour;
+    border: $border-style;
+
+    .lingua-dialog-header {
+      position: relative;
+
+      h2 {
+        text-align: left;
+        height: $title-height;
+        line-height: $title-height;
+        padding: $content-padding;
+      }
+
+      .lingua-dialog-close {
+        $button-height: 14px;
+
+        @extend #lingua-abstract-icon-button;
+        @extend .typcn;
+        @extend .typcn-delete-outline;
+
+        font-size: $title-height !important;
+        line-height: $title-height !important;
+        padding: $title-padding !important;
+      }
+    }
+  }
+
+  .lingua-content {
+    padding: $content-padding;
+  }
+}
+
+.lingua-dialog {
+  $title-height: $icon-button-height;
+  $title-padding: $icon-button-padding;
+
+  width: 70%;
+  min-width: 500px;
+  max-width: 900px;
+
+  .lingua-inner {
+    background: $page-null-colour;
+    box-shadow: 0 20px 100px $box-shadow-colour;
+
+    .lingua-dialog-header {
+      border-top: $stylistic-border-style;
+
+      h2 {
+        text-align: center;
+        height: $title-height;
+        line-height: $title-height;
+        padding: $title-padding;
+      }
+
+      .lingua-dialog-close {
+        @extend #lingua-abstract-icon-button;
+        @extend .typcn;
+        @extend .typcn-delete;
+
+        font-size: $title-height;
+        line-height: $title-height;
+        padding: $title-padding;
+      }
+    }
+  }
+}
+
+#lingua-login-dialog {
+  $login-dialog-width: 500px;
+
+  width: $login-dialog-width;
+  left: 50%;
+  margin: 150px 0 0 (-$login-dialog-width / 2);
+
+  h2 {
+    position: static;
+  }
+}

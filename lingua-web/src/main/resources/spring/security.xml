@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:beans="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+	<http pattern="/app/loginFrame/**" entry-point-ref="loginEntryPoint">
+		<form-login login-page="/app/loginFrame" authentication-failure-url="/app/loginFrame?loginFailed=true"
+			default-target-url="/app/loginFrame/success" always-use-default-target="true" login-processing-url="/app/loginFrame/process"
+			password-parameter="password" username-parameter="username" />
+		<port-mappings>
+			<port-mapping http="@http_port@" https="@https_port@" />
+		</port-mappings>
+	</http>
+
+	<http pattern="/app/api/**" entry-point-ref="deniedEntryPoint">
+		<intercept-url pattern="/app/api/**" access="ROLE_USER" />
+		<csrf />
+	</http>
+
+	<http entry-point-ref="loginEntryPoint">
+		<intercept-url pattern="/app/login" access="ROLE_ANONYMOUS, ROLE_USER" />
+		<intercept-url pattern="/app/logoutSuccess" access="ROLE_ANONYMOUS, ROLE_USER" />
+		<intercept-url pattern="/app/signup/**" access="ROLE_ANONYMOUS, ROLE_USER" />
+		<intercept-url pattern="/app/**" access="ROLE_USER" requires-channel="https" />
+
+		<access-denied-handler error-page="/app/login" />
+		<logout logout-url="/app/logout" logout-success-url="/app/logout/success" />
+		<form-login login-page="/app/login" authentication-failure-url="/app/login?loginFailed=true"
+			login-processing-url="/app/login/process" password-parameter="password" username-parameter="username" />
+		<csrf />
+	</http>
+
+	<beans:bean id="deniedEntryPoint" class="org.springframework.security.web.authentication.Http403ForbiddenEntryPoint" />
+
+	<beans:bean id="loginEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:constructor-arg name="loginFormUrl" value="/app/login" />
+	</beans:bean>
+
+	<global-method-security secured-annotations="enabled" access-decision-manager-ref="accessDecisionManager" />
+
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean class="org.springframework.security.access.vote.RoleVoter" />
+				<beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter" />
+				<beans:bean class="com.lingualearna.web.security.ownership.OwnerBasedVoter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<authentication-manager erase-credentials="false">
+		<authentication-provider user-service-ref="userDetailsService">
+			<password-encoder ref="bcryptEncoder" />
+		</authentication-provider>
+	</authentication-manager>
+
+	<beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<beans:bean id="userDetailsService" class="com.lingualearna.web.security.users.JpaUserDetailsService" />
+</beans:beans>

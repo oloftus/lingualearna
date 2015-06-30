@@ -1,0 +1,12 @@
+<li data-pageid="{{page.pageId}}" ng-class="{'lingua-selected': page.pageId === global.model.currentPage.pageId}"
+    id="lingua-notebook-page-{{page.pageId}}">
+    <a ng-click="func.changeCurrentPage(page)" class="lingua-tab">
+        <span>{{page.name}}</span>
+    </a>
+    <ul class="lingua-page-controls">
+        <li><a ng-click="func.activateRenamePageMode(page)" class="lingua-rename" title="Rename"></a></li>
+        <li><a ng-click="func.doDeletePage(page)" class="lingua-delete" title="Delete"></a></li>
+    </ul>
+
+    <div class="lingua-handle" title="Re-order pages"></div>
+</li>

@@ -1,0 +1,70 @@
+@import "common/typiconsFontFace";
+@import "common/forms";
+@import "common/chrome";
+@import "common/dialogs";
+@import "notebook/structure";
+@import "notebook/chrome";
+@import "forms/forms";
+
+#lingua-page-column {
+  max-width: 1100px;
+}
+
+#lingua-generic-to-button {
+  @extend .typcn;
+  @extend .typcn-arrow-right-thick;
+  @extend .lingua-secondary-button;
+}
+
+#lingua-title-island {
+  border-bottom: $lighter-border-style;
+  padding-left: $page-header-content-offset-left;
+
+  h2 {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+}
+
+.lingua-form {
+  .lingua-controls {
+    margin-top: 20px;
+    float: left;
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .lingua-form-messages {
+    border: none;
+    margin-bottom: 10px;
+  }
+}
+
+#lingua-page-content-island {
+  margin: 50px auto 0;
+  max-width: 60%;
+
+  a {
+    color: blue;
+    text-decoration: underline;
+  }
+
+  .lingua-primary-button, .lingua-secondary-button {
+    text-decoration: none !important;
+  }
+
+  .lingua-secondary-button {
+    color: $chrome-subtle-font-colour !important;
+  }
+
+  .lingua-primary-button {
+    color: $page-null-colour !important;
+  }
+}
+
+@media screen and (max-width: $tablet-switch-width) {
+  #lingua-page-content-island {
+    max-width: 85%;
+  }
+}

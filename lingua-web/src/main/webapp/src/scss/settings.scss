@@ -1,0 +1,9 @@
+@import "common/variables";
+@import "common/forms";
+@import "common/chrome";
+@import "common/dialogs";
+@import "forms/forms";
+
+.lingua-form h3 {
+    border-top: $border-style;
+  }

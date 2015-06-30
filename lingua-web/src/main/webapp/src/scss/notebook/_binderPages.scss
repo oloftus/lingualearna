@@ -1,0 +1,119 @@
+@import "../common/variables";
+@import "../common/typicons";
+@import "../common/chrome";
+
+$tab-padding-tb: 10px;
+$tab-line-height: 18px;
+$tab-handle-width: 20px;
+
+#lingua-binder-controls-wrapper {
+  display: table-row;
+}
+
+#lingua-binder-pages {
+  height: 100%;
+  width: 100%;
+  display: table-cell;
+  box-sizing: border-box;
+
+  .nano > .nano-pane {
+    z-index: 2;
+  }
+
+  .nano-content > ul {
+    $tab-border-width: 1px;
+
+    margin: 0;
+    padding: 0;
+    padding-top: $tab-border-width;
+    clear: both;
+
+    > li {
+      position: relative;
+      list-style-type: none;
+      border: solid $lighter-border-colour;
+      background-color: $highlight-panel-colour;
+      border-width: 0 0 $tab-border-width 0;
+
+      a.lingua-tab {
+        padding: $tab-padding-tb 20px;
+        display: block;
+        cursor: default;
+        line-height: $tab-line-height;
+
+        span {
+          display: block;
+          max-width: $binder-pages-pane-width - 100px;
+          overflow: hidden;
+        }
+      }
+
+      .lingua-page-controls, .lingua-handle {
+        position: absolute;
+        top: 0;
+        display: none;
+        height: 100%;
+      }
+
+      ul.lingua-page-controls {
+        margin: 0;
+        padding: 0;
+        right: $tab-handle-width + 5px;
+
+        li {
+          display: inline-block;
+          padding: $tab-padding-tb 0;
+
+          a {
+            line-height: $tab-line-height - 3; // 3 = Make it align middle
+            font-size: 20px;
+          }
+
+          a.lingua-delete {
+            @extend .typcn;
+            @extend .typcn-delete;
+          }
+
+          a.lingua-rename {
+            @extend .typcn;
+            @extend .typcn-pencil;
+          }
+        }
+      }
+
+      .lingua-handle {
+        right: 0;
+        width: $tab-handle-width;
+        background-color: $border-colour;
+        cursor: move;
+      }
+    }
+
+    li.lingua-selected {
+      border-color: $highlight-colour;
+      background-color: $page-null-colour;
+      font-weight: bold;
+      border-top-width: $tab-border-width;
+      margin-top: -1px;
+
+      a.lingua-tab {
+        color: $highlight-colour;
+      }
+    }
+
+    li:hover {
+      .lingua-page-controls, .lingua-handle {
+        display: block;
+      }
+
+      a.lingua-tab {
+        background-color: white;
+        color: $highlight-colour;
+      }
+
+      a.lingua-tab {
+        border-right: $tab-handle-width solid $border-colour;
+      }
+    }
+  }
+}

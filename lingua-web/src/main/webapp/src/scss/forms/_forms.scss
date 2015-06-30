@@ -1,0 +1,32 @@
+@import "../common/variables";
+
+body {
+  margin: 0;
+  font-family: $chrome-font;
+  font-weight: lighter;
+  font-size: $chrome-font-size;
+  color: $chrome-font-colour;
+  overflow: hidden;
+}
+
+.lingua-form {
+  .lingua-row {
+    background-color: transparent;
+    border-top: none;
+    float: left;
+    width: 100%;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
+  h3#recaptcha-header {
+    border-bottom: none;
+  }
+
+  #recaptcha_response_field {
+    border: none !important;
+    border-top: $border-style !important;
+  }
+}

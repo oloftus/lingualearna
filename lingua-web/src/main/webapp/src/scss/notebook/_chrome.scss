@@ -1,0 +1,138 @@
+@import "../common/variables";
+@import "../common/typicons";
+@import "../common/chrome";
+
+body {
+  margin: 0;
+  font-family: $chrome-font;
+  font-weight: lighter;
+  font-size: $chrome-font-size;
+  color: $chrome-font-colour;
+}
+
+ul#lingua-page-header-tools {
+  padding: 0;
+  margin: 0 !important;
+
+  li {
+    float: right;
+    list-style-type: none;
+
+    a {
+      @extend #lingua-abstract-icon-button;
+    }
+  }
+}
+
+#lingua-current-notebook-info {
+  > * {
+    vertical-align: middle;
+  }
+
+  #lingua-current-notebook-tools {
+    display: inline-block;
+
+    a#lingua-new-notebook-button {
+      @extend #lingua-abstract-icon-button;
+      @extend .typcn;
+      @extend .typcn-plus;
+
+      display: inline-block;
+      padding-right: 0 !important;
+    }
+
+    #lingua-new-notebook-button:hover {
+      background-color: transparent !important;
+    }
+  }
+
+  h3#lingua-current-notebook-languages {
+    font-size: 14px;
+    font-weight: lighter;
+    color: grey;
+    margin-left: 10px;
+    display: inline-block;
+  }
+}
+
+ul#lingua-page-buttons {
+  margin: 0;
+  padding: 0;
+  width: 250px;
+
+  li {
+    list-style-type: none;
+    float: right;
+    margin-left: 10px;
+  }
+}
+
+ul#lingua-test-controls,
+ul#lingua-binder-controls {
+  margin: 0;
+  box-sizing: border-box;
+
+  li {
+    list-style-type: none;
+
+    a {
+      display: block;
+    }
+  }
+}
+
+ul#lingua-test-controls {
+  padding: 0 $header-padding;
+  width: $binder-pages-pane-width;
+}
+
+ul#lingua-binder-controls {
+  padding: 20px $header-padding;
+  width: 100%;
+  border-bottom: 1px solid $lighter-border-colour;
+}
+
+#lingua-new-entry-button {
+  @extend .typcn;
+  @extend .typcn-pencil;
+  @extend .lingua-primary-button;
+}
+
+#lingua-translate-button {
+  @extend .lingua-secondary-button;
+  @extend .typcn;
+  @extend .typcn-code;
+}
+
+#lingua-start-test-button {
+  @extend .lingua-primary-button;
+  @extend .typcn;
+  @extend .typcn-mortar-board;
+}
+
+#lingua-new-page-button {
+  @extend .typcn;
+  @extend .typcn-document-add;
+  @extend .lingua-secondary-button;
+}
+
+#lingua-bookmarklet-link a {
+  @extend .typcn;
+  @extend .typcn-bookmark;
+}
+
+#lingua-account-link a {
+  @extend .typcn;
+  @extend .typcn-spanner;
+}
+
+#lingua-logout-link a {
+  @extend .typcn;
+  @extend .typcn-eject;
+  transform: scaleX(-1)
+}
+
+#lingua-copyright {
+  font-size: 0.8em;
+  text-align: center;
+}

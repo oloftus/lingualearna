@@ -1,0 +1,21 @@
+<div class="lingua-form">
+    <c:if test="${!empty param['loginFailed']}">
+        <div class="lingua-form-messages">
+            <ul>
+                <li class="lingua-error">Your username/password was incorrect. Please try again.</li>
+            </ul>
+        </div>
+    </c:if>
+    <div class="lingua-row first">
+        <input type="text" name="username" value="" placeholder="Username" id="username"/>
+    </div>
+    <div class="lingua-row">
+        <input type="password" name="password" value="" placeholder="Password" id="password"/>
+    </div>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+</div>
+<div class="lingua-dialog-footer">
+    <div class="lingua-controls">
+        <input name="submit" type="submit" value="Login" class="lingua-primary-button"/>
+    </div>
+</div>

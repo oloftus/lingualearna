@@ -1,0 +1,67 @@
+<div class="lingua-dialog-header">
+    <h2>{{model.operationTitle}}</h2>
+    <a class="lingua-dialog-close" lg-relative-sref="^" title="Close"></a>
+</div>
+<div ng-include="global.properties.templatesRoot + '/messages/formMessages.html'"
+     class="lingua-ng-inc"></div>
+<div class="lingua-form">
+    <div class="lingua-row">
+        <div class="lingua-column">
+            <h3>
+                <label for="lingua-foreign-note">Note - {{model.foreignLangName}}</label>
+            </h3>
+            <textarea id="lingua-foreign-note" ng-model="model.foreignNote"
+                      data-fieldname="foreignNote"></textarea>
+        </div>
+        <div class="lingua-column">
+            <h3>
+                <label for="lingua-local-note">Note - {{model.localLangName}}</label>
+            </h3>
+            <textarea id="lingua-local-note" ng-model="model.localNote" data-fieldname="localNote"></textarea>
+        </div>
+    </div>
+    <div class="lingua-row">
+        <h3>
+            <label for="lingua-additional-note">Additional Notes</label>
+        </h3>
+
+        <div class="lingua-html-input" id="lingua-additional-note" contenteditable="true" data-fieldname="additionalNotes"
+             ng-model="model.additionalNotes"></div>
+    </div>
+    <div class="lingua-row">
+        <div class="lingua-column">
+            <h3>
+                <label>Save to page</label>
+            </h3>
+
+            <div class="lingua-select-wrapper">
+                <select ng-model="model.page"
+                        ng-options="page.name for page in global.model.currentNotebook.pages | orderBy:'position' track by page.pageId"
+                        data-fieldname="pageId">
+                    <option value="">Please select a page</option>
+                </select>
+            </div>
+        </div>
+        <div class="lingua-column">
+            <h3>
+                <label for="lingua-include-text-checkbox">Include in test?</label>
+            </h3>
+
+            <div class="lingua-checkbox-wrapper">
+                <input type="checkbox" id="lingua-include-text-checkbox" ng-model="model.includedInTest"/>
+            </div>
+        </div>
+    </div>
+    <div class="lingua-row" ng-if="model.sourceUrl">
+        <h3>Source:</h3>
+
+        <p class="lingua-text-wrapper">
+            <a href="{{model.sourceUrl}}" data-fieldname="sourceUrl">{{model.sourceUrl}}</a>
+        </p>
+    </div>
+</div>
+<div class="lingua-dialog-footer">
+    <div class="lingua-controls">
+        <a class="lingua-primary-button" ng-click="func.addEditNote()">Save to notebook</a>
+    </div>
+</div>

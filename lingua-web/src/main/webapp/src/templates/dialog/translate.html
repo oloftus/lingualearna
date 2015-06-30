@@ -1,0 +1,58 @@
+<div class="lingua-inner" ng-controller="translateController">
+    <div class="lingua-dialog-header">
+        <h2>Translate text</h2>
+        <a class="lingua-dialog-close" lg-relative-sref="^" title="Close"></a>
+    </div>
+    <div class="lingua-form">
+        <div class="lingua-row">
+            <div class="lingua-column">
+                <h3>
+                    <label for="lingua-local-language">{{model.sourceLangName}}</label>
+                </h3>
+                <textarea id="lingua-local-language" ng-model="model.query"></textarea>
+            </div>
+            <div class="lingua-column">
+                <h3>
+                    {{model.targetLangName}}
+                </h3>
+                <textarea ng-model="model.translations.Google"></textarea>
+            </div>
+        </div>
+        <div ng-if="model.didYouMean.Collins || model.translations.Collins ? true : false">
+            <div class="lingua-row" style="min-height:100px;">
+                <h3>Dictionary definition</h3>
+
+                <div id="lingua-collins-didyoumean" ng-if="model.didYouMean.Collins ? true : false">
+                    <p>We couldn't find anything for that word/phrase, but maybe you meant one of these?</p>
+                    <ul>
+                        <li ng-repeat="doYouMean in model.didYouMean.Collins">
+                            <a href="#" ng-click="func.doTranslate(doYouMean)">{{doYouMean}}</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="lingua-html-input" id="lingua-collins-definition" contenteditable="true"
+                     ng-model="model.translations.Collins" ng-if="model.didYouMean.Collins ? false : true"></div>
+            </div>
+
+            <div class="lingua-row" ng-if="model.translations.Collins && model.translations.Google ? true : false">
+                <h3>
+                    <label for="lingua-translations">Save which definition?</label>
+                </h3>
+
+                <div class="lingua-select-wrapper">
+                    <select ng-model="model.notesToSave"
+                            ng-options="savableTranslation.displayName for savableTranslation in model.savableTranslations"
+                            id="lingua-translations">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lingua-dialog-footer">
+        <div class="lingua-controls">
+            <a class="lingua-secondary-button" ng-click="func.doTranslate()" ng-if="model.dialogWasAutoOpened ? false : true">Translate</a>
+            <a class="lingua-primary-button" ng-click="func.doAddToNotebook()">Add to notebook</a>
+        </div>
+    </div>
+</div>

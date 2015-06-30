@@ -1,0 +1,137 @@
+@import "variables";
+@import "typicons";
+@import "clearfix";
+
+#lingua-abstract-messages {
+  padding: $form-padding;
+  background-color: $messages-bg;
+
+  ul {
+    margin: 0;
+    padding: 0 0 0 20px;
+
+    li {
+      list-style-type: disc;
+    }
+  }
+}
+
+.lingua-styled-select {
+  outline: none;
+  border: none;
+  background-color: $highlight-panel-colour;
+  font-size: inherit;
+  margin: 0;
+}
+
+.lingua-form {
+  .lingua-row {
+    @extend .lingua-clearfix;
+    background-color: $highlight-panel-colour;
+    border-top: $border-style;
+
+    .lingua-column {
+      float: left;
+      width: 50%;
+    }
+  }
+
+  h3 {
+    width: 100%;
+    box-sizing: border-box;
+    padding: $form-padding;
+    border-bottom: $border-style;
+    background-color: $page-null-colour;
+    font-weight: normal;
+  }
+
+  .lingua-select-wrapper,
+  .lingua-checkbox-wrapper,
+  .lingua-text-wrapper,
+  .lingua-html-input,
+  textarea,
+  input[type="text"],
+  input[type="password"],
+  input[type="email"] {
+    margin: 0;
+    outline: none;
+    border: none;
+    background-color: $highlight-panel-colour;
+    font-size: $chrome-font-size;
+    color: $chrome-font-colour;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    padding: $form-padding;
+    font-weight: normal;
+  }
+
+  .lingua-html-input,
+  textarea {
+    vertical-align: top;
+    min-height: 75px;
+  }
+
+  p.lingua-text-wrapper {
+    margin: 0;
+    background-color: $page-null-colour;
+  }
+
+  select {
+    @extend .lingua-styled-select;
+    width: 100%;
+  }
+
+  .lingua-field-messages {
+    @extend #lingua-abstract-messages;
+    position: absolute;
+  }
+}
+
+.lingua-form-messages {
+  @extend #lingua-abstract-messages;
+  border-top: $border-style;
+}
+
+.lingua-error {
+  color: red;
+}
+
+.lingua-info {
+  color: $chrome-font-colour;
+}
+
+.lingua-controls {
+  padding: $form-padding;
+  border-top: $border-style;
+  clear: both;
+  text-align: right;
+
+  .lingua-primary-button, .lingua-secondary-button {
+    margin-left: $form-padding;
+  }
+}
+
+#lingua-collins-didyoumean {
+  background-color: $page-null-colour;
+  padding: $form-padding;
+
+  p {
+    margin: 0;
+  }
+
+  ul {
+    margin: 0;
+    margin-top: 10px;
+
+    li {
+      line-height: 1.4;
+    }
+  }
+}
+
+#lingua-collins-definition, #lingua-additional-note {
+  max-height: 300px;
+  overflow-y: scroll;
+}

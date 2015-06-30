@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "typicons";
+  font-weight: normal;
+  font-style: normal;
+  src: url("@app_root@/dependencies/typicons/src/font/typicons.eot");
+  src: url("@app_root@/dependencies/typicons/src/font/typicons.eot?#iefix") format("embedded-opentype"),
+  url("@app_root@/dependencies/typicons/src/font/typicons.woff") format("woff"),
+  url("@app_root@/dependencies/typicons/src/font/typicons.ttf") format("truetype"),
+  url("@app_root@/dependencies/typicons/src/font/typicons.svg#typicons") format("svg");
+}

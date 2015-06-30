@@ -1,0 +1,49 @@
+<div class="lingua-inner" ng-controller="addNotebookController">
+    <div class="lingua-dialog-header">
+        <h2>Create new notebook</h2>
+        <a class="lingua-dialog-close" lg-relative-sref="^" title="Close"></a>
+    </div>
+    <div ng-include="global.properties.templatesRoot + '/messages/formMessages.html'"
+         class="lingua-ng-inc"></div>
+    <div class="lingua-form">
+        <div class="lingua-row">
+            <h3>
+                <label for="lingua-notebook-name">Notebook title</label>
+            </h3>
+            <input type="text" id="lingua-notebook-name" ng-model="model.notebookName" data-fieldname="name"/>
+        </div>
+        <div class="lingua-row">
+            <div class="lingua-column">
+                <h3>
+                    <label>Your preferred language</label>
+                </h3>
+
+                <div class="lingua-select-wrapper">
+                    <select ng-model="model.localLang"
+                            ng-options="language.langNameTitle for language in model.supportedLanguages track by language.langCode"
+                            data-fieldname="localLang">
+                        <option value="">Please select a language</option>
+                    </select>
+                </div>
+            </div>
+            <div class="lingua-column">
+                <h3>
+                    <label>Foreign language</label>
+                </h3>
+
+                <div class="lingua-select-wrapper">
+                    <select ng-model="model.foreignLang"
+                            ng-options="language.langNameTitle for language in model.supportedLanguages track by language.langCode"
+                            data-fieldname="foreignLang">
+                        <option value="">Please select a language</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="lingua-dialog-footer">
+        <div class="lingua-controls">
+            <a class="lingua-primary-button" ng-click="func.doCreateNotebook()">Create notebook</a>
+        </div>
+    </div>
+</div>

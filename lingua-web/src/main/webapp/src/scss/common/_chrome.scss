@@ -1,0 +1,168 @@
+@import "variables";
+@import "typicons";
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,300,500");
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 1.2em;
+}
+
+h3 {
+  font-size: 1.1em;
+}
+
+a {
+  color: $chrome-font-colour;
+  text-decoration: none;
+}
+
+#lingua-page-logo {
+  height: 28px !important;
+}
+
+.lingua-current-notebook-selector-wrapper {
+  display: inline-block;
+}
+
+.lingua-current-notebook-selector-width-wrapper {
+  // Necessary to prevent width store from wrapping
+
+  width: 1000px;
+  position: absolute;
+  visibility: hidden;
+
+  .lingua-current-notebook-selector-width {
+    display: none;
+  }
+}
+
+#lingua-current-notebook-selector select,
+#lingua-current-notebook-selector .lingua-current-notebook-selector-width {
+  font-family: inherit;
+  font-size: 20px !important;
+  margin: 0;
+  outline: none;
+  border: none;
+  background: none;
+}
+
+#lingua-current-notebook-selector select {
+  width: 50px;
+  max-width: 300px;
+}
+
+#lingua-page-messages {
+  $width: 700px;
+
+  position: absolute;
+  z-index: 10;
+  top: 6px;
+  left: 50%;
+  width: $width;
+  margin-left: -$width / 2;
+  text-align: center;
+
+  .lingua-inner {
+    text-align: left;
+    display: inline-block;
+    padding: 10px;
+    background-color: $messages-bg;
+    border: $border-style;
+    box-shadow: 0 0 5px $border-colour;
+
+    ul {
+      margin: 0;
+      padding: 0 15px 0 30px;
+    }
+  }
+}
+
+.lingua-secondary-button {
+  display: inline-block;
+  padding: 6px 11px;
+  border: 1px solid $chrome-subtle-border-colour;
+  background: linear-gradient(lighten($border-colour, 5%), $border-colour);
+  box-shadow: 0 0 3px $border-colour inset;
+  text-align: center;
+  font-weight: normal;
+  color: $chrome-subtle-font-colour;
+  cursor: default;
+}
+
+input.lingua-secondary-button {
+  font-size: $chrome-font-size;
+}
+
+.lingua-secondary-button:hover {
+  box-shadow: 0 0 3px darken($border-colour, 15%) inset;
+  text-decoration: none !important;
+}
+
+.lingua-secondary-button:before {
+  $font-size: 20px;
+  font-size: $font-size !important;
+  margin: 0 2px 0 -3px;
+  line-height: $font-size;
+}
+
+.lingua-primary-button {
+  @extend .lingua-secondary-button;
+
+  border: 1px solid $highlight-colour;
+  background: linear-gradient(lighten($highlight-colour, 2%), $highlight-colour);
+  box-shadow: 0 0 3px lighten($highlight-colour, 10%) inset;
+  font-weight: bold;
+  color: $page-null-colour;
+}
+
+.lingua-primary-button:hover {
+  box-shadow: 0 0 3px darken($highlight-colour, 5%) inset;
+}
+
+#lingua-abstract-icon-button {
+  font-size: $icon-button-height;
+  line-height: $icon-button-height;
+  display: inline-block;
+  padding: $icon-button-padding;
+  cursor: default;
+}
+
+#lingua-abstract-icon-button:hover {
+  background-color: $hover-background-colour;
+  color: $highlight-text-colour;
+  text-decoration: none !important;
+}
+
+#lingua-feedback-button {
+  $rotation: -90deg;
+  $font-height: 16px;
+  $padding-tb: 13px;
+  $width: 150px;
+
+  position: absolute;
+  z-index: 1;
+  top: 40%;
+  left: ($font-height - $width) / 2 + $padding-tb;
+  width: $width;
+  padding: $padding-tb 0;
+  text-align: center;
+  background: linear-gradient(lighten($highlight-colour, 2%), $highlight-colour);
+  border: 1px solid $highlight-colour;
+  box-shadow: 0 0 3px lighten($highlight-colour, 10%) inset;
+  font-weight: bold;
+  color: $page-null-colour;
+  -ms-transform: rotate($rotation);
+  -webkit-transform: rotate($rotation);
+  transform: rotate($rotation);
+  text-transform: uppercase;
+  font-size: $font-height;
+  line-height: $font-height;
+  letter-spacing: 2px;
+}

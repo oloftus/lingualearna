@@ -1,0 +1,13 @@
+<header id="lingua-page-header" ng-controller="notebookHeaderController">
+    <div class="lingua-title-wrapper">
+        <img ng-src="{{global.properties.resourcesRoot + '/images/logo.svg'}}" id="lingua-page-logo" alt="LinguaLearna (beta)" />
+    </div>
+
+    <div id="lingua-page-header-tools-wrapper">
+        <ul id="lingua-page-header-tools">
+            <li id="lingua-logout-link"><a ng-click="func.logout()" title="Logout"></a></li>
+            <li id="lingua-account-link"><a lg-relative-sref=".SETTINGS" title="Settings"></a></li>
+            <li id="lingua-bookmarklet-link"><a href="bookmarklet" title="Get the bookmarklet"></a></li>
+        </ul>
+    </div>
+</header>

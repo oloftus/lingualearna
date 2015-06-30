@@ -1,0 +1,139 @@
+$header-padding: 10px;
+$emphasis-colour: #1C4B8B;
+$font-colour: #444444;
+
+.lingua-collins-entry {
+  font-family: sans-serif;
+  font-size: 13px;
+  color: $font-colour;
+
+  .lingua-collins-inline {
+    display: inline;
+  }
+
+  a, a:visited {
+    margin-left: 5px;
+    color: #1c4b8b;
+  }
+
+  h1.lingua-collins-hwd {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    margin-right: 10px;
+    display: inline-block;
+  }
+
+  .lingua-collins-pron {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .lingua-collins-lbl {
+    font-style: italic;
+    font-family: serif;
+    font-weight: normal !important;
+    color: #7a5352;
+
+    span {
+      font-style: normal;
+      color: $font-colour;
+    }
+  }
+
+  .lingua-collins-hom {
+    padding-top: $header-padding;
+
+    * {
+      line-height: 20px;
+    }
+
+    > .lingua-collins-gramGrp {
+      display: block;
+      margin-bottom: $header-padding;
+
+      .lingua-collins-pos {
+        font-size: 16px;
+        color: $emphasis-colour;
+      }
+    }
+
+    $list-offset: 20px;
+
+    .lingua-collins-bold {
+      float: left;
+      margin-left: -$list-offset;
+      padding-right: $list-offset / 2;
+    }
+
+    .lingua-collins-bold:after {
+      float: right;
+      content: ".";
+    }
+
+    .lingua-collins-scbold {
+      font-size: 0.8em;
+      display: inline;
+    }
+
+    .lingua-collins-scbold:after {
+      content: ":";
+      margin-right: 5px;
+    }
+
+    > .lingua-collins-sense {
+      margin-bottom: 20px;
+      padding-left: $list-offset;
+      display: block;
+
+      .lingua-collins-sense {
+        padding-left: 0;
+        clear: both;
+      }
+    }
+
+    > .lingua-collins-sense:last-child {
+      margin-bottom: 0;
+    }
+
+    .lingua-collins-re .lingua-collins-sense {
+      display: inline;
+    }
+
+    .lingua-collins-re, .lingua-collins-xr {
+      display: block;
+    }
+
+    .lingua-collins-orth, .lingua-collins-cit {
+      font-weight: bold;
+    }
+
+    .lingua-collins-cit:before {
+      margin-left: 5px;
+      content: "\21D2";
+    }
+
+    .abstract-cit-quote {
+      font-weight: normal;
+      color: $emphasis-colour;
+    }
+
+    .abstract-cit-quote:before {
+      margin-left: 0;
+      content: "";
+    }
+
+    .lingua-collins-reference {
+      font-style: italic;
+    }
+
+    .lingua-collins-quote {
+      margin-left: 5px;
+    }
+
+    .lingua-collins-cit.lingua-collins-lang_en-gb,
+    .lingua-collins-cit.lingua-collins-lang_es{
+      @extend .abstract-cit-quote;
+    }
+  }
+}

@@ -1,0 +1,201 @@
+<project name="LinguaLearna" default="build-dev" basedir=".">
+	<description>
+    Build LinguaLearna for development (Eclipse/WebStorm) or production (jar)
+    
+    Usage:
+      project-root $ ant (build-dev|build-prod)
+      
+    When building in development mode, you must subsequently run the grunt 'build-dev' task in Webstorm
+  </description>
+
+	<property name="build_dir" location="build" />
+	<property name="webapp_src_orig" value="src/main/webapp" />
+	<property name="webapp_src" location="${build_dir}/${webapp_src_orig}" />
+
+	<loadproperties srcFile="build.properties" />
+	<loadproperties srcFile="build_sensitive.properties" />
+
+
+
+	<target name="build-dev" depends="-set-common-tokens, -set-env-dev, clean, -replace-tokens">
+		<echo message="Building (development)" />
+	</target>
+
+	<target name="-set-env-dev">
+		<filter token="http_port" value="${http_port_dev}" />
+		<filter token="https_port" value="${https_port_dev}" />
+		<filter token="app_root" value="${app_root_dev}" />
+		<filter token="reader_js_path" value="${reader_js_path_dev}" />
+		<filter token="recaptcha_privatekey" value="${recaptcha_privatekey_dev}" />
+		<filter token="recaptcha_publickey" value="${recaptcha_publickey_dev}" />
+	</target>
+
+	<target name="-replace-tokens">
+		<!-- Use token replacement on copy operations -->
+		<copy todir="${build_dir}" filtering="true">
+			<fileset dir="src">
+				<include name="**/*.html" />
+				<include name="**/*.css" />
+				<include name="**/*.scss" />
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.ini" />
+				<include name="**/*.js" />
+				<include name="**/*.jsp" />
+			</fileset>
+		</copy>
+		<!-- Don't corrupt binary files -->
+		<copy todir="${build_dir}" filtering="false">
+			<fileset dir="src">
+				<exclude name="**/*.html" />
+				<exclude name="**/*.css" />
+				<exclude name="**/*.scss" />
+				<exclude name="**/*.properties" />
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.ini" />
+				<exclude name="**/*.js" />
+				<exclude name="**/*.jsp" />
+			</fileset>
+		</copy>
+		<move todir="src">
+			<fileset dir="${build_dir}" />
+		</move>
+	</target>
+
+
+
+
+	<target name="build-prod" depends="-set-common-tokens, -set-env-prod, -install-node-bower, clean, -copy-to-build-dir, -strip-internal-info, -build-webapp-prod, -build-java">
+		<echo message="Building (production)" />
+	</target>
+
+	<target name="-set-env-prod">
+		<filter token="http_port" value="${http_port_prod}" />
+		<filter token="https_port" value="${https_port_prod}" />
+		<filter token="app_root" value="${app_root_prod}" />
+		<filter token="reader_js_path" value="${reader_js_path_prod}" />
+		<filter token="recaptcha_privatekey" value="${recaptcha_privatekey_prod}" />
+		<filter token="recaptcha_publickey" value="${recaptcha_publickey_prod}" />
+	</target>
+
+	<target name="-install-node-bower">
+		<exec dir="${webapp_src_orig}" executable="npm" failonerror="true">
+			<arg value="install" />
+		</exec>
+		
+		<!-- Get around bug where bower is not executable -->
+		<chmod dir="${webapp_src_orig}" file="node_modules/bower/bin/bower" perm="+x"/>
+
+		<exec dir="${webapp_src_orig}" executable="node_modules/bower/bin/bower" failonerror="true">
+			<arg value="install" />
+		</exec>
+	</target>
+
+	<target name="-copy-to-build-dir">
+		<mkdir dir="${build_dir}" />
+
+		<copy todir="${build_dir}" file="pom.xml" filtering="true" />
+
+		<copy todir="${build_dir}/src" filtering="true">
+			<fileset dir="src">
+				<include name="**/*.html" />
+				<include name="**/*.css" />
+				<include name="**/*.scss" />
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.ini" />
+				<include name="**/*.js" />
+				<include name="**/*.jsp" />
+			</fileset>
+		</copy>
+		<!-- Don't corrupt binary files -->
+		<copy todir="${build_dir}/src" filtering="false">
+			<fileset dir="src">
+				<exclude name="**/*.html" />
+				<exclude name="**/*.css" />
+				<exclude name="**/*.scss" />
+				<exclude name="**/*.properties" />
+				<exclude name="**/*.xml" />
+				<exclude name="**/*.ini" />
+				<exclude name="**/*.js" />
+				<exclude name="**/*.jsp" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="-strip-internal-info">
+		<!-- Don't expose stacktraces... -->
+		<replace file="${build_dir}/src/main/webapp/src/jsp/error.jsp" token="${stacktrace}" />
+	</target>
+
+	<target name="-build-webapp-prod">
+		<!-- Execute Grunt -->
+		<exec dir="${webapp_src}" executable="grunt" failonerror="true">
+			<arg value="build-prod" />
+		</exec>
+
+		<!-- Copy static/generated files into deployment locations -->
+		<mkdir dir="${webapp_src}/templates" />
+		<mkdir dir="${webapp_src}/resources/images" />
+		<mkdir dir="${webapp_src}/resources/css" />
+		<mkdir dir="${webapp_src}/js" />
+
+		<copy todir="${webapp_src}/templates">
+			<fileset dir="${webapp_src}/src/templates" />
+		</copy>
+
+		<copy todir="${webapp_src}/resources/images">
+			<fileset dir="${webapp_src}/src/images" />
+		</copy>
+
+		<copy todir="${webapp_src}/resources/css">
+			<fileset dir="${webapp_src}/target/resources/css" />
+		</copy>
+
+		<copy todir="${webapp_src}/js">
+			<fileset dir="${webapp_src}/target/javascript" />
+		</copy>
+
+		<!-- Delete non-deployment files -->
+		<delete file="${webapp_src}/Gruntfile.js" />
+		<delete file="${webapp_src}/bower.json" />
+		<delete file="${webapp_src}/package.json" />
+		<delete dir="${webapp_src}/node_modules" />
+		<delete dir="${webapp_src}/src" />
+		<delete dir="${webapp_src}/target" />
+	</target>
+
+	<target name="-build-java">
+		<exec dir="${build_dir}" executable="mvn" failonerror="true">
+			<arg value="install" />
+		</exec>
+	</target>
+	
+	
+	
+	
+  <target name="-set-common-tokens">
+		<filter token="csrf_salt" value="${csrf_salt}" />
+		<filter token="email_fromaddress" value="${email_fromaddress}" />
+    <filter token="sendgrid_username" value="${sendgrid_username}" />
+    <filter token="sendgrid_password" value="${sendgrid_password}" />
+    <filter token="sendgrid_validation_template" value="${sendgrid_validation_template}" />
+    <filter token="google_translate_appname" value="${google_translate_appname}" />
+    <filter token="google_translate_apikey" value="${google_translate_apikey}" />
+    <filter token="google_translate_apiurl" value="${google_translate_apiurl}" />
+    <filter token="collins_translate_apikey" value="${collins_translate_apikey}" />
+    <filter token="collins_translate_apiurl" value="${collins_translate_apiurl}" />
+  </target>
+
+
+
+
+	<target name="clean">
+		<delete dir="target" />
+		<delete dir="build" />
+
+		<exec dir="${webapp_src_orig}" executable="grunt" failonerror="true">
+			<arg value="clean" />
+		</exec>
+	</target>
+</project>

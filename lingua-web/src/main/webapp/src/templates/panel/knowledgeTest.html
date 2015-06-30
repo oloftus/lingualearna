@@ -1,0 +1,21 @@
+<div ng-controller="knowledgeTestController" class="lingua-inner">
+    <header id="lingua-notebook-header">
+        <a ng-click="func.nextTest()" id="lingua-next-test-button">Next test</a>
+        <a ui-sref="NOTEBOOK" id="lingua-back-to-notebook-button">Back to notebook</a>
+    </header>
+    <div id="lingua-binder-container">
+        <div class="lingua-inner">
+            <div id="lingua-knowledge-test-content">
+                <div ui-view="KNOWLEDGE_TEST_HINT" id="lingua-knowledge-test-hint" class="lingua-mini-dialog"></div>
+                <div class="lingua-inner" scrollable>
+
+                    <ul id="lingua-knowledge-test-list">
+                        <lg-test-entry entry="entry" func="func" ng-repeat="entry in model.testEntries"></lg-test-entry>
+                    </ul>
+                    <div ng-include="global.properties.templatesRoot + '/other/pageFooter.html'"
+                         class="lingua-ng-inc"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

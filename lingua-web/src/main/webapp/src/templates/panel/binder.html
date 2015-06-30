@@ -1,0 +1,66 @@
+<div ng-controller="binderController" class="lingua-inner">
+    <header id="lingua-notebook-header">
+        <div id="lingua-page-side-header">
+            <div class="lingua-inner">
+                <div id="lingua-current-notebook-info">
+                    <div id="lingua-current-notebook-tools">
+                        <a lg-relative-sref=".ADD_NOTEBOOK" id="lingua-new-notebook-button" title="New notebook"></a>
+                        <lg-current-notebook-selector model="global.model" func="global.func" id="lingua-current-notebook-selector"></lg-current-notebook-selector>
+                    </div>
+                    <h3 id="lingua-current-notebook-languages">{{global.model.currentNotebook.localLangName}}
+                        &nbsp;&nbsp;&nbsp;&#8660;&nbsp;&nbsp;&nbsp;
+                        {{global.model.currentNotebook.foreignLangName}}</h3>
+                </div>
+
+                <ul id="lingua-page-buttons">
+                    <li>
+                        <a lg-relative-sref=".ADD_NOTE" id="lingua-new-entry-button">Add entry</a>
+                    </li>
+                    <li>
+                        <a ui-sref=".TRANSLATE" id="lingua-translate-button">Look up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="lingua-tabs-side-header">
+            <ul id="lingua-test-controls">
+                <li>
+                    <a ui-sref="KNOWLEDGE_TEST" id="lingua-start-test-button">Start test!</a>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div id="lingua-binder-container">
+        <div class="lingua-inner">
+            <div id="lingua-binder-content-pane" scrollable>
+                <div id="lingua-binder-content" ng-controller="noteListController">
+                    <ul id="lingua-notes-list">
+                        <lg-note note="note" func="func"
+                                 ng-repeat="note in global.model.currentPage.notes | orderBy:'position'"></lg-note>
+                    </ul>
+                </div>
+            </div>
+            <div id="lingua-binder-pages-pane" ng-controller="pageListController">
+                <div class="lingua-inner">
+                    <div id="lingua-binder-controls-wrapper">
+                        <ul id="lingua-binder-controls">
+                            <li>
+                                <a lg-relative-sref=".ADD_PAGE" id="lingua-new-page-button">New page</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div id="lingua-binder-pages" scrollable>
+                        <ul>
+                            <lg-page global="global" page="page" func="func"
+                                     ng-repeat="page in global.model.currentNotebook.pages | orderBy:'position'"></lg-page>
+                        </ul>
+                    </div>
+                    <div ng-include="global.properties.templatesRoot + '/other/pageFooter.html'"
+                         class="lingua-ng-inc"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+<li class="lingua-row" data-noteid="{{note.noteId}}">
+    <div class="lingua-entry">
+
+        <div class="lingua-bridge"></div>
+
+        <ul class="lingua-toolbar">
+            <li class="lingua-star">
+                <a ng-click="func.doStar(note)" ng-class="{'lingua-starred' : note.starred}"
+                   title="Star/unstar"></a>
+            </li>
+            <li class="lingua-test">
+                <a ng-click="func.doSetIncludedInTest(note)" ng-class="{'lingua-included' : note.includedInTest}"
+                   title="Include in/exclude from test"></a>
+            </li>
+            <li class="lingua-edit">
+                <a ng-click="func.doEditNote(note)" class="lingua-edit" title="Edit"></a>
+            </li>
+            <li class="lingua-delete">
+                <a ng-click="func.doDeleteNote(note)" title="Delete"></a>
+            </li>
+        </ul>
+
+        <div class="lingua-handle"></div>
+
+        <div class="lingua-note-content">
+            <div class="lingua-foreign-note" ng-if="note.flatForeignNote">{{note.flatForeignNote}}</div>
+            <div class="lingua-note-spacer" ng-if="note.flatLocalNote && note.flatForeignNote"></div>
+            <div class="lingua-local-note" ng-if="note.flatLocalNote">{{note.flatLocalNote}}</div>
+            <div class="lingua-additional-notes" ng-if="note.flatAdditionalNotes">{{note.flatAdditionalNotes}}</div>
+        </div>
+    </div>
+</li>

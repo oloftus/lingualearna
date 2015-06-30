@@ -1,0 +1,10 @@
+@import "common/forms";
+@import "common/chrome";
+
+body {
+  margin: 0;
+  font-family: $chrome-font;
+  font-weight: lighter;
+  font-size: $chrome-font-size;
+  color: $chrome-font-colour;
+}

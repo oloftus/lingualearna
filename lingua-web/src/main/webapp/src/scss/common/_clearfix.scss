@@ -1,0 +1,23 @@
+.lingua-clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+.lingua-clearfix {
+  display: inline-block;
+}
+
+/* start commented backslash hack \*/
+* html .lingua-clearfix {
+  height: 1%;
+}
+
+.lingua-clearfix {
+  display: block;
+}
+
+/* close commented backslash hack */

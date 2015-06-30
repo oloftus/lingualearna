@@ -1,0 +1,26 @@
+@import "common/typiconsFontFace";
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,300,500");
+
+#lingua-reader {
+  @import "common/chrome";
+  @import "common/variables";
+  @import "common/dialogs";
+  @import "common/forms";
+  @import "common/variables";
+  @import "reader/chrome";
+  @import "common/collinsDict";
+
+  font-family: $chrome-font;
+  font-weight: lighter;
+  font-size: $chrome-font-size;
+  color: $chrome-font-colour;
+  position: fixed;
+  width: 100%;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+
+  #lingua-feedback-button {
+    top: 300px;
+  }
+}

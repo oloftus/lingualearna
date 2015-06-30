@@ -1,0 +1,58 @@
+@import "../common/variables";
+@import "../common/typicons";
+
+#lingua-reader-bar {
+  box-shadow: 0 0 20px $box-shadow-colour;
+
+  width: 100%;
+  display: table;
+  table-layout: fixed;
+  padding: 5px 0;
+  background: $page-null-colour url("@app_root@/resources/images/reader-bar-bg.png") bottom repeat-x;
+  border-top: $stylistic-border-style;
+  border-bottom: $border-style;
+
+  a {
+    color: $chrome-font-colour;
+    text-decoration: none;
+  }
+
+  .lingua-title-wrapper,
+  #lingua-action-buttons-group,
+  #lingua-current-notebook-tools {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .lingua-title-wrapper,
+  #lingua-current-notebook-tools {
+    width: 300px;
+  }
+
+  .lingua-title-wrapper {
+    display: table-cell;
+    padding-left: $page-header-content-offset-left;
+  }
+
+  #lingua-action-buttons-group {
+    width: 100%;
+    text-align: center;
+
+    a#lingua-new-entry-button {
+      @extend .typcn;
+      @extend .typcn-pencil;
+      @extend .lingua-primary-button;
+    }
+  }
+
+  #lingua-current-notebook-tools {
+    padding-right: $page-header-content-offset-left;
+    text-align: right;
+
+    #lingua-notebook-link {
+      @extend .typcn;
+      @extend .typcn-arrow-forward;
+      @extend #lingua-abstract-icon-button;
+    }
+  }
+}
